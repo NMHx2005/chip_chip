@@ -2,7 +2,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import {
   DURATION,
   EASE_STANDARD,
@@ -29,6 +29,16 @@ export function AnimatedSection({
   /** Seconds to wait before starting — for staggering sibling sections. */
   delay?: number;
 }) {
+  const prefersReducedMotion = useReducedMotion();
+
+  if (prefersReducedMotion) {
+    return (
+      <section id={id} className={cn("relative", className)}>
+        {children}
+      </section>
+    );
+  }
+
   return (
     <motion.section
       id={id}

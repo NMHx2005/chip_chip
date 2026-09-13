@@ -54,6 +54,10 @@ export function useHoldToReveal() {
       setRevealed(result.state.revealed);
 
       if (result.startHoldTimer) {
+        // A new press starts here — any hide scheduled by the previous press
+        // is now stale and must not fire while this one is still down.
+        if (hideTimer.current) clearTimeout(hideTimer.current);
+        hideTimer.current = null;
         if (holdTimer.current) clearTimeout(holdTimer.current);
         holdTimer.current = setTimeout(() => {
           const next = holdReducer(stateRef.current, { type: "holdTimer" });

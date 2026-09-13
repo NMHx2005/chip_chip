@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { EASE_STANDARD } from "@/components/motion/tokens";
+import { EASE_STANDARD, STAGGER } from "@/components/motion/tokens";
 import {
   fadeIn,
   fadeUp,
@@ -7,7 +7,10 @@ import {
   slideInLeft,
   slideInRight,
   staggerContainer,
+  staggerContainerFast,
+  staggerContainerSlow,
   staggerItem,
+  staggerItemScale,
 } from "@/components/motion/variants";
 
 /** Reads the transition off a variant's `visible` state. */
@@ -33,6 +36,10 @@ describe("variants", () => {
     expect(fadeUp.visible).toMatchObject({ opacity: 1, y: 0 });
   });
 
+  it("fadeUpScale ẩn với opacity 0, trượt 32px và co còn 96%", () => {
+    expect(fadeUpScale.hidden).toEqual({ opacity: 0, y: 32, scale: 0.96 });
+  });
+
   it("slideInLeft và slideInRight đối xứng", () => {
     expect((slideInLeft.hidden as { x: number }).x).toBe(-32);
     expect((slideInRight.hidden as { x: number }).x).toBe(32);
@@ -46,9 +53,35 @@ describe("variants", () => {
     ).toMatchObject({ staggerChildren: 0.12, delayChildren: 0.1 });
   });
 
+  it("staggerContainerFast dùng nhịp nhanh hơn staggerContainer", () => {
+    expect(staggerContainerFast.hidden).toEqual({});
+    expect(
+      (staggerContainerFast.visible as { transition: Record<string, number> })
+        .transition
+    ).toMatchObject({
+      staggerChildren: STAGGER.fastStep,
+      delayChildren: STAGGER.fastDelay,
+    });
+  });
+
+  it("staggerContainerSlow dùng nhịp chậm hơn staggerContainer", () => {
+    expect(staggerContainerSlow.hidden).toEqual({});
+    expect(
+      (staggerContainerSlow.visible as { transition: Record<string, number> })
+        .transition
+    ).toMatchObject({
+      staggerChildren: STAGGER.slowStep,
+      delayChildren: STAGGER.slowDelay,
+    });
+  });
+
   it("staggerItem trượt ngắn hơn fadeUp để nhịp dãy không bị lê thê", () => {
     expect((staggerItem.hidden as { y: number }).y).toBeLessThan(
       (fadeUp.hidden as { y: number }).y
     );
+  });
+
+  it("staggerItemScale ẩn với opacity 0, trượt 24px và co còn 95%", () => {
+    expect(staggerItemScale.hidden).toEqual({ opacity: 0, y: 24, scale: 0.95 });
   });
 });

@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
+import { useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const VIEW_W = 1200;
@@ -31,11 +32,12 @@ export function DriftTextPath({
   const hostRef = useRef<HTMLDivElement | null>(null);
   const [offset, setOffset] = useState(0);
   const offsetRef = useRef(0);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     const host = hostRef.current;
     if (!host) return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (prefersReducedMotion) return;
 
     let rafId = 0;
     let last = 0;
@@ -70,9 +72,9 @@ export function DriftTextPath({
       observer.disconnect();
       cancelAnimationFrame(rafId);
     };
-  }, [speed]);
+  }, [speed, prefersReducedMotion]);
 
-  const pathId = `drift-${text.length}-${arcHeight}`;
+  const pathId = useId();
 
   return (
     <div ref={hostRef} className={cn("hidden w-full md:block", className)}>

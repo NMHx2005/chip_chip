@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { LangSwitch } from "@/components/layout/LangSwitch";
 import { Logo } from "@/components/layout/Logo";
 import { SocialLinks } from "@/components/layout/SocialLinks";
+import { DURATION, EASE_STANDARD } from "@/components/motion";
 import { GlassPill } from "@/components/ui/GlassPill";
 import { MenuIcon } from "@/components/ui/MenuIcon";
 import { PillButtonCta } from "@/components/ui/PillButton";
@@ -105,8 +106,8 @@ export function Navbar() {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             transition={{
-                              duration: prefersReducedMotion ? 0 : 0.3,
-                              ease: "easeOut",
+                              duration: prefersReducedMotion ? 0 : DURATION.fast,
+                              ease: EASE_STANDARD,
                             }}
                             aria-hidden="true"
                           />

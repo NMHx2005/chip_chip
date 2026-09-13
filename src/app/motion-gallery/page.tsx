@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, type RefObject } from "react";
-import { motion, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useTransform } from "framer-motion";
 import {
   AnimatedButtonLabel,
   AnimatedSection,
@@ -29,13 +29,16 @@ function GalleryTiltCard({ side }: { side: "left" | "right" }) {
   return (
     <TiltCard
       side={side}
+      tabIndex={0}
       {...hold.handlers}
       className="group rounded-2xl border border-border bg-surface p-8"
     >
       <div className="aspect-video rounded-xl bg-surface-muted" />
       <p
         className={`mt-4 text-sm transition-opacity duration-300 ${
-          hold.revealed ? "opacity-100" : "opacity-0 md:group-hover:opacity-100"
+          hold.revealed
+            ? "opacity-100"
+            : "opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100"
         }`}
       >
         Lớp phủ mô tả: hover trên desktop, chạm-giữ trên điện thoại.
@@ -51,6 +54,7 @@ function GalleryTiltCard({ side }: { side: "left" | "right" }) {
  */
 export default function MotionGallery() {
   const [hovered, setHovered] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
   const { targetRef, scrollYProgress } = useSharedScrollProgress();
   const titleOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.7, 0]);
   const titleScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
@@ -113,8 +117,8 @@ export default function MotionGallery() {
             <h2 className="mb-6 text-2xl font-bold">Stagger</h2>
             <motion.ul
               variants={staggerContainer}
-              initial="hidden"
-              whileInView="visible"
+              initial={prefersReducedMotion ? undefined : "hidden"}
+              whileInView={prefersReducedMotion ? undefined : "visible"}
               viewport={VIEWPORT_ONCE}
               className="grid gap-3 sm:grid-cols-3"
             >
@@ -167,8 +171,8 @@ export default function MotionGallery() {
 
           <motion.section
             variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
+            initial={prefersReducedMotion ? undefined : "hidden"}
+            whileInView={prefersReducedMotion ? undefined : "visible"}
             viewport={VIEWPORT_ONCE}
             className="pb-24"
           >
