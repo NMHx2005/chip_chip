@@ -95,13 +95,13 @@ export function Navbar() {
                         "relative rounded-full px-4 py-2 text-sm font-medium leading-none transition-colors",
                         active
                           ? "text-white"
-                          : "text-text-nav hover:bg-brand-500/8 hover:text-brand-700"
+                          : "text-text-nav hover:bg-surface-muted hover:text-accent"
                       )}
                     >
                       <AnimatePresence>
                         {active && (
                           <motion.span
-                            className="absolute inset-0 rounded-full bg-brand-500"
+                            className="absolute inset-0 rounded-full bg-primary"
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
@@ -151,7 +151,7 @@ export function Navbar() {
             role="dialog"
             aria-modal="true"
             aria-label={t("openMenu")}
-            className="fixed inset-0 z-[1001] flex flex-col bg-brand-900 lg:hidden"
+            className="fixed inset-0 z-[1001] flex flex-col bg-primary lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

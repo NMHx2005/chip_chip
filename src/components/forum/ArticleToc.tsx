@@ -31,7 +31,7 @@ export async function ArticleToc({ content }: { content: unknown }) {
           >
             <a
               href={`#${heading.id}`}
-              className="text-sm leading-relaxed text-text-nav transition-colors hover:text-brand-600"
+              className="text-sm leading-relaxed text-text-nav transition-colors hover:text-accent"
             >
               {heading.text}
             </a>

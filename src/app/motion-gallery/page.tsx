@@ -142,7 +142,7 @@ export default function MotionGallery() {
               onMouseLeave={() => setHovered(false)}
               onFocus={() => setHovered(true)}
               onBlur={() => setHovered(false)}
-              className="rounded-3xl bg-brand-500 px-7 py-4 text-white"
+              className="rounded-3xl bg-primary px-7 py-4 text-white"
             >
               <AnimatedButtonLabel active={hovered}>
                 Tham gia cùng chúng tôi
@@ -165,7 +165,7 @@ export default function MotionGallery() {
             <h2 className="mb-6 text-2xl font-bold">Chữ trôi dọc cung</h2>
             <DriftTextPath
               text="PROJECT CHÍP CHÍP · HỌC BÁN DẪN MIỄN PHÍ ·"
-              className="text-brand-500"
+              className="text-accent"
             />
           </section>
 

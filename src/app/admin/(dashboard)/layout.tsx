@@ -23,7 +23,7 @@ export default async function AdminLayout({
         <div className="mx-auto flex h-16 w-full max-w-[1400px] items-center justify-between gap-4 px-5">
           <div className="flex items-center gap-4">
             <Logo className="text-[17px]" compact />
-            <span className="hidden rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-brand-600 sm:inline">
+            <span className="hidden rounded-full bg-surface-muted px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-accent sm:inline">
               Quản trị
             </span>
           </div>
@@ -33,7 +33,7 @@ export default async function AdminLayout({
               href="/vi"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-brand-600 sm:inline-flex"
+              className="hidden items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-accent sm:inline-flex"
             >
               Xem trang
               <ExternalLink className="size-3.5" strokeWidth={2} />
@@ -46,7 +46,7 @@ export default async function AdminLayout({
             <form action={signOutAndRedirect}>
               <button
                 type="submit"
-                className="cursor-pointer rounded-xl border border-border px-3 py-1.5 text-sm text-text-nav transition-colors hover:border-brand-300 hover:text-brand-600"
+                className="cursor-pointer rounded-xl border border-border px-3 py-1.5 text-sm text-text-nav transition-colors hover:border-border hover:text-accent"
               >
                 Đăng xuất
               </button>

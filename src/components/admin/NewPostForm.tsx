@@ -62,8 +62,8 @@ export function NewPostForm() {
               className={cn(
                 "cursor-pointer rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors",
                 kind === option.value
-                  ? "border-brand-500 bg-brand-50 text-brand-700"
-                  : "border-border bg-surface text-text-nav hover:border-brand-300"
+                  ? "border-border bg-surface-muted text-accent"
+                  : "border-border bg-surface text-text-nav hover:border-border"
               )}
             >
               {option.label}
@@ -110,7 +110,7 @@ export function NewPostForm() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-brand-400"
+          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
           placeholder="Ví dụ: Transistor hoạt động như thế nào?"
         />
       </label>
@@ -123,7 +123,7 @@ export function NewPostForm() {
         <input
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
-          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-brand-400"
+          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
           placeholder="transistor-hoat-dong-nhu-the-nao"
         />
       </label>
@@ -147,7 +147,7 @@ export function NewPostForm() {
         <button
           type="submit"
           disabled={pending}
-          className="cursor-pointer rounded-xl bg-brand-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
+          className="cursor-pointer rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary disabled:opacity-60"
         >
           {pending ? "Đang tạo…" : "Tạo bài và bắt đầu viết"}
         </button>

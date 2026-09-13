@@ -31,7 +31,7 @@ export function Footer() {
                   <li key={item.key}>
                     <Link
                       href={item.href}
-                      className="text-sm text-text-nav transition-colors hover:text-brand-600"
+                      className="text-sm text-text-nav transition-colors hover:text-accent"
                     >
                       {tNav(item.key)}
                     </Link>
@@ -48,7 +48,7 @@ export function Footer() {
                 <li>
                   <Link
                     href="/gioi-thieu"
-                    className="text-sm text-text-nav transition-colors hover:text-brand-600"
+                    className="text-sm text-text-nav transition-colors hover:text-accent"
                   >
                     {tNav("join")}
                   </Link>
@@ -58,7 +58,7 @@ export function Footer() {
                   <li>
                     <a
                       href={`mailto:${CONTACT_EMAIL}`}
-                      className="font-mono text-sm text-text-nav transition-colors hover:text-brand-600"
+                      className="font-mono text-sm text-text-nav transition-colors hover:text-accent"
                     >
                       {CONTACT_EMAIL}
                     </a>

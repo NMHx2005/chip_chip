@@ -41,7 +41,7 @@ export function LangSwitch({
     <div
       className={cn(
         "flex items-center rounded-full p-0.5",
-        variant === "dark" ? "bg-white/10" : "bg-brand-500/10",
+        variant === "dark" ? "bg-white/10" : "bg-surface-muted",
         className
       )}
       role="group"
@@ -61,11 +61,11 @@ export function LangSwitch({
               "cursor-pointer rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] transition-colors",
               isActive
                 ? variant === "dark"
-                  ? "bg-white text-brand-700"
-                  : "bg-brand-500 text-white"
+                  ? "bg-white text-accent"
+                  : "bg-primary text-white"
                 : variant === "dark"
                   ? "text-white/60 hover:text-white"
-                  : "text-text-muted hover:text-brand-600"
+                  : "text-text-muted hover:text-accent"
             )}
           >
             {LOCALE_LABELS[option]}

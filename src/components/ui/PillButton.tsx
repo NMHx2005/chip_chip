@@ -96,7 +96,7 @@ function usePill(options: {
     <ArrowRight
       className={cn(
         "relative z-[2] h-[18px] w-[18px] shrink-0",
-        isOutline ? "text-brand-500/80" : "text-white/85"
+        isOutline ? "text-accent/80" : "text-white/85"
       )}
       strokeWidth={2}
     />
@@ -130,7 +130,7 @@ function PillLabel({
   return (
     <>
       {icon && <span className="relative z-[2] shrink-0">{icon}</span>}
-      <span className={cn("relative z-[2]", isOutline && "text-brand-700")}>
+      <span className={cn("relative z-[2]", isOutline && "text-accent")}>
         {children}
       </span>
     </>

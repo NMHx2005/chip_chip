@@ -143,7 +143,7 @@ function TopicRow({
               pathname: "/bai-hoc/[topic]",
               params: { topic },
             }}
-            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent"
             tabIndex={isActive ? 0 : -1}
           >
             {count > 0
@@ -256,7 +256,7 @@ export function LessonTopics({
           />
           <motion.span
             aria-hidden
-            className="pointer-events-none absolute hidden w-[3px] rounded-full bg-brand-500 md:block"
+            className="pointer-events-none absolute hidden w-[3px] rounded-full bg-primary md:block"
             style={{ left: -1, height: INDICATOR_HEIGHT }}
             initial={false}
             animate={{

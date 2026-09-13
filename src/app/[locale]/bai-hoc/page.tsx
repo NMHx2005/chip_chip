@@ -71,8 +71,8 @@ export default async function LessonsPage({
               className={cn(
                 "rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors",
                 tab === item.key
-                  ? "bg-brand-500 text-white"
-                  : "text-text-nav hover:bg-brand-500/10"
+                  ? "bg-primary text-white"
+                  : "text-text-nav hover:bg-surface-muted"
               )}
             >
               {item.label}
@@ -120,7 +120,7 @@ export default async function LessonsPage({
                     {tTopics(`${topic}.description`)}
                   </p>
 
-                  <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-semibold text-brand-600 transition-transform duration-300 group-hover:translate-x-0.5">
+                  <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-semibold text-accent transition-transform duration-300 group-hover:translate-x-0.5">
                     {t("tabTheory")}
                     <ArrowRight className="size-4" strokeWidth={2.2} />
                   </span>

@@ -177,8 +177,8 @@ export function PostEditor({
                 className={cn(
                   "flex cursor-pointer items-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors",
                   active === locale
-                    ? "bg-brand-500 text-white"
-                    : "text-text-nav hover:bg-brand-500/10"
+                    ? "bg-primary text-white"
+                    : "text-text-nav hover:bg-surface-muted"
                 )}
               >
                 {LOCALE_LABELS[locale]}
@@ -208,7 +208,7 @@ export function PostEditor({
             type="button"
             onClick={saveAll}
             disabled={pending || !dirty.vi && !dirty.en}
-            className="cursor-pointer rounded-xl bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-50"
+            className="cursor-pointer rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary disabled:opacity-50"
           >
             {state === "saving" ? "Đang lưu…" : "Lưu"}
           </button>
@@ -218,7 +218,7 @@ export function PostEditor({
               type="button"
               onClick={() => runPublish(unpublishTranslation)}
               disabled={pending}
-              className="cursor-pointer rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-text-nav transition-colors hover:border-brand-300 disabled:opacity-50"
+              className="cursor-pointer rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-text-nav transition-colors hover:border-border disabled:opacity-50"
             >
               Bỏ đăng
             </button>
@@ -286,7 +286,7 @@ export function PostEditor({
             <input
               value={current.title}
               onChange={(e) => updateDraft(active, { title: e.target.value })}
-              className="h-12 rounded-xl border border-border bg-surface px-4 text-lg font-semibold outline-none focus:border-brand-400"
+              className="h-12 rounded-xl border border-border bg-surface px-4 text-lg font-semibold outline-none focus:border-border"
               placeholder={
                 active === "vi"
                   ? "Tiêu đề bài viết"
@@ -305,7 +305,7 @@ export function PostEditor({
             <input
               value={current.slug}
               onChange={(e) => updateDraft(active, { slug: e.target.value })}
-              className="h-11 rounded-xl border border-border bg-surface px-4 font-mono text-sm outline-none focus:border-brand-400"
+              className="h-11 rounded-xl border border-border bg-surface px-4 font-mono text-sm outline-none focus:border-border"
               placeholder="duong-dan-bai-viet"
             />
           </label>
@@ -322,7 +322,7 @@ export function PostEditor({
               onChange={(e) => updateDraft(active, { excerpt: e.target.value })}
               rows={3}
               maxLength={320}
-              className="rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none focus:border-brand-400"
+              className="rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none focus:border-border"
               placeholder="Một hai câu giới thiệu ngắn về bài viết."
             />
             <span className="text-right text-[11px] text-text-muted">
@@ -337,7 +337,7 @@ export function PostEditor({
             type="button"
             onClick={() => coverInputRef.current?.click()}
             disabled={uploadingCover}
-            className="relative aspect-video w-full cursor-pointer overflow-hidden rounded-xl border border-dashed border-border bg-surface-muted transition-colors hover:border-brand-300 disabled:opacity-60"
+            className="relative aspect-video w-full cursor-pointer overflow-hidden rounded-xl border border-dashed border-border bg-surface-muted transition-colors hover:border-border disabled:opacity-60"
           >
             {current.coverImageUrl ? (
               // eslint-disable-next-line @next/next/no-img-element

@@ -6,7 +6,7 @@ export default async function NotFound() {
 
   return (
     <section className="flex min-h-[60vh] flex-col items-center justify-center px-5 py-20 text-center">
-      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand-500">
+      <p className="text-sm font-semibold uppercase tracking-[0.16em] text-accent">
         404
       </p>
       <h1 className="mt-4 text-balance text-[28px] font-extrabold tracking-[-0.02em] text-text md:text-[38px]">

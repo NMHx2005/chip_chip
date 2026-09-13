@@ -9,7 +9,7 @@ export function VideoReveal() {
     <section className="px-5 pb-4 md:px-8">
       <div className="mx-auto w-full max-w-content">
         <figure className="m-0">
-          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-brand-900 shadow-card md:rounded-3xl">
+          <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-primary shadow-card md:rounded-3xl">
             {INTRO_VIDEO_SRC ? (
               <AutoplayVideo
                 src={INTRO_VIDEO_SRC}

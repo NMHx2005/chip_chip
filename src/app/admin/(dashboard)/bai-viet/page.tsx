@@ -72,7 +72,7 @@ export default async function AdminPostsPage() {
 
         <Link
           href="/admin/bai-viet/moi"
-          className="inline-flex h-10 items-center gap-2 rounded-xl bg-brand-500 px-4 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+          className="inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-white transition-colors hover:bg-primary"
         >
           <Plus className="size-4" strokeWidth={2.4} />
           Viết bài mới
@@ -100,7 +100,7 @@ export default async function AdminPostsPage() {
                       {KIND_LABEL[primary.kind]}
                     </span>
                     {primary.topic && (
-                      <span className="rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-medium text-brand-600">
+                      <span className="rounded-full bg-surface-muted px-2.5 py-1 text-[11px] font-medium text-accent">
                         {primary.topic}
                       </span>
                     )}
@@ -136,7 +136,7 @@ export default async function AdminPostsPage() {
 
                   <Link
                     href={`/admin/bai-viet/${primary.id}`}
-                    className="mt-2.5 block truncate text-base font-semibold text-text transition-colors hover:text-brand-600"
+                    className="mt-2.5 block truncate text-base font-semibold text-text transition-colors hover:text-accent"
                   >
                     {primary.title || "(chưa có tiêu đề)"}
                   </Link>

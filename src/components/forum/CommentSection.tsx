@@ -54,7 +54,7 @@ function CommentBody({
         </span>
 
         {comment.isPostAuthor && (
-          <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-brand-700">
+          <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-accent">
             {t("authorBadge")}
           </span>
         )}
@@ -78,7 +78,7 @@ function CommentBody({
         <button
           type="button"
           onClick={() => onReply(comment)}
-          className="mt-0.5 inline-flex w-fit cursor-pointer items-center gap-1.5 text-xs font-medium text-text-muted transition-colors hover:text-brand-600"
+          className="mt-0.5 inline-flex w-fit cursor-pointer items-center gap-1.5 text-xs font-medium text-text-muted transition-colors hover:text-accent"
         >
           <Reply className="size-3.5" strokeWidth={2} />
           {t("reply")}
@@ -173,7 +173,7 @@ function CommentForm({
             maxLength={80}
             autoComplete="name"
             placeholder={t("namePlaceholder")}
-            className="h-10 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-brand-400"
+            className="h-10 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
           />
         </label>
 
@@ -187,7 +187,7 @@ function CommentForm({
             type="email"
             autoComplete="email"
             placeholder={t("emailPlaceholder")}
-            className="h-10 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-brand-400"
+            className="h-10 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
           />
         </label>
       </div>
@@ -200,7 +200,7 @@ function CommentForm({
           rows={4}
           maxLength={2000}
           placeholder={t("bodyPlaceholder")}
-          className="rounded-xl border border-border bg-surface px-3.5 py-3 text-sm outline-none focus:border-brand-400"
+          className="rounded-xl border border-border bg-surface px-3.5 py-3 text-sm outline-none focus:border-border"
         />
       </label>
 
@@ -227,7 +227,7 @@ function CommentForm({
         <button
           type="submit"
           disabled={submitting}
-          className="cursor-pointer rounded-xl bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:opacity-60"
+          className="cursor-pointer rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary disabled:opacity-60"
         >
           {submitting ? t("submitting") : t("submit")}
         </button>
@@ -277,7 +277,7 @@ export function CommentSection({
       className="mt-16 border-t border-border pt-10"
     >
       <h2 className="flex items-center gap-2 text-lg font-bold tracking-[-0.01em] text-text">
-        <MessageSquare className="size-5 text-brand-500" strokeWidth={2} />
+        <MessageSquare className="size-5 text-accent" strokeWidth={2} />
         {t("count", { count })}
       </h2>
 
@@ -336,7 +336,7 @@ export function CommentSection({
                     },
                   }}
                   scroll={false}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-text-nav transition-colors hover:border-brand-300 hover:text-brand-600"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-text-nav transition-colors hover:border-border hover:text-accent"
                 >
                   {t("loadMore")}
                   <ChevronDown className="size-4" strokeWidth={2.2} />

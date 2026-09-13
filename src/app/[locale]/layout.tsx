@@ -31,7 +31,7 @@ export default async function LocaleLayout({
     <SmoothScroll>
       <a
         href="#main"
-        className="sr-only rounded-full bg-brand-500 px-4 py-2 text-sm font-medium text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[2000]"
+        className="sr-only rounded-full bg-primary px-4 py-2 text-sm font-medium text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[2000]"
       >
         {t("skipToContent")}
       </a>

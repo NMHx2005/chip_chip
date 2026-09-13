@@ -71,14 +71,14 @@ export default async function AdminDashboard() {
       <div className="flex flex-wrap gap-3">
         <Link
           href="/admin/bai-viet/moi"
-          className="inline-flex h-11 items-center gap-2 rounded-xl bg-brand-500 px-5 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+          className="inline-flex h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-primary"
         >
           Viết bài mới
           <ArrowRight className="size-4" strokeWidth={2.2} />
         </Link>
         <Link
           href="/admin/bai-viet"
-          className="inline-flex h-11 items-center rounded-xl border border-border px-5 text-sm font-medium text-text-nav transition-colors hover:border-brand-300 hover:text-brand-600"
+          className="inline-flex h-11 items-center rounded-xl border border-border px-5 text-sm font-medium text-text-nav transition-colors hover:border-border hover:text-accent"
         >
           Xem tất cả bài viết
         </Link>

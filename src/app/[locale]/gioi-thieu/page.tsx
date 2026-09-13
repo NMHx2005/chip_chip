@@ -90,9 +90,9 @@ export default async function AboutPage({
             <ul className="mt-7 flex flex-col gap-3">
               {benefits.map((benefit) => (
                 <li key={benefit} className="flex gap-3">
-                  <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-brand-100">
+                  <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-surface-muted">
                     <Check
-                      className="size-3 text-brand-600"
+                      className="size-3 text-accent"
                       strokeWidth={3}
                       aria-hidden
                     />

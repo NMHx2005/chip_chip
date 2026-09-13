@@ -41,7 +41,7 @@ export function SocialLinks({
               "flex size-9 items-center justify-center rounded-full transition-colors",
               variant === "dark"
                 ? "text-white/70 hover:bg-white/10 hover:text-white"
-                : "text-text-muted hover:bg-brand-500/10 hover:text-brand-600"
+                : "text-text-muted hover:bg-surface-muted hover:text-accent"
             )}
           >
             <svg

@@ -42,7 +42,7 @@ export function PostRowActions({ translationId, status, ready }: Props) {
             type="button"
             disabled={pending}
             onClick={() => run(() => unpublishTranslation(translationId))}
-            className="cursor-pointer rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-nav transition-colors hover:border-brand-300 hover:text-brand-600 disabled:opacity-50"
+            className="cursor-pointer rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-nav transition-colors hover:border-border hover:text-accent disabled:opacity-50"
           >
             Bỏ đăng
           </button>
@@ -59,7 +59,7 @@ export function PostRowActions({ translationId, status, ready }: Props) {
             className={cn(
               "rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors",
               ready && !pending
-                ? "cursor-pointer bg-brand-500 text-white hover:bg-brand-600"
+                ? "cursor-pointer bg-primary text-white hover:bg-primary"
                 : "cursor-not-allowed bg-surface-muted text-text-muted"
             )}
           >

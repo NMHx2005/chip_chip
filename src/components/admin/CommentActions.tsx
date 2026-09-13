@@ -37,7 +37,7 @@ export function CommentActions({
           disabled={pending}
           title={hidden ? "Hiện bình luận" : "Ẩn bình luận"}
           onClick={() => run(() => setCommentHidden(commentId, !hidden))}
-          className="flex size-8 cursor-pointer items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-brand-500/10 hover:text-brand-600 disabled:opacity-50"
+          className="flex size-8 cursor-pointer items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-surface-muted hover:text-accent disabled:opacity-50"
         >
           {hidden ? (
             <Eye className="size-4" strokeWidth={2} />

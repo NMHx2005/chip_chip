@@ -28,20 +28,20 @@
   }
 
   ::-webkit-scrollbar-track {
-    background: #f6f5fa;
+    background: #e5e5e5;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: rgba(123, 47, 190, 0.28);
+    background: rgba(108, 99, 255, 0.3);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: rgba(123, 47, 190, 0.5);
+    background: rgba(108, 99, 255, 0.55);
   }
 
   :focus-visible {
-    outline: 2px solid #7b2fbe;
+    outline: 2px solid #314344;
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -119,7 +119,7 @@
 }
 
 .chip-prose a {
-  color: #7b2fbe;
+  color: #314344;
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
@@ -127,7 +127,7 @@
 }
 
 .chip-prose a:hover {
-  color: #551c85;
+  color: #314344;
 }
 
 .chip-prose strong {
@@ -153,11 +153,11 @@
 }
 
 .chip-prose li::marker {
-  color: #9b66f5;
+  color: #314344;
 }
 
 .chip-prose blockquote {
-  border-left: 3px solid #b995ff;
+  border-left: 3px solid #314344;
   padding: 0.25rem 0 0.25rem 1.25rem;
   color: #55516b;
   font-style: italic;

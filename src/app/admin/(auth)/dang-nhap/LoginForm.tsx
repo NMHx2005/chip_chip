@@ -12,7 +12,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="h-11 w-full cursor-pointer rounded-xl bg-brand-500 text-sm font-semibold text-white transition-colors hover:bg-brand-600 disabled:cursor-not-allowed disabled:opacity-60"
+      className="h-11 w-full cursor-pointer rounded-xl bg-primary text-sm font-semibold text-white transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
     >
       {pending ? "Đang đăng nhập…" : "Đăng nhập"}
     </button>
@@ -33,7 +33,7 @@ export function LoginForm({ next }: { next: string }) {
           name="email"
           required
           autoComplete="email"
-          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-brand-400"
+          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
         />
       </label>
 
@@ -44,7 +44,7 @@ export function LoginForm({ next }: { next: string }) {
           name="password"
           required
           autoComplete="current-password"
-          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-brand-400"
+          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
         />
       </label>
 

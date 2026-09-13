@@ -5,7 +5,7 @@ function Badge({ label, tone }: { label: string; tone: "blue" | "purple" }) {
   const styles =
     tone === "blue"
       ? "border-brand-blue-200 bg-brand-blue-50 text-brand-blue-600"
-      : "border-brand-200 bg-brand-50 text-brand-600";
+      : "border-border bg-surface-muted text-accent";
 
   return (
     <span

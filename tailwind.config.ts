@@ -60,7 +60,7 @@ const config: Config = {
 
         border: "#E2DFEC",
         input: "#E2DFEC",
-        ring: "#7B2FBE",
+        ring: "#314344",
       },
 
       fontFamily: {

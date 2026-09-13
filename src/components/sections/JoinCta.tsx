@@ -54,7 +54,7 @@ export function JoinCta() {
                     href={JOIN_FORM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-[52px] items-center gap-2 rounded-3xl bg-white px-6 text-base font-semibold text-brand-700 transition-transform duration-200 hover:scale-[1.02]"
+                    className="inline-flex h-[52px] items-center gap-2 rounded-3xl bg-white px-6 text-base font-semibold text-accent transition-transform duration-200 hover:scale-[1.02]"
                   >
                     {t("formCta")}
                     <ArrowUpRight className="size-[18px]" strokeWidth={2.2} />

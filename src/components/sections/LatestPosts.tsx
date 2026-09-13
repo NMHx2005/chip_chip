@@ -24,7 +24,7 @@ export async function LatestPosts({ posts }: { posts: PostSummary[] }) {
 
           <Link
             href="/dien-dan"
-            className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent"
           >
             {t("viewAll")}
             <ArrowRight className="size-4" strokeWidth={2.2} />

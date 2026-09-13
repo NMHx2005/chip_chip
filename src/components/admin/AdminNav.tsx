@@ -28,7 +28,7 @@ export function AdminNav() {
             className={cn(
               "whitespace-nowrap border-b-2 px-3.5 py-3 text-sm font-medium transition-colors",
               active
-                ? "border-brand-500 text-brand-600"
+                ? "border-border text-accent"
                 : "border-transparent text-text-muted hover:text-text"
             )}
           >

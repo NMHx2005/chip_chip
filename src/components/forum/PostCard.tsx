@@ -31,7 +31,7 @@ export async function PostCard({
   return (
     <Link
       href={href}
-      className="group flex flex-col gap-3 rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:border-brand-300 hover:shadow-card-hover"
+      className="group flex flex-col gap-3 rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:border-border hover:shadow-card-hover"
     >
       {post.coverImageUrl && (
         <div className="relative mb-1 aspect-video w-full overflow-hidden rounded-xl">
@@ -78,7 +78,7 @@ export async function PostCard({
         </p>
       )}
 
-      <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-semibold text-brand-600 transition-transform duration-300 group-hover:translate-x-0.5">
+      <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-semibold text-accent transition-transform duration-300 group-hover:translate-x-0.5">
         {t("readMore")}
         <ArrowRight className="size-4" strokeWidth={2.2} />
       </span>

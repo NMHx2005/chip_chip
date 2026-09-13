@@ -107,7 +107,7 @@ export default async function ForumPostPage({
       <div className="mx-auto w-full max-w-3xl">
         <Link
           href="/dien-dan"
-          className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-brand-600"
+          className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-accent"
         >
           <ArrowLeft className="size-4" strokeWidth={2.2} />
           {t("backToForum")}
@@ -142,7 +142,7 @@ export default async function ForumPostPage({
                   params: { slug: alt.slug },
                 }}
                 locale={alt.locale}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors hover:border-brand-300 hover:text-brand-600"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors hover:border-border hover:text-accent"
               >
                 <Languages className="size-3.5" strokeWidth={2} />
                 {alt.locale === "en" ? "Read in English" : "Đọc bản tiếng Việt"}

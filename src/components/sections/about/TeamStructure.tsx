@@ -34,7 +34,7 @@ export async function TeamStructure() {
               key={unit.id}
               className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-5"
             >
-              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-brand-50 px-2.5 py-1 text-[11px] font-semibold text-brand-600">
+              <span className="inline-flex w-fit items-center gap-1.5 rounded-full bg-surface-muted px-2.5 py-1 text-[11px] font-semibold text-accent">
                 <Users className="size-3" strokeWidth={2.5} aria-hidden />
                 {t("headcountLabel", { count: unit.headcount })}
               </span>

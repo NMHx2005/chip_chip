@@ -52,8 +52,8 @@ function ToolButton({
       className={cn(
         "flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-lg transition-colors",
         active
-          ? "bg-brand-500 text-white"
-          : "text-text-nav hover:bg-brand-500/10 hover:text-brand-600",
+          ? "bg-primary text-white"
+          : "text-text-nav hover:bg-surface-muted hover:text-accent",
         disabled && "cursor-not-allowed opacity-40 hover:bg-transparent"
       )}
     >

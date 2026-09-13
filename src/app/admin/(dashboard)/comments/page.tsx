@@ -83,7 +83,7 @@ export default async function AdminCommentsPage() {
                   </span>
 
                   {row.is_post_author && (
-                    <span className="rounded-full bg-brand-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-brand-700">
+                    <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.06em] text-accent">
                       Tác giả
                     </span>
                   )}

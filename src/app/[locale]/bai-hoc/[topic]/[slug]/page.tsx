@@ -57,7 +57,7 @@ export default async function LessonArticlePage({ params }: { params: Params }) 
       <div className="mx-auto w-full max-w-3xl">
         <Link
           href={{ pathname: "/bai-hoc/[topic]", params: { topic: topicId } }}
-          className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-brand-600"
+          className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-accent"
         >
           <ArrowLeft className="size-4" strokeWidth={2.2} />
           {tLessons("backToTopic", { topic: t(`${topicId}.title`) })}

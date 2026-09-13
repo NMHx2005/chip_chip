@@ -76,8 +76,8 @@ export default async function ForumPage({
                 aria-current={n === page ? "page" : undefined}
                 className={
                   n === page
-                    ? "flex size-9 items-center justify-center rounded-lg bg-brand-500 text-sm font-semibold text-white"
-                    : "flex size-9 items-center justify-center rounded-lg border border-border text-sm text-text-nav transition-colors hover:border-brand-300"
+                    ? "flex size-9 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-white"
+                    : "flex size-9 items-center justify-center rounded-lg border border-border text-sm text-text-nav transition-colors hover:border-border"
                 }
               >
                 {n}

@@ -35,7 +35,7 @@ export default function LocaleError({
       <button
         type="button"
         onClick={reset}
-        className="mt-8 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-brand-500 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-brand-600"
+        className="mt-8 inline-flex cursor-pointer items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary"
       >
         <RotateCcw className="size-4" strokeWidth={2.2} />
         {t("retry")}
