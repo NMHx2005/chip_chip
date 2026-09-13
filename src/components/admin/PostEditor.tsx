@@ -11,6 +11,7 @@ import { UploadError, uploadPostImage } from "@/lib/supabase/upload";
 import { LOCALE_LABELS, routing, type Locale } from "@/i18n/routing";
 import { slugify } from "@/lib/post-slug";
 import { cn } from "@/lib/utils";
+import { shouldClearDirty } from "@/components/admin/saveRevision";
 
 export type Draft = {
   id: string;
@@ -54,9 +55,25 @@ export function PostEditor({
   // locale from a ref rather than closing over a stale value.
   const activeRef = useRef<Locale>("vi");
 
+  // `saveAll` is an async closure: by the time its `await` resolves, the user
+  // may have kept typing and the render closure's `drafts`/`dirty` are stale.
+  // These refs are the live source of truth so the save always sends (and
+  // reasons about) the latest text instead of what was current at click time.
+  const draftsRef = useRef(initialDrafts);
+  const revisionRef = useRef<Record<Locale, number>>({ vi: 0, en: 0 });
+
   const updateDraft = useCallback(
     (locale: Locale, patch: Partial<Draft>) => {
-      setDrafts((prev) => ({ ...prev, [locale]: { ...prev[locale], ...patch } }));
+      const next = {
+        ...draftsRef.current,
+        [locale]: { ...draftsRef.current[locale], ...patch },
+      };
+      draftsRef.current = next;
+      setDrafts(next);
+      revisionRef.current = {
+        ...revisionRef.current,
+        [locale]: revisionRef.current[locale] + 1,
+      };
       setDirty((prev) => ({ ...prev, [locale]: true }));
       setState("idle");
     },
@@ -81,11 +98,19 @@ export function PostEditor({
     if (locale === active) return;
     activeRef.current = locale;
     setActive(locale);
-    // emitUpdate:false — otherwise the tab switch would be recorded as an edit
-    // against the locale we are leaving.
-    editor?.commands.setContent(drafts[locale].content ?? EMPTY_DOC, {
-      emitUpdate: false,
-    });
+    // emitUpdate:false stops the tab switch from being recorded as an edit
+    // against the locale we are leaving. That alone is not enough, though:
+    // @tiptap/core's SetContentOptions has no `addToHistory` flag, so without
+    // the explicit setMeta below this transaction still lands in ProseMirror's
+    // undo stack. Ctrl+Z would then restore the other locale's content into
+    // this tab as an ordinary edit, firing onUpdate and overwriting it on the
+    // next save. setMeta("addToHistory", false) is the flag the history
+    // plugin itself honours, so the switch is excluded from undo entirely.
+    editor
+      ?.chain()
+      .setMeta("addToHistory", false)
+      .setContent(drafts[locale].content ?? EMPTY_DOC, { emitUpdate: false })
+      .run();
   };
 
   const handleCover = async (file: File) => {
@@ -107,11 +132,19 @@ export function PostEditor({
     setMessage(null);
     startTransition(async () => {
       setState("saving");
+      let savedSomething = false;
 
       for (const locale of routing.locales) {
         if (!dirty[locale]) continue;
 
-        const draft = drafts[locale];
+        // A locale with no row in the database (see missingLocale in the
+        // page) has an empty id: there is nothing to update it into, and the
+        // editor must never invent one. Leave it dirty and skip it — the
+        // banner shown while that tab is active explains why.
+        const draft = draftsRef.current[locale];
+        if (!draft.id) continue;
+
+        const sentRevision = revisionRef.current[locale];
         const result = await savePost({
           id: draft.id,
           title: draft.title,
@@ -126,11 +159,22 @@ export function PostEditor({
           setMessage(result.error ?? "Không lưu được bài.");
           return;
         }
+
+        savedSomething = true;
+        // Only clear dirty if nothing was typed into this locale while the
+        // request above was in flight — otherwise the newer text would be
+        // marked clean and silently skipped by the next save.
+        if (shouldClearDirty(sentRevision, revisionRef.current[locale])) {
+          setDirty((prev) => ({ ...prev, [locale]: false }));
+        }
       }
 
-      setState("saved");
-      setDirty({ vi: false, en: false });
-      router.refresh();
+      if (savedSomething) {
+        setState("saved");
+        router.refresh();
+      } else {
+        setState("idle");
+      }
     });
   };
 
@@ -153,6 +197,10 @@ export function PostEditor({
       drafts[locale].title.trim().length > 0 &&
       (drafts[locale].content?.content?.length ?? 0) > 0
   );
+  // `drafts` is in-memory state the server may never have seen. Publishing
+  // must reflect what is actually saved, so it also requires nothing dirty.
+  const hasUnsavedChanges = dirty.vi || dirty.en;
+  const canPublish = bothComplete && !hasUnsavedChanges;
 
   return (
     <div className="flex flex-col gap-4">
@@ -226,15 +274,17 @@ export function PostEditor({
             <button
               type="button"
               onClick={() => runPublish(publishTranslation)}
-              disabled={pending || !bothComplete}
+              disabled={pending || !canPublish}
               title={
-                bothComplete
-                  ? undefined
-                  : "Cần tiêu đề và nội dung ở cả hai ngôn ngữ."
+                !bothComplete
+                  ? "Cần tiêu đề và nội dung ở cả hai ngôn ngữ."
+                  : hasUnsavedChanges
+                    ? "Cần lưu các thay đổi trước khi đăng bài."
+                    : undefined
               }
               className={cn(
                 "rounded-xl px-5 py-2.5 text-sm font-semibold transition-colors",
-                bothComplete && !pending
+                canPublish && !pending
                   ? "cursor-pointer bg-green-600 text-white hover:bg-green-700"
                   : "cursor-not-allowed bg-surface-muted text-text-muted"
               )}
@@ -269,10 +319,23 @@ export function PostEditor({
         </p>
       )}
 
-      {!bothComplete && status === "draft" && (
+      {!canPublish && status === "draft" && (
         <p className="rounded-xl border border-border bg-surface-muted px-4 py-3 text-xs text-text-muted">
-          Chưa đăng được: mỗi ngôn ngữ cần có tiêu đề và nội dung. Chuyển tab để
-          hoàn thiện bản còn thiếu.
+          {!bothComplete
+            ? "Chưa đăng được: mỗi ngôn ngữ cần có tiêu đề và nội dung. Chuyển tab để hoàn thiện bản còn thiếu."
+            : "Chưa đăng được: còn thay đổi chưa lưu. Bấm \"Lưu\" trước khi đăng bài."}
+        </p>
+      )}
+
+      {!current.id && (
+        <p
+          role="alert"
+          className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800"
+        >
+          <TriangleAlert className="mt-0.5 size-4 shrink-0" strokeWidth={2} />
+          Bản {LOCALE_LABELS[active]} chưa có bản ghi trong cơ sở dữ liệu. Bạn
+          có thể soạn nội dung nhưng chưa thể lưu bản này — cần tạo lại bài để
+          có đủ hai ngôn ngữ.
         </p>
       )}
 

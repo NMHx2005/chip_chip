@@ -82,18 +82,19 @@ export default async function EditPostPage({
         </p>
       </div>
 
-      {missingLocale ? (
+      {missingLocale && (
         <p className="rounded-2xl border border-red-200 bg-red-50 px-5 py-4 text-sm text-red-700">
-          Bài này thiếu một trong hai bản ngôn ngữ trong cơ sở dữ liệu. Hãy tạo
-          lại bài để có đủ bản Việt và Anh.
+          Bài này thiếu một trong hai bản ngôn ngữ trong cơ sở dữ liệu. Bạn vẫn
+          có thể chỉnh sửa bản còn lại bên dưới, nhưng cần tạo lại bài để có đủ
+          bản Việt và Anh.
         </p>
-      ) : (
-        <PostEditor
-          translationId={anchor.translation_id as string}
-          initialDrafts={drafts}
-          status={primary.status}
-        />
       )}
+
+      <PostEditor
+        translationId={anchor.translation_id as string}
+        initialDrafts={drafts}
+        status={primary.status}
+      />
     </div>
   );
 }
