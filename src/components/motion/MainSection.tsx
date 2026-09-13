@@ -31,7 +31,7 @@ export function MainSection({
       className={cn("relative z-20 overflow-hidden bg-bg", className)}
       style={{
         backgroundImage:
-          "linear-gradient(0deg, rgba(246,245,250,0) 0%, rgb(238,236,246) 30.9%, rgb(233,231,243) 45.7%, rgb(255,255,255) 100%)",
+          "linear-gradient(0deg, rgba(242,242,242,0) 0%, rgb(224,224,224) 30.945%, rgb(215,215,215) 45.719%, rgb(255,255,255) 100%)",
       }}
     >
       {children}
