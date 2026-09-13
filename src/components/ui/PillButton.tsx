@@ -9,14 +9,11 @@ import { Link } from "@/i18n/navigation";
 import type { StaticPathname } from "@/i18n/routing";
 import { EASE_STANDARD, STAR_SPEED } from "@/components/motion";
 
-/** Primary action surface — matches the logo's purple → blue gradient. */
-const brandGradient =
-  "linear-gradient(131deg, #9B66F5 0%, #7B2FBE 42%, #2B2FA8 100%)";
-
+/** Primary action surface — Strike's near-black gradient. */
 const darkGradient =
   "linear-gradient(131deg, rgb(51, 51, 51) 0.79%, rgb(13, 13, 13) 35.22%, rgb(38, 38, 38) 99.16%)";
 
-const GRADIENTS = { brand: brandGradient, dark: darkGradient } as const;
+const GRADIENTS = { brand: darkGradient, dark: darkGradient } as const;
 
 // The inner cover sits above the glow and hides it everywhere except this thin
 // rim, so the shine reads as a border highlight instead of a halo.
@@ -32,7 +29,7 @@ const sizeClasses: Record<Size, string> = {
 };
 
 const outlineBorderBg =
-  "linear-gradient(#fff,#fff) padding-box, linear-gradient(206.97deg, rgba(123,47,190,0.28) 13.96%, rgba(43,47,168,0.18) 50.79%, rgba(123,47,190,0.28) 83.14%) border-box";
+  "linear-gradient(#fff,#fff) padding-box, linear-gradient(206.97deg, rgba(49,67,68,0.28) 13.96%, rgba(49,126,106,0.18) 50.79%, rgba(49,67,68,0.28) 83.14%) border-box";
 
 function useTapMotion(prefersReducedMotion: boolean | null) {
   if (prefersReducedMotion) return {};
