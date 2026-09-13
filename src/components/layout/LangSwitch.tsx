@@ -7,28 +7,9 @@ import {
   LOCALE_NAMES,
   routing,
   type Locale,
-  type StaticPathname,
 } from "@/i18n/routing";
+import { safePathFor } from "@/components/layout/langSwitchPath";
 import { cn } from "@/lib/utils";
-
-/**
- * Maps the current page to a safe target for the other locale.
- *
- * Article slugs differ per locale, so a straight path swap would 404 on a
- * detail page. Any `/bai-hoc/[topic]/[slug]` or `/dien-dan/[slug]` therefore
- * falls back to that section's listing, which always exists. Article pages
- * additionally render a "read in the other language" link that points at the
- * real translation.
- */
-function safePathFor(pathname: string): StaticPathname | string {
-  const segments = pathname.split("/").filter(Boolean);
-  const [section, ...rest] = segments;
-
-  if (section === "bai-hoc" && rest.length >= 2) return "/bai-hoc";
-  if (section === "dien-dan" && rest.length >= 1) return "/dien-dan";
-
-  return pathname;
-}
 
 export function LangSwitch({
   className,
@@ -49,8 +30,8 @@ export function LangSwitch({
     onSwitch?.();
 
     const target = safePathFor(pathname);
-    // `usePathname` is typed as the union of every declared route, including
-    // parameterised ones, but at runtime it is always a concrete path.
+    // `safePathFor` has resolved every parameterised template to a static
+    // route, so what reaches `replace` never needs params.
     router.replace(target as Parameters<typeof router.replace>[0], {
       locale: next,
     });
