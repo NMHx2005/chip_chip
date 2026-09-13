@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
         userAgent: "*",
         allow: "/",
         // Staff area and the comment endpoint have nothing to index.
-        disallow: ["/admin", "/api"],
+        disallow: ["/admin", "/api", "/motion-gallery"],
       },
     ],
     sitemap: `${SITE_URL}/sitemap.xml`,
