@@ -8,6 +8,11 @@ import {
   isSupabaseConfigured,
 } from "@/lib/supabase/config";
 
+// `alternateLinks` (on by default, set to `false` in `routing.ts`) would
+// otherwise emit a `Link:` hreflang header built from the *source* locale's
+// params, which is wrong here because article slugs differ per locale in the
+// database. Each page declares its own alternates in `generateMetadata`
+// instead, where the real translated slug is known. Do not re-enable this.
 const intlMiddleware = createIntlMiddleware(routing);
 
 const LOGIN_PATH = "/admin/dang-nhap";

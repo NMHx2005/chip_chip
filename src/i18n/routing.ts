@@ -4,6 +4,12 @@ export const routing = defineRouting({
   locales: ["vi", "en"],
   defaultLocale: "vi",
   localePrefix: "always",
+  // Disabled: the automatic `Link:` hreflang header reuses the *source*
+  // locale's params for the other locale, which is wrong here because
+  // article slugs differ per locale in the database (e.g. it would advertise
+  // `/en/lessons/<vi-slug>`, a URL that doesn't exist). Each page declares its
+  // own correct alternates in `generateMetadata` instead. Do not re-enable.
+  alternateLinks: false,
   // Public URLs are localized (e.g. /vi/bai-hoc ↔ /en/lessons) while the file
   // system always uses the default locale's folders. Dynamic segments (topic,
   // slug) are not localized — article slugs already differ per locale in the
