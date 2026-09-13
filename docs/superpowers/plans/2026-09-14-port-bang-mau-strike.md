@@ -220,21 +220,52 @@ Sau bốn task trên vẫn còn các chỗ tô tím trực tiếp bằng class T
 
 - [ ] **Step 1: Quét và liệt kê**
 
-Chạy:
+Chạy **cả hai** lệnh dưới đây. Lệnh thứ hai là bắt buộc: màu tím còn tồn tại ở
+dạng `rgba(...)` trong CSS, mà lệnh thứ nhất không bắt được — đã xác nhận có
+thật 4 chỗ như vậy.
+
 ```bash
-grep -rnE "brand-[0-9]{2,3}|indigo-[0-9]{2,3}|#7B2FBE|#9B66F5|#2B2FA8" src --include='*.tsx' --include='*.ts' --include='*.css' | grep -v "components/motion/tokens" | sort
+# 1. class Tailwind và mã hex
+grep -rniE "brand-[0-9]{2,3}|indigo-[0-9]{2,3}|#7B2FBE|#9B66F5|#2B2FA8|#6A25A6|#551C85|#3D1560|#260D3D|#B995FF|#D6C2FF|#EBE2FF|#F5F0FF" src --include='*.tsx' --include='*.ts' --include='*.css' | grep -v "components/motion/tokens" | sort
+
+# 2. cùng những màu đó nhưng ở dạng rgb/rgba
+grep -rnE "rgba?\(\s*123,\s*47,\s*190|rgba?\(\s*155,\s*102,\s*245|rgba?\(\s*43,\s*47,\s*168" src --include='*.tsx' --include='*.ts' --include='*.css' | sort
+
+# 3. QUÉT VÉT: mọi mã hex còn lại trong hai file nền tảng
+grep -nE "#[0-9A-Fa-f]{3,8}" src/app/globals.css tailwind.config.ts | sort
 ```
-Ghi lại toàn bộ kết quả vào báo cáo **trước khi sửa** — đây là danh sách công việc của task này.
+
+Lệnh 3 là bắt buộc và quan trọng nhất. Hai lệnh đầu chỉ bắt được màu **đã biết
+tên**; kinh nghiệm từ chính plan này là liệt kê tay thì luôn sót (đã sót `rgba()`
+và sót `#f6f5fa`). Với lệnh 3, đối chiếu **từng** mã hex tìm được với bản khảo
+sát: mã nào không có mặt trong danh sách màu Strike thì đó là màu thừa của Chíp
+Chíp, phải xử lý hoặc báo lại.
+
+Ghi lại toàn bộ kết quả của **cả hai** lệnh vào báo cáo **trước khi sửa** — đó
+là danh sách công việc của task này. Các chỗ đã biết chắc sẽ xuất hiện:
+`globals.css` (thumb thanh cuộn, viền `focus-visible`, link/marker/blockquote
+trong `.chip-prose`), `tailwind.config.ts` (`ring`), và một `radial-gradient`
+trong `src/components/sections/Hero.tsx`.
 
 - [ ] **Step 2: Thay từng chỗ về token trung tính**
 
-Quy tắc thay:
+Quy tắc thay cho **class Tailwind**:
 - Nền nhấn đậm (`bg-brand-500`, `bg-brand-600`) → `bg-primary` (`#0D0D0D`)
 - Chữ nhấn (`text-brand-600`, `text-brand-700`) → `text-accent` (`#314344`)
 - Viền nhạt (`border-brand-*`) → `border-border` (đã có sẵn trong reset)
 - Nền rất nhạt (`bg-brand-50`, `bg-brand-500/8`) → `bg-surface-muted` (`#EFEFEF`)
 
-Chỗ nào không rơi vào bốn quy tắc trên thì **dừng lại và báo**, đừng tự quyết.
+Quy tắc thay cho **literal CSS** (giá trị lấy từ khảo sát §1.4, là màu Strike
+thật sự dùng — không phải tự chế):
+- Thumb thanh cuộn trong `globals.css`: `rgba(123,47,190,0.28)` → `rgba(108, 99, 255, 0.3)`, và `rgba(123,47,190,0.5)` → `rgba(108, 99, 255, 0.55)`. Đây đúng là giá trị Strike dùng cho thumb (`Strike/globals.css:63,68`) — Strike giữ một chút tím-xanh ở đúng chỗ này.
+- `ring` trong `tailwind.config.ts`: `#7B2FBE` → `#314344` (token `accent`).
+- Link / marker / blockquote trong `.chip-prose`: đổi sang `#314344` (token `accent`).
+- Track thanh cuộn `globals.css:31`: `#f6f5fa` → `#E5E5E5`. Strike dùng cùng một màu cho track và nền trang (khảo sát §1.4, `Strike/globals.css:59`).
+
+Chỗ nào **không** rơi vào các quy tắc trên — đáng chú ý là `radial-gradient`
+trong `src/components/sections/Hero.tsx` — thì **dừng lại và báo kèm nguyên văn
+dòng đó**, đừng tự quyết. Khảo sát không ghi màu tương đương cho nó, nên đây là
+việc của người ra quyết định, không phải của người thi hành.
 
 - [ ] **Step 3: Chạy lại lệnh quét**
 
