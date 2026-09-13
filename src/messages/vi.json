@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "siteName": "Project Chíp Chíp",
+    "tagline": "Cộng đồng học tập bán dẫn cho học sinh",
+    "description": "Project Chíp Chíp là cộng đồng học tập phi lợi nhuận giúp học sinh trung học phổ thông hiểu đúng và đủ về bán dẫn."
+  },
+  "nav": {
+    "home": "Trang chủ",
+    "lessons": "Bài học",
+    "forum": "Diễn đàn",
+    "about": "Giới thiệu",
+    "join": "Tham gia cùng chúng tôi",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu",
+    "language": "Ngôn ngữ",
+    "switchTo": "Chuyển sang {language}",
+    "skipToContent": "Chuyển tới nội dung chính",
+    "facebook": "Facebook",
+    "tiktok": "TikTok"
+  },
+  "footer": {
+    "tagline": "Dự án giáo dục phi lợi nhuận về bán dẫn dành cho học sinh trung học phổ thông Việt Nam.",
+    "explore": "Khám phá",
+    "connect": "Kết nối",
+    "copyright": "© 2026 Project Chíp Chíp. Mọi nội dung được chia sẻ vì mục đích giáo dục."
+  },
+  "home": {
+    "hero": {
+      "badge1": "Đơn giản",
+      "badge2": "Miễn phí",
+      "headlinePart1": "Một đứa trẻ ba tuổi cũng có thể",
+      "headlinePart2": "tìm hiểu về bán dẫn",
+      "description": "Nhận thấy tiềm năng to lớn của vi mạch — bán dẫn, xong nguồn học còn hạn chế và rời rạc — đó là lý do ra đời của Project Chíp Chíp.",
+      "ctaPrimary": "Tìm hiểu ngay",
+      "ctaSecondary": "Về chúng tôi",
+      "videoAriaLabel": "Video giới thiệu về bán dẫn",
+      "videoCaption": "Vi mạch — thứ gần nhất với công nghệ của người ngoài hành tinh mà chúng ta đang có."
+    },
+    "simpleStart": {
+      "headline": "Bắt đầu từ những điều đơn giản nhất",
+      "description": "Giới thiệu những kiến thức căn bản nhất về bán dẫn, một cách thật đầy đủ, chính xác và trực quan tới tất cả bạn đọc."
+    },
+    "topics": {
+      "headline": "Bốn chủ đề để bắt đầu",
+      "description": "Mỗi chủ đề gồm các bài viết ngắn, đi từ khái niệm cơ bản tới ứng dụng thực tế. Chọn một chủ đề để xem danh sách bài.",
+      "readMore": "Đọc thêm",
+      "articleCount": "{count} bài viết",
+      "empty": "Chủ đề này chưa có bài viết nào."
+    },
+    "countries": {
+      "headline": "Bán dẫn là câu chuyện của cả thế giới",
+      "description": "Một con chip đi qua nhiều quốc gia trước khi tới tay bạn. Đây là những cái tên đứng sau ngành công nghiệp đó.",
+      "note": "Tên và logo công ty thuộc quyền sở hữu của các công ty tương ứng, được sử dụng tại đây cho mục đích giới thiệu và giáo dục."
+    },
+    "latestPosts": {
+      "headline": "Từ diễn đàn",
+      "description": "Những bài phân tích và chia sẻ mới nhất từ cộng đồng.",
+      "viewAll": "Xem tất cả bài viết",
+      "empty": "Diễn đàn chưa có bài viết nào. Quay lại sau nhé!"
+    },
+    "join": {
+      "headline": "Tham gia cùng chúng tôi",
+      "description": "Project Chíp Chíp đang tìm những bạn trẻ muốn cùng xây dựng cộng đồng học tập bán dẫn. Điền vào form bên dưới để đăng ký.",
+      "formCta": "Mở form đăng ký",
+      "formNote": "Form mở trong cửa sổ mới. Chúng tôi chỉ dùng thông tin bạn cung cấp để liên hệ về dự án.",
+      "badge": "Dự án Chíp Chíp · Học bán dẫn miễn phí · ",
+      "formPending": "Form đăng ký sẽ mở trong thời gian tới."
+    }
+  },
+  "topics": {
+    "dinh-nghia": {
+      "title": "Định nghĩa",
+      "description": "Bán dẫn là gì, vì sao nó trở thành nền tảng của gần như mọi thiết bị điện tử."
+    },
+    "nguyen-ly": {
+      "title": "Nguyên lý",
+      "description": "Transistor và vi mạch hoạt động như thế nào, từ vật lý cơ bản tới chip hiện đại."
+    },
+    "ung-dung": {
+      "title": "Ứng dụng",
+      "description": "Bán dẫn có mặt ở đâu trong đời sống, và những ngành nghề nào đang cần nhân lực."
+    },
+    "lich-su": {
+      "title": "Lịch sử và Phát triển",
+      "description": "Từ chiếc transistor đầu tiên tới cuộc đua chip toàn cầu ngày nay."
+    }
+  },
+  "countries": {
+    "usa": "Mỹ",
+    "taiwan": "Đài Loan",
+    "netherlands": "Hà Lan",
+    "south-korea": "Hàn Quốc"
+  },
+  "lessons": {
+    "title": "Bài học",
+    "description": "Kiến thức bán dẫn từ cơ bản tới nâng cao, chia theo chủ đề.",
+    "tabTheory": "Lý thuyết",
+    "tabVideo": "Video",
+    "backToLessons": "Về trang Bài học",
+    "backToTopic": "Về chủ đề {topic}",
+    "notFound": "Không tìm thấy bài viết này.",
+    "videoComingSoon": "Video đang được hoàn thiện. Quay lại sau nhé!",
+    "videoDescription": "Chuỗi video ngắn giải thích các khái niệm bán dẫn bằng hình ảnh, đăng tải song song trên TikTok."
+  },
+  "forum": {
+    "title": "Diễn đàn",
+    "description": "Nơi đăng những bài phân tích, góc nhìn và chia sẻ của cộng đồng về bán dẫn.",
+    "empty": "Chưa có bài viết nào. Hãy quay lại sau nhé!",
+    "readMore": "Đọc tiếp",
+    "publishedOn": "Đăng ngày {date}",
+    "updatedOn": "Cập nhật ngày {date}",
+    "backToForum": "Về Diễn đàn",
+    "notFound": "Không tìm thấy bài viết này.",
+    "tableOfContents": "Nội dung bài",
+    "emptyArticle": "Bài viết chưa có nội dung."
+  },
+  "about": {
+    "title": "Giới thiệu",
+    "hero": {
+      "headline": "Những người đứng sau Project Chíp Chíp",
+      "description": "Chúng tôi là một nhóm học sinh, sinh viên và kỹ sư muốn mang kiến thức bán dẫn tới gần hơn với học sinh Việt Nam."
+    },
+    "mission": {
+      "headline": "Vì sao chúng tôi làm điều này",
+      "body": "Ngành công nghệ bán dẫn đang phát triển nhanh tại Việt Nam và tạo ra nguồn nhân lực chất lượng cao cho đất nước. Nhưng nhận thức của học sinh về ngành học này còn nhiều hạn chế, và nguồn học thì hạn chế và rời rạc. Project Chíp Chíp ra đời như một cuốn sách gối đầu giường cho những ai muốn tìm hiểu về bán dẫn."
+    },
+    "team": {
+      "headline": "Cơ cấu tổ chức",
+      "description": "Project Chíp Chíp vận hành theo 08 đơn vị, mỗi ban phụ trách một mảng riêng. Nhân sự Gen 1.0 sẽ được giới thiệu tại đây sau khi chốt danh sách.",
+      "headcountLabel": "{count} người",
+      "units": {
+        "leadership": {
+          "name": "Trưởng / Phó Dự án",
+          "description": "Quản lý tiến độ tổng thể, định hướng tầm nhìn và duy trì các hoạt động của dự án."
+        },
+        "advisor": {
+          "name": "Cố vấn Chuyên môn",
+          "description": "Đồng hành và định hướng về mặt kiến thức, bảo đảm tính chính xác và chất lượng học thuật."
+        },
+        "academic": {
+          "name": "Ban Chuyên môn",
+          "description": "Thiết kế học thuật, soạn form khảo sát, biên soạn E-book và lên kịch bản nội dung."
+        },
+        "technology": {
+          "name": "Ban Công nghệ",
+          "description": "Thiết kế, phát triển và vận hành website cùng các hệ thống công nghệ của dự án."
+        },
+        "communications": {
+          "name": "Ban Truyền thông",
+          "description": "Quản lý fanpage và các nền tảng, xây dựng kế hoạch truyền thông và triển khai chiến dịch."
+        },
+        "finance": {
+          "name": "Ban Tài chính – Đối ngoại",
+          "description": "Xây dựng hồ sơ tài trợ, kết nối doanh nghiệp và tổ chức giáo dục, mời diễn giả và mentor."
+        },
+        "people": {
+          "name": "Ban Nhân sự",
+          "description": "Chăm sóc tinh thần thành viên, nhắc deadline, quản lý hồ sơ và cấp giấy chứng nhận."
+        },
+        "ambassador": {
+          "name": "Đại sứ Truyền thông",
+          "description": "Lan tỏa thông tin về dự án, kết nối học sinh tại trường học và cộng đồng địa phương."
+        }
+      }
+    },
+    "join": {
+      "headline": "Tham gia cùng chúng tôi",
+      "description": "Nếu bạn muốn đóng góp cho cộng đồng, hãy điền vào form đăng ký. Chúng tôi liên hệ lại qua email.",
+      "benefit1": "Nhận Giấy chứng nhận từ dự án sau khi hoàn thành ít nhất 80% khối lượng công việc.",
+      "benefit2": "Được đào tạo về bán dẫn trong học tập và công việc thực tế.",
+      "benefit3": "Mở rộng mạng lưới quan hệ với các bạn trẻ, diễn giả và chuyên gia trong ngành.",
+      "benefit4": "Làm đẹp CV và portfolio cho học bổng hoặc các chương trình ngoại khóa.",
+      "formCta": "Mở form đăng ký",
+      "formNote": "Form mở trong cửa sổ mới."
+    }
+  },
+  "comments": {
+    "title": "Bình luận",
+    "count": "{count} bình luận",
+    "empty": "Chưa có bình luận nào. Hãy là người đầu tiên!",
+    "formTitle": "Để lại bình luận",
+    "nameLabel": "Tên của bạn",
+    "namePlaceholder": "Nguyễn Văn A",
+    "emailLabel": "Email",
+    "emailHint": "Không hiển thị công khai. Dùng để thông báo khi có phản hồi.",
+    "emailPlaceholder": "ban@example.com",
+    "bodyLabel": "Nội dung",
+    "bodyPlaceholder": "Chia sẻ suy nghĩ của bạn về bài viết này...",
+    "submit": "Gửi bình luận",
+    "submitting": "Đang gửi...",
+    "reply": "Trả lời",
+    "replyingTo": "Đang trả lời {name}",
+    "cancelReply": "Huỷ",
+    "authorBadge": "Tác giả",
+    "success": "Đã gửi bình luận. Cảm ơn bạn!",
+    "errors": {
+      "nameRequired": "Vui lòng nhập tên.",
+      "nameTooLong": "Tên quá dài.",
+      "emailInvalid": "Email không hợp lệ.",
+      "bodyRequired": "Vui lòng nhập nội dung bình luận.",
+      "bodyTooLong": "Bình luận tối đa 2000 ký tự.",
+      "rateLimited": "Bạn gửi bình luận quá nhanh. Vui lòng thử lại sau ít phút.",
+      "generic": "Không gửi được bình luận. Vui lòng thử lại."
+    },
+    "loadMore": "Xem thêm bình luận",
+    "showingCount": "Đang hiện {shown}/{total} bình luận gốc"
+  },
+  "common": {
+    "loading": "Đang tải…",
+    "error": "Đã có lỗi xảy ra.",
+    "retry": "Thử lại",
+    "notFoundTitle": "Không tìm thấy trang",
+    "notFoundDescription": "Trang bạn tìm không tồn tại hoặc đã được chuyển đi.",
+    "backHome": "Về Trang chủ",
+    "errorDescription": "Đã có lỗi xảy ra khi tải nội dung. Bạn thử tải lại trang nhé."
+  }
+}

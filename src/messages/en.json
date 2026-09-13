@@ -1,0 +1,217 @@
+{
+  "meta": {
+    "siteName": "Project Chíp Chíp",
+    "tagline": "A semiconductor learning community for students",
+    "description": "Project Chíp Chíp is a non-profit learning community helping high school students build an accurate, well-rounded understanding of semiconductors."
+  },
+  "nav": {
+    "home": "Home",
+    "lessons": "Lessons",
+    "forum": "Forum",
+    "about": "About",
+    "join": "Join us",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "language": "Language",
+    "switchTo": "Switch to {language}",
+    "skipToContent": "Skip to main content",
+    "facebook": "Facebook",
+    "tiktok": "TikTok"
+  },
+  "footer": {
+    "tagline": "A non-profit education project about semiconductors, made for Vietnamese high school students.",
+    "explore": "Explore",
+    "connect": "Connect",
+    "copyright": "© 2026 Project Chíp Chíp. All content is shared for educational purposes."
+  },
+  "home": {
+    "hero": {
+      "badge1": "Simple",
+      "badge2": "Free",
+      "headlinePart1": "Even a three-year-old can",
+      "headlinePart2": "learn about semiconductors",
+      "description": "We saw the enormous potential of microchips and semiconductors — and how limited and scattered the learning resources still are. That is why Project Chíp Chíp exists.",
+      "ctaPrimary": "Start learning",
+      "ctaSecondary": "About us",
+      "videoAriaLabel": "Introductory video about semiconductors",
+      "videoCaption": "Microchips — the closest thing we have to alien technology."
+    },
+    "simpleStart": {
+      "headline": "Start with the simplest things",
+      "description": "The most fundamental semiconductor concepts, explained thoroughly, accurately and visually for every reader."
+    },
+    "topics": {
+      "headline": "Four topics to get started",
+      "description": "Each topic is a set of short articles, moving from core concepts to real-world applications. Pick a topic to see its articles.",
+      "readMore": "Read more",
+      "articleCount": "{count} articles",
+      "empty": "This topic has no articles yet."
+    },
+    "countries": {
+      "headline": "Semiconductors are a global story",
+      "description": "A single chip crosses many countries before it reaches you. These are the names behind that industry.",
+      "note": "Company names and logos are the property of their respective owners and are used here for educational and informational purposes."
+    },
+    "latestPosts": {
+      "headline": "From the forum",
+      "description": "The latest analysis and writing from the community.",
+      "viewAll": "View all posts",
+      "empty": "The forum has no posts yet. Check back soon!"
+    },
+    "join": {
+      "headline": "Join us",
+      "description": "Project Chíp Chíp is looking for young people who want to help build a semiconductor learning community. Fill in the form below to sign up.",
+      "formCta": "Open sign-up form",
+      "formNote": "The form opens in a new window. We only use your information to contact you about the project.",
+      "badge": "Project Chíp Chíp · Learn semiconductors free · ",
+      "formPending": "The sign-up form will open soon."
+    }
+  },
+  "topics": {
+    "dinh-nghia": {
+      "title": "What is a semiconductor",
+      "description": "What semiconductors are, and why they underpin almost every electronic device."
+    },
+    "nguyen-ly": {
+      "title": "How they work",
+      "description": "How transistors and integrated circuits work, from basic physics to modern chips."
+    },
+    "ung-dung": {
+      "title": "Applications",
+      "description": "Where semiconductors show up in daily life, and which careers need them."
+    },
+    "lich-su": {
+      "title": "History & development",
+      "description": "From the first transistor to today's global chip race."
+    }
+  },
+  "countries": {
+    "usa": "USA",
+    "taiwan": "Taiwan",
+    "netherlands": "Netherlands",
+    "south-korea": "South Korea"
+  },
+  "lessons": {
+    "title": "Lessons",
+    "description": "Semiconductor knowledge from fundamentals to advanced topics, organised by theme.",
+    "tabTheory": "Theory",
+    "tabVideo": "Video",
+    "backToLessons": "Back to Lessons",
+    "backToTopic": "Back to {topic}",
+    "notFound": "This article could not be found.",
+    "videoComingSoon": "Videos are still being produced. Check back soon!",
+    "videoDescription": "A series of short videos explaining semiconductor concepts visually, published in parallel on TikTok."
+  },
+  "forum": {
+    "title": "Forum",
+    "description": "Analysis, perspectives and writing shared by the community about semiconductors.",
+    "empty": "No posts yet. Please check back soon!",
+    "readMore": "Read more",
+    "publishedOn": "Published {date}",
+    "updatedOn": "Updated {date}",
+    "backToForum": "Back to Forum",
+    "notFound": "This post could not be found.",
+    "tableOfContents": "On this page",
+    "emptyArticle": "This article has no content yet."
+  },
+  "about": {
+    "title": "About",
+    "hero": {
+      "headline": "The people behind Project Chíp Chíp",
+      "description": "We are a group of students, graduates and engineers working to bring semiconductor knowledge closer to Vietnamese students."
+    },
+    "mission": {
+      "headline": "Why we do this",
+      "body": "The semiconductor industry is growing quickly in Vietnam and creating high-quality jobs for the country. Yet students still have a limited understanding of the field, and the learning resources available are scarce and scattered. Project Chíp Chíp exists to be a bedside book for anyone who wants to understand semiconductors."
+    },
+    "team": {
+      "headline": "How we are organised",
+      "description": "Project Chíp Chíp runs on eight units, each owning a distinct area. Gen 1.0 members will be introduced here once the roster is finalised.",
+      "headcountLabel": "{count} people",
+      "units": {
+        "leadership": {
+          "name": "Project Lead / Deputy",
+          "description": "Owns the overall schedule, sets direction and keeps the project running day to day."
+        },
+        "advisor": {
+          "name": "Subject Advisor",
+          "description": "Guides the academic side and safeguards the accuracy and quality of everything published."
+        },
+        "academic": {
+          "name": "Academic Team",
+          "description": "Designs the curriculum, writes survey forms, compiles the e-book and scripts content."
+        },
+        "technology": {
+          "name": "Technology Team",
+          "description": "Designs, builds and operates the website and the project's other technical systems."
+        },
+        "communications": {
+          "name": "Communications Team",
+          "description": "Runs the fanpage and other channels, plans campaigns and produces promotional content."
+        },
+        "finance": {
+          "name": "Finance & Partnerships",
+          "description": "Prepares funding proposals, connects with companies and schools, and invites speakers and mentors."
+        },
+        "people": {
+          "name": "People Team",
+          "description": "Looks after members, tracks deadlines, manages records and issues certificates."
+        },
+        "ambassador": {
+          "name": "Communications Ambassadors",
+          "description": "Spreads the word, connecting students in their schools and local communities."
+        }
+      }
+    },
+    "join": {
+      "headline": "Join us",
+      "description": "If you want to contribute to the community, fill in the sign-up form. We will get back to you by email.",
+      "benefit1": "A certificate from the project after completing at least 80% of your assigned work.",
+      "benefit2": "Training in semiconductors for both study and real work.",
+      "benefit3": "A wider network of talented peers, speakers and industry experts.",
+      "benefit4": "A stronger CV and portfolio for scholarships or extracurricular programmes.",
+      "formCta": "Open sign-up form",
+      "formNote": "The form opens in a new window."
+    }
+  },
+  "comments": {
+    "title": "Comments",
+    "count": "{count} comments",
+    "empty": "No comments yet. Be the first!",
+    "formTitle": "Leave a comment",
+    "nameLabel": "Your name",
+    "namePlaceholder": "Jane Doe",
+    "emailLabel": "Email",
+    "emailHint": "Never shown publicly. Used to notify you about replies.",
+    "emailPlaceholder": "you@example.com",
+    "bodyLabel": "Comment",
+    "bodyPlaceholder": "Share your thoughts on this post...",
+    "submit": "Post comment",
+    "submitting": "Posting...",
+    "reply": "Reply",
+    "replyingTo": "Replying to {name}",
+    "cancelReply": "Cancel",
+    "authorBadge": "Author",
+    "success": "Comment posted. Thank you!",
+    "errors": {
+      "nameRequired": "Please enter your name.",
+      "nameTooLong": "That name is too long.",
+      "emailInvalid": "Please enter a valid email address.",
+      "bodyRequired": "Please write a comment.",
+      "bodyTooLong": "Comments are limited to 2000 characters.",
+      "rateLimited": "You are commenting too quickly. Please try again in a few minutes.",
+      "generic": "Could not post your comment. Please try again."
+    },
+    "loadMore": "Show more comments",
+    "showingCount": "Showing {shown} of {total} threads"
+  },
+  "common": {
+    "loading": "Loading…",
+    "error": "Something went wrong.",
+    "retry": "Try again",
+    "notFoundTitle": "Page not found",
+    "notFoundDescription": "The page you are looking for does not exist or has moved.",
+    "backHome": "Back to Home",
+    "errorDescription": "Something went wrong while loading this page. Please try again."
+  }
+}

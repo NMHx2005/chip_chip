@@ -1,0 +1,96 @@
+"use client";
+
+import { useLocale, useTranslations } from "next-intl";
+import { usePathname, useRouter } from "@/i18n/navigation";
+import {
+  LOCALE_LABELS,
+  LOCALE_NAMES,
+  routing,
+  type Locale,
+  type StaticPathname,
+} from "@/i18n/routing";
+import { cn } from "@/lib/utils";
+
+/**
+ * Maps the current page to a safe target for the other locale.
+ *
+ * Article slugs differ per locale, so a straight path swap would 404 on a
+ * detail page. Any `/bai-hoc/[topic]/[slug]` or `/dien-dan/[slug]` therefore
+ * falls back to that section's listing, which always exists. Article pages
+ * additionally render a "read in the other language" link that points at the
+ * real translation.
+ */
+function safePathFor(pathname: string): StaticPathname | string {
+  const segments = pathname.split("/").filter(Boolean);
+  const [section, ...rest] = segments;
+
+  if (section === "bai-hoc" && rest.length >= 2) return "/bai-hoc";
+  if (section === "dien-dan" && rest.length >= 1) return "/dien-dan";
+
+  return pathname;
+}
+
+export function LangSwitch({
+  className,
+  variant = "light",
+  onSwitch,
+}: {
+  className?: string;
+  variant?: "light" | "dark";
+  onSwitch?: () => void;
+}) {
+  const locale = useLocale() as Locale;
+  const pathname = usePathname();
+  const router = useRouter();
+  const t = useTranslations("nav");
+
+  const switchTo = (next: Locale) => {
+    if (next === locale) return;
+    onSwitch?.();
+
+    const target = safePathFor(pathname);
+    // `usePathname` is typed as the union of every declared route, including
+    // parameterised ones, but at runtime it is always a concrete path.
+    router.replace(target as Parameters<typeof router.replace>[0], {
+      locale: next,
+    });
+  };
+
+  return (
+    <div
+      className={cn(
+        "flex items-center rounded-full p-0.5",
+        variant === "dark" ? "bg-white/10" : "bg-brand-500/10",
+        className
+      )}
+      role="group"
+      aria-label={t("language")}
+    >
+      {routing.locales.map((option) => {
+        const isActive = option === locale;
+
+        return (
+          <button
+            key={option}
+            type="button"
+            onClick={() => switchTo(option)}
+            aria-current={isActive ? "true" : undefined}
+            aria-label={t("switchTo", { language: LOCALE_NAMES[option] })}
+            className={cn(
+              "cursor-pointer rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] transition-colors",
+              isActive
+                ? variant === "dark"
+                  ? "bg-white text-brand-700"
+                  : "bg-brand-500 text-white"
+                : variant === "dark"
+                  ? "text-white/60 hover:text-white"
+                  : "text-text-muted hover:text-brand-600"
+            )}
+          >
+            {LOCALE_LABELS[option]}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
