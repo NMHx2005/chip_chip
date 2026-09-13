@@ -86,7 +86,14 @@ export function renderOgCard({
         </div>
       </div>
     ),
-    { ...OG_SIZE, fonts }
+    {
+      ...OG_SIZE,
+      fonts,
+      // `next/og`'s default is `public, immutable, max-age=31536000`, but the
+      // card is generated from the article title, so an edited title must be
+      // able to invalidate the cached image instead of being stuck forever.
+      headers: { "cache-control": "public, max-age=3600, must-revalidate" },
+    }
   );
 }
 
