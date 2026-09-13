@@ -97,18 +97,21 @@ export function Navbar() {
                           : "text-text-nav hover:bg-brand-500/8 hover:text-brand-700"
                       )}
                     >
-                      {active && (
-                        <motion.span
-                          layoutId="nav-active-pill"
-                          className="absolute inset-0 rounded-full bg-brand-500"
-                          transition={
-                            prefersReducedMotion
-                              ? { duration: 0 }
-                              : { type: "spring", stiffness: 420, damping: 36 }
-                          }
-                          aria-hidden="true"
-                        />
-                      )}
+                      <AnimatePresence>
+                        {active && (
+                          <motion.span
+                            className="absolute inset-0 rounded-full bg-brand-500"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{
+                              duration: prefersReducedMotion ? 0 : 0.3,
+                              ease: "easeOut",
+                            }}
+                            aria-hidden="true"
+                          />
+                        )}
+                      </AnimatePresence>
                       <span className="relative z-10">{t(item.key)}</span>
                     </Link>
                   );
