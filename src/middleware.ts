@@ -15,18 +15,22 @@ const LOGIN_PATH = "/admin/dang-nhap";
 /**
  * One middleware, two jobs.
  *
- * `next-intl` owns the public routes and must not see `/admin` or `/api` —
- * otherwise it rewrites `/admin` to `/vi/admin` and loops. Supabase session
- * refresh has to run everywhere, including `/admin`, so both systems share a
- * single response object and each writes its own cookies onto it.
+ * `next-intl` owns the public routes and must not see `/admin`, `/api`, or
+ * `/motion-gallery` — otherwise it rewrites `/admin` to `/vi/admin` and
+ * loops, and it would 404 `/motion-gallery` by prefixing a locale onto a
+ * route that deliberately lives outside the `[locale]` segment. Supabase
+ * session refresh has to run everywhere, including those routes, so both
+ * systems share a single response object and each writes its own cookies
+ * onto it.
  */
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAdmin = pathname.startsWith("/admin");
   const isApi = pathname.startsWith("/api");
+  const isGallery = pathname.startsWith("/motion-gallery");
 
   const response =
-    isAdmin || isApi
+    isAdmin || isApi || isGallery
       ? NextResponse.next({ request })
       : intlMiddleware(request);
 
