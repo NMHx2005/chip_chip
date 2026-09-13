@@ -28,7 +28,7 @@ export function ScrollReveal3D({
 }) {
   const prefersReducedMotion = useReducedMotion();
   const internalRef = useRef<HTMLDivElement | null>(null);
-  const containerRef = (targetRef ?? internalRef) as RefObject<HTMLDivElement>;
+  const containerRef = targetRef ?? internalRef;
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -40,7 +40,13 @@ export function ScrollReveal3D({
 
   if (prefersReducedMotion) {
     return (
-      <div ref={containerRef} className={cn("w-full", className)}>
+      <div
+        // React's ref attribute requires RefObject<HTMLDivElement> exactly,
+        // but containerRef is legitimately nullable (holds either the optional
+        // targetRef or our own internalRef before mount).
+        ref={containerRef as RefObject<HTMLDivElement>}
+        className={cn("w-full", className)}
+      >
         {children}
       </div>
     );
@@ -48,7 +54,10 @@ export function ScrollReveal3D({
 
   return (
     <div
-      ref={containerRef}
+      // React's ref attribute requires RefObject<HTMLDivElement> exactly,
+      // but containerRef is legitimately nullable (holds either the optional
+      // targetRef or our own internalRef before mount).
+      ref={containerRef as RefObject<HTMLDivElement>}
       className={cn("w-full", className)}
       style={{ perspective: `${REVEAL.perspectivePx}px` }}
     >
