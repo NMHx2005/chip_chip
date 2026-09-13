@@ -6,11 +6,11 @@ import { ArrowLeft } from "lucide-react";
 import { ArticleBody } from "@/components/forum/ArticleBody";
 import { ArticleToc } from "@/components/forum/ArticleToc";
 import { UpdatedAt } from "@/components/forum/UpdatedAt";
-import { Link } from "@/i18n/navigation";
-import { getPostBySlug } from "@/lib/queries/posts";
+import { Link, getPathname } from "@/i18n/navigation";
+import { getPostBySlug, getTranslationSlug } from "@/lib/queries/posts";
 import { articleToPlainText } from "@/lib/tiptap/render";
 import { TOPIC_IDS, TOPIC_TONE, type TopicId } from "@/lib/constants";
-import type { Locale } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 
 type Params = Promise<{ locale: string; topic: string; slug: string }>;
 
@@ -19,7 +19,7 @@ export async function generateMetadata({
 }: {
   params: Params;
 }): Promise<Metadata> {
-  const { locale, slug } = await params;
+  const { locale, topic, slug } = await params;
   const post = await getPostBySlug(locale as Locale, slug, "lesson");
 
   if (!post) return { title: "404" };
@@ -32,6 +32,33 @@ export async function generateMetadata({
       type: "article",
       title: post.title,
       publishedTime: post.publishedAt ?? undefined,
+    },
+    alternates: {
+      // Same approach as the forum article page: build the path through
+      // next-intl's localised routing instead of string concatenation, using
+      // the same `getTranslationSlug` lookup as the source of truth so the
+      // canonical and the translation link can never disagree. `topic` is not
+      // localised (see i18n/routing.ts), so it stays the same across locales.
+      canonical: getPathname({
+        href: { pathname: "/bai-hoc/[topic]/[slug]", params: { topic, slug: post.slug } },
+        locale: locale as Locale,
+      }),
+      languages: Object.fromEntries(
+        await Promise.all(
+          routing.locales.map(async (l) => {
+            const alt = await getTranslationSlug(post.translationId, l);
+            return [
+              l,
+              alt
+                ? getPathname({
+                    href: { pathname: "/bai-hoc/[topic]/[slug]", params: { topic, slug: alt } },
+                    locale: l,
+                  })
+                : getPathname({ href: { pathname: "/bai-hoc/[topic]", params: { topic } }, locale: l }),
+            ];
+          })
+        )
+      ),
     },
   };
 }

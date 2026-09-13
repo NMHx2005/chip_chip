@@ -7,7 +7,7 @@ import { ArticleBody } from "@/components/forum/ArticleBody";
 import { ArticleToc } from "@/components/forum/ArticleToc";
 import { UpdatedAt } from "@/components/forum/UpdatedAt";
 import { CommentSection } from "@/components/forum/CommentSection";
-import { Link } from "@/i18n/navigation";
+import { Link, getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import {
   countComments,
@@ -48,12 +48,26 @@ export async function generateMetadata({
       publishedTime: post.publishedAt ?? undefined,
     },
     alternates: {
-      canonical: `/${locale}/dien-dan/${post.slug}`,
+      // Built through next-intl's localised routing rather than string
+      // concatenation, so the English canonical resolves to `/en/forum/...`
+      // instead of the source locale's `/en/dien-dan/...`, which 307s.
+      canonical: getPathname({
+        href: { pathname: "/dien-dan/[slug]", params: { slug: post.slug } },
+        locale: locale as Locale,
+      }),
       languages: Object.fromEntries(
         await Promise.all(
           routing.locales.map(async (l) => {
             const alt = await getTranslationSlug(post.translationId, l);
-            return [l, alt ? `/${l}/dien-dan/${alt}` : `/${l}/dien-dan`];
+            return [
+              l,
+              alt
+                ? getPathname({
+                    href: { pathname: "/dien-dan/[slug]", params: { slug: alt } },
+                    locale: l,
+                  })
+                : getPathname({ href: "/dien-dan", locale: l }),
+            ];
           })
         )
       ),
