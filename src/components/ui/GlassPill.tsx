@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
  * as a flat outline, while the uneven steps catch the eye like brushed metal.
  */
 const METALLIC_BORDER_BG =
-  "conic-gradient(from 0deg at 50% 50%, #D9D9D9 0deg, #D9D9D9 65deg, #F2F2F2 150deg, #DFD0EA 176deg, #D9D9D9 204deg, #D9D9D9 255deg, #C9BCEA 285deg, #ECECEC 319deg, #D9D9D9 360deg)";
+  "conic-gradient(from 0deg at 50% 50%, #D9D9D9 0deg, #D9D9D9 65deg, #F2F2F2 150deg, #DFD0EA 176deg, #D9D9D9 204deg, #D9D9D9 255deg, #A6CEDA 285deg, #ECECEC 319deg, #D9D9D9 360deg)";
 
 const PILL_BAR_BG =
   "linear-gradient(95deg, rgba(255,255,255,0.80) 4.23%, rgba(255,255,255,0.40) 56%, rgba(223,227,229,0.50) 99.91%)";
