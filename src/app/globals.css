@@ -74,7 +74,7 @@
    Styles for HTML generated from the stored Tiptap JSON. Kept outside the
    utilities layer so the element selectors are not purged. */
 .chip-prose {
-  color: #2c2838;
+  color: #000000;
   font-size: 1.0625rem;
   line-height: 1.75;
   text-wrap: pretty;
@@ -88,7 +88,7 @@
 .chip-prose h2,
 .chip-prose h3,
 .chip-prose h4 {
-  color: #12101a;
+  color: #0d0d0d;
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: -0.02em;
@@ -129,7 +129,7 @@
 
 .chip-prose strong {
   font-weight: 600;
-  color: #12101a;
+  color: #0d0d0d;
 }
 
 .chip-prose ul,
@@ -156,12 +156,12 @@
 .chip-prose blockquote {
   border-left: 3px solid #314344;
   padding: 0.25rem 0 0.25rem 1.25rem;
-  color: #55516b;
+  color: #3e424d;
   font-style: italic;
 }
 
 .chip-prose code {
-  background: #efedf6;
+  background: #efefef;
   border-radius: 4px;
   padding: 0.15em 0.4em;
   font-family: var(--font-jetbrains-mono), monospace;
@@ -169,8 +169,8 @@
 }
 
 .chip-prose pre {
-  background: #1b1a24;
-  color: #ece9f5;
+  background: #0d0d0d;
+  color: #ffffff;
   border-radius: 12px;
   padding: 1.25rem 1.5rem;
   overflow-x: auto;
@@ -194,7 +194,7 @@
 
 .chip-prose hr {
   border: none;
-  border-top: 1px solid #e2dfec;
+  border-top: 1px solid #d1d1d1;
   margin: 2.5em 0;
 }
 
@@ -208,16 +208,16 @@
 
 .chip-prose th,
 .chip-prose td {
-  border: 1px solid #e2dfec;
+  border: 1px solid #d1d1d1;
   padding: 0.625rem 0.875rem;
   text-align: left;
   vertical-align: top;
 }
 
 .chip-prose th {
-  background: #efedf6;
+  background: #efefef;
   font-weight: 600;
-  color: #12101a;
+  color: #0d0d0d;
 }
 
 .chip-prose mark {
@@ -234,7 +234,7 @@
 
 .chip-prose.ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
-  color: #a5a1b5;
+  color: #ababab;
   float: left;
   height: 0;
   pointer-events: none;

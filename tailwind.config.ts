@@ -33,8 +33,8 @@ const config: Config = {
           "lich-su-soft": "#E3F1FC",
         },
 
-        border: "#E2DFEC",
-        input: "#E2DFEC",
+        border: "#D1D1D1",
+        input: "#D1D1D1",
         ring: "#314344",
       },
 
