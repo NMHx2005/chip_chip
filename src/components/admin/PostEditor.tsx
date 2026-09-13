@@ -11,7 +11,7 @@ import { UploadError, uploadPostImage } from "@/lib/supabase/upload";
 import { LOCALE_LABELS, routing, type Locale } from "@/i18n/routing";
 import { slugify } from "@/lib/post-slug";
 import { cn } from "@/lib/utils";
-import { shouldClearDirty } from "@/components/admin/saveRevision";
+import { applySaveResult, planSave } from "@/components/admin/saveRevision";
 
 export type Draft = {
   id: string;
@@ -46,6 +46,9 @@ export function PostEditor({
     en: false,
   });
   const [state, setState] = useState<SaveState>("idle");
+  // Driven only by saveAll — never by updateDraft — so typing during a save
+  // cannot make the button (or its label) look idle mid-flight.
+  const [isSaving, setIsSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [publishError, setPublishError] = useState<string | null>(null);
   const [uploadingCover, setUploadingCover] = useState(false);
@@ -61,6 +64,12 @@ export function PostEditor({
   // reasons about) the latest text instead of what was current at click time.
   const draftsRef = useRef(initialDrafts);
   const revisionRef = useRef<Record<Locale, number>>({ vi: 0, en: 0 });
+  const dirtyRef = useRef<Record<Locale, boolean>>({ vi: false, en: false });
+  // Re-entrancy guard for saveAll. React 18's startTransition clears its
+  // `pending` flag before the transition callback's first `await` resumes,
+  // so `pending` cannot be trusted to block a second click while a save is
+  // still in flight — this ref is the thing that actually does.
+  const savingRef = useRef(false);
 
   const updateDraft = useCallback(
     (locale: Locale, patch: Partial<Draft>) => {
@@ -74,8 +83,13 @@ export function PostEditor({
         ...revisionRef.current,
         [locale]: revisionRef.current[locale] + 1,
       };
-      setDirty((prev) => ({ ...prev, [locale]: true }));
-      setState("idle");
+      dirtyRef.current = { ...dirtyRef.current, [locale]: true };
+      setDirty(dirtyRef.current);
+      // A save in progress reports its own state via isSaving/state
+      // "saving" — typing must not downgrade that back to "idle" mid-flight.
+      if (!savingRef.current) {
+        setState("idle");
+      }
     },
     []
   );
@@ -109,7 +123,9 @@ export function PostEditor({
     editor
       ?.chain()
       .setMeta("addToHistory", false)
-      .setContent(drafts[locale].content ?? EMPTY_DOC, { emitUpdate: false })
+      .setContent(draftsRef.current[locale].content ?? EMPTY_DOC, {
+        emitUpdate: false,
+      })
       .run();
   };
 
@@ -129,51 +145,90 @@ export function PostEditor({
   };
 
   const saveAll = () => {
+    // See the comment on savingRef: `pending` cannot gate re-entrancy here.
+    if (savingRef.current) return;
+    savingRef.current = true;
+    setIsSaving(true);
     setMessage(null);
+    setState("saving");
+
     startTransition(async () => {
-      setState("saving");
-      let savedSomething = false;
+      try {
+        let savedSomething = false;
+        let skippedUnsendable: Locale | null = null;
 
-      for (const locale of routing.locales) {
-        if (!dirty[locale]) continue;
+        for (const locale of routing.locales) {
+          // Re-plan for this locale from the live refs on every iteration —
+          // never from a value captured before an earlier locale's `await`.
+          // A locale that becomes dirty while a sibling's request is in
+          // flight must still be picked up when its own turn comes.
+          const [entry] = planSave(
+            [locale],
+            dirtyRef.current,
+            draftsRef.current,
+            revisionRef.current
+          );
 
-        // A locale with no row in the database (see missingLocale in the
-        // page) has an empty id: there is nothing to update it into, and the
-        // editor must never invent one. Leave it dirty and skip it — the
-        // banner shown while that tab is active explains why.
-        const draft = draftsRef.current[locale];
-        if (!draft.id) continue;
+          if (!entry) {
+            if (dirtyRef.current[locale] && !draftsRef.current[locale].id) {
+              // Dirty, but has no database row to save into (see
+              // missingLocale in the page) — the banner shown while that
+              // tab is active explains why it can never be sent.
+              skippedUnsendable = locale;
+            }
+            continue;
+          }
 
-        const sentRevision = revisionRef.current[locale];
-        const result = await savePost({
-          id: draft.id,
-          title: draft.title,
-          slug: draft.slug || slugify(draft.title) || `${locale}-${draft.id.slice(0, 6)}`,
-          excerpt: draft.excerpt,
-          coverImageUrl: draft.coverImageUrl,
-          content: draft.content,
-        });
+          const { draft, revision: sentRevision } = entry;
+          const result = await savePost({
+            id: draft.id,
+            title: draft.title,
+            slug: draft.slug || slugify(draft.title) || `${locale}-${draft.id.slice(0, 6)}`,
+            excerpt: draft.excerpt,
+            coverImageUrl: draft.coverImageUrl,
+            content: draft.content,
+          });
 
-        if (!result.ok) {
+          if (!result.ok) {
+            setState("error");
+            setMessage(result.error ?? "Không lưu được bài.");
+            return;
+          }
+
+          savedSomething = true;
+          // Only clear dirty if nothing was typed into this locale while the
+          // request above was in flight — otherwise the newer text would be
+          // marked clean and silently skipped by the next save.
+          dirtyRef.current = applySaveResult(
+            dirtyRef.current,
+            locale,
+            sentRevision,
+            revisionRef.current[locale]
+          );
+          setDirty(dirtyRef.current);
+        }
+
+        const stillDirty = routing.locales.some(
+          (locale) => dirtyRef.current[locale]
+        );
+
+        if (savedSomething) {
+          // Something reached the server, so the page's cached data is
+          // stale either way — but only report full success when nothing
+          // is left dirty (a skipped or raced locale keeps the UI honest).
+          setState(stillDirty ? "idle" : "saved");
+          router.refresh();
+        } else if (skippedUnsendable) {
           setState("error");
-          setMessage(result.error ?? "Không lưu được bài.");
-          return;
+          setMessage(
+            `Không có gì để lưu: bản ${LOCALE_LABELS[skippedUnsendable]} chưa có bản ghi trong cơ sở dữ liệu.`
+          );
+        } else {
+          setState("idle");
         }
-
-        savedSomething = true;
-        // Only clear dirty if nothing was typed into this locale while the
-        // request above was in flight — otherwise the newer text would be
-        // marked clean and silently skipped by the next save.
-        if (shouldClearDirty(sentRevision, revisionRef.current[locale])) {
-          setDirty((prev) => ({ ...prev, [locale]: false }));
-        }
-      }
-
-      if (savedSomething) {
-        setState("saved");
-        router.refresh();
-      } else {
-        setState("idle");
+      } finally {
+        savingRef.current = false;
+        setIsSaving(false);
       }
     });
   };
@@ -255,10 +310,10 @@ export function PostEditor({
           <button
             type="button"
             onClick={saveAll}
-            disabled={pending || !dirty.vi && !dirty.en}
+            disabled={isSaving || !dirty.vi && !dirty.en}
             className="cursor-pointer rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-black/80 disabled:opacity-50"
           >
-            {state === "saving" ? "Đang lưu…" : "Lưu"}
+            {isSaving ? "Đang lưu…" : "Lưu"}
           </button>
 
           {status === "published" ? (
