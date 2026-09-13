@@ -16,11 +16,13 @@ function url(href: Parameters<typeof getPathname>[0]["href"], locale: string) {
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
 
+  // No meaningful timestamp exists for these routes, so `lastModified` is
+  // omitted rather than stamped with the request time — reporting every page
+  // as just-changed on every crawl trains Googlebot to distrust the field.
   for (const route of STATIC_ROUTES) {
     for (const locale of routing.locales) {
       entries.push({
         url: url(route, locale),
-        lastModified: new Date(),
         changeFrequency: route === "/" ? "weekly" : "monthly",
         priority: route === "/" ? 1 : 0.8,
       });
@@ -31,7 +33,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     for (const locale of routing.locales) {
       entries.push({
         url: url({ pathname: "/bai-hoc/[topic]", params: { topic } }, locale),
-        lastModified: new Date(),
         changeFrequency: "monthly",
         priority: 0.7,
       });
@@ -49,11 +50,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .limit(1000);
 
   for (const post of data ?? []) {
+    // A lesson row without a topic cannot form a valid `/bai-hoc/[topic]/...`
+    // URL, and falling through to `/dien-dan/[slug]` would 404 instead.
+    if (post.kind === "lesson" && !post.topic) continue;
+
     const href =
-      post.kind === "lesson" && post.topic
+      post.kind === "lesson"
         ? {
             pathname: "/bai-hoc/[topic]/[slug]" as const,
-            params: { topic: post.topic, slug: post.slug },
+            params: { topic: post.topic as string, slug: post.slug },
           }
         : {
             pathname: "/dien-dan/[slug]" as const,
@@ -62,7 +67,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     entries.push({
       url: url(href, post.locale),
-      lastModified: post.published_at ? new Date(post.published_at) : new Date(),
+      // Omit rather than lie when the row has no publish timestamp.
+      ...(post.published_at ? { lastModified: new Date(post.published_at) } : {}),
       changeFrequency: "monthly",
       priority: 0.6,
     });
