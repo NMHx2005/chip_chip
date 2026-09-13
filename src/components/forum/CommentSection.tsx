@@ -227,7 +227,7 @@ function CommentForm({
         <button
           type="submit"
           disabled={submitting}
-          className="cursor-pointer rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary disabled:opacity-60"
+          className="cursor-pointer rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-black/80 disabled:opacity-60"
         >
           {submitting ? t("submitting") : t("submit")}
         </button>
@@ -336,7 +336,7 @@ export function CommentSection({
                     },
                   }}
                   scroll={false}
-                  className="inline-flex items-center gap-1.5 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-text-nav transition-colors hover:border-border hover:text-accent"
+                  className="inline-flex items-center gap-1.5 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-text-nav transition-colors hover:border-black/20 hover:text-accent"
                 >
                   {t("loadMore")}
                   <ChevronDown className="size-4" strokeWidth={2.2} />

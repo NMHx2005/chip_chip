@@ -18,7 +18,7 @@ export default async function LessonNotFound() {
 
         <Link
           href="/bai-hoc"
-          className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent"
+          className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-black"
         >
           <ArrowLeft className="size-4" strokeWidth={2.2} />
           {t("backToLessons")}

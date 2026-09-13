@@ -142,7 +142,7 @@ export default async function ForumPostPage({
                   params: { slug: alt.slug },
                 }}
                 locale={alt.locale}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors hover:border-border hover:text-accent"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors hover:border-black/20 hover:text-accent"
               >
                 <Languages className="size-3.5" strokeWidth={2} />
                 {alt.locale === "en" ? "Read in English" : "Đọc bản tiếng Việt"}

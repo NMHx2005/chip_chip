@@ -72,7 +72,7 @@ export default async function AdminPostsPage() {
 
         <Link
           href="/admin/bai-viet/moi"
-          className="inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-white transition-colors hover:bg-primary"
+          className="inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-4 text-sm font-semibold text-white transition-colors hover:bg-black/80"
         >
           <Plus className="size-4" strokeWidth={2.4} />
           Viết bài mới

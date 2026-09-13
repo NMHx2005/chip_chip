@@ -12,7 +12,7 @@ function SubmitButton() {
     <button
       type="submit"
       disabled={pending}
-      className="h-11 w-full cursor-pointer rounded-xl bg-primary text-sm font-semibold text-white transition-colors hover:bg-primary disabled:cursor-not-allowed disabled:opacity-60"
+      className="h-11 w-full cursor-pointer rounded-xl bg-primary text-sm font-semibold text-white transition-colors hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {pending ? "Đang đăng nhập…" : "Đăng nhập"}
     </button>

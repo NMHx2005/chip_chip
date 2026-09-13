@@ -143,7 +143,7 @@ function TopicRow({
               pathname: "/bai-hoc/[topic]",
               params: { topic },
             }}
-            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-accent"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-black"
             tabIndex={isActive ? 0 : -1}
           >
             {count > 0

@@ -77,7 +77,7 @@ export default async function ForumPage({
                 className={
                   n === page
                     ? "flex size-9 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-white"
-                    : "flex size-9 items-center justify-center rounded-lg border border-border text-sm text-text-nav transition-colors hover:border-border"
+                    : "flex size-9 items-center justify-center rounded-lg border border-border text-sm text-text-nav transition-colors hover:border-black/20"
                 }
               >
                 {n}

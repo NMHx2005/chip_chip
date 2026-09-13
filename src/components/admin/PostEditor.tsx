@@ -208,7 +208,7 @@ export function PostEditor({
             type="button"
             onClick={saveAll}
             disabled={pending || !dirty.vi && !dirty.en}
-            className="cursor-pointer rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-primary disabled:opacity-50"
+            className="cursor-pointer rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-black/80 disabled:opacity-50"
           >
             {state === "saving" ? "Đang lưu…" : "Lưu"}
           </button>
@@ -218,7 +218,7 @@ export function PostEditor({
               type="button"
               onClick={() => runPublish(unpublishTranslation)}
               disabled={pending}
-              className="cursor-pointer rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-text-nav transition-colors hover:border-border disabled:opacity-50"
+              className="cursor-pointer rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-text-nav transition-colors hover:border-black/20 disabled:opacity-50"
             >
               Bỏ đăng
             </button>
@@ -337,7 +337,7 @@ export function PostEditor({
             type="button"
             onClick={() => coverInputRef.current?.click()}
             disabled={uploadingCover}
-            className="relative aspect-video w-full cursor-pointer overflow-hidden rounded-xl border border-dashed border-border bg-surface-muted transition-colors hover:border-border disabled:opacity-60"
+            className="relative aspect-video w-full cursor-pointer overflow-hidden rounded-xl border border-dashed border-border bg-surface-muted transition-colors hover:border-black/20 disabled:opacity-60"
           >
             {current.coverImageUrl ? (
               // eslint-disable-next-line @next/next/no-img-element

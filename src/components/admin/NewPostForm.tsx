@@ -63,7 +63,7 @@ export function NewPostForm() {
                 "cursor-pointer rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors",
                 kind === option.value
                   ? "border-border bg-surface-muted text-accent"
-                  : "border-border bg-surface text-text-nav hover:border-border"
+                  : "border-border bg-surface text-text-nav hover:border-black/20"
               )}
             >
               {option.label}
@@ -147,7 +147,7 @@ export function NewPostForm() {
         <button
           type="submit"
           disabled={pending}
-          className="cursor-pointer rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary disabled:opacity-60"
+          className="cursor-pointer rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-black/80 disabled:opacity-60"
         >
           {pending ? "Đang tạo…" : "Tạo bài và bắt đầu viết"}
         </button>

@@ -30,7 +30,7 @@ export function JoinFormEmbed({ url }: { url: string }) {
         <button
           type="button"
           onClick={() => setLoaded(true)}
-          className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary"
+          className="inline-flex cursor-pointer items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-black/80"
         >
           {t("formCta")}
           <ArrowUpRight className="size-4" strokeWidth={2.2} />

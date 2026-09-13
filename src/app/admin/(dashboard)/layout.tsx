@@ -46,7 +46,7 @@ export default async function AdminLayout({
             <form action={signOutAndRedirect}>
               <button
                 type="submit"
-                className="cursor-pointer rounded-xl border border-border px-3 py-1.5 text-sm text-text-nav transition-colors hover:border-border hover:text-accent"
+                className="cursor-pointer rounded-xl border border-border px-3 py-1.5 text-sm text-text-nav transition-colors hover:border-black/20 hover:text-accent"
               >
                 Đăng xuất
               </button>
