@@ -9,9 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        bg: "#F6F5FA",
+        bg: "#E5E5E5",
         surface: "#FFFFFF",
-        "surface-muted": "#EFEDF6",
+        "surface-muted": "#EFEFEF",
+        primary: "#0D0D0D",
+        accent: "#314344",
+        "accent-teal": "#317e6a",
+        "accent-purple": "#69419d",
 
         brand: {
           50: "#F5F0FF",
@@ -38,9 +42,9 @@ const config: Config = {
           900: "#0C0D2E",
         },
 
-        text: "#12101A",
-        "text-muted": "#55516B",
-        "text-nav": "#4A465C",
+        text: "#000000",
+        "text-muted": "#3e424d",
+        "text-nav": "#4d4d4d",
         muted: "#6B7280",
 
         topic: {
