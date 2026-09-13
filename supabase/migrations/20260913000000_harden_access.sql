@@ -21,9 +21,25 @@ comment on column public.profiles.is_active is
   'Gate for staff access. A fresh signup is inactive; an existing admin '
   'activates the account. `is_staff()` requires it.';
 
--- Everyone who already had a profile was created by hand before this gate
--- existed, so they are real staff.
-update public.profiles set is_active = true where is_active = false;
+-- Deliberately no blanket activation here.
+--
+-- An earlier version of this migration ran
+--   update public.profiles set is_active = true where is_active = false;
+-- on the reasoning that every existing profile had been created by hand. That
+-- reasoning contradicts hole 1 above: if anyone could self-register with the
+-- public anon key, then some existing profiles are exactly the self-registered
+-- accounts this gate exists to shut out — and activating them all would hand
+-- every one of them write access to posts, publishing, comment moderation and
+-- storage. A hardening migration must fail closed.
+--
+-- So every profile lands on the column default (`false`), including the ones
+-- that predate this migration, and an admin activates real staff explicitly:
+--
+--   update public.profiles
+--      set role = 'admin', is_active = true
+--    where id = (select id from auth.users where email = 'you@example.com');
+--
+-- This is the procedure the README already documents for the first account.
 
 /**
  * Role check that bypasses RLS on profiles.
