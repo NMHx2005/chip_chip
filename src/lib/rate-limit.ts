@@ -35,9 +35,15 @@ const IP_SALT =
   "chipchip-dev-salt";
 
 export function clientIp(headers: Headers): string {
-  // Set by Vercel's edge and not forwardable by the client.
-  const vercel = headers.get("x-vercel-forwarded-for");
-  if (vercel) return vercel.split(",")[0].trim();
+  // Vercel's edge sets this and strips any copy the client sent — but only for
+  // requests that actually went through Vercel. Anywhere else (another host, or
+  // someone reaching the origin directly) it is an ordinary client-settable
+  // header, and honouring it hands every request a fresh identity. `VERCEL` is
+  // set by the platform itself, so it cannot be forged from outside.
+  if (process.env.VERCEL) {
+    const vercel = headers.get("x-vercel-forwarded-for");
+    if (vercel) return vercel.split(",")[0].trim();
+  }
 
   // Nothing in front of the app rewrites forwarding headers, so none of them
   // mean anything. One shared bucket is a blunt limit, but it is a real one.
@@ -56,7 +62,17 @@ export function clientIp(headers: Headers): string {
     return "untrusted";
   }
 
-  return headers.get("x-real-ip")?.trim() || "unknown";
+  // `x-real-ip` carries a single address with no chain, so there is nothing to
+  // count hops against — the check applied to `x-forwarded-for` above has no
+  // equivalent here. Trust it only for the one-proxy deployment that sets it
+  // (the nginx case the README describes); with more hops in front, a request
+  // that skipped them would look identical to one that did not.
+  if (TRUSTED_PROXY_HOPS === 1) {
+    const real = headers.get("x-real-ip")?.trim();
+    if (real) return real;
+  }
+
+  return "unknown";
 }
 
 /**

@@ -22,6 +22,7 @@ const headers = (init: Record<string, string>) => new Headers(init);
 
 afterEach(() => {
   delete process.env.TRUSTED_PROXY_HOPS;
+  delete process.env.VERCEL;
 });
 
 describe("clientIp", () => {
@@ -68,7 +69,8 @@ describe("clientIp", () => {
     );
   });
 
-  it("prefers the platform header a client cannot forge", async () => {
+  it("prefers the platform header a client cannot forge, on the platform", async () => {
+    process.env.VERCEL = "1";
     const clientIp = await loadClientIp("1");
 
     expect(
@@ -79,6 +81,34 @@ describe("clientIp", () => {
         })
       )
     ).toBe("198.51.100.9");
+  });
+
+  it("ignores the Vercel header when not running on Vercel", async () => {
+    const clientIp = await loadClientIp("1");
+
+    // Off-platform the header is client-settable, so honouring it would hand a
+    // bot a fresh bucket per request. The real chain decides instead.
+    expect(
+      clientIp(
+        headers({
+          "x-vercel-forwarded-for": "198.51.100.9",
+          "x-forwarded-for": "1.2.3.4, 203.0.113.7",
+        })
+      )
+    ).toBe("203.0.113.7");
+
+    // With nothing else to go on it must not become an identity of its own.
+    expect(
+      clientIp(headers({ "x-vercel-forwarded-for": "198.51.100.9" }))
+    ).toBe("unknown");
+  });
+
+  it("refuses x-real-ip when more than one proxy is configured", async () => {
+    const clientIp = await loadClientIp("2");
+
+    // The header carries no chain, so the hop count cannot be verified against
+    // it — a request that bypassed the proxies would look the same.
+    expect(clientIp(headers({ "x-real-ip": "1.2.3.4" }))).toBe("unknown");
   });
 
   it("ignores forwarding headers entirely when nothing proxies the app", async () => {
