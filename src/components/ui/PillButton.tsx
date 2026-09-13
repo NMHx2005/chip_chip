@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { StarBorderLayer } from "@/components/ui/StarBorder";
 import { Link } from "@/i18n/navigation";
 import type { StaticPathname } from "@/i18n/routing";
+import { EASE_STANDARD, STAR_SPEED } from "@/components/motion";
 
 /** Primary action surface — matches the logo's purple → blue gradient. */
 const brandGradient =
@@ -16,12 +17,6 @@ const darkGradient =
   "linear-gradient(131deg, rgb(51, 51, 51) 0.79%, rgb(13, 13, 13) 35.22%, rgb(38, 38, 38) 99.16%)";
 
 const GRADIENTS = { brand: brandGradient, dark: darkGradient } as const;
-
-const tapEase = [0.25, 0.1, 0.25, 1] as const;
-
-// Star-border speed: loops continuously, faster while hovered.
-const STAR_SPEED = "5s";
-const STAR_SPEED_HOVER = "2s";
 
 // The inner cover sits above the glow and hides it everywhere except this thin
 // rim, so the shine reads as a border highlight instead of a halo.
@@ -43,7 +38,7 @@ function useTapMotion(prefersReducedMotion: boolean | null) {
   if (prefersReducedMotion) return {};
   return {
     whileTap: { scale: 0.97 },
-    transition: { duration: 0.2, ease: tapEase },
+    transition: { duration: 0.2, ease: EASE_STANDARD },
   };
 }
 
@@ -90,7 +85,7 @@ function usePill(options: {
     <>
       <StarBorderLayer
         color="rgba(255,255,255,0.95)"
-        speed={hovered ? STAR_SPEED_HOVER : STAR_SPEED}
+        speed={hovered ? STAR_SPEED.hover : STAR_SPEED.idle}
       />
       <span
         aria-hidden

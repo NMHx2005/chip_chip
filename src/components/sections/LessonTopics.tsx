@@ -4,11 +4,10 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { EASE_STANDARD } from "@/components/motion";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { Link } from "@/i18n/navigation";
 import { TOPIC_IDS, TOPIC_TONE, type TopicId } from "@/lib/constants";
-
-const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 const INDICATOR_SPRING = {
   type: "spring" as const,
@@ -57,7 +56,7 @@ function TopicRow({
         initial={false}
         animate={{ opacity: showDivider ? 1 : 0 }}
         transition={
-          prefersReducedMotion ? { duration: 0 } : { duration: 0.25, ease: EASE }
+          prefersReducedMotion ? { duration: 0 } : { duration: 0.25, ease: EASE_STANDARD }
         }
       />
 
@@ -69,7 +68,7 @@ function TopicRow({
         initial={false}
         animate={{ opacity: isActive ? 1 : 0 }}
         transition={
-          prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: EASE }
+          prefersReducedMotion ? { duration: 0 } : { duration: 0.4, ease: EASE_STANDARD }
         }
       />
 
@@ -94,7 +93,7 @@ function TopicRow({
           transition={
             prefersReducedMotion
               ? { duration: 0 }
-              : { duration: 0.3, ease: EASE }
+              : { duration: 0.3, ease: EASE_STANDARD }
           }
           style={{ lineHeight: 1.25, willChange: "font-size, font-weight" }}
         >
@@ -109,7 +108,7 @@ function TopicRow({
           transition={
             prefersReducedMotion
               ? { duration: 0 }
-              : { duration: 0.3, ease: EASE }
+              : { duration: 0.3, ease: EASE_STANDARD }
           }
         >
           <ArrowRight className="size-4 text-text" strokeWidth={2} />
@@ -124,7 +123,7 @@ function TopicRow({
           prefersReducedMotion
             ? { duration: 0 }
             : {
-                height: { duration: 0.45, ease: EASE },
+                height: { duration: 0.45, ease: EASE_STANDARD },
                 opacity: { duration: isActive ? 0.4 : 0.18, ease: "easeOut" },
               }
         }

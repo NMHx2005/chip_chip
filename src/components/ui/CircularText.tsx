@@ -51,6 +51,8 @@ export function CircularText({
           : {
               duration: durationSeconds,
               repeat: Infinity,
+              // Loops forever, so it runs linear rather than on the entrance easing —
+              // an eased spin visibly stutters at the seam.
               ease: "linear",
             }
       }

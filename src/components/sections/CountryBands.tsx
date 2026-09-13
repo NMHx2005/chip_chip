@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { EASE_STANDARD } from "@/components/motion";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { COUNTRY_BANDS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
-
-const EASE = [0.25, 0.1, 0.25, 1] as const;
 
 function CountryBandRow({
   band,
@@ -28,7 +27,7 @@ function CountryBandRow({
       initial={prefersReducedMotion ? undefined : { opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, ease: EASE, delay: index * 0.07 }}
+      transition={{ duration: 0.5, ease: EASE_STANDARD, delay: index * 0.07 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >

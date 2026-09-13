@@ -1,3 +1,5 @@
+import { STAR_SPEED } from "@/components/motion";
+
 /**
  * Star-border traveling glow (reactbits StarBorder).
  * Drop these two layers inside any `position:relative; overflow:hidden` pill;
@@ -13,7 +15,7 @@ type StarBorderLayerProps = {
 
 export function StarBorderLayer({
   color = "white",
-  speed = "5s",
+  speed = STAR_SPEED.idle,
 }: StarBorderLayerProps) {
   const bg = `radial-gradient(circle, ${color}, transparent 10%)`;
   return (

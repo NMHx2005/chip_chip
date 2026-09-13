@@ -13,6 +13,8 @@ export function SmoothScroll({ children }: { children: ReactNode }) {
 
     const lenis = new Lenis({
       duration: 0.9,
+      // Scroll-momentum easing, not an element transition — deliberately
+      // does not read EASE_STANDARD.
       easing: (t) => 1 - Math.pow(1 - t, 3),
       smoothWheel: true,
       wheelMultiplier: 1,
