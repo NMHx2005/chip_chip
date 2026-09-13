@@ -20,6 +20,30 @@ import {
   useSharedScrollProgress,
 } from "@/components/motion";
 
+// Own hook instance per card: `useHoldToReveal` holds a single hold/reveal
+// state, so sharing one instance across both cards would let a press on one
+// reveal the other's overlay too.
+function GalleryTiltCard({ side }: { side: "left" | "right" }) {
+  const hold = useHoldToReveal();
+
+  return (
+    <TiltCard
+      side={side}
+      {...hold.handlers}
+      className="group rounded-2xl border border-border bg-surface p-8"
+    >
+      <div className="aspect-video rounded-xl bg-surface-muted" />
+      <p
+        className={`mt-4 text-sm transition-opacity duration-300 ${
+          hold.revealed ? "opacity-100" : "opacity-0 md:group-hover:opacity-100"
+        }`}
+      >
+        Lớp phủ mô tả: hover trên desktop, chạm-giữ trên điện thoại.
+      </p>
+    </TiltCard>
+  );
+}
+
 /**
  * Internal showcase for the motion system. Not linked from anywhere and
  * excluded from robots.txt — its only job is to let a human compare each
@@ -30,7 +54,6 @@ export default function MotionGallery() {
   const { targetRef, scrollYProgress } = useSharedScrollProgress();
   const titleOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.7, 0]);
   const titleScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
-  const hold = useHoldToReveal();
 
   return (
     <>
@@ -98,6 +121,8 @@ export default function MotionGallery() {
               type="button"
               onMouseEnter={() => setHovered(true)}
               onMouseLeave={() => setHovered(false)}
+              onFocus={() => setHovered(true)}
+              onBlur={() => setHovered(false)}
               className="rounded-3xl bg-brand-500 px-7 py-4 text-white"
             >
               <AnimatedButtonLabel active={hovered}>
@@ -112,21 +137,7 @@ export default function MotionGallery() {
             </h2>
             <div className="grid gap-6 md:grid-cols-2">
               {(["left", "right"] as const).map((side) => (
-                <TiltCard
-                  key={side}
-                  side={side}
-                  {...hold.handlers}
-                  className="group rounded-2xl border border-border bg-surface p-8"
-                >
-                  <div className="aspect-video rounded-xl bg-surface-muted" />
-                  <p
-                    className={`mt-4 text-sm transition-opacity duration-300 ${
-                      hold.revealed ? "opacity-100" : "opacity-0 md:group-hover:opacity-100"
-                    }`}
-                  >
-                    Lớp phủ mô tả: hover trên desktop, chạm-giữ trên điện thoại.
-                  </p>
-                </TiltCard>
+                <GalleryTiltCard key={side} side={side} />
               ))}
             </div>
           </section>
