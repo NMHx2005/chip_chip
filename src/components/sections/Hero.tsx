@@ -4,7 +4,7 @@ import { PillButton } from "@/components/ui/PillButton";
 function Badge({ label, tone }: { label: string; tone: "blue" | "purple" }) {
   const styles =
     tone === "blue"
-      ? "border-brand-blue-200 bg-brand-blue-50 text-brand-blue-600"
+      ? "border-border bg-surface-muted text-accent"
       : "border-border bg-surface-muted text-accent";
 
   return (
@@ -33,7 +33,7 @@ export function Hero() {
         className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[520px] w-[860px] max-w-[140vw] -translate-x-1/2 rounded-full opacity-60 blur-3xl"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(155,102,245,0.22), rgba(43,47,168,0.08) 60%, transparent)",
+            "radial-gradient(closest-side, rgba(49, 67, 68, 0.22), rgba(13, 13, 13, 0.08) 60%, transparent)",
         }}
       />
 

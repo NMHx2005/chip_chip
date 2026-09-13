@@ -31,7 +31,8 @@ export function renderOgCard({
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px 76px",
-          background: "linear-gradient(131deg, #9B66F5 0%, #7B2FBE 42%, #2B2FA8 100%)",
+          background:
+            "linear-gradient(131deg, rgb(51, 51, 51) 0.79%, rgb(13, 13, 13) 35.22%, rgb(38, 38, 38) 99.16%)",
           fontFamily: "Be Vietnam Pro",
           color: "#ffffff",
         }}

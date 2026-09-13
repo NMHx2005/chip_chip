@@ -17,31 +17,6 @@ const config: Config = {
         "accent-teal": "#317e6a",
         "accent-purple": "#69419d",
 
-        brand: {
-          50: "#F5F0FF",
-          100: "#EBE2FF",
-          200: "#D6C2FF",
-          300: "#B995FF",
-          400: "#9B66F5",
-          500: "#7B2FBE",
-          600: "#6A25A6",
-          700: "#551C85",
-          800: "#3D1560",
-          900: "#260D3D",
-        },
-        "brand-blue": {
-          50: "#EEF0FF",
-          100: "#DDE1FF",
-          200: "#BCC3FF",
-          300: "#939BFF",
-          400: "#5A61E0",
-          500: "#2B2FA8",
-          600: "#232688",
-          700: "#1B1E6A",
-          800: "#14164C",
-          900: "#0C0D2E",
-        },
-
         text: "#000000",
         "text-muted": "#3e424d",
         "text-nav": "#4d4d4d",
@@ -71,16 +46,15 @@ const config: Config = {
       },
 
       backgroundImage: {
-        "brand-gradient": "linear-gradient(135deg, #7B2FBE 0%, #2B2FA8 100%)",
-        "brand-gradient-soft":
-          "linear-gradient(135deg, #EBE2FF 0%, #DDE1FF 100%)",
+        "brand-gradient":
+          "linear-gradient(131deg, rgb(51, 51, 51) 0.79%, rgb(13, 13, 13) 35.22%, rgb(38, 38, 38) 99.16%)",
       },
 
       boxShadow: {
         card: "0 1px 2px rgba(18, 16, 26, 0.04), 0 4px 16px rgba(18, 16, 26, 0.06)",
         "card-hover":
-          "0 2px 4px rgba(18, 16, 26, 0.05), 0 12px 32px rgba(123, 47, 190, 0.12)",
-        float: "0 8px 32px rgba(123, 47, 190, 0.16)",
+          "0 2px 4px rgba(18, 16, 26, 0.05), 0 12px 32px rgba(0, 0, 0, 0.12)",
+        float: "0 8px 32px rgba(0, 0, 0, 0.16)",
       },
 
       animation: {

@@ -48,7 +48,7 @@ function TopicRow({
       type="button"
       onClick={onSelect}
       aria-expanded={isActive}
-      className="relative w-full cursor-pointer px-4 text-left outline-none focus-visible:ring-2 focus-visible:ring-brand-400 sm:px-6"
+      className="relative w-full cursor-pointer px-4 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent sm:px-6"
     >
       <motion.span
         aria-hidden

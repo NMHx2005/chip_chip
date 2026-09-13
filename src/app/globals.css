@@ -58,10 +58,7 @@
   }
 
   .text-gradient-brand {
-    background: linear-gradient(135deg, #7b2fbe 0%, #2b2fa8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: #0d0d0d;
   }
 
   /* Defer rendering of off-screen sections: the browser skips paint/layout
@@ -248,7 +245,7 @@
 }
 
 .chip-prose .selectedCell::after {
-  background: rgba(123, 47, 190, 0.14);
+  background: rgba(0, 0, 0, 0.12);
   content: "";
   inset: 0;
   pointer-events: none;
