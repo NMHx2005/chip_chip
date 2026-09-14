@@ -19,6 +19,13 @@ type AutoplayVideoProps = {
   isPressing?: boolean;
   /** On mobile, keep the inline video paused and play it on tap. */
   mobileTapFullscreen?: boolean;
+  /**
+   * External pause switch (e.g. a carousel item that scrolled out of the
+   * centre slot). Overrides the intersection-driven autoplay below — without
+   * this, every video that is technically on-screen (even at opacity 0 in a
+   * carousel) would keep playing regardless of which one is "active".
+   */
+  paused?: boolean;
 };
 
 export function AutoplayVideo({
@@ -31,6 +38,7 @@ export function AutoplayVideo({
   playMode = "auto",
   isPressing = false,
   mobileTapFullscreen = false,
+  paused = false,
 }: AutoplayVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -42,6 +50,12 @@ export function AutoplayVideo({
   const [shouldLoad, setShouldLoad] = useState(
     eager && !isPressMode && !shouldUseMobileTapPlay
   );
+  // Read inside the intersection-observer closures below without having to
+  // recreate the observer every time `paused` flips.
+  const pausedRef = useRef(paused);
+  useEffect(() => {
+    pausedRef.current = paused;
+  }, [paused]);
 
   useEffect(() => {
     if (!mobileTapFullscreen) return;
@@ -102,7 +116,12 @@ export function AutoplayVideo({
     const container = containerRef.current;
     if (!video || !container || prefersReducedMotion) return;
 
-    const tryPlay = () => video.play().catch(() => {});
+    // `paused` wins over intersection: a carousel item can be on-screen (even
+    // at opacity 0) while explicitly not the active one.
+    const tryPlay = () => {
+      if (pausedRef.current) return;
+      video.play().catch(() => {});
+    };
 
     // Pause while off-screen to save decode and render cost, resume on return.
     const observer = new IntersectionObserver(
@@ -122,6 +141,21 @@ export function AutoplayVideo({
       video.removeEventListener("loadeddata", tryPlay);
     };
   }, [isPressMode, shouldLoad, prefersReducedMotion, shouldUseMobileTapPlay, src]);
+
+  // React immediately to `paused` toggling — the observer above only fires on
+  // an actual intersection change, not on this prop changing while the
+  // element stays on-screen (the exact case for a carousel's inactive slots).
+  useEffect(() => {
+    if (shouldUseMobileTapPlay || isPressMode || !shouldLoad) return;
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (paused) {
+      video.pause();
+    } else if (!prefersReducedMotion) {
+      video.play().catch(() => {});
+    }
+  }, [paused, shouldLoad, isPressMode, shouldUseMobileTapPlay, prefersReducedMotion]);
 
   useEffect(() => {
     if (shouldUseMobileTapPlay) return;
@@ -220,7 +254,7 @@ export function AutoplayVideo({
           src={src}
           className="h-full w-full object-cover"
           style={{ objectPosition }}
-          autoPlay={!prefersReducedMotion && !isPressMode}
+          autoPlay={!prefersReducedMotion && !isPressMode && !paused}
           loop
           muted
           playsInline
