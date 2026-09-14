@@ -63,14 +63,7 @@ export default function MotionGallery() {
     <>
       <SceneFillOverlay targetId="lower-half" />
 
-      <div
-        // `isolate` gives this wrapper its own stacking context, so the
-        // StickyBackdrop's -z-10 layer stacks behind the hero content but
-        // stays inside this wrapper instead of falling behind the opaque
-        // page background painted on `body` — without it the gradient
-        // never paints.
-        className="relative isolate"
-      >
+      <div className="relative">
         <StickyBackdrop src="/motion-gallery-backdrop.svg" />
         <div className="relative z-10 -mt-[100dvh]">
           <section className="flex min-h-[100dvh] flex-col items-center justify-center gap-8 px-6">

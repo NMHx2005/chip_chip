@@ -10,6 +10,16 @@ import { cn } from "@/lib/utils";
  * A `<picture>` rather than `next/image`: this is a decorative full-bleed
  * layer where the mobile file is a different crop, not a resize, and `fill`
  * would fetch the desktop asset on phones.
+ *
+ * Stacked with `z-0`, never a negative z-index: `html` and `body` both set an
+ * explicit opaque background in globals.css, and neither is a positioned
+ * element, so body's own background paints as an ordinary in-flow box of the
+ * root stacking context (CSS2.1 Appendix E, step 3) — one step AFTER any
+ * negative z-index descendant anywhere in the page (step 2), no matter how
+ * deep it is nested. A negative z-index here would render behind that body
+ * background and never be visible. `z-0` instead puts this layer in the
+ * positive/zero bucket (step 6), which paints after body's background,
+ * while still sitting below the `z-10` content that overlaps it.
  */
 export function StickyBackdrop({
   src,
@@ -25,7 +35,7 @@ export function StickyBackdrop({
     <div
       aria-hidden
       className={cn(
-        "pointer-events-none sticky top-0 -z-10 h-[100dvh] w-full",
+        "pointer-events-none sticky top-0 z-0 h-[100dvh] w-full",
         className
       )}
     >

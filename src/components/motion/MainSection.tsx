@@ -7,6 +7,12 @@ import { cn } from "@/lib/utils";
  * Deliberately carries no scroll-driven motion: translating a container that
  * holds several full sections costs a layer repaint per frame, and the effect
  * is not worth it.
+ *
+ * Renders a `<div>`, not a `<main>`: this is a purely visual wrapper (the
+ * gradient that covers the sticky backdrop), and every page that uses it
+ * already has its own page-level `<main>` landmark. HTML forbids nesting
+ * `<main>` inside `<main>`, and a second landmark would confuse assistive
+ * tech regardless.
  */
 export function MainSection({
   children,
@@ -20,14 +26,14 @@ export function MainSection({
 }) {
   if (transparent) {
     return (
-      <main className={cn("relative z-20 overflow-hidden", className)}>
+      <div className={cn("relative z-20 overflow-hidden", className)}>
         {children}
-      </main>
+      </div>
     );
   }
 
   return (
-    <main
+    <div
       className={cn("relative z-20 overflow-hidden bg-bg", className)}
       style={{
         backgroundImage:
@@ -35,6 +41,6 @@ export function MainSection({
       }}
     >
       {children}
-    </main>
+    </div>
   );
 }
