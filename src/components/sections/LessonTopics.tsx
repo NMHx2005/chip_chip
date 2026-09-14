@@ -26,6 +26,8 @@ function TopicRow({
   showDivider,
   count,
   onSelect,
+  onHoverStart,
+  onHoverEnd,
   prefersReducedMotion,
   buttonRef,
 }: {
@@ -35,6 +37,8 @@ function TopicRow({
   showDivider: boolean;
   count: number;
   onSelect: () => void;
+  onHoverStart: () => void;
+  onHoverEnd: () => void;
   prefersReducedMotion: boolean | null;
   buttonRef: (el: HTMLButtonElement | null) => void;
 }) {
@@ -47,6 +51,9 @@ function TopicRow({
       ref={buttonRef}
       type="button"
       onClick={onSelect}
+      onMouseEnter={onHoverStart}
+      onMouseLeave={onHoverEnd}
+      onFocus={onSelect}
       aria-expanded={isActive}
       className="relative w-full cursor-pointer px-4 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent sm:px-6"
     >
@@ -176,6 +183,24 @@ export function LessonTopics({
   const activeIdRef = useRef(activeId);
   activeIdRef.current = activeId;
 
+  const hoverTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // 120ms of patience: without it, dragging the cursor diagonally across the
+  // list flips through every row on the way to the one the reader wants.
+  const openOnHover = useCallback((id: TopicId) => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = setTimeout(() => setActiveId(id), 120);
+  }, []);
+
+  // Only cancels the pending open — the row already open stays open, since
+  // the cursor leaving the list doesn't mean the reader is done with it.
+  const cancelHover = useCallback(() => {
+    if (hoverTimer.current) clearTimeout(hoverTimer.current);
+    hoverTimer.current = null;
+  }, []);
+
+  useEffect(() => cancelHover, [cancelHover]);
+
   const updateIndicator = useCallback((id: string) => {
     const wrapperEl = wrapperRef.current;
     const itemEl = itemRefs.current.get(id);
@@ -290,6 +315,8 @@ export function LessonTopics({
                   index !== TOPIC_IDS.indexOf(activeId) + 1
                 }
                 onSelect={() => setActiveId(topic)}
+                onHoverStart={() => openOnHover(topic)}
+                onHoverEnd={cancelHover}
                 prefersReducedMotion={prefersReducedMotion}
                 buttonRef={setItemRef(topic)}
               />
