@@ -15,13 +15,11 @@
     "language": "Ngôn ngữ",
     "switchTo": "Chuyển sang {language}",
     "skipToContent": "Chuyển tới nội dung chính",
+    "quickLinks": "Liên kết nhanh",
     "facebook": "Facebook",
     "tiktok": "TikTok"
   },
   "footer": {
-    "tagline": "Dự án giáo dục phi lợi nhuận về bán dẫn dành cho học sinh trung học phổ thông Việt Nam.",
-    "explore": "Khám phá",
-    "connect": "Kết nối",
     "copyright": "© 2026 Project Chíp Chíp. Mọi nội dung được chia sẻ vì mục đích giáo dục."
   },
   "home": {
@@ -43,8 +41,8 @@
       "description": "Giới thiệu những kiến thức căn bản nhất về bán dẫn, một cách thật đầy đủ, chính xác và trực quan tới tất cả bạn đọc."
     },
     "topics": {
-      "headline": "Bốn chủ đề để bắt đầu",
-      "description": "Mỗi chủ đề gồm các bài viết ngắn, đi từ khái niệm cơ bản tới ứng dụng thực tế. Chọn một chủ đề để xem danh sách bài.",
+      "headline": "Bốn chủ đề, từ số 0 tới toàn cảnh ngành bán dẫn",
+      "description": "Mỗi chủ đề là một mạch bài ngắn, đọc liền một hơi: bán dẫn là gì, transistor và vi mạch hoạt động ra sao, chúng có mặt ở đâu trong đời sống, và ngành này đã đi tới đâu. Không cần kiến thức nền — cứ bắt đầu từ chủ đề đầu tiên.",
       "readMore": "Đọc thêm",
       "articleCount": "{count} bài viết",
       "empty": "Chủ đề này chưa có bài viết nào."
@@ -138,8 +136,8 @@
       "description": "Chúng tôi là một nhóm học sinh, sinh viên và kỹ sư muốn mang kiến thức bán dẫn tới gần hơn với học sinh Việt Nam."
     },
     "mission": {
-      "headline": "Vì sao chúng tôi làm điều này",
-      "body": "Ngành công nghệ bán dẫn đang phát triển nhanh tại Việt Nam và tạo ra nguồn nhân lực chất lượng cao cho đất nước. Nhưng nhận thức của học sinh về ngành học này còn nhiều hạn chế, và nguồn học thì hạn chế và rời rạc. Project Chíp Chíp ra đời như một cuốn sách gối đầu giường cho những ai muốn tìm hiểu về bán dẫn."
+      "headline": "Chuyện bắt đầu từ một câu hỏi",
+      "body": "Vì sao một học sinh cấp ba có thể hiểu van tim hoạt động ra sao, nhưng lại không biết con chip trong chiếc điện thoại mình cầm mỗi ngày được làm thế nào? Bán dẫn ở khắp nơi, nhưng kiến thức về nó lại nằm rải rác trong tài liệu tiếng Anh, trong bài giảng đại học, trong những video không có phụ đề. Học sinh Việt Nam không thiếu tò mò — các em thiếu một chỗ để bắt đầu. Project Chíp Chíp làm chỗ bắt đầu đó: tài liệu tiếng Việt, đi từ khái niệm đơn giản nhất, miễn phí cho tất cả mọi người."
     },
     "team": {
       "headline": "Cơ cấu tổ chức",

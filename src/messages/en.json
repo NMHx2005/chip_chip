@@ -15,13 +15,11 @@
     "language": "Language",
     "switchTo": "Switch to {language}",
     "skipToContent": "Skip to main content",
+    "quickLinks": "Quick links",
     "facebook": "Facebook",
     "tiktok": "TikTok"
   },
   "footer": {
-    "tagline": "A non-profit education project about semiconductors, made for Vietnamese high school students.",
-    "explore": "Explore",
-    "connect": "Connect",
     "copyright": "© 2026 Project Chíp Chíp. All content is shared for educational purposes."
   },
   "home": {
@@ -43,8 +41,8 @@
       "description": "The most fundamental semiconductor concepts, explained thoroughly, accurately and visually for every reader."
     },
     "topics": {
-      "headline": "Four topics to get started",
-      "description": "Each topic is a set of short articles, moving from core concepts to real-world applications. Pick a topic to see its articles.",
+      "headline": "Four topics, from zero to the whole semiconductor industry",
+      "description": "Each topic is one continuous read: what a semiconductor is, how transistors and microchips work, where they turn up in daily life, and how far the industry has come. No prior knowledge needed — start with the first one.",
       "readMore": "Read more",
       "articleCount": "{count} articles",
       "empty": "This topic has no articles yet."
@@ -138,8 +136,8 @@
       "description": "We are a group of students, graduates and engineers working to bring semiconductor knowledge closer to Vietnamese students."
     },
     "mission": {
-      "headline": "Why we do this",
-      "body": "The semiconductor industry is growing quickly in Vietnam and creating high-quality jobs for the country. Yet students still have a limited understanding of the field, and the learning resources available are scarce and scattered. Project Chíp Chíp exists to be a bedside book for anyone who wants to understand semiconductors."
+      "headline": "It started with one question",
+      "body": "Why can a high-school student explain how a heart valve works, yet not how the chip inside the phone they carry every day is made? Semiconductors are everywhere, but the knowledge about them is scattered across English papers, university lectures and videos with no subtitles. Vietnamese students are not short of curiosity — they are short of a place to start. Project Chíp Chíp is that place: Vietnamese-language material, starting from the simplest idea, free for everyone."
     },
     "team": {
       "headline": "How we are organised",
