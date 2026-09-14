@@ -70,7 +70,7 @@ export function VideoCarousel() {
         </motion.div>
 
         <div
-          className="relative mt-14 h-[240px] overflow-x-hidden md:h-[420px]"
+          className="relative mt-14 overflow-x-hidden"
           role="group"
           aria-roledescription="carousel"
           aria-label={t("title")}
@@ -80,6 +80,22 @@ export function VideoCarousel() {
           }}
           tabIndex={0}
         >
+          {/*
+            The visible tiles below are all `absolute`, so they cannot give this
+            container a height on their own — the browser would collapse it to
+            0. This invisible, normal-flow twin of the active tile (same width
+            classes, same aspect-video + label shape) sizes the container to
+            exactly fit a video plus its caption at any viewport width, instead
+            of guessing fixed pixel heights per breakpoint that break once the
+            item's aspect-ratio math crosses a breakpoint boundary.
+          */}
+          <div aria-hidden="true" className="invisible mx-auto w-[78%] max-w-3xl md:w-[62%]">
+            <div className="aspect-video w-full rounded-2xl border border-border" />
+            <span className="mt-3 inline-flex rounded-full px-3 py-1 text-xs font-medium">
+              {t(`topics.${CAROUSEL_VIDEOS[active].topicKey}`)}
+            </span>
+          </div>
+
           {CAROUSEL_VIDEOS.map((clip, index) => {
             const offset = offsetOf(index);
             const isActive = offset === 0;
@@ -116,12 +132,7 @@ export function VideoCarousel() {
                 style={{ pointerEvents: hidden ? "none" : "auto" }}
               >
                 <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-primary shadow-card">
-                  <AutoplayVideo
-                    src={clip.src}
-                    ariaLabel={topicLabel}
-                    loadOnScroll
-                    paused={!isActive}
-                  />
+                  <AutoplayVideo src={clip.src} ariaLabel={topicLabel} paused={!isActive} />
                 </div>
                 <span className="mt-3 inline-flex rounded-full bg-surface-muted px-3 py-1 text-xs font-medium text-text-nav">
                   {topicLabel}
