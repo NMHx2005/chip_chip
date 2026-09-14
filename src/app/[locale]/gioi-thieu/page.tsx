@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Check } from "lucide-react";
 import { JoinFormEmbed } from "@/components/sections/about/JoinFormEmbed";
 import { SectionHeading } from "@/components/sections/SectionHeading";
 import { TeamStructure } from "@/components/sections/about/TeamStructure";
 import { localeAlternates } from "@/lib/seo";
-import { JOIN_FORM_URL } from "@/lib/constants";
+import { ABOUT_BANNER, JOIN_FORM_URL } from "@/lib/constants";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -41,7 +42,7 @@ export default async function AboutPage({
   return (
     <>
       <section className="px-5 pb-10 pt-14 md:px-8 md:pt-20">
-        <div className="mx-auto w-full max-w-content">
+        <div className="mx-auto grid w-full max-w-content items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           <header className="max-w-3xl">
             <h1 className="text-balance text-[32px] font-extrabold leading-[1.12] tracking-[-0.03em] text-text md:text-[48px]">
               {t("hero.headline")}
@@ -50,6 +51,20 @@ export default async function AboutPage({
               {t("hero.description")}
             </p>
           </header>
+
+          {/* The page opened with nothing but type; this gives it something to
+              look at before the reader starts reading. Placeholder art — see
+              ABOUT_BANNER in lib/constants.ts. */}
+          <div className="relative aspect-[3/2] w-full overflow-hidden rounded-3xl border border-border bg-surface-muted">
+            <Image
+              src={ABOUT_BANNER}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 560px"
+              className="object-cover"
+            />
+          </div>
         </div>
       </section>
 
@@ -67,6 +82,7 @@ export default async function AboutPage({
               namespace="about.mission"
               titleKey="headline"
               descriptionKey="body"
+              variant="statement"
             />
           </div>
         </div>
