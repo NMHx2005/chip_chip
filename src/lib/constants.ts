@@ -22,14 +22,19 @@ export const TOPIC_IDS = [
 
 export type TopicId = (typeof TOPIC_IDS)[number];
 
+/**
+ * Neutral grayscale, not saturated pastel: the four topics are told apart by
+ * shade (darkest to lightest), never by hue. `text` on `soft` is checked at
+ * >= 4.5:1 (WCAG AA) for every entry — see the Task 1 report for the numbers.
+ */
 export const TOPIC_TONE: Record<
   TopicId,
   { bg: string; soft: string; text: string }
 > = {
-  "dinh-nghia": { bg: "#F7B8C8", soft: "#FDE8EE", text: "#7A1F3D" },
-  "nguyen-ly": { bg: "#F7E08C", soft: "#FEF6D9", text: "#6B4E00" },
-  "ung-dung": { bg: "#A8E0BE", soft: "#E4F7EC", text: "#14512F" },
-  "lich-su": { bg: "#A9D4F5", soft: "#E3F1FC", text: "#134A73" },
+  "dinh-nghia": { bg: "#4A4A4A", soft: "#E6E6E6", text: "#262626" },
+  "nguyen-ly": { bg: "#6B6B6B", soft: "#EAEAEA", text: "#262626" },
+  "ung-dung": { bg: "#8C8C8C", soft: "#EEEEEE", text: "#262626" },
+  "lich-su": { bg: "#AEAEAE", soft: "#F2F2F2", text: "#262626" },
 };
 
 /** Placeholder until the real Facebook and TikTok pages exist. A blank href
@@ -49,11 +54,14 @@ export const JOIN_FORM_URL = "";
 /** Public contact address, shown in the footer once the mailbox exists. */
 export const CONTACT_EMAIL = "";
 
+// Same neutral-grayscale rule as TOPIC_TONE above: the four bands are told
+// apart by shade, never by hue (the earlier pastel/hex-per-country look read
+// as unprofessional). Text sits on `tone` at >= 4.5:1 in every case.
 export const COUNTRY_BANDS = [
   {
     id: "usa",
     labelKey: "usa",
-    tone: "#F9CFE0",
+    tone: "#CDCDCD",
     /**
      * Company logos live in `public/logos/`. `logo: null` renders the name as
      * text, so the band stays correct before the files arrive.
@@ -70,19 +78,19 @@ export const COUNTRY_BANDS = [
   {
     id: "taiwan",
     labelKey: "taiwan",
-    tone: "#FBE9A8",
+    tone: "#D8D8D8",
     companies: [{ name: "TSMC", logo: null }],
   },
   {
     id: "netherlands",
     labelKey: "netherlands",
-    tone: "#BEE6CC",
+    tone: "#E3E3E3",
     companies: [{ name: "ASML", logo: null }],
   },
   {
     id: "south-korea",
     labelKey: "south-korea",
-    tone: "#B9DCF7",
+    tone: "#EEEEEE",
     companies: [
       { name: "Samsung", logo: null },
       { name: "SK hynix", logo: null },
@@ -142,5 +150,5 @@ export const CAROUSEL_VIDEOS = [
 ] as const;
 
 /** Sticky backdrop behind the upper half of the homepage. */
-export const HERO_BACKDROP = "/motion-gallery-backdrop.svg";
+export const HERO_BACKDROP = "/hero-backdrop.svg";
 

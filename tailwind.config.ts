@@ -15,7 +15,6 @@ const config: Config = {
         primary: "#0D0D0D",
         accent: "#314344",
         "accent-teal": "#317e6a",
-        "accent-purple": "#69419d",
 
         text: "#000000",
         "text-muted": "#3e424d",

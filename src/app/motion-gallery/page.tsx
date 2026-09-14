@@ -64,7 +64,7 @@ export default function MotionGallery() {
       <SceneFillOverlay targetId="lower-half" />
 
       <div className="relative">
-        <StickyBackdrop src="/motion-gallery-backdrop.svg" />
+        <StickyBackdrop src="/hero-backdrop.svg" />
         <div className="relative z-10 -mt-[100dvh]">
           <section className="flex min-h-[100dvh] flex-col items-center justify-center gap-8 px-6">
             <motion.div
