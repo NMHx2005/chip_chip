@@ -207,7 +207,7 @@ export function VideoCarousel() {
 }
 ```
 
-Task 8 sẽ thay bằng bản thật.
+Task 9 sẽ thay bằng bản thật.
 
 - [ ] **Step 3: Kiểm tra kiểu, lint, build**
 
