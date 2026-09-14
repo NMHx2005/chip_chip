@@ -53,21 +53,27 @@ export function VideoCarousel() {
     <section id="home-videos" aria-label={t("title")} className="cv-auto px-5 py-20 md:px-8 md:py-28">
       <AnimatedSection>
         <div className="mx-auto w-full max-w-content">
+          {/*
+            The stagger is JS-driven, so — unlike the CSS guard in globals.css —
+            it does not stand down on its own when the reader asks for reduced
+            motion. Ungated, this heading sits at `opacity: 0` until the
+            carousel is scrolled to. Same gap the Hero had; same fix.
+          */}
           <motion.div
-            variants={staggerContainer}
-            initial="hidden"
-            whileInView="visible"
+            variants={prefersReducedMotion ? undefined : staggerContainer}
+            initial={prefersReducedMotion ? undefined : "hidden"}
+            whileInView={prefersReducedMotion ? undefined : "visible"}
             viewport={VIEWPORT_ONCE}
             className="mx-auto max-w-2xl text-center"
           >
             <motion.h2
-              variants={staggerItem}
+              variants={prefersReducedMotion ? undefined : staggerItem}
               className="text-balance text-[26px] font-extrabold tracking-[-0.02em] text-text md:text-[36px]"
             >
               {t("title")}
             </motion.h2>
             <motion.p
-              variants={staggerItem}
+              variants={prefersReducedMotion ? undefined : staggerItem}
               className="mt-4 text-pretty text-sm leading-relaxed text-text-muted md:text-base"
             >
               {t("subtitle")}
