@@ -1,10 +1,15 @@
+"use client";
+
+import { useState } from "react";
 import { ArrowUpRight, Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { AnimatedButtonLabel } from "@/components/motion";
 import { CircularText } from "@/components/ui/CircularText";
 import { CONTACT_EMAIL, JOIN_FORM_URL } from "@/lib/constants";
 
 export function JoinCta() {
   const t = useTranslations("home.join");
+  const [hovered, setHovered] = useState(false);
 
   return (
     <section
@@ -54,9 +59,11 @@ export function JoinCta() {
                     href={JOIN_FORM_URL}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onMouseEnter={() => setHovered(true)}
+                    onMouseLeave={() => setHovered(false)}
                     className="inline-flex h-[52px] items-center gap-2 rounded-3xl bg-white px-6 text-base font-semibold text-accent transition-transform duration-200 hover:scale-[1.02]"
                   >
-                    {t("formCta")}
+                    <AnimatedButtonLabel active={hovered}>{t("formCta")}</AnimatedButtonLabel>
                     <ArrowUpRight className="size-[18px]" strokeWidth={2.2} />
                   </a>
                 </div>
