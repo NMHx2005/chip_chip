@@ -26,6 +26,12 @@ type AutoplayVideoProps = {
    * carousel) would keep playing regardless of which one is "active".
    */
   paused?: boolean;
+  /**
+   * `cover` fills the frame and crops whatever does not fit — right when the
+   * source matches the frame's shape. `contain` shows the whole frame, which
+   * is what a box has to do when the clip inside it may be any shape.
+   */
+  fit?: "cover" | "contain";
 };
 
 export function AutoplayVideo({
@@ -39,6 +45,7 @@ export function AutoplayVideo({
   isPressing = false,
   mobileTapFullscreen = false,
   paused = false,
+  fit = "cover",
 }: AutoplayVideoProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -213,7 +220,7 @@ export function AutoplayVideo({
           <video
             ref={videoRef}
             src={src}
-            className="h-full w-full object-cover"
+            className={cn("h-full w-full", fit === "cover" ? "object-cover" : "object-contain")}
             style={{ objectPosition }}
             muted
             playsInline
@@ -252,7 +259,7 @@ export function AutoplayVideo({
         <video
           ref={videoRef}
           src={src}
-          className="h-full w-full object-cover"
+          className={cn("h-full w-full", fit === "cover" ? "object-cover" : "object-contain")}
           style={{ objectPosition }}
           autoPlay={!prefersReducedMotion && !isPressMode && !paused}
           loop

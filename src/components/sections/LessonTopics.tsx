@@ -1,13 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { EASE_STANDARD } from "@/components/motion";
+import { DURATION, EASE_STANDARD } from "@/components/motion";
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { AutoplayVideo } from "@/components/ui/AutoplayVideo";
 import { Link } from "@/i18n/navigation";
-import { TOPIC_IDS, TOPIC_TONE, type TopicId } from "@/lib/constants";
+import { TOPIC_IDS, TOPIC_TONE, TOPIC_VIDEOS, type TopicId } from "@/lib/constants";
 
 const INDICATOR_SPRING = {
   type: "spring" as const,
@@ -168,6 +169,48 @@ function TopicRow({
   );
 }
 
+/**
+ * Preview column shown beside the accordion from `lg` up.
+ *
+ * Desktop only, as in Strike: below that the accordion already fills the
+ * width, and a second 16:9 block would push the row copy off screen. Only the
+ * open topic's clip is mounted, so exactly one video can ever be playing —
+ * `paused` would not be enough here, since the unused clips would still be
+ * downloaded.
+ */
+function TopicVideo({ topic }: { topic: TopicId }) {
+  const t = useTranslations("topics");
+  const prefersReducedMotion = useReducedMotion();
+
+  return (
+    <div className="relative hidden aspect-video w-full overflow-hidden rounded-2xl border border-border bg-primary lg:block lg:w-[38%] lg:max-w-[480px] lg:shrink-0">
+      <AnimatePresence initial={false}>
+        <motion.div
+          key={topic}
+          className="absolute inset-0"
+          initial={prefersReducedMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={
+            prefersReducedMotion
+              ? { duration: 0 }
+              : { duration: DURATION.base, ease: EASE_STANDARD }
+          }
+        >
+          <AutoplayVideo
+            src={TOPIC_VIDEOS[topic]}
+            ariaLabel={t(`${topic}.title`)}
+            // `contain`, not the default `cover`: the placeholder clips are
+            // 2.23:1 and 4:3 while this box is 16:9, and cropping them cut the
+            // subject in half. Real 16:9 clips will fill the frame with no bars.
+            fit="contain"
+          />
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}
+
 export function LessonTopics({
   counts = {},
 }: {
@@ -270,58 +313,62 @@ export function LessonTopics({
           descriptionKey="description"
         />
 
-        <div
-          ref={wrapperRef}
-          className="relative mx-auto mt-10 max-w-3xl md:mt-14"
-        >
-          {/* Continuous rail + the travelling indicator */}
+        <div className="mt-10 md:mt-14 lg:flex lg:items-start lg:gap-12">
           <div
-            aria-hidden
-            className="pointer-events-none absolute left-0 top-3 bottom-3 hidden w-px bg-border md:block"
-          />
-          <motion.span
-            aria-hidden
-            className="pointer-events-none absolute hidden w-[3px] rounded-full bg-primary md:block"
-            style={{ left: -1, height: INDICATOR_HEIGHT }}
-            initial={false}
-            animate={{
-              top: indicator.top,
-              opacity: indicator.ready ? 1 : 0,
-            }}
-            transition={{
-              top: indicator.ready
-                ? INDICATOR_SPRING
-                : { duration: 0, delay: 0 },
-              opacity: {
-                duration: prefersReducedMotion ? 0 : 0.35,
-                delay: indicator.ready ? 0.15 : 0,
-              },
-            }}
-          />
+            ref={wrapperRef}
+            className="relative mx-auto w-full max-w-3xl lg:mx-0 lg:max-w-none lg:flex-1"
+          >
+            {/* Continuous rail + the travelling indicator */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-0 top-3 bottom-3 hidden w-px bg-border md:block"
+            />
+            <motion.span
+              aria-hidden
+              className="pointer-events-none absolute hidden w-[3px] rounded-full bg-primary md:block"
+              style={{ left: -1, height: INDICATOR_HEIGHT }}
+              initial={false}
+              animate={{
+                top: indicator.top,
+                opacity: indicator.ready ? 1 : 0,
+              }}
+              transition={{
+                top: indicator.ready
+                  ? INDICATOR_SPRING
+                  : { duration: 0, delay: 0 },
+                opacity: {
+                  duration: prefersReducedMotion ? 0 : 0.35,
+                  delay: indicator.ready ? 0.15 : 0,
+                },
+              }}
+            />
 
-          <div className="md:pl-8">
-            {TOPIC_IDS.map((topic, index) => (
-              <TopicRow
-                key={topic}
-                topic={topic}
-                index={index}
-                isActive={topic === activeId}
-                count={counts[topic] ?? 0}
-                // Hide the rules touching the active row so its tinted card
-                // reads as one unbroken block.
-                showDivider={
-                  index > 0 &&
-                  index !== TOPIC_IDS.indexOf(activeId) &&
-                  index !== TOPIC_IDS.indexOf(activeId) + 1
-                }
-                onSelect={() => setActiveId(topic)}
-                onHoverStart={() => openOnHover(topic)}
-                onHoverEnd={cancelHover}
-                prefersReducedMotion={prefersReducedMotion}
-                buttonRef={setItemRef(topic)}
-              />
-            ))}
+            <div className="md:pl-8">
+              {TOPIC_IDS.map((topic, index) => (
+                <TopicRow
+                  key={topic}
+                  topic={topic}
+                  index={index}
+                  isActive={topic === activeId}
+                  count={counts[topic] ?? 0}
+                  // Hide the rules touching the active row so its tinted card
+                  // reads as one unbroken block.
+                  showDivider={
+                    index > 0 &&
+                    index !== TOPIC_IDS.indexOf(activeId) &&
+                    index !== TOPIC_IDS.indexOf(activeId) + 1
+                  }
+                  onSelect={() => setActiveId(topic)}
+                  onHoverStart={() => openOnHover(topic)}
+                  onHoverEnd={cancelHover}
+                  prefersReducedMotion={prefersReducedMotion}
+                  buttonRef={setItemRef(topic)}
+                />
+              ))}
+            </div>
           </div>
+
+          <TopicVideo topic={activeId} />
         </div>
       </div>
     </section>

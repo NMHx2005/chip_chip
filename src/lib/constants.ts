@@ -37,6 +37,21 @@ export const TOPIC_TONE: Record<
   "lich-su": { bg: "#AEAEAE", soft: "#F2F2F2", text: "#262626" },
 };
 
+/**
+ * Preview clip shown beside the topic accordion on the homepage, one per
+ * topic, swapped as the reader opens a different row.
+ *
+ * PLACEHOLDERS, same caveat as HOME_VIDEO: these are clips borrowed from the
+ * Strike Robot project so the column can be reviewed at all. Replace with four
+ * semiconductor clips before launch.
+ */
+export const TOPIC_VIDEOS: Record<TopicId, string> = {
+  "dinh-nghia": "/video/clip-1.mp4",
+  "nguyen-ly": "/video/clip-2.mp4",
+  "ung-dung": "/video/clip-3.mp4",
+  "lich-su": "/video/clip-4.mp4",
+};
+
 /** Placeholder until the real Facebook and TikTok pages exist. A blank href
  *  hides the icon entirely, so the site can ship before the pages are made. */
 export const SOCIAL_LINKS: {
@@ -51,7 +66,8 @@ export const SOCIAL_LINKS: {
  *  link, not the `edit` link) once it exists. */
 export const JOIN_FORM_URL = "";
 
-/** Public contact address, shown in the footer once the mailbox exists. */
+/** Public contact address, shown in the homepage join block once the mailbox
+ *  exists. The footer is a single row and has no place for it. */
 export const CONTACT_EMAIL = "";
 
 // Same neutral-grayscale rule as TOPIC_TONE above: the four bands are told
@@ -151,4 +167,24 @@ export const CAROUSEL_VIDEOS = [
 
 /** Sticky backdrop behind the upper half of the homepage. */
 export const HERO_BACKDROP = "/hero-backdrop.svg";
+
+/**
+ * Full-bleed backdrop of the homepage join block.
+ *
+ * PLACEHOLDER: a neutral dark texture generated on purpose rather than a photo,
+ * because no real asset exists yet — swapping in the real image is a one-line
+ * change here. Kept dark enough that white copy on top stays at 13.97:1, so
+ * replacing it with a lighter photograph means re-checking that contrast.
+ */
+export const CTA_BACKDROP = "/cta-backdrop.png";
+
+/**
+ * Image beside the heading on the About page.
+ *
+ * PLACEHOLDER: a wafer-die grid drawn on purpose, because the mascot artwork
+ * does not exist yet. Swap the file for the transparent-background mascot when
+ * it arrives — the frame is a plain rounded box, so a transparent PNG drops
+ * straight in.
+ */
+export const ABOUT_BANNER = "/about-banner.png";
 
