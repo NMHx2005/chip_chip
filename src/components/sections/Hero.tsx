@@ -1,16 +1,22 @@
+"use client";
+
+import { useState, type RefObject } from "react";
+import { motion, useReducedMotion, useTransform } from "framer-motion";
 import { useTranslations } from "next-intl";
+import {
+  AnimatedButtonLabel,
+  ScrollReveal3D,
+  staggerContainer,
+  staggerItem,
+  useSharedScrollProgress,
+} from "@/components/motion";
+import { AutoplayVideo } from "@/components/ui/AutoplayVideo";
 import { PillButton } from "@/components/ui/PillButton";
+import { HOME_VIDEO, HOME_VIDEO_CREDIT } from "@/lib/constants";
 
-function Badge({ label, tone }: { label: string; tone: "blue" | "purple" }) {
-  const styles =
-    tone === "blue"
-      ? "border-border bg-surface-muted text-accent"
-      : "border-border bg-surface-muted text-accent";
-
+function Badge({ label }: { label: string }) {
   return (
-    <span
-      className={`inline-flex items-center gap-1.5 rounded-full border px-3.5 py-1.5 text-[13px] font-medium ${styles}`}
-    >
+    <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-surface-muted px-3.5 py-1.5 text-[13px] font-medium text-accent">
       <svg viewBox="0 0 12 12" className="size-2.5" aria-hidden="true">
         <path
           d="M6 0c.4 3.1 2.9 5.6 6 6-3.1.4-5.6 2.9-6 6-.4-3.1-2.9-5.6-6-6 3.1-.4 5.6-2.9 6-6Z"
@@ -22,44 +28,119 @@ function Badge({ label, tone }: { label: string; tone: "blue" | "purple" }) {
   );
 }
 
+/**
+ * Homepage opening: headline, calls to action, and the intro clip that stands
+ * upright as the reader scrolls to it.
+ *
+ * The headline and the clip share one scroll timeline — the title recedes on
+ * the clip's progress, not its own. Measuring them separately lets the two
+ * drift apart, and the drift is what makes a page feel assembled rather than
+ * composed.
+ *
+ * Entrance runs on mount rather than on `whileInView`: this block is already
+ * on screen when the page loads, so waiting for a scroll would leave it blank.
+ */
 export function Hero() {
   const t = useTranslations("home.hero");
+  const prefersReducedMotion = useReducedMotion();
+  const [ctaHovered, setCtaHovered] = useState(false);
+  const { targetRef, scrollYProgress } = useSharedScrollProgress();
+
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.7, 0]);
+  const titleScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
+  const recede = prefersReducedMotion
+    ? undefined
+    : { opacity: titleOpacity, scale: titleScale };
 
   return (
-    <section className="relative overflow-hidden px-5 pb-16 pt-14 md:px-8 md:pb-24 md:pt-20">
-      {/* Soft brand wash behind the headline — no imagery, per the brief. */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-0 -z-10 h-[520px] w-[860px] max-w-[140vw] -translate-x-1/2 rounded-full opacity-60 blur-3xl"
-        style={{
-          background:
-            "radial-gradient(closest-side, rgba(49, 67, 68, 0.22), rgba(13, 13, 13, 0.08) 60%, transparent)",
-        }}
-      />
+    <section className="px-5 pb-4 pt-14 md:px-8 md:pt-20">
+      <motion.div
+        variants={staggerContainer}
+        initial="hidden"
+        animate="visible"
+        style={recede}
+        className="mx-auto flex w-full max-w-content flex-col items-center text-center"
+      >
+        <motion.div
+          variants={staggerItem}
+          className="flex flex-wrap items-center justify-center gap-2"
+        >
+          <Badge label={t("badge1")} />
+          <Badge label={t("badge2")} />
+        </motion.div>
 
-      <div className="mx-auto flex w-full max-w-content flex-col items-center text-center">
-        <div className="flex flex-wrap items-center justify-center gap-2">
-          <Badge label={t("badge1")} tone="blue" />
-          <Badge label={t("badge2")} tone="purple" />
-        </div>
-
-        <h1 className="mt-6 max-w-4xl text-balance text-[32px] font-extrabold leading-[1.12] tracking-[-0.03em] text-text sm:text-[44px] md:text-[56px] lg:text-[64px]">
+        <motion.h1
+          variants={staggerItem}
+          className="mt-6 max-w-4xl text-balance text-[32px] font-extrabold leading-[1.12] tracking-[-0.03em] text-text sm:text-[44px] md:text-[56px] lg:text-[64px]"
+        >
           {t("headlinePart1")}{" "}
           <span className="text-gradient-brand">{t("headlinePart2")}</span>
-        </h1>
+        </motion.h1>
 
-        <p className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-muted md:text-lg">
+        <motion.p
+          variants={staggerItem}
+          className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-muted md:text-lg"
+        >
           {t("description")}
-        </p>
+        </motion.p>
 
-        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-          <PillButton href="/bai-hoc" size="lg" className="px-6">
-            {t("ctaPrimary")}
-          </PillButton>
+        <motion.div
+          variants={staggerItem}
+          className="mt-9 flex flex-wrap items-center justify-center gap-3"
+        >
+          <span
+            onMouseEnter={() => setCtaHovered(true)}
+            onMouseLeave={() => setCtaHovered(false)}
+          >
+            <PillButton href="/bai-hoc" size="lg" className="px-6">
+              <AnimatedButtonLabel active={ctaHovered}>
+                {t("ctaPrimary")}
+              </AnimatedButtonLabel>
+            </PillButton>
+          </span>
           <PillButton href="/gioi-thieu" variant="outline" size="lg">
             {t("ctaSecondary")}
           </PillButton>
-        </div>
+        </motion.div>
+      </motion.div>
+
+      <div
+        // React's ref attribute requires RefObject<HTMLDivElement> exactly,
+        // but targetRef is legitimately nullable (holds null before mount).
+        ref={targetRef as RefObject<HTMLDivElement>}
+        className="mx-auto mt-14 w-full max-w-content"
+      >
+        <ScrollReveal3D targetRef={targetRef}>
+          <figure className="m-0">
+            <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-primary shadow-card md:rounded-3xl">
+              <AutoplayVideo
+                src={HOME_VIDEO}
+                ariaLabel={t("videoAriaLabel")}
+                loadOnScroll
+                mobileTapFullscreen
+              />
+            </div>
+
+            <figcaption className="mx-auto mt-4 max-w-2xl text-center text-sm text-text-muted">
+              {t("videoCaption")}
+              {HOME_VIDEO_CREDIT && (
+                <>
+                  {" · "}
+                  {/* External URL (YouTube) — next-intl's Link only accepts
+                      internal pathnames declared in i18n/routing.ts. */}
+                  <a
+                    href={HOME_VIDEO_CREDIT.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline underline-offset-4 hover:text-brand-600"
+                  >
+                    {HOME_VIDEO_CREDIT.label}
+                  </a>
+                </>
+              )}
+            </figcaption>
+          </figure>
+        </ScrollReveal3D>
       </div>
     </section>
   );

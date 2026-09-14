@@ -100,9 +100,6 @@ export const TEAM_UNITS = [
 export type TeamUnitId = (typeof TEAM_UNITS)[number]["id"];
 
 
-/** @deprecated Replaced by HOME_VIDEO; removed together with VideoReveal.tsx. */
-export const INTRO_VIDEO_SRC = "";
-
 /**
  * Homepage intro clip — the one that stands up as the reader scrolls to it.
  *
