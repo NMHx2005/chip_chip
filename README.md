@@ -179,7 +179,11 @@ Font là TTF chứ không phải woff2: satori không đọc được woff2. Hai
 | ------------------- | --------------------------------------------- |
 | `SOCIAL_LINKS`      | URL fanpage Facebook và TikTok                |
 | `JOIN_FORM_URL`     | Link Google Form đăng ký thành viên           |
-| `INTRO_VIDEO_SRC`   | Clip 30s đã cắt từ video giới thiệu           |
+
+- `public/video/*.mp4` là video giữ chỗ mượn từ dự án Strike Robot để xem
+  hiệu ứng. Nội dung không liên quan bán dẫn — phải thay hết trước khi lên
+  production. Điểm thay: `HOME_VIDEO` và `CAROUSEL_VIDEOS` trong
+  `src/lib/constants.ts`.
 
 Ngoài ra: logo vector bản trong suốt, bản đồ silhouette các nước, logo công ty,
 ảnh đội ngũ — và **nội dung bài học**, hiện là phần thiếu lớn nhất.

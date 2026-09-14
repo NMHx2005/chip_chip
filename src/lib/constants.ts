@@ -100,10 +100,36 @@ export const TEAM_UNITS = [
 export type TeamUnitId = (typeof TEAM_UNITS)[number]["id"];
 
 
-/** Clip from "The Closest Thing We Have to Alien Technology", cut at the point
- *  the narrator reaches "the smaller the transistor, the faster the
- *  computation". Trim with `ffmpeg -i input.mp4 -t 29 -c copy out.mp4`.
- *  Left blank until the trimmed file is delivered — the section renders a
- *  placeholder rather than erroring. */
+/** @deprecated Replaced by HOME_VIDEO; removed together with VideoReveal.tsx. */
 export const INTRO_VIDEO_SRC = "";
+
+/**
+ * Homepage intro clip — the one that stands up as the reader scrolls to it.
+ *
+ * PLACEHOLDER borrowed from the Strike Robot project so the motion can be
+ * reviewed. Replace with the 30s cut of "The Closest Thing We Have to Alien
+ * Technology", ending where the narration reaches "the smaller the transistor,
+ * the faster the computation". Self-hosted mp4 rather than a YouTube embed: an
+ * iframe cannot be muted-autoplayed reliably and cannot be rotated in 3D.
+ */
+export const HOME_VIDEO = "/video/intro-placeholder.mp4";
+
+/** Credit line under the intro clip. Empty until a real clip is in place. */
+export const HOME_VIDEO_CREDIT: { label: string; href: string } | null = null;
+
+/**
+ * Six clips for the homepage carousel. PLACEHOLDERS, same caveat as above.
+ * `topicKey` indexes `home.videos.topics` in the message files.
+ */
+export const CAROUSEL_VIDEOS = [
+  { id: "c1", src: "/video/clip-1.mp4", topicKey: "basics" },
+  { id: "c2", src: "/video/clip-2.mp4", topicKey: "transistor" },
+  { id: "c3", src: "/video/clip-3.mp4", topicKey: "fabrication" },
+  { id: "c4", src: "/video/clip-4.mp4", topicKey: "industry" },
+  { id: "c5", src: "/video/clip-5.mp4", topicKey: "careers" },
+  { id: "c6", src: "/video/clip-6.mp4", topicKey: "history" },
+] as const;
+
+/** Sticky backdrop behind the upper half of the homepage. */
+export const HERO_BACKDROP = "/motion-gallery-backdrop.svg";
 
