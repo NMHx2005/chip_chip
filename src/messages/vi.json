@@ -67,6 +67,21 @@
       "formNote": "Form mở trong cửa sổ mới. Chúng tôi chỉ dùng thông tin bạn cung cấp để liên hệ về dự án.",
       "badge": "Dự án Chíp Chíp · Học bán dẫn miễn phí · ",
       "formPending": "Form đăng ký sẽ mở trong thời gian tới."
+    },
+    "videos": {
+      "title": "Vẫn chưa đủ hấp dẫn sao? Thử học qua video nhé!",
+      "subtitle": "Các video được tác giả tuyển chọn kĩ lưỡng, phù hợp hoặc do chính tác giả thực hiện dịch, sản xuất với sự tâm huyết và trách nhiệm.",
+      "cta": "Khám phá thêm",
+      "prev": "Video trước",
+      "next": "Video tiếp theo",
+      "topics": {
+        "basics": "Kiến thức nền",
+        "transistor": "Transistor",
+        "fabrication": "Sản xuất chip",
+        "industry": "Ngành công nghiệp",
+        "careers": "Nghề nghiệp",
+        "history": "Lịch sử"
+      }
     }
   },
   "topics": {

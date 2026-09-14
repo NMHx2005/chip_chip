@@ -67,6 +67,21 @@
       "formNote": "The form opens in a new window. We only use your information to contact you about the project.",
       "badge": "Project Chíp Chíp · Learn semiconductors free · ",
       "formPending": "The sign-up form will open soon."
+    },
+    "videos": {
+      "title": "Still not convinced? Try learning from video.",
+      "subtitle": "Every clip is either chosen with care or translated and produced by us.",
+      "cta": "See more",
+      "prev": "Previous video",
+      "next": "Next video",
+      "topics": {
+        "basics": "Fundamentals",
+        "transistor": "Transistors",
+        "fabrication": "Fabrication",
+        "industry": "The industry",
+        "careers": "Careers",
+        "history": "History"
+      }
     }
   },
   "topics": {
