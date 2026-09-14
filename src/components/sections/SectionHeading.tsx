@@ -15,22 +15,39 @@ export function SectionHeading({
   descriptionKey,
   namespace = "home",
   align = "left",
+  variant = "default",
   className,
 }: {
   titleKey: string;
   descriptionKey: string;
   namespace?: string;
   align?: "left" | "center";
+  /**
+   * `statement` sets the description beside the title instead of under it and
+   * steps the type down a notch — for a block carrying two lines of copy, a
+   * full-width title over a stacked paragraph reads as an empty box.
+   */
+  variant?: "default" | "statement";
   className?: string;
 }) {
   const t = useTranslations(namespace);
   const prefersReducedMotion = useReducedMotion();
+  const isStatement = variant === "statement";
 
   const wrapperClassName = [
-    "flex flex-col gap-3",
+    isStatement
+      ? "grid gap-4 md:grid-cols-2 md:items-start md:gap-12"
+      : "flex flex-col gap-3",
     align === "center" ? "items-center text-center" : "items-start",
     className ?? "",
   ].join(" ");
+
+  const titleClassName = isStatement
+    ? "max-w-3xl text-balance text-[24px] font-extrabold leading-[1.2] tracking-[-0.02em] text-text sm:text-[28px] md:text-[30px]"
+    : "max-w-3xl text-balance text-[26px] font-extrabold leading-[1.18] tracking-[-0.02em] text-text sm:text-[32px] md:text-[38px]";
+
+  const descriptionClassName =
+    "max-w-2xl text-pretty text-[15px] leading-relaxed text-text-muted md:text-base";
 
   // Reduced motion renders plain elements rather than motion ones with a
   // `hidden` initial state — that way there is no opacity:0 style left
@@ -38,12 +55,8 @@ export function SectionHeading({
   if (prefersReducedMotion) {
     return (
       <div className={wrapperClassName}>
-        <h2 className="max-w-3xl text-balance text-[26px] font-extrabold leading-[1.18] tracking-[-0.02em] text-text sm:text-[32px] md:text-[38px]">
-          {t(titleKey)}
-        </h2>
-        <p className="max-w-2xl text-pretty text-[15px] leading-relaxed text-text-muted md:text-base">
-          {t(descriptionKey)}
-        </p>
+        <h2 className={titleClassName}>{t(titleKey)}</h2>
+        <p className={descriptionClassName}>{t(descriptionKey)}</p>
       </div>
     );
   }
@@ -56,16 +69,10 @@ export function SectionHeading({
       viewport={VIEWPORT_ONCE}
       className={wrapperClassName}
     >
-      <motion.h2
-        variants={staggerItem}
-        className="max-w-3xl text-balance text-[26px] font-extrabold leading-[1.18] tracking-[-0.02em] text-text sm:text-[32px] md:text-[38px]"
-      >
+      <motion.h2 variants={staggerItem} className={titleClassName}>
         {t(titleKey)}
       </motion.h2>
-      <motion.p
-        variants={staggerItem}
-        className="max-w-2xl text-pretty text-[15px] leading-relaxed text-text-muted md:text-base"
-      >
+      <motion.p variants={staggerItem} className={descriptionClassName}>
         {t(descriptionKey)}
       </motion.p>
     </motion.div>
