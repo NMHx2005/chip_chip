@@ -6,7 +6,13 @@ import { JoinCta } from "@/components/sections/JoinCta";
 import { LatestPosts } from "@/components/sections/LatestPosts";
 import { LessonTopics } from "@/components/sections/LessonTopics";
 import { SimpleStart } from "@/components/sections/SimpleStart";
-import { VideoReveal } from "@/components/sections/VideoReveal";
+import { VideoCarousel } from "@/components/sections/VideoCarousel";
+import {
+  MainSection,
+  SceneFillOverlay,
+  StickyBackdrop,
+} from "@/components/motion";
+import { HERO_BACKDROP } from "@/lib/constants";
 import { countLessonsByTopic, getLatestPosts } from "@/lib/queries/posts";
 import { localeAlternates } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
@@ -45,13 +51,23 @@ export default async function HomePage({
 
   return (
     <>
-      <Hero />
-      <VideoReveal />
-      <SimpleStart />
-      <LessonTopics counts={topicCounts} />
-      <CountryBands />
-      <LatestPosts posts={posts} />
-      <JoinCta />
+      <SceneFillOverlay targetId="latest-posts" />
+
+      <div className="relative">
+        <StickyBackdrop src={HERO_BACKDROP} />
+        <div className="relative z-10 -mt-[100dvh]">
+          <Hero />
+        </div>
+      </div>
+
+      <MainSection>
+        <SimpleStart />
+        <LessonTopics counts={topicCounts} />
+        <CountryBands />
+        <VideoCarousel />
+        <LatestPosts posts={posts} />
+        <JoinCta />
+      </MainSection>
     </>
   );
 }
