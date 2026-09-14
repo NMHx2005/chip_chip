@@ -1,6 +1,8 @@
 import { getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
+import { AnimatedSection } from "@/components/motion";
 import { SectionHeading } from "@/components/sections/SectionHeading";
+import { MotionGrid } from "@/components/sections/MotionGrid";
 import { PostCard } from "@/components/forum/PostCard";
 import { Link } from "@/i18n/navigation";
 import type { PostSummary } from "@/lib/types";
@@ -9,9 +11,8 @@ export async function LatestPosts({ posts }: { posts: PostSummary[] }) {
   const t = await getTranslations("home.latestPosts");
 
   return (
-    <section
+    <AnimatedSection
       id="latest-posts"
-      aria-label={t("headline")}
       className="cv-auto px-5 py-16 md:px-8 md:py-24"
     >
       <div className="mx-auto w-full max-w-content">
@@ -36,13 +37,13 @@ export async function LatestPosts({ posts }: { posts: PostSummary[] }) {
             {t("empty")}
           </p>
         ) : (
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <MotionGrid className="mt-10">
             {posts.map((post) => (
               <PostCard key={post.id} post={post} />
             ))}
-          </div>
+          </MotionGrid>
         )}
       </div>
-    </section>
+    </AnimatedSection>
   );
 }
