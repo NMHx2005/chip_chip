@@ -21,16 +21,9 @@ const config: Config = {
         "text-nav": "#4d4d4d",
         muted: "#6B7280",
 
-        topic: {
-          "dinh-nghia": "#F7B8C8",
-          "dinh-nghia-soft": "#FDE8EE",
-          "nguyen-ly": "#F7E08C",
-          "nguyen-ly-soft": "#FEF6D9",
-          "ung-dung": "#A8E0BE",
-          "ung-dung-soft": "#E4F7EC",
-          "lich-su": "#A9D4F5",
-          "lich-su-soft": "#E3F1FC",
-        },
+        // Topic colours are not a Tailwind palette on purpose — they live in
+        // `lib/constants.ts` (TOPIC_TONE) as inline styles, since the tone is
+        // data the components read per topic rather than a class name.
 
         border: "#D1D1D1",
         input: "#D1D1D1",
@@ -50,9 +43,9 @@ const config: Config = {
       },
 
       boxShadow: {
-        card: "0 1px 2px rgba(18, 16, 26, 0.04), 0 4px 16px rgba(18, 16, 26, 0.06)",
+        card: "0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.06)",
         "card-hover":
-          "0 2px 4px rgba(18, 16, 26, 0.05), 0 12px 32px rgba(0, 0, 0, 0.12)",
+          "0 2px 4px rgba(0, 0, 0, 0.05), 0 12px 32px rgba(0, 0, 0, 0.12)",
         float: "0 8px 32px rgba(0, 0, 0, 0.16)",
       },
 

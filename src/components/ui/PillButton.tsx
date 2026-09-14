@@ -70,7 +70,7 @@ function usePill(options: {
         border: "1.4px solid transparent",
         background: outlineBorderBg,
         boxShadow:
-          "inset 0 2px 4px rgba(0,0,0,0.03), 0 1px 2px rgba(18,16,26,0.04)",
+          "inset 0 2px 4px rgba(0,0,0,0.03), 0 1px 2px rgba(0,0,0,0.04)",
       }
     : {
         background: gradient!,
@@ -217,7 +217,7 @@ export function PillButtonCta({
     variant: "brand",
     size: "md",
     showArrow: true,
-    className: cn(showShadow && "shadow-[0_4px_0_rgba(61,21,96,0.35)]", className),
+    className: cn(showShadow && "shadow-[0_4px_0_rgba(0,0,0,0.35)]", className),
   });
   const motionProps = useTapMotion(pill.prefersReducedMotion);
 
