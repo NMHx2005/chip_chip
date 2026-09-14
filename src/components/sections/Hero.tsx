@@ -1,14 +1,16 @@
 "use client";
 
 import { useState, type RefObject } from "react";
-import { motion, useReducedMotion, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion, useTransform } from "framer-motion";
 import { useTranslations } from "next-intl";
 import {
   AnimatedButtonLabel,
   ScrollReveal3D,
+  VideoHoverCard,
   staggerContainer,
   staggerItem,
   useSharedScrollProgress,
+  useVideoHoverCard,
 } from "@/components/motion";
 import { AutoplayVideo } from "@/components/ui/AutoplayVideo";
 import { PillButton } from "@/components/ui/PillButton";
@@ -45,6 +47,7 @@ export function Hero() {
   const prefersReducedMotion = useReducedMotion();
   const [ctaHovered, setCtaHovered] = useState(false);
   const { targetRef, scrollYProgress } = useSharedScrollProgress();
+  const { cardVisible, onVideoEnter, onVideoLeave } = useVideoHoverCard();
 
   const titleOpacity = useTransform(scrollYProgress, [0, 0.5, 1], [1, 0.7, 0]);
   const titleScale = useTransform(scrollYProgress, [0, 1], [1, 0.92]);
@@ -112,13 +115,26 @@ export function Hero() {
       >
         <ScrollReveal3D targetRef={targetRef}>
           <figure className="m-0">
-            <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-primary shadow-card md:rounded-3xl">
+            <div
+              className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-primary shadow-card md:rounded-3xl"
+              onMouseEnter={onVideoEnter}
+              onMouseLeave={onVideoLeave}
+            >
               <AutoplayVideo
                 src={HOME_VIDEO}
                 ariaLabel={t("videoAriaLabel")}
                 loadOnScroll
                 mobileTapFullscreen
               />
+              <AnimatePresence>
+                {cardVisible && (
+                  <VideoHoverCard
+                    key="hero-video-card"
+                    label={t("hoverCardLabel")}
+                    sublabel={t("hoverCardSublabel")}
+                  />
+                )}
+              </AnimatePresence>
             </div>
 
             <figcaption className="mx-auto mt-4 max-w-2xl text-center text-sm text-text-muted">

@@ -20,3 +20,5 @@ export { TiltCard } from "@/components/motion/TiltCard";
 export { DriftTextPath } from "@/components/motion/DriftTextPath";
 export { useHoldToReveal } from "@/components/motion/useHoldToReveal";
 export { useSharedScrollProgress } from "@/components/motion/useSharedScrollProgress";
+export { VideoHoverCard } from "@/components/motion/VideoHoverCard";
+export { useVideoHoverCard } from "@/components/motion/useVideoHoverCard";

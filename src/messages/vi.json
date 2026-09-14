@@ -34,7 +34,9 @@
       "ctaPrimary": "Tìm hiểu ngay",
       "ctaSecondary": "Về chúng tôi",
       "videoAriaLabel": "Video giới thiệu về bán dẫn",
-      "videoCaption": "Vi mạch — thứ gần nhất với công nghệ của người ngoài hành tinh mà chúng ta đang có."
+      "videoCaption": "Vi mạch — thứ gần nhất với công nghệ của người ngoài hành tinh mà chúng ta đang có.",
+      "hoverCardLabel": "Xem toàn bộ video",
+      "hoverCardSublabel": "Bấm để mở trên kênh của dự án"
     },
     "simpleStart": {
       "headline": "Bắt đầu từ những điều đơn giản nhất",

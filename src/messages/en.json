@@ -34,7 +34,9 @@
       "ctaPrimary": "Start learning",
       "ctaSecondary": "About us",
       "videoAriaLabel": "Introductory video about semiconductors",
-      "videoCaption": "Microchips — the closest thing we have to alien technology."
+      "videoCaption": "Microchips — the closest thing we have to alien technology.",
+      "hoverCardLabel": "Watch the full video",
+      "hoverCardSublabel": "Opens on the project's channel"
     },
     "simpleStart": {
       "headline": "Start with the simplest things",
