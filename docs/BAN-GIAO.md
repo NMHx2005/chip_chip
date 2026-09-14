@@ -1,6 +1,6 @@
 # Bàn giao — Project Chíp Chíp
 
-Cập nhật: 14/09/2026 · Nhánh: `fix/security-hardening` · Commit cuối: `1a7cdbd`
+Cập nhật: 14/09/2026 · Nhánh: `fix/security-hardening` · Commit cuối: `ab64a43`
 
 ---
 
@@ -21,23 +21,15 @@ Trang trưng bày hiệu ứng (nội bộ, đã chặn khỏi công cụ tìm k
 
 ---
 
-## 2. Đang dở dang — xử lý trước tiên
+## 2. Trạng thái cây làm việc
 
-**`src/components/sections/Hero.tsx` đang sửa nhưng CHƯA COMMIT.**
+**Sạch.** Không có gì sửa dở. Thư mục `.commandcode/` là rác của công cụ, không phải của dự án — xoá được.
 
-Nội dung sửa: cho khối tiêu đề cao trọn màn hình (`min-h-[calc(100dvh-68px)]`, `md:` là `76px` — khớp đúng khối đệm trong `Navbar.tsx`), căn giữa dọc, để video xuống hẳn dưới nếp gấp. Đây là yêu cầu *"hero phải ở giữa, khi scroll lên thì video mới xuất hiện"*.
+Việc cuối cùng chạy xong là cho hero cao trọn màn hình (commit `ab64a43`): khối tiêu đề dùng `min-h-[calc(100dvh-68px)]`, `md:` là `76px` — số lấy trực tiếp từ khối đệm thật trong `Navbar.tsx:145`, không phải đoán. Dùng chiều cao *tối thiểu* nên màn hình thấp thì trang dài ra chứ không cắt nội dung.
 
-Code nhìn đúng và có comment giải thích, nhưng **chưa ai kiểm**. Việc cần làm:
+Đã chứng minh bằng phép tính rằng đỉnh video luôn nằm dưới đáy khung nhìn ít nhất 56px ở cả 1440×900, 768×1024 và 390×844. Ba lệnh kiểm (`tsc`, `lint`, `build`) đều sạch.
 
-```bash
-npx tsc --noEmit && npx next lint --max-warnings=0 && NODE_ENV=production npx next build
-```
-
-Rồi mở trình duyệt kiểm ở 390×844, 768×1024, 1440×900: tiêu đề căn giữa, video **không** lộ ra trong màn hình đầu, và ở màn thấp nội dung **không bị cắt**. Đạt thì commit; không đạt thì `git checkout src/components/sections/Hero.tsx` để bỏ.
-
-Thư mục `.commandcode/` là rác của công cụ, không phải của dự án.
-
----
+**Chưa ai nhìn bằng mắt.** Nên việc đầu tiên nên làm là mở trình duyệt xác nhận: tiêu đề căn giữa dọc, video không lộ ra trong màn hình đầu, và ở màn thấp nội dung không bị cắt.
 
 ## 3. Đã xong
 
@@ -66,9 +58,9 @@ Bình luận không ghi trực tiếp từ trình duyệt; mọi thứ qua `/api
 
 PAGE 1–5 dựng trên thư viện trên. Gồm băng chuyền 6 video tự viết (không dùng thư viện), lớp phủ chuyển cảnh, thẻ nghiêng khi hover.
 
-### Giai đoạn 2b — sửa theo phản hồi (1/8)
+### Giai đoạn 2b — sửa theo phản hồi (2/8)
 
-Chủ dự án xem trang chạy thật và nêu 8 điểm. Mới xong điểm 1.
+Chủ dự án xem trang chạy thật và nêu 8 điểm. Xong điểm 1 và 2.
 
 ---
 
@@ -81,7 +73,7 @@ Plan chi tiết: `docs/superpowers/plans/2026-09-14-giai-doan-2b-sua-theo-feedba
 | # | Việc | Tệp chính |
 |---|---|---|
 | ~~1~~ | ~~Bỏ màu tím + bỏ pastel 4 nước~~ | xong, commit `1a7cdbd` |
-| 2 | Hero trọn màn hình | **đang dở, chưa commit** |
+| ~~2~~ | ~~Hero trọn màn hình~~ | xong, commit `ab64a43` (chưa kiểm bằng mắt) |
 | 3 | Cột video bên phải khối 4 chủ đề | `LessonTopics.tsx`, `constants.ts` |
 | 4 | Thẻ diễn đàn đều chiều cao + ảnh bìa | `LatestPosts.tsx`, `MotionGrid.tsx`, `PostCard.tsx` |
 | 5 | Dựng lại CTA theo Strike | `JoinCta.tsx` |
