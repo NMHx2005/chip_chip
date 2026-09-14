@@ -51,7 +51,7 @@ export function MotionGrid({
       className={gridClassName}
     >
       {Children.map(children, (child, index) => (
-        <motion.div variants={staggerItem}>
+        <motion.div variants={staggerItem} className="h-full">
           <TiltCard side={index % 2 === 0 ? "left" : "right"} className="h-full">
             {child}
           </TiltCard>

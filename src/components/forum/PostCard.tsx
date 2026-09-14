@@ -31,9 +31,13 @@ export async function PostCard({
   return (
     <Link
       href={href}
-      className="group flex flex-col gap-3 rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:border-black/20 hover:shadow-card-hover"
+      className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:border-black/20 hover:shadow-card-hover"
     >
-      {post.coverImageUrl && (
+      {/* Always 16:9, whether or not the article has a cover. A card without
+          one used to start shorter and end up out of line with its neighbours;
+          the empty block keeps the row level. Neutral and wordless so it reads
+          as reserved space rather than as a missing image. */}
+      {post.coverImageUrl ? (
         <div className="relative mb-1 aspect-video w-full overflow-hidden rounded-xl">
           <Image
             src={post.coverImageUrl}
@@ -43,6 +47,11 @@ export async function PostCard({
             className="object-cover"
           />
         </div>
+      ) : (
+        <div
+          aria-hidden
+          className="mb-1 aspect-video w-full rounded-xl bg-surface-muted"
+        />
       )}
 
       <div className="flex flex-wrap items-center gap-2">
@@ -72,11 +81,17 @@ export async function PostCard({
         {post.title}
       </h3>
 
-      {post.excerpt && (
-        <p className="line-clamp-3 text-sm leading-relaxed text-text-muted">
-          {post.excerpt}
-        </p>
-      )}
+      {/* Reserved to three lines — the most `line-clamp-3` will ever show — so
+          a card whose excerpt is missing or one line long still ends where its
+          neighbours do. `mt-auto` below then lands every "read more" on the
+          same baseline. */}
+      <div className="min-h-[68px]">
+        {post.excerpt && (
+          <p className="line-clamp-3 text-sm leading-relaxed text-text-muted">
+            {post.excerpt}
+          </p>
+        )}
+      </div>
 
       <span className="mt-auto inline-flex items-center gap-1 pt-2 text-sm font-semibold text-accent transition-transform duration-300 group-hover:translate-x-0.5">
         {t("readMore")}
