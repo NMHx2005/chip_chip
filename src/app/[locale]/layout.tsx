@@ -1,6 +1,7 @@
-import { hasLocale } from "next-intl";
-import { getTranslations, setRequestLocale } from "next-intl/server";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
+import { DocumentLang } from "@/components/layout/DocumentLang";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
@@ -26,21 +27,26 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const t = await getTranslations("nav");
+  const messages = await getMessages();
 
   return (
-    <SmoothScroll>
-      <a
-        href="#main"
-        className="sr-only rounded-full bg-primary px-4 py-2 text-sm font-medium text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[2000]"
-      >
-        {t("skipToContent")}
-      </a>
+    <NextIntlClientProvider locale={locale} messages={messages}>
+      <DocumentLang locale={locale} />
 
-      <Navbar />
+      <SmoothScroll>
+        <a
+          href="#main"
+          className="sr-only rounded-full bg-primary px-4 py-2 text-sm font-medium text-white focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[2000]"
+        >
+          {t("skipToContent")}
+        </a>
 
-      <main id="main">{children}</main>
+        <Navbar />
 
-      <Footer />
-    </SmoothScroll>
+        <main id="main">{children}</main>
+
+        <Footer />
+      </SmoothScroll>
+    </NextIntlClientProvider>
   );
 }

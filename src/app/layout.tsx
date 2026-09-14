@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Be_Vietnam_Pro, JetBrains_Mono } from "next/font/google";
-import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages, getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -50,7 +49,6 @@ export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const locale = await getLocale();
-  const messages = await getMessages();
 
   return (
     <html
@@ -58,9 +56,21 @@ export default async function RootLayout({
       className={`${beVietnamPro.variable} ${jetbrainsMono.variable}`}
     >
       <body className="min-h-[100dvh] bg-bg font-body text-text antialiased">
-        <NextIntlClientProvider locale={locale} messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        {/*
+          No `NextIntlClientProvider` here on purpose, even though this is the
+          obvious place for it. This layout wraps the `[locale]` segment rather
+          than living inside it, and Next preserves layouts across a soft
+          navigation — so on a language switch this component never re-renders
+          and the provider would keep handing every client component the
+          messages of the locale the page was first loaded with. The page
+          looked translated in the parts the server renders and stubbornly
+          Vietnamese in the parts the browser renders.
+
+          It now sits in `[locale]/layout.tsx`, which does re-render when the
+          locale segment changes. `lang` is corrected client-side by
+          `DocumentLang`, since the attribute belongs to this element.
+        */}
+        {children}
       </body>
     </html>
   );
