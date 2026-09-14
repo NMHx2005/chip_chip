@@ -54,25 +54,39 @@ export const COUNTRY_BANDS = [
     id: "usa",
     labelKey: "usa",
     tone: "#F9CFE0",
-    companies: ["NVIDIA", "Broadcom", "AMD", "Micron", "Qualcomm", "Intel"],
+    /**
+     * Company logos live in `public/logos/`. `logo: null` renders the name as
+     * text, so the band stays correct before the files arrive.
+     */
+    companies: [
+      { name: "NVIDIA", logo: null },
+      { name: "Broadcom", logo: null },
+      { name: "AMD", logo: null },
+      { name: "Micron", logo: null },
+      { name: "Qualcomm", logo: null },
+      { name: "Intel", logo: null },
+    ],
   },
   {
     id: "taiwan",
     labelKey: "taiwan",
     tone: "#FBE9A8",
-    companies: ["TSMC"],
+    companies: [{ name: "TSMC", logo: null }],
   },
   {
     id: "netherlands",
     labelKey: "netherlands",
     tone: "#BEE6CC",
-    companies: ["ASML"],
+    companies: [{ name: "ASML", logo: null }],
   },
   {
     id: "south-korea",
     labelKey: "south-korea",
     tone: "#B9DCF7",
-    companies: ["Samsung", "SK hynix"],
+    companies: [
+      { name: "Samsung", logo: null },
+      { name: "SK hynix", logo: null },
+    ],
   },
 ] as const;
 

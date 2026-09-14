@@ -45,14 +45,24 @@ function CountryBandRow({
 
         <ul className="flex flex-wrap items-center gap-x-2.5 gap-y-2 sm:justify-end">
           {band.companies.map((company) => (
-            <li key={company}>
+            <li key={company.name}>
               <span
                 className={cn(
-                  "inline-flex rounded-full border border-black/10 bg-white/60 px-3.5 py-1.5 text-[13px] font-semibold text-text/80 backdrop-blur-sm transition-all duration-300 sm:text-sm",
+                  "inline-flex items-center rounded-full border border-black/10 bg-white/60 px-3.5 py-1.5 text-[13px] font-semibold text-text/80 backdrop-blur-sm transition-all duration-300 sm:text-sm",
                   hovered && "border-black/15 bg-white/90 text-text"
                 )}
               >
-                {company}
+                {company.logo ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={company.logo}
+                    alt={company.name}
+                    loading="lazy"
+                    className="h-3.5 w-auto"
+                  />
+                ) : (
+                  company.name
+                )}
               </span>
             </li>
           ))}
