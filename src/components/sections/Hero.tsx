@@ -56,56 +56,67 @@ export function Hero() {
     : { opacity: titleOpacity, scale: titleScale };
 
   return (
-    <section className="px-5 pb-4 pt-14 md:px-8 md:pt-20">
-      <motion.div
-        variants={staggerContainer}
-        initial={prefersReducedMotion ? undefined : "hidden"}
-        animate={prefersReducedMotion ? undefined : "visible"}
-        style={recede}
-        className="mx-auto flex w-full max-w-content flex-col items-center text-center"
-      >
+    <section className="px-5 pb-4 md:px-8">
+      {/*
+        Fills the viewport below the fixed navbar and centers the headline
+        block vertically inside it. Height is a *minimum*, not fixed: on a
+        short viewport the content simply grows past it instead of clipping.
+        68px/76px mirrors Navbar's own spacer (src/components/layout/Navbar.tsx)
+        exactly, so this block's bottom always lands on the viewport's bottom
+        edge (or lower, if content overflows) — which is what keeps the video
+        below entirely off-screen on load.
+      */}
+      <div className="flex min-h-[calc(100dvh-68px)] flex-col items-center justify-center md:min-h-[calc(100dvh-76px)]">
         <motion.div
-          variants={staggerItem}
-          className="flex flex-wrap items-center justify-center gap-2"
+          variants={staggerContainer}
+          initial={prefersReducedMotion ? undefined : "hidden"}
+          animate={prefersReducedMotion ? undefined : "visible"}
+          style={recede}
+          className="mx-auto flex w-full max-w-content flex-col items-center text-center"
         >
-          <Badge label={t("badge1")} />
-          <Badge label={t("badge2")} />
-        </motion.div>
-
-        <motion.h1
-          variants={staggerItem}
-          className="mt-6 max-w-4xl text-balance text-[32px] font-extrabold leading-[1.12] tracking-[-0.03em] text-text sm:text-[44px] md:text-[56px] lg:text-[64px]"
-        >
-          {t("headlinePart1")}{" "}
-          <span className="text-gradient-brand">{t("headlinePart2")}</span>
-        </motion.h1>
-
-        <motion.p
-          variants={staggerItem}
-          className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-muted md:text-lg"
-        >
-          {t("description")}
-        </motion.p>
-
-        <motion.div
-          variants={staggerItem}
-          className="mt-9 flex flex-wrap items-center justify-center gap-3"
-        >
-          <span
-            onMouseEnter={() => setCtaHovered(true)}
-            onMouseLeave={() => setCtaHovered(false)}
+          <motion.div
+            variants={staggerItem}
+            className="flex flex-wrap items-center justify-center gap-2"
           >
-            <PillButton href="/bai-hoc" size="lg" className="px-6">
-              <AnimatedButtonLabel active={ctaHovered}>
-                {t("ctaPrimary")}
-              </AnimatedButtonLabel>
+            <Badge label={t("badge1")} />
+            <Badge label={t("badge2")} />
+          </motion.div>
+
+          <motion.h1
+            variants={staggerItem}
+            className="mt-6 max-w-4xl text-balance text-[32px] font-extrabold leading-[1.12] tracking-[-0.03em] text-text sm:text-[44px] md:text-[56px] lg:text-[64px]"
+          >
+            {t("headlinePart1")}{" "}
+            <span className="text-gradient-brand">{t("headlinePart2")}</span>
+          </motion.h1>
+
+          <motion.p
+            variants={staggerItem}
+            className="mt-6 max-w-2xl text-pretty text-base leading-relaxed text-text-muted md:text-lg"
+          >
+            {t("description")}
+          </motion.p>
+
+          <motion.div
+            variants={staggerItem}
+            className="mt-9 flex flex-wrap items-center justify-center gap-3"
+          >
+            <span
+              onMouseEnter={() => setCtaHovered(true)}
+              onMouseLeave={() => setCtaHovered(false)}
+            >
+              <PillButton href="/bai-hoc" size="lg" className="px-6">
+                <AnimatedButtonLabel active={ctaHovered}>
+                  {t("ctaPrimary")}
+                </AnimatedButtonLabel>
+              </PillButton>
+            </span>
+            <PillButton href="/gioi-thieu" variant="outline" size="lg">
+              {t("ctaSecondary")}
             </PillButton>
-          </span>
-          <PillButton href="/gioi-thieu" variant="outline" size="lg">
-            {t("ctaSecondary")}
-          </PillButton>
+          </motion.div>
         </motion.div>
-      </motion.div>
+      </div>
 
       <div
         // React's ref attribute requires RefObject<HTMLDivElement> exactly,
