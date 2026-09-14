@@ -56,8 +56,8 @@ export function Hero() {
     <section className="px-5 pb-4 pt-14 md:px-8 md:pt-20">
       <motion.div
         variants={staggerContainer}
-        initial="hidden"
-        animate="visible"
+        initial={prefersReducedMotion ? undefined : "hidden"}
+        animate={prefersReducedMotion ? undefined : "visible"}
         style={recede}
         className="mx-auto flex w-full max-w-content flex-col items-center text-center"
       >
