@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { TOPIC_IDS, TOPIC_TONE, type TopicId } from "@/lib/constants";
 import { createPost } from "@/app/admin/actions";
+import { readActionResult, sessionExpired } from "@/components/admin/actionResult";
 
 const TOPIC_TITLE: Record<TopicId, string> = {
   "dinh-nghia": "Định nghĩa",
@@ -28,12 +29,21 @@ export function NewPostForm() {
     setError(null);
 
     startTransition(async () => {
-      const result = await createPost({
-        kind,
-        topic: kind === "lesson" ? topic : null,
-        title,
-        slug,
-      });
+      const result = readActionResult(
+        await createPost({
+          kind,
+          topic: kind === "lesson" ? topic : null,
+          title,
+          slug,
+        })
+      );
+
+      if (!result) return;
+
+      if (sessionExpired(result)) {
+        router.replace("/admin/dang-nhap");
+        return;
+      }
 
       if (!result.ok || !result.id) {
         setError(result.error ?? "Không tạo được bài viết.");

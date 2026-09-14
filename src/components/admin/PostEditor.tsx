@@ -12,6 +12,7 @@ import { LOCALE_LABELS, routing, type Locale } from "@/i18n/routing";
 import { slugify } from "@/lib/post-slug";
 import { cn } from "@/lib/utils";
 import { applySaveResult, planSave } from "@/components/admin/saveRevision";
+import { readActionResult, sessionExpired } from "@/components/admin/actionResult";
 
 export type Draft = {
   id: string;
@@ -180,14 +181,28 @@ export function PostEditor({
           }
 
           const { draft, revision: sentRevision } = entry;
-          const result = await savePost({
-            id: draft.id,
-            title: draft.title,
-            slug: draft.slug || slugify(draft.title) || `${locale}-${draft.id.slice(0, 6)}`,
-            excerpt: draft.excerpt,
-            coverImageUrl: draft.coverImageUrl,
-            content: draft.content,
-          });
+          const result = readActionResult(
+            await savePost({
+              id: draft.id,
+              title: draft.title,
+              slug:
+                draft.slug ||
+                slugify(draft.title) ||
+                `${locale}-${draft.id.slice(0, 6)}`,
+              excerpt: draft.excerpt,
+              coverImageUrl: draft.coverImageUrl,
+              content: draft.content,
+            })
+          );
+
+          // Session gone mid-save: the action refused rather than redirecting,
+          // so the move to the login screen is ours to make.
+          if (!result) return;
+
+          if (sessionExpired(result)) {
+            router.replace("/admin/dang-nhap");
+            return;
+          }
 
           if (!result.ok) {
             setState("error");
@@ -237,7 +252,12 @@ export function PostEditor({
     setPublishError(null);
     setMessage(null);
     startTransition(async () => {
-      const result = await fn(translationId);
+      const result = readActionResult(await fn(translationId));
+      if (!result) return;
+      if (sessionExpired(result)) {
+        router.replace("/admin/dang-nhap");
+        return;
+      }
       if (!result.ok) {
         setPublishError(result.error ?? "Thao tác thất bại.");
         return;
@@ -498,8 +518,14 @@ export function PostEditor({
         </div>
       </div>
 
-      {/* Body */}
-      <div className="overflow-hidden rounded-2xl border border-border bg-surface">
+      {/* Body.
+          `overflow-clip`, not `overflow-hidden`: both clip the toolbar to the
+          rounded corners, but `overflow: hidden` makes this box a scroll
+          container, and a `position: sticky` child then sticks to *it* — which
+          never scrolls — instead of to the viewport. That silently killed the
+          toolbar's stickiness. `overflow: clip` clips without creating a
+          scroll container, so the toolbar can stick. */}
+      <div className="overflow-clip rounded-2xl border border-border bg-surface">
         <EditorToolbar editor={editor} />
         <div className="px-4 py-5 md:px-8 md:py-8">
           <EditorContent editor={editor} />

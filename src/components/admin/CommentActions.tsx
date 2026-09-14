@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Trash2 } from "lucide-react";
 import { deleteComment, setCommentHidden } from "@/app/admin/actions";
+import { readActionResult, sessionExpired } from "@/components/admin/actionResult";
 
 export function CommentActions({
   commentId,
@@ -20,7 +21,12 @@ export function CommentActions({
   const run = (fn: () => Promise<{ ok: boolean; error?: string }>) => {
     setError(null);
     startTransition(async () => {
-      const result = await fn();
+      const result = readActionResult(await fn());
+      if (!result) return;
+      if (sessionExpired(result)) {
+        router.replace("/admin/dang-nhap");
+        return;
+      }
       if (!result.ok) {
         setError(result.error ?? "Thao tác thất bại.");
         return;

@@ -3,17 +3,38 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { requireStaff } from "@/lib/auth";
+import { lookUpStaff } from "@/lib/auth";
 import { routing } from "@/i18n/routing";
 import { slugify } from "@/lib/post-slug";
 import type { PostKind } from "@/lib/types";
 import type { TopicId } from "@/lib/constants";
 
-export type ActionResult = { ok: boolean; error?: string };
+export type ActionResult = {
+  ok: boolean;
+  error?: string;
+  /** The staff session is gone; the component should send them to log in. */
+  unauthorized?: boolean;
+};
 
 function fail(error: string): ActionResult {
   return { ok: false, error };
 }
+
+/**
+ * What every action returns instead of redirecting when the session has ended.
+ *
+ * `requireStaff()` answers with a redirect, and a redirect out of a Server
+ * Action never reaches the browser as a navigation: the promise resolves with
+ * `undefined`, so the caller either crashed on `result.ok` (the admin error
+ * boundary then blamed the Supabase connection) or silently did nothing while
+ * the reader believed the save had gone through. A value the caller can read
+ * is the only thing that works here.
+ */
+const SESSION_ENDED: ActionResult = {
+  ok: false,
+  unauthorized: true,
+  error: "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
+};
 
 /** Drop every cached rendering of a post so the edit shows up immediately. */
 async function revalidatePost(slug: string, kind: PostKind, topic: TopicId | null) {
@@ -54,7 +75,9 @@ function isTiptapDoc(value: unknown): value is { type: "doc" } {
 }
 
 export async function savePost(input: SavePostInput): Promise<ActionResult> {
-  await requireStaff();
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
   const supabase = createClient();
 
   const title = input.title.trim();
@@ -102,8 +125,11 @@ export async function createPost(args: {
   topic: TopicId | null;
   title: string;
   slug: string;
-}): Promise<{ ok: boolean; error?: string; id?: string; translationId?: string }> {
-  const staff = await requireStaff();
+}): Promise<{ ok: boolean; error?: string; unauthorized?: boolean; id?: string; translationId?: string }> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
+  const staff = lookup.staff;
   const supabase = createClient();
 
   const title = args.title.trim();
@@ -155,7 +181,9 @@ export async function createPost(args: {
 export async function publishTranslation(
   translationId: string
 ): Promise<ActionResult> {
-  await requireStaff();
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
   const supabase = createClient();
 
   const { error } = await supabase.rpc("publish_translation", {
@@ -183,7 +211,9 @@ export async function publishTranslation(
 export async function unpublishTranslation(
   translationId: string
 ): Promise<ActionResult> {
-  await requireStaff();
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
   const supabase = createClient();
 
   const { error } = await supabase.rpc("unpublish_translation", {
@@ -202,7 +232,9 @@ export async function unpublishTranslation(
 export async function deleteTranslation(
   translationId: string
 ): Promise<ActionResult> {
-  await requireStaff();
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
   const supabase = createClient();
 
   const { error } = await supabase
@@ -223,7 +255,9 @@ export async function setCommentHidden(
   commentId: string,
   hidden: boolean
 ): Promise<ActionResult> {
-  await requireStaff();
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
   const supabase = createClient();
 
   const { error } = await supabase
@@ -240,7 +274,9 @@ export async function setCommentHidden(
 }
 
 export async function deleteComment(commentId: string): Promise<ActionResult> {
-  await requireStaff();
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
   const supabase = createClient();
 
   const { error } = await supabase.from("comments").delete().eq("id", commentId);

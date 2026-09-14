@@ -63,6 +63,20 @@ export async function middleware(request: NextRequest) {
 
   if (!isAdmin) return response;
 
+  /*
+   * Server Actions answer for themselves.
+   *
+   * Every action under /admin calls `lookUpStaff()` and returns a failure the
+   * component can act on (see `SESSION_ENDED` in app/admin/actions.ts). When a
+   * session died mid-edit, this guard used to redirect the action's POST
+   * instead — and a 307 on a Server Action never reaches the browser as a
+   * navigation: the login page's payload was fetched and then dropped, so the
+   * save looked like it had done nothing at all. Letting the action run is
+   * also not a hole: the action performs the same check itself, next to the
+   * data, which is the check that actually protects it.
+   */
+  if (request.headers.has("next-action")) return response;
+
   // Signing up is open, so a session alone proves nothing. The profile has to
   // be activated by an admin. Checking it here as well as in `requireStaff`
   // is what stops an activated-less account from bouncing between the login

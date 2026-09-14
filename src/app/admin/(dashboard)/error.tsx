@@ -27,8 +27,8 @@ export default function AdminError({
           Đã có lỗi xảy ra
         </h1>
         <p className="mt-1.5 text-sm text-red-700">
-          Thao tác không hoàn tất. Thử lại, và nếu vẫn lỗi thì kiểm tra kết nối
-          tới Supabase.
+          Thao tác không hoàn tất. Thử lại, và nếu vẫn lỗi thì tải lại trang.
+          Lỗi kéo dài ở mọi thao tác thường là mất kết nối tới Supabase.
         </p>
       </div>
 

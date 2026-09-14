@@ -8,6 +8,7 @@ import {
   publishTranslation,
   unpublishTranslation,
 } from "@/app/admin/actions";
+import { readActionResult, sessionExpired } from "@/components/admin/actionResult";
 
 type Props = {
   translationId: string;
@@ -25,7 +26,12 @@ export function PostRowActions({ translationId, status, ready }: Props) {
   const run = (fn: () => Promise<{ ok: boolean; error?: string }>) => {
     setError(null);
     startTransition(async () => {
-      const result = await fn();
+      const result = readActionResult(await fn());
+      if (!result) return;
+      if (sessionExpired(result)) {
+        router.replace("/admin/dang-nhap");
+        return;
+      }
       if (!result.ok) {
         setError(result.error ?? "Thao tác thất bại.");
         return;
