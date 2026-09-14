@@ -105,8 +105,16 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
   };
 
   return (
-    <div className="sticky top-16 z-20 border-b border-border bg-surface/95 backdrop-blur">
-      <div className="flex flex-wrap items-center gap-0.5 py-2">
+    /*
+      `top-[110px]` is the height of the admin header, not a guess: the header
+      is itself `sticky top-0` and holds a 64px logo row plus the nav row
+      (app/admin/(dashboard)/layout.tsx). At the previous `top-16` the toolbar
+      stuck at 64px — directly *behind* the nav row, since the header sits at
+      `z-40` and this at `z-20` — so the tools vanished under the header the
+      moment the editor scrolled.
+    */
+    <div className="sticky top-[110px] z-20 border-b border-border bg-surface/95 backdrop-blur">
+      <div className="flex flex-wrap items-center gap-0.5 px-3 py-2 md:px-5">
         <ToolButton
           label="Tiêu đề lớn"
           active={editor.isActive("heading", { level: 1 })}
