@@ -44,7 +44,7 @@
       "headline": "Four topics, from zero to the whole semiconductor industry",
       "description": "Each topic is one continuous read: what a semiconductor is, how transistors and microchips work, where they turn up in daily life, and how far the industry has come. No prior knowledge needed — start with the first one.",
       "readMore": "Read more",
-      "articleCount": "{count} articles",
+      "articleCount": "{count, plural, one {# article} other {# articles}}",
       "empty": "This topic has no articles yet."
     },
     "countries": {
@@ -98,7 +98,8 @@
     "lich-su": {
       "title": "History & development",
       "description": "From the first transistor to today's global chip race."
-    }
+    },
+    "empty": "This topic has no articles yet."
   },
   "countries": {
     "usa": "USA",

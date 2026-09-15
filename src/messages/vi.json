@@ -98,7 +98,8 @@
     "lich-su": {
       "title": "Lịch sử và Phát triển",
       "description": "Từ chiếc transistor đầu tiên tới cuộc đua chip toàn cầu ngày nay."
-    }
+    },
+    "empty": "Chủ đề này chưa có bài viết nào."
   },
   "countries": {
     "usa": "Mỹ",

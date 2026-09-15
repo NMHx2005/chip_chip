@@ -76,7 +76,7 @@ export default async function TopicPage({ params }: { params: Params }) {
 
         {posts.length === 0 ? (
           <p className="mt-12 rounded-2xl border border-dashed border-border px-6 py-16 text-center text-sm text-text-muted">
-            {tLessons("videoComingSoon")}
+            {t("empty")}
           </p>
         ) : (
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

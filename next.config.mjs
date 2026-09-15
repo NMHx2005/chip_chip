@@ -6,7 +6,7 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
  * Baseline security headers.
  *
  * The site renders staff-authored HTML through `dangerouslySetInnerHTML`, so a
- * CSP is the second line of defence behind DOMPurify. `unsafe-inline` on
+ * CSP is the second line of defence behind the HTML allow-list. `unsafe-inline` on
  * styles is unavoidable while Tailwind and satori emit inline style
  * attributes; scripts get `unsafe-inline` only because Next's bootstrap
  * scripts are inline and nonce support needs per-request rendering.

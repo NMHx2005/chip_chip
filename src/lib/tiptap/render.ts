@@ -1,18 +1,18 @@
 import "server-only";
 
 import { generateHTML } from "@tiptap/html";
-import DOMPurify from "isomorphic-dompurify";
 import { articleExtensions } from "@/lib/tiptap/extensions";
 import { extractHeadings, withHeadingIds } from "@/lib/tiptap/headings";
+import { sanitizeArticleHtml } from "@/lib/tiptap/sanitize";
 
 /**
  * Renders stored Tiptap JSON to HTML for the article page.
  *
  * Content is stored as JSON rather than HTML so nothing executable is ever
  * persisted. `generateHTML` runs in Node without a DOM (it uses zeed-dom
- * internally), and DOMPurify then runs as a second line of defence — only
- * staff can write articles, but sanitising on the way out is cheap insurance
- * against a hand-edited database row or a future importer.
+ * internally), and `sanitizeArticleHtml` then runs as a second line of
+ * defence — only staff can write articles, but sanitising on the way out is
+ * cheap insurance against a hand-edited database row or a future importer.
  *
  * Heading ids are injected so the table of contents can link to them.
  */
@@ -31,23 +31,7 @@ export function renderArticle(content: unknown): string {
     return "";
   }
 
-  return DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: [
-      "p", "br", "hr", "strong", "em", "u", "s", "code", "pre", "mark",
-      "h1", "h2", "h3", "h4",
-      "ul", "ol", "li",
-      "blockquote",
-      "a", "img",
-      "table", "thead", "tbody", "tr", "th", "td",
-    ],
-    ALLOWED_ATTR: [
-      "href", "target", "rel",
-      "src", "alt", "title", "loading", "decoding",
-      "class", "style", "id",
-      "colspan", "rowspan",
-    ],
-    FORBID_TAGS: ["script", "style", "iframe", "object", "embed", "form"],
-  });
+  return sanitizeArticleHtml(html);
 }
 
 /** Plain-text preview for meta descriptions and search results. */
