@@ -20,6 +20,7 @@ PASSWORD="Password123!$$"
 failures=0
 
 cleanup() {
+  psql "$DB_URL" -q -c "delete from public.posts where slug like 'sec-%-$$%';" >/dev/null 2>&1 || true
   psql "$DB_URL" -q -c "delete from auth.users where email = '$EMAIL';" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
@@ -59,6 +60,16 @@ denied() {
   esac
 }
 
+# Runs SQL as the superuser and reports whether Postgres accepted it. Used for
+# CHECK constraints, which no API role could exercise more directly.
+sql_outcome() {
+  if psql "$DB_URL" -q -v ON_ERROR_STOP=1 -c "$1" >/dev/null 2>&1; then
+    echo "allowed"
+  else
+    echo "blocked"
+  fi
+}
+
 echo
 echo "C1 — tài khoản mới không được là nhân sự"
 active=$(psql "$DB_URL" -t -A -c \
@@ -96,6 +107,53 @@ check "anon không gọi được consume_rate_limit" "401" \
   "$(status -X POST "$API_URL/rest/v1/rpc/consume_rate_limit" -H "apikey: $ANON_KEY" \
     -H 'Content-Type: application/json' \
     -d '{"p_scope":"comment","p_key":"x","p_limit":3,"p_window_minutes":10}')"
+
+echo
+echo "D1 — dữ liệu video phải hợp lệ"
+check "không lưu được ID video dạng javascript:" "blocked" "$(sql_outcome \
+  "insert into public.posts (locale, kind, slug, video_platform, video_external_id)
+   values ('vi', 'video', 'sec-vid-$$', 'youtube', 'javascript:alert(1)');")"
+check "không gắn trường video vào bài blog" "blocked" "$(sql_outcome \
+  "insert into public.posts (locale, kind, slug, video_platform, video_external_id)
+   values ('vi', 'forum', 'sec-vidf-$$', 'youtube', 'dQw4w9WgXcQ');")"
+check "không gắn độ khó vào bài blog" "blocked" "$(sql_outcome \
+  "insert into public.posts (locale, kind, slug, difficulty)
+   values ('vi', 'forum', 'sec-diff-$$', 'basic');")"
+
+echo
+echo "D2 — cổng đăng bài của nhóm dịch"
+# Publishing needs an activated staff member; the throwaway account is promoted
+# only here, after every check that needs it to be an outsider has run.
+psql "$DB_URL" -q -c "update public.profiles set is_active = true
+  where id = (select id from auth.users where email = '$EMAIL');"
+
+doc='{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"x"}]}]}'
+publish_detail() {
+  curl -s -X POST "$API_URL/rest/v1/rpc/publish_translation" "${auth[@]}" \
+    -H 'Content-Type: application/json' -d "{\"p_translation_id\":\"$1\"}" |
+    sed -n 's/.*"details":"\([^"]*\)".*/\1/p'
+}
+
+mis=$(uuidgen | tr '[:upper:]' '[:lower:]')
+psql "$DB_URL" -q -c "insert into public.posts
+  (translation_id, locale, kind, topic, difficulty, title, slug, content) values
+  ('$mis', 'vi', 'lesson', 'nguyen-ly', 'basic',    'x', 'sec-mis-$$-vi', '$doc'),
+  ('$mis', 'en', 'lesson', 'nguyen-ly', 'advanced', 'x', 'sec-mis-$$-en', '$doc');"
+check "hai bản lệch độ khó thì không đăng được" "translation_mismatch" "$(publish_detail "$mis")"
+
+nod=$(uuidgen | tr '[:upper:]' '[:lower:]')
+psql "$DB_URL" -q -c "insert into public.posts
+  (translation_id, locale, kind, topic, title, slug, content) values
+  ('$nod', 'vi', 'lesson', 'nguyen-ly', 'x', 'sec-nod-$$-vi', '$doc'),
+  ('$nod', 'en', 'lesson', 'nguyen-ly', 'x', 'sec-nod-$$-en', '$doc');"
+check "bài học thiếu độ khó thì không đăng được" "difficulty_required" "$(publish_detail "$nod")"
+
+vid=$(uuidgen | tr '[:upper:]' '[:lower:]')
+psql "$DB_URL" -q -c "insert into public.posts
+  (translation_id, locale, kind, difficulty, title, slug, content) values
+  ('$vid', 'vi', 'video', 'basic', 'x', 'sec-vid-$$-vi', '$doc'),
+  ('$vid', 'en', 'video', 'basic', 'x', 'sec-vid-$$-en', '$doc');"
+check "video thiếu đường dẫn thì không đăng được" "video_incomplete" "$(publish_detail "$vid")"
 
 echo
 if [ "$failures" -eq 0 ]; then
