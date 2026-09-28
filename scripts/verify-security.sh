@@ -61,13 +61,24 @@ denied() {
   esac
 }
 
-# Runs SQL as the superuser and reports whether Postgres accepted it. Used for
-# CHECK constraints, which no API role could exercise more directly.
-sql_outcome() {
-  if psql "$DB_URL" -q -v ON_ERROR_STOP=1 -c "$1" >/dev/null 2>&1; then
+# Runs SQL as the superuser and reports exactly what Postgres did with it: the
+# name of the CHECK constraint it rejected the statement for, "allowed" on
+# success, or "other: <first error line>" for anything else — a dropped or
+# renamed column included. Asserting on the constraint name (not just
+# accepted/rejected) is what stops an unrelated failure from reading as the
+# constraint still being in place.
+sql_violation() {
+  local out
+  if out=$(psql "$DB_URL" -q -v ON_ERROR_STOP=1 -c "$1" 2>&1 1>/dev/null); then
     echo "allowed"
+    return
+  fi
+  local constraint
+  constraint=$(printf '%s\n' "$out" | sed -n 's/.*violates check constraint "\([^"]*\)".*/\1/p' | head -1)
+  if [ -n "$constraint" ]; then
+    echo "$constraint"
   else
-    echo "blocked"
+    echo "other: $(printf '%s\n' "$out" | head -1)"
   fi
 }
 
@@ -111,15 +122,21 @@ check "anon không gọi được consume_rate_limit" "401" \
 
 echo
 echo "D1 — dữ liệu video phải hợp lệ"
-check "không lưu được ID video dạng javascript:" "blocked" "$(sql_outcome \
+check "không lưu được ID video dạng javascript:" "posts_video_external_id_format" "$(sql_violation \
   "insert into public.posts (locale, kind, slug, video_platform, video_external_id)
    values ('vi', 'video', 'sec-vid-$$', 'youtube', 'javascript:alert(1)');")"
-check "không gắn trường video vào bài blog" "blocked" "$(sql_outcome \
+check "không gắn trường video vào bài blog" "posts_video_fields_only_on_videos" "$(sql_violation \
   "insert into public.posts (locale, kind, slug, video_platform, video_external_id)
    values ('vi', 'forum', 'sec-vidf-$$', 'youtube', 'dQw4w9WgXcQ');")"
-check "không gắn độ khó vào bài blog" "blocked" "$(sql_outcome \
+check "không gắn độ khó vào bài blog" "posts_difficulty_not_on_forum" "$(sql_violation \
   "insert into public.posts (locale, kind, slug, difficulty)
    values ('vi', 'forum', 'sec-diff-$$', 'basic');")"
+check "không lưu được platform thiếu id video (hoặc ngược lại)" "posts_video_ref_pair" "$(sql_violation \
+  "insert into public.posts (locale, kind, slug, video_platform)
+   values ('vi', 'video', 'sec-vidref-$$', 'youtube');")"
+check "tên kênh trên 120 ký tự bị chặn" "posts_channel_name_length" "$(sql_violation \
+  "insert into public.posts (locale, kind, slug, channel_name)
+   values ('vi', 'video', 'sec-vidchan-$$', repeat('x', 121));")"
 
 echo
 echo "S — tìm kiếm không dấu"
@@ -194,6 +211,13 @@ echo "D2 — cổng đăng bài của nhóm dịch"
 # only here, after every check that needs it to be an outsider has run.
 psql "$DB_URL" -q -c "update public.profiles set is_active = true
   where id = (select id from auth.users where email = '$EMAIL');"
+
+# The M block only proved outsiders are denied, which a deny-all policy would
+# also pass. Now that this account is staff, prove the allow side too: it can
+# read the very message seeded in M (cleanup only runs at EXIT, so the row is
+# still there).
+check "nhân sự đọc được tin nhắn hộp thư" "[{\"name\":\"sec-check-$$\"}]" \
+  "$(curl -s "$API_URL/rest/v1/messages?select=name&name=eq.sec-check-$$" "${auth[@]}")"
 
 doc='{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"x"}]}]}'
 publish_detail() {
