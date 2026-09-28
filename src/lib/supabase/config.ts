@@ -10,15 +10,13 @@ export const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 export const SUPABASE_ANON_KEY =
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? "";
 
-/** Server-only. Bypasses RLS — never import this into a client component. */
-export const SUPABASE_SERVICE_ROLE_KEY =
-  process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+// The service-role key, and `isSupabaseAdminConfigured` derived from it, live
+// in `@/lib/supabase/admin` (a `server-only` module) instead of here: this
+// file is imported by `@/lib/supabase/client`, a client component, and even
+// an unused `process.env.SUPABASE_SERVICE_ROLE_KEY` reference here would put
+// that env var's name in the browser bundle.
 
 export const isSupabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
-
-export const isSupabaseAdminConfigured = Boolean(
-  SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
-);
 
 let warned = false;
 

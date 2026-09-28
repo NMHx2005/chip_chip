@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PostCard } from "@/components/forum/PostCard";
 import { listForumPosts } from "@/lib/queries/posts";
@@ -42,6 +43,10 @@ export default async function ForumPage({
   });
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  // A page past the last one (a stale link, or someone probing `?page=999`)
+  // is not a real view of this listing — a bare 200 with no posts would tell
+  // a crawler this URL is worth indexing when it is not.
+  if (page > 1 && page > totalPages) notFound();
 
   return (
     <section className="px-5 py-16 md:px-8 md:py-20">

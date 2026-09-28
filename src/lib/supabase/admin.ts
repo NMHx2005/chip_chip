@@ -1,11 +1,20 @@
 import "server-only";
 
 import { createClient as createSupabaseClient } from "@supabase/supabase-js";
-import {
-  SUPABASE_SERVICE_ROLE_KEY,
-  SUPABASE_URL,
-  isSupabaseAdminConfigured,
-} from "@/lib/supabase/config";
+import { SUPABASE_URL } from "@/lib/supabase/config";
+
+/**
+ * Kept out of `@/lib/supabase/config` on purpose: that module is imported by
+ * a client component (`@/lib/supabase/client`), and this file's `server-only`
+ * guard means nothing can import it from there without breaking the build —
+ * so this is the one place the service-role key's name can live without
+ * reaching the browser bundle.
+ */
+const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ?? "";
+
+export const isSupabaseAdminConfigured = Boolean(
+  SUPABASE_URL && SUPABASE_SERVICE_ROLE_KEY
+);
 
 /**
  * Service-role client. Bypasses Row Level Security, so it must only ever be

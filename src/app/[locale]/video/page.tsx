@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Pagination } from "@/components/listing/Pagination";
 import { VideoCard } from "@/components/video/VideoCard";
@@ -45,6 +46,10 @@ export default async function VideosPage({
   ]);
 
   const totalPages = Math.ceil(total / LISTING_PAGE_SIZE);
+  // A page past the last one is not a real view of this listing — see the
+  // same check on the blog listing for why that is a 404, not an empty 200.
+  if (current.page > 1 && current.page > totalPages) notFound();
+
   const isFiltered = Object.keys(listingQuery(current, { page: 1 })).length > 0;
   const emptyMessage =
     current.page > 1

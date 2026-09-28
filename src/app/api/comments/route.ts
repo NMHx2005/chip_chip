@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { isSupabaseAdminConfigured } from "@/lib/supabase/config";
 import { clientIp, hashIp } from "@/lib/rate-limit";
 import { isBodyTooLarge } from "@/lib/request-size";
 

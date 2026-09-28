@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { PostCard } from "@/components/forum/PostCard";
 import { FilterPills, type ListingHref } from "@/components/listing/FilterPills";
@@ -62,6 +63,10 @@ export async function LessonsListing({
   ]);
 
   const totalPages = Math.ceil(total / LISTING_PAGE_SIZE);
+  // A page past the last one is not a real view of this listing — see the
+  // same check on the blog listing for why that is a 404, not an empty 200.
+  if (current.page > 1 && current.page > totalPages) notFound();
+
   const allCount = Object.values(counts).reduce((sum, n) => sum + n, 0);
   // Changing topic keeps the difficulty but starts again from page 1.
   const topicQuery = listingQuery(current);

@@ -3,11 +3,8 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
-import {
-  isSupabaseAdminConfigured,
-  isSupabaseConfigured,
-} from "@/lib/supabase/config";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { clientIp, hashIp } from "@/lib/rate-limit";
 
 export type LoginState = { error: string | null };
