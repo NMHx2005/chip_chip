@@ -22,6 +22,12 @@
     "tiktok": "TikTok"
   },
   "footer": {
+    "links": {
+      "label": "Information",
+      "contact": "Contact",
+      "contribute": "Contribute",
+      "privacy": "Privacy policy"
+    },
     "copyright": "© 2026 Project Chíp Chíp. All content is shared for educational purposes."
   },
   "home": {

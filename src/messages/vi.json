@@ -22,6 +22,12 @@
     "tiktok": "TikTok"
   },
   "footer": {
+    "links": {
+      "label": "Thông tin",
+      "contact": "Liên hệ",
+      "contribute": "Đóng góp",
+      "privacy": "Chính sách bảo mật"
+    },
     "copyright": "© 2026 Project Chíp Chíp. Mọi nội dung được chia sẻ vì mục đích giáo dục."
   },
   "home": {

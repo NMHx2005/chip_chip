@@ -5,12 +5,14 @@ import { Link } from "@/i18n/navigation";
 import { FOOTER_LINKS } from "@/lib/constants";
 
 /**
- * Single-row footer: wordmark left, copyright in the middle, social icons
- * right — one row from `md` up, stacked on phones.
+ * Single-row footer: wordmark left, trust-page links and copyright stacked in
+ * the middle, social icons right — one row from `md` up, stacked on phones.
  *
  * The two link columns this used to carry ("Khám phá" / "Kết nối") are gone on
- * purpose. The full navigation now sits inside the join block directly above
- * this one (JoinCta.tsx), which is the last thing a reader passes on the page.
+ * purpose. The full site navigation lives inside the join block directly
+ * above this one (JoinCta.tsx), which is the last thing a reader passes on
+ * the page; this footer only repeats the trust pages (Contact, Contribute,
+ * Privacy) via FOOTER_LINKS.
  *
  * `relative z-20` is load-bearing, not decoration. The homepage paints a
  * full-viewport `SceneFillOverlay` at `z-[15]` that grows to `circle(150%)` as

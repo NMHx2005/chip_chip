@@ -23,9 +23,10 @@ import { CONTACT_EMAIL, CTA_BACKDROP, NAV_ITEMS } from "@/lib/constants";
  * centred copy on a minimum height, and the site links sitting inside the card
  * along its bottom-left.
  *
- * The links live here rather than in the footer because the footer is a single
- * row now (see Footer.tsx) — this is the only place on the page that carries
- * the full navigation.
+ * The primary site nav (NAV_ITEMS) lives here rather than in the footer,
+ * which only repeats the trust pages (Contact, Contribute, Privacy) via
+ * FOOTER_LINKS — see Footer.tsx. This is the only place on the page that
+ * carries the full navigation.
  */
 export function JoinCta() {
   const t = useTranslations("home.join");
