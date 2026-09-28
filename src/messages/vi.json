@@ -156,7 +156,15 @@
     "applySort": "Áp dụng",
     "clearFilters": "Xoá lọc",
     "empty": "Chưa có video nào. Quay lại sau nhé!",
-    "emptyFiltered": "Không có video nào khớp bộ lọc này."
+    "emptyFiltered": "Không có video nào khớp bộ lọc này.",
+    "backToVideos": "Về trang Video",
+    "notFound": "Không tìm thấy video này.",
+    "relatedLesson": "Xem bài học liên quan",
+    "watchOn": "Xem trên {platform}",
+    "switchTo": {
+      "vi": "Xem bản tiếng Việt",
+      "en": "Xem bản tiếng Anh"
+    }
   },
   "forum": {
     "title": "Blog",

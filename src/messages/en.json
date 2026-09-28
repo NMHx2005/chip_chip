@@ -156,7 +156,15 @@
     "applySort": "Apply",
     "clearFilters": "Clear filters",
     "empty": "No videos yet. Please check back soon!",
-    "emptyFiltered": "No videos match these filters."
+    "emptyFiltered": "No videos match these filters.",
+    "backToVideos": "Back to Videos",
+    "notFound": "This video could not be found.",
+    "relatedLesson": "Read the related lesson",
+    "watchOn": "Watch on {platform}",
+    "switchTo": {
+      "vi": "Watch in Vietnamese",
+      "en": "Watch in English"
+    }
   },
   "forum": {
     "title": "Blog",

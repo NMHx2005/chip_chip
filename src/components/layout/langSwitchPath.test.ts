@@ -26,8 +26,12 @@ describe("safePathFor", () => {
     expect(safePathFor("/blog/[slug]")).toBe("/blog");
   });
 
+  it("sends a video page to the video listing", () => {
+    expect(safePathFor("/video/[slug]")).toBe("/video");
+  });
+
   it("leaves static routes untouched", () => {
-    for (const route of ["/", "/bai-hoc", "/blog", "/gioi-thieu"]) {
+    for (const route of ["/", "/bai-hoc", "/blog", "/gioi-thieu", "/video", "/tim-kiem"]) {
       expect(safePathFor(route)).toBe(route);
     }
   });
@@ -41,6 +45,9 @@ describe("safePathFor", () => {
       "/blog",
       "/blog/[slug]",
       "/gioi-thieu",
+      "/video",
+      "/video/[slug]",
+      "/tim-kiem",
     ];
 
     // This is the property that matters: anything still carrying a `[param]`

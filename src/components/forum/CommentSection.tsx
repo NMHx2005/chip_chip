@@ -249,6 +249,7 @@ function CommentForm({
 export function CommentSection({
   postId,
   slug,
+  section = "/blog/[slug]",
   comments,
   count,
   totalRoots,
@@ -257,6 +258,8 @@ export function CommentSection({
 }: {
   postId: string;
   slug: string;
+  /** The page the thread sits on, so "show more" reloads that same page. */
+  section?: "/blog/[slug]" | "/video/[slug]";
   comments: Comment[];
   count: number;
   /** Root comments in the whole thread, including ones not loaded yet. */
@@ -329,7 +332,7 @@ export function CommentSection({
                 </p>
                 <Link
                   href={{
-                    pathname: "/blog/[slug]",
+                    pathname: section,
                     params: { slug },
                     query: {
                       comments: Math.min(shownRoots + ROOT_PAGE_SIZE, maxRoots),

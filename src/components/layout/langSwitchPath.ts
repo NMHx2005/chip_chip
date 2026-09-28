@@ -21,6 +21,7 @@ const SECTION_FALLBACK: Record<string, StaticPathname> = {
   "/bai-hoc/[topic]": "/bai-hoc",
   "/bai-hoc/[topic]/[slug]": "/bai-hoc",
   "/blog/[slug]": "/blog",
+  "/video/[slug]": "/video",
 };
 
 export function safePathFor(pathname: string): StaticPathname | string {

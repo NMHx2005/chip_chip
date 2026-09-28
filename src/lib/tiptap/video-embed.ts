@@ -1,6 +1,6 @@
 import type { Locale } from "@/i18n/routing";
 import { escapeHtml } from "@/lib/html-escape";
-import { PLATFORM_LABEL, videoRefFrom, watchUrl, type VideoRef } from "@/lib/video";
+import { PLATFORM_LABEL, thumbnailUrl, videoRefFrom, watchUrl, type VideoRef } from "@/lib/video";
 import en from "@/messages/en.json";
 import vi from "@/messages/vi.json";
 
@@ -26,14 +26,19 @@ const LEFTOVER = /<div data-type="video"[^>]*><\/div>/g;
 
 const PLAY_VIDEO: Record<Locale, string> = { vi: vi.forum.playVideo, en: en.forum.playVideo };
 
-function facade(ref: VideoRef, locale: Locale): string {
+/**
+ * The click-to-load facade for one validated video. Exported for the video
+ * page, which shows the same player as an article does; the markup is built
+ * only from a VideoRef, so it is safe to inject.
+ */
+export function videoFacadeHtml(ref: VideoRef, locale: Locale): string {
   const id = escapeHtml(ref.externalId);
   const label = PLATFORM_LABEL[ref.platform];
   const ariaLabel = escapeHtml(PLAY_VIDEO[locale].replace("{platform}", label));
-  const thumbnail =
-    ref.platform === "youtube"
-      ? `<img src="https://i.ytimg.com/vi/${id}/hqdefault.jpg" alt="" loading="lazy" decoding="async">`
-      : "";
+  const still = thumbnailUrl(ref);
+  const thumbnail = still
+    ? `<img src="${escapeHtml(still)}" alt="" loading="lazy" decoding="async">`
+    : "";
   return (
     `<figure class="video-embed video-embed-${ref.platform}">` +
     `<a class="video-facade" href="${escapeHtml(watchUrl(ref))}" target="_blank" rel="noopener noreferrer" ` +
@@ -49,7 +54,7 @@ export function renderVideos(html: string, locale: Locale): string {
   return html
     .replace(PLACEHOLDER, (_match, platform: string, externalId: string) => {
       const ref = videoRefFrom(platform, externalId);
-      return ref ? facade(ref, locale) : "";
+      return ref ? videoFacadeHtml(ref, locale) : "";
     })
     .replace(LEFTOVER, "");
 }
