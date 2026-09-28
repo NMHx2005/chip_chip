@@ -23,7 +23,7 @@ export function VideoNodeView({ node, selected }: NodeViewProps) {
           className="h-16 w-28 shrink-0 rounded-lg object-cover"
         />
       )}
-      <span className="text-sm text-text">
+      <span className="min-w-0 break-all text-sm text-text">
         {ref
           ? `Video ${PLATFORM_LABEL[ref.platform]} · ${ref.externalId}`
           : "Video không hợp lệ — xoá khối này và chèn lại."}
