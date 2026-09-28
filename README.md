@@ -121,6 +121,8 @@ Các biến tuỳ chọn:
 
 DA2 (công cụ viết bài) **không có migration mới**: chỉ cần deploy code; đặt `DEEPSEEK_API_KEY` nếu muốn dùng dịch nháp.
 
+DA3 (bài học, video, tìm kiếm) cũng **không có migration mới**. Tab `?tab=video` cũ của trang Bài học chuyển hẳn (308) sang `/vi/video`.
+
 ### Dịch nháp bằng AI và quyền riêng tư
 
 Nút "Dịch nháp bằng AI" gửi **nội dung bài viết** (tiêu đề, tóm tắt, chữ trong thân bài, chú thích và mô tả ảnh) tới máy chủ của DeepSeek (`api.deepseek.com`) để dịch. Dòng "Được góp ý bởi …" không bao giờ rời server — tên người góp ý là danh từ riêng nên được giữ nguyên, không dịch. Không gửi email, bình luận, tin nhắn hay bất kỳ dữ liệu nào của người đọc; công thức, khối mã và địa chỉ link không rời server. Bản dịch chỉ được nạp vào tab EN như thay đổi chưa lưu — không có gì được ghi vào cơ sở dữ liệu cho tới khi người viết đọc lại và bấm "Lưu". Mỗi lần bấm gửi tối đa 60 000 ký tự.
@@ -133,6 +135,8 @@ src/
 │   ├── [locale]/          # site công khai, có tiền tố ngôn ngữ
 │   │   ├── page.tsx               Trang chủ
 │   │   ├── bai-hoc/               Bài học → [topic] → [slug]
+│   │   ├── video/                 Video → [slug]
+│   │   ├── tim-kiem/              Kết quả tìm kiếm (noindex)
 │   │   ├── blog/                  Blog → [slug]
 │   │   └── gioi-thieu/            Giới thiệu
 │   ├── admin/             # CMS, tiếng Việt, không có tiền tố ngôn ngữ
@@ -153,11 +157,17 @@ src/
 │   ├── queries/posts.ts   # truy vấn đọc
 │   ├── auth.ts            # requireStaff()
 │   ├── constants.ts       # dữ liệu không dịch
+│   ├── paths.ts           # postHref: URL của mọi loại bài (thẻ, tìm kiếm, sitemap, cache)
+│   ├── listing-params.ts · listing-order.ts · search-query.ts  # tham số URL, sắp xếp
 │   ├── post-slug.ts · seo.ts · types.ts · utils.ts
 ├── components/
 │   ├── layout/            Navbar, Footer, Logo, LangSwitch, SocialLinks
 │   ├── sections/          các section trang chủ + trang nội dung
 │   ├── forum/             PostCard, ArticleBody, CommentSection
+│   ├── lessons/           LessonsListing, TopicSidebar (trang Bài học + chủ đề)
+│   ├── video/             VideoCard, VideoFilters
+│   ├── listing/           FilterPills, Pagination (dùng chung)
+│   ├── search/            SearchForm, SearchBox
 │   ├── admin/             PostEditor, EditorToolbar, AdminNav, …
 │   ├── ui/                PillButton, AutoplayVideo, GlassPill, StarBorder, …
 │   └── animations/        framer-motion variants dùng chung
@@ -171,6 +181,8 @@ src/
 | Tiếng Việt        | English        |
 | ----------------- | -------------- |
 | `/vi/bai-hoc`     | `/en/lessons`  |
+| `/vi/video`       | `/en/videos`   |
+| `/vi/tim-kiem`    | `/en/search`   |
 | `/vi/blog`        | `/en/blog`     |
 | `/vi/gioi-thieu`  | `/en/about`    |
 
@@ -239,10 +251,8 @@ Ngoài ra: logo vector bản trong suốt, bản đồ silhouette các nước, 
 
 ### Chưa làm
 
-- Tab Video trong `/bai-hoc` mới là trạng thái "đang hoàn thiện" — chờ video
 - Mục quốc gia chưa có bản đồ silhouette, cờ và logo công ty — chờ asset
 - Chưa có trang riêng cho từng quốc gia
-- Chưa có tìm kiếm
 
 ### Module đang chờ asset
 
