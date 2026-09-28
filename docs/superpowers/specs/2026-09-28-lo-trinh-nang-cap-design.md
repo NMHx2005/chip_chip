@@ -1,6 +1,8 @@
 # Lộ trình nâng cấp — Project Chíp Chíp
 
-Ngày: 28/09/2026 · Trạng thái: chờ duyệt
+Ngày: 28/09/2026 · Trạng thái: **DA1–DA4 xong. DA5 xong phần kỹ thuật — phần
+nội dung (video thật, logo, ảnh, bài học, v.v., xem `docs/BAN-GIAO.md` mục 6)
+còn chờ chủ dự án điền trước khi ra mắt.**
 
 ## 1. Bối cảnh và mục tiêu
 
@@ -78,9 +80,12 @@ bài học liên quan) trong form admin. Nút dịch nháp bằng AI.
 
 ### DA5 — Hoàn thiện trước ra mắt
 
-Thay 7 video giữ chỗ, logo, mascot, link mạng xã hội, email, Google Form; ảnh OG cho
+Thay 7 video giữ chỗ, logo, mascot, link mạng xã hội, email; ảnh OG cho
 trang mới; sitemap; `verify-security.sh` đủ xanh; cập nhật README và BAN-GIAO;
 kiểm bằng trình duyệt ở ba kích thước màn hình.
+
+*(Mục "Google Form" dự kiến ban đầu ở đây đã không còn — DA4 thay bằng form
+liên hệ dựng sẵn tại `/lien-he`, lưu thẳng vào bảng `messages`.)*
 
 ## 4. Nguyên tắc xuyên suốt
 
