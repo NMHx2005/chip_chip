@@ -1,0 +1,104 @@
+import { TOPIC_IDS, type TopicId } from "@/lib/constants";
+import { DIFFICULTIES, type Difficulty, type PostKind, type VideoSource } from "@/lib/types";
+import { parseVideoUrl, type VideoPlatform } from "@/lib/video";
+
+/**
+ * Fields a translation group shares: the VI and EN rows must hold the same
+ * values, and publish_translation refuses a group where they differ. They are
+ * therefore written by one UPDATE over the whole group, never per row.
+ *
+ * Pure so it can be tested without a database; the Server Action is a thin
+ * shell around it. The action is a public HTTP endpoint, so every value is
+ * checked here even though the editor only ever sends valid ones.
+ */
+
+export type SharedFieldsInput = {
+  topic: TopicId | null;
+  difficulty: Difficulty | null;
+  videoUrl: string;
+  videoSource: VideoSource | null;
+  channelName: string;
+  relatedLessonTranslationId: string | null;
+};
+
+export type SharedFieldsPatch = {
+  topic: TopicId | null;
+  difficulty: Difficulty | null;
+  video_platform: VideoPlatform | null;
+  video_external_id: string | null;
+  video_source: VideoSource | null;
+  channel_name: string | null;
+  related_lesson_translation_id: string | null;
+};
+
+const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const MAX_CHANNEL = 120;
+
+export function isUuid(value: string): boolean {
+  return UUID.test(value);
+}
+
+type Result = { ok: true; patch: SharedFieldsPatch } | { ok: false; error: string };
+
+const EMPTY: SharedFieldsPatch = {
+  topic: null,
+  difficulty: null,
+  video_platform: null,
+  video_external_id: null,
+  video_source: null,
+  channel_name: null,
+  related_lesson_translation_id: null,
+};
+
+export function buildSharedFieldsPatch(kind: PostKind, input: SharedFieldsInput): Result {
+  if (kind === "forum") return { ok: true, patch: EMPTY };
+
+  if (input.topic !== null && !TOPIC_IDS.includes(input.topic)) {
+    return { ok: false, error: "Chủ đề không hợp lệ." };
+  }
+  if (input.difficulty !== null && !DIFFICULTIES.includes(input.difficulty)) {
+    return { ok: false, error: "Độ khó không hợp lệ." };
+  }
+
+  if (kind === "lesson") {
+    if (input.topic === null) return { ok: false, error: "Bài học cần chọn chủ đề." };
+    return {
+      ok: true,
+      patch: { ...EMPTY, topic: input.topic, difficulty: input.difficulty },
+    };
+  }
+
+  // kind === "video"
+  if (input.videoSource !== null && input.videoSource !== "own" && input.videoSource !== "curated") {
+    return { ok: false, error: "Nguồn video không hợp lệ." };
+  }
+
+  const channel = input.channelName.trim();
+  if (channel.length > MAX_CHANNEL) {
+    return { ok: false, error: `Tên kênh tối đa ${MAX_CHANNEL} ký tự.` };
+  }
+
+  const related = input.relatedLessonTranslationId;
+  if (related !== null && !isUuid(related)) {
+    return { ok: false, error: "Bài học liên quan không hợp lệ." };
+  }
+
+  const url = input.videoUrl.trim();
+  const ref = url ? parseVideoUrl(url) : null;
+  if (url && !ref) {
+    return { ok: false, error: "Không đọc được đường dẫn video. Dán link YouTube hoặc TikTok." };
+  }
+
+  return {
+    ok: true,
+    patch: {
+      topic: input.topic,
+      difficulty: input.difficulty,
+      video_platform: ref?.platform ?? null,
+      video_external_id: ref?.externalId ?? null,
+      video_source: input.videoSource,
+      channel_name: channel || null,
+      related_lesson_translation_id: related,
+    },
+  };
+}

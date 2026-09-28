@@ -33,6 +33,7 @@ export function NewPostForm() {
         await createPost({
           kind,
           topic: kind === "lesson" ? topic : null,
+          difficulty: null,
           title,
           slug,
         })

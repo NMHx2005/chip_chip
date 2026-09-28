@@ -6,7 +6,9 @@ import { createClient } from "@/lib/supabase/server";
 import { lookUpStaff } from "@/lib/auth";
 import { routing } from "@/i18n/routing";
 import { slugify } from "@/lib/post-slug";
-import type { PostKind } from "@/lib/types";
+import { articleToPlainText } from "@/lib/tiptap/render";
+import { buildSharedFieldsPatch, isUuid, type SharedFieldsInput } from "@/lib/shared-fields";
+import type { Difficulty, PostKind } from "@/lib/types";
 import type { TopicId } from "@/lib/constants";
 
 export type ActionResult = {
@@ -35,6 +37,9 @@ const SESSION_ENDED: ActionResult = {
   unauthorized: true,
   error: "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.",
 };
+
+/** Long enough for any real article; the search index ranks body text lowest anyway. */
+const PLAIN_TEXT_LIMIT = 20000;
 
 /** Drop every cached rendering of a post so the edit shows up immediately. */
 async function revalidatePost(slug: string, kind: PostKind, topic: TopicId | null) {
@@ -98,6 +103,7 @@ export async function savePost(input: SavePostInput): Promise<ActionResult> {
       excerpt: input.excerpt.trim() || null,
       cover_image_url: input.coverImageUrl,
       content: input.content,
+      plain_text: articleToPlainText(input.content, PLAIN_TEXT_LIMIT),
     })
     .eq("id", input.id)
     .select("slug, kind, topic, locale, status")
@@ -123,6 +129,7 @@ export async function savePost(input: SavePostInput): Promise<ActionResult> {
 export async function createPost(args: {
   kind: PostKind;
   topic: TopicId | null;
+  difficulty: Difficulty | null;
   title: string;
   slug: string;
 }): Promise<{ ok: boolean; error?: string; unauthorized?: boolean; id?: string; translationId?: string }> {
@@ -147,7 +154,8 @@ export async function createPost(args: {
         translation_id: translationId,
         locale: "vi",
         kind: args.kind,
-        topic: args.kind === "lesson" ? args.topic : null,
+        topic: args.kind === "forum" ? null : args.topic,
+        difficulty: args.kind === "forum" ? null : args.difficulty,
         title,
         slug: baseSlug,
         author_id: staff.id,
@@ -156,7 +164,8 @@ export async function createPost(args: {
         translation_id: translationId,
         locale: "en",
         kind: args.kind,
-        topic: args.kind === "lesson" ? args.topic : null,
+        topic: args.kind === "forum" ? null : args.topic,
+        difficulty: args.kind === "forum" ? null : args.difficulty,
         title: "",
         slug: `${baseSlug}-en`,
         author_id: staff.id,
@@ -286,6 +295,75 @@ export async function deleteComment(commentId: string): Promise<ActionResult> {
     revalidatePath(`/${locale}/blog`);
   }
   return { ok: true };
+}
+
+/**
+ * Writes the fields the VI and EN rows share, in one statement over the whole
+ * translation group, so the two rows cannot drift apart.
+ */
+export async function saveSharedFields(
+  translationId: string,
+  input: SharedFieldsInput
+): Promise<ActionResult> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
+  if (!isUuid(translationId)) return fail("Mã bài viết không hợp lệ.");
+
+  const supabase = createClient();
+
+  const { data: group } = await supabase
+    .from("posts")
+    .select("kind, slug")
+    .eq("translation_id", translationId)
+    .limit(1)
+    .maybeSingle();
+
+  if (!group) return fail("Không tìm thấy bài viết.");
+
+  const kind = group.kind as PostKind;
+  const built = buildSharedFieldsPatch(kind, input);
+  if (!built.ok) return fail(built.error);
+
+  const { error } = await supabase
+    .from("posts")
+    .update(built.patch)
+    .eq("translation_id", translationId);
+
+  if (error) return fail(error.message);
+
+  await revalidatePost(group.slug as string, kind, built.patch.topic);
+  return { ok: true };
+}
+
+/**
+ * Recomputes `plain_text` for every post.
+ *
+ * `savePost` keeps it current from now on; this covers articles written
+ * before the column existed and any row edited by hand in the database.
+ * Only rows whose text actually changed are written.
+ */
+export async function rebuildSearchText(): Promise<ActionResult & { updated?: number }> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
+  const supabase = createClient();
+  const { data, error } = await supabase.from("posts").select("id, content, plain_text");
+  if (error) return fail(error.message);
+
+  let updated = 0;
+  for (const row of data ?? []) {
+    const text = articleToPlainText(row.content, PLAIN_TEXT_LIMIT);
+    if (text === row.plain_text) continue;
+    const { error: writeError } = await supabase
+      .from("posts")
+      .update({ plain_text: text })
+      .eq("id", row.id);
+    if (writeError) return fail(writeError.message);
+    updated += 1;
+  }
+
+  return { ok: true, updated };
 }
 
 /** Signs out and returns to the login screen. */
