@@ -68,7 +68,7 @@ const CSP = [
   // Dev needs the websocket Next uses for hot reload.
   `connect-src 'self' ${supabaseOrigin} ${supabaseOrigin.replace(/^http/, "ws")}${isDev ? " ws: http://127.0.0.1:* http://localhost:*" : ""}`,
   // Video players, created only after a reader clicks a facade (VideoFacades).
-  "frame-src 'self' https://docs.google.com https://www.youtube-nocookie.com https://www.tiktok.com",
+  "frame-src 'self' https://www.youtube-nocookie.com https://www.tiktok.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
