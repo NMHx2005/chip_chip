@@ -242,6 +242,7 @@ export async function unpublishTranslation(
 ): Promise<ActionResult> {
   const lookup = await lookUpStaff();
   if (lookup.status !== "ok") return SESSION_ENDED;
+  if (!isUuid(translationId)) return fail("Mã bài viết không hợp lệ.");
 
   const supabase = createClient();
 
@@ -267,6 +268,7 @@ export async function deleteTranslation(
 ): Promise<ActionResult> {
   const lookup = await lookUpStaff();
   if (lookup.status !== "ok") return SESSION_ENDED;
+  if (!isUuid(translationId)) return fail("Mã bài viết không hợp lệ.");
 
   const supabase = createClient();
 

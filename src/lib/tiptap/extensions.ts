@@ -1,5 +1,7 @@
 import Highlight from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
+// Pinned exactly to 3.31.3: placeholder rendering and escaping were measured
+// against this version and must move in lockstep with the other @tiptap packages.
 import { Mathematics } from "@tiptap/extension-mathematics";
 import Placeholder from "@tiptap/extension-placeholder";
 import { TableKit } from "@tiptap/extension-table";
