@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured, requireSupabase } from "@/lib/supabase/config";
 import type { Locale } from "@/i18n/routing";
@@ -198,7 +199,15 @@ export async function listVideos(locale: Locale, params: ListingParams): Promise
   return toPage("listVideos", await query.range(from, to));
 }
 
-export async function getVideoBySlug(locale: Locale, slug: string): Promise<VideoPost | null> {
+/**
+ * Wrapped in React `cache` so `generateMetadata`, the page and the OG image
+ * route — each invoked separately by Next for the same request — share one
+ * round trip instead of three.
+ */
+export const getVideoBySlug = cache(async function getVideoBySlug(
+  locale: Locale,
+  slug: string
+): Promise<VideoPost | null> {
   if (!requireSupabase("getVideoBySlug")) return null;
 
   const supabase = createClient();
@@ -218,7 +227,7 @@ export async function getVideoBySlug(locale: Locale, slug: string): Promise<Vide
   if (!data) return null;
   const related = data.related_lesson_translation_id;
   return { ...toPost(data), relatedLessonTranslationId: typeof related === "string" ? related : null };
-}
+});
 
 /** Published videos in this locale that point at the given lesson group. */
 export async function listRelatedVideos(
@@ -302,7 +311,7 @@ export async function getPostBySlug(
  * Finds the counterpart of an article in another locale, so the language
  * switcher can keep the reader on the same article when a translation exists.
  */
-export async function getTranslationSlug(
+export const getTranslationSlug = cache(async function getTranslationSlug(
   translationId: string,
   locale: Locale
 ): Promise<string | null> {
@@ -319,7 +328,7 @@ export async function getTranslationSlug(
 
   if (error || !data) return null;
   return data.slug;
-}
+});
 
 /**
  * Visible comments for a post, nested one level deep.
