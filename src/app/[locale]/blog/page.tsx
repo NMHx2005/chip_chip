@@ -59,7 +59,7 @@ export default async function ForumPage({
         ) : (
           <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
+              <PostCard key={post.id} post={post} expand />
             ))}
           </div>
         )}

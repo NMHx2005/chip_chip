@@ -46,7 +46,7 @@ export async function LatestPosts({ posts }: { posts: PostSummary[] }) {
           ) : (
             <MotionGrid className="mt-10">
               {posts.map((post) => (
-                <PostCard key={post.id} post={post} />
+                <PostCard key={post.id} post={post} expand />
               ))}
             </MotionGrid>
           )}

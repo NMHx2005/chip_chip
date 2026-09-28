@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getFormatter, getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
+import { ExpandingCardLink } from "@/components/forum/ExpandingCardLink";
 import { Link } from "@/i18n/navigation";
 import type { PostSummary } from "@/lib/types";
 import { TOPIC_TONE } from "@/lib/constants";
@@ -9,9 +10,12 @@ import { postHref } from "@/lib/paths";
 export async function PostCard({
   post,
   showTopic = false,
+  expand = false,
 }: {
   post: PostSummary;
   showTopic?: boolean;
+  /** Grow the card to full screen before opening the post (blog listings). */
+  expand?: boolean;
 }) {
   const format = await getFormatter();
   const t = await getTranslations("forum");
@@ -24,11 +28,11 @@ export async function PostCard({
   // would be worse than no card.
   if (!href) return null;
 
-  return (
-    <Link
-      href={href}
-      className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:border-black/20 hover:shadow-card-hover"
-    >
+  const className =
+    "group flex h-full flex-col gap-3 rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:border-black/20 hover:shadow-card-hover";
+
+  const body = (
+    <>
       {/* Always 16:9, whether or not the article has a cover. A card without
           one used to start shorter and end up out of line with its neighbours;
           the empty block keeps the row level. Neutral and wordless so it reads
@@ -98,6 +102,16 @@ export async function PostCard({
         {t("readMore")}
         <ArrowRight className="size-4" strokeWidth={2.2} />
       </span>
+    </>
+  );
+
+  return expand ? (
+    <ExpandingCardLink href={href} className={className}>
+      {body}
+    </ExpandingCardLink>
+  ) : (
+    <Link href={href} className={className}>
+      {body}
     </Link>
   );
 }
