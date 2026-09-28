@@ -1,8 +1,9 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useRef, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import type { Locale } from "@/i18n/routing";
+import { fieldForError, type MessageFormField } from "@/components/contact/message-form-fields";
 import {
   MESSAGE_LIMITS,
   buildMessagePayload,
@@ -41,7 +42,18 @@ export function MessageForm({
   const locale = useLocale() as Locale;
   const id = useId();
   const [status, setStatus] = useState<Status>({ state: "idle" });
+  const [invalidField, setInvalidField] = useState<MessageFormField | null>(null);
   const sending = status.state === "sending";
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const fieldRef = { name: nameRef, email: emailRef, body: bodyRef } as const;
+
+  /** Clears the aria-invalid mark on a field once the reader edits it. */
+  const clearInvalid = (field: MessageFormField) => () => {
+    setInvalidField((current) => (current === field ? null : current));
+  };
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -78,8 +90,12 @@ export function MessageForm({
     if (outcome.ok) {
       form.reset();
       setStatus({ state: "sent" });
+      setInvalidField(null);
     } else {
       setStatus({ state: "error", error: outcome.error });
+      const field = fieldForError(outcome.error);
+      setInvalidField(field);
+      if (field) fieldRef[field].current?.focus();
     }
   };
 
@@ -114,11 +130,14 @@ export function MessageForm({
             {t("form.nameLabel")}
           </label>
           <input
+            ref={nameRef}
             id={`${id}-name`}
             name="name"
             required
             maxLength={MESSAGE_LIMITS.name}
             autoComplete="name"
+            aria-invalid={invalidField === "name" ? true : undefined}
+            onChange={clearInvalid("name")}
             className={inputClassName}
           />
         </div>
@@ -128,12 +147,15 @@ export function MessageForm({
             {t("form.emailLabel")}
           </label>
           <input
+            ref={emailRef}
             id={`${id}-email`}
             name="email"
             type="email"
             maxLength={MESSAGE_LIMITS.email}
             autoComplete="email"
             aria-describedby={`${id}-email-hint`}
+            aria-invalid={invalidField === "email" ? true : undefined}
+            onChange={clearInvalid("email")}
             className={inputClassName}
           />
           <p id={`${id}-email-hint`} className="text-xs text-text-muted">
@@ -147,12 +169,15 @@ export function MessageForm({
           {variant === "report" ? t("report.bodyLabel") : t("form.bodyLabel")}
         </label>
         <textarea
+          ref={bodyRef}
           id={`${id}-body`}
           name="body"
           required
           rows={variant === "report" ? 4 : 6}
           maxLength={MESSAGE_LIMITS.body}
           aria-describedby={`${id}-body-hint`}
+          aria-invalid={invalidField === "body" ? true : undefined}
+          onChange={clearInvalid("body")}
           className="w-full rounded-xl border border-border bg-surface px-3.5 py-3 text-base text-text outline-none transition-colors focus-visible:border-accent md:text-sm"
         />
         <p id={`${id}-body-hint`} className="text-xs text-text-muted">
