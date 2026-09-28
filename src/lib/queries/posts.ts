@@ -5,6 +5,7 @@ import { isSupabaseConfigured, requireSupabase } from "@/lib/supabase/config";
 import type { Locale } from "@/i18n/routing";
 import type { TopicId } from "@/lib/constants";
 import type { Comment, Difficulty, Post, PostKind, PostSummary } from "@/lib/types";
+import { videoRefFrom } from "@/lib/video";
 
 /**
  * Read queries for published content.
@@ -13,15 +14,18 @@ import type { Comment, Difficulty, Post, PostKind, PostSummary } from "@/lib/typ
  * so a fresh clone builds and renders instead of crashing.
  */
 
-const SUMMARY_COLUMNS =
-  "id, title, slug, excerpt, cover_image_url, kind, topic, difficulty, published_at";
+const VIDEO_COLUMNS = "video_platform, video_external_id, video_source, channel_name";
 
-const POST_COLUMNS =
-  "id, translation_id, locale, kind, topic, difficulty, title, slug, excerpt, cover_image_url, content, published_at, updated_at";
+const SUMMARY_COLUMNS = `id, title, slug, excerpt, cover_image_url, kind, topic, difficulty, published_at, ${VIDEO_COLUMNS}`;
+
+const POST_COLUMNS = `id, translation_id, locale, kind, topic, difficulty, title, slug, excerpt, cover_image_url, content, published_at, updated_at, ${VIDEO_COLUMNS}`;
 
 type Row = Record<string, unknown>;
 
 function toSummary(row: Row): PostSummary {
+  // Re-checked against the platform's id format: the thumbnail URL and the
+  // player are built from these two values.
+  const video = videoRefFrom(row.video_platform, row.video_external_id);
   return {
     id: String(row.id),
     title: String(row.title ?? ""),
@@ -32,6 +36,11 @@ function toSummary(row: Row): PostSummary {
     topic: (row.topic as TopicId | null) ?? null,
     difficulty: (row.difficulty as Difficulty | null) ?? null,
     publishedAt: (row.published_at as string | null) ?? null,
+    videoPlatform: video?.platform ?? null,
+    videoExternalId: video?.externalId ?? null,
+    videoSource:
+      row.video_source === "own" || row.video_source === "curated" ? row.video_source : null,
+    channelName: typeof row.channel_name === "string" ? row.channel_name : null,
   };
 }
 

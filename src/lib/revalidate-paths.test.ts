@@ -2,10 +2,19 @@ import { describe, expect, it } from "vitest";
 import { postRowsFrom, revalidatePostRows, type PostRow } from "@/lib/revalidate-paths";
 
 describe("revalidatePostRows", () => {
-  it("always revalidates the home, blog and lessons listings for both locales", () => {
+  it("always revalidates the home, blog, lessons and video listings for both locales", () => {
     const paths = revalidatePostRows([]);
     expect(paths).toEqual(
-      expect.arrayContaining(["/vi", "/en", "/vi/blog", "/en/blog", "/vi/bai-hoc", "/en/lessons"])
+      expect.arrayContaining([
+        "/vi",
+        "/en",
+        "/vi/blog",
+        "/en/blog",
+        "/vi/bai-hoc",
+        "/en/lessons",
+        "/vi/video",
+        "/en/videos",
+      ])
     );
   });
 
@@ -36,11 +45,18 @@ describe("revalidatePostRows", () => {
     expect(paths).not.toContain("/en/blog/tin-tuc-vi");
   });
 
-  it("revalidates only the lessons listing for a video, since per-video pages arrive in DA3", () => {
-    const rows: PostRow[] = [{ locale: "vi", slug: "video-vi", kind: "video", topic: null }];
+  it("revalidates the video listings and each locale's own video page", () => {
+    const rows: PostRow[] = [
+      { locale: "vi", slug: "video-vi", kind: "video", topic: "nguyen-ly" },
+      { locale: "en", slug: "video-en", kind: "video", topic: "nguyen-ly" },
+    ];
     const paths = revalidatePostRows(rows);
-    expect(paths).toEqual(expect.arrayContaining(["/vi/bai-hoc"]));
-    expect(paths.some((p) => p.includes("video-vi"))).toBe(false);
+    expect(paths).toEqual(
+      expect.arrayContaining(["/vi/video", "/en/videos", "/vi/video/video-vi", "/en/videos/video-en"])
+    );
+    expect(paths).not.toContain("/vi/video/video-en");
+    // A video's topic is a filter, not a page of its own.
+    expect(paths).not.toContain("/vi/bai-hoc/nguyen-ly");
   });
 
   it("revalidates both the old and the new topic page when a lesson changes topic", () => {

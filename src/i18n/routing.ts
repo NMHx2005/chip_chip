@@ -25,6 +25,9 @@ export const routing = defineRouting({
     "/blog": "/blog",
     "/blog/[slug]": "/blog/[slug]",
     "/gioi-thieu": { vi: "/gioi-thieu", en: "/about" },
+    "/video": { vi: "/video", en: "/videos" },
+    "/video/[slug]": { vi: "/video/[slug]", en: "/videos/[slug]" },
+    "/tim-kiem": { vi: "/tim-kiem", en: "/search" },
   },
 });
 

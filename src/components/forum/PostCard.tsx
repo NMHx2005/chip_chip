@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { PostSummary } from "@/lib/types";
 import { TOPIC_TONE } from "@/lib/constants";
+import { postHref } from "@/lib/paths";
 
 export async function PostCard({
   post,
@@ -17,16 +18,10 @@ export async function PostCard({
   const tTopics = await getTranslations("topics");
   const tone = post.topic ? TOPIC_TONE[post.topic] : null;
 
-  const isLesson = post.kind === "lesson";
-  const href = isLesson
-    ? ({
-        pathname: "/bai-hoc/[topic]/[slug]",
-        params: { topic: post.topic ?? "", slug: post.slug },
-      } as const)
-    : ({
-        pathname: "/blog/[slug]",
-        params: { slug: post.slug },
-      } as const);
+  const href = postHref(post);
+  // Only a lesson that lost its topic has no page; a card pointing at a 404
+  // would be worse than no card.
+  if (!href) return null;
 
   return (
     <Link

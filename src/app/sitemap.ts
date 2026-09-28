@@ -5,9 +5,11 @@ import { SITE_URL } from "@/lib/site";
 import { TOPIC_IDS } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { postSitemapEntries } from "@/lib/sitemap-entries";
 
 /** Public routes, excluding admin and API. */
-const STATIC_ROUTES = ["/", "/bai-hoc", "/blog", "/gioi-thieu"] as const;
+// The search page is left out on purpose: it is `noindex`.
+const STATIC_ROUTES = ["/", "/bai-hoc", "/video", "/blog", "/gioi-thieu"] as const;
 
 function url(href: Parameters<typeof getPathname>[0]["href"], locale: string) {
   return `${SITE_URL}${getPathname({ href, locale })}`;
@@ -49,34 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .order("published_at", { ascending: false })
     .limit(1000);
 
-  for (const post of data ?? []) {
-    // A lesson row without a topic cannot form a valid `/bai-hoc/[topic]/...`
-    // URL, and falling through to `/blog/[slug]` would 404 instead.
-    if (post.kind === "lesson" && !post.topic) continue;
-
-    // Video pages arrive in DA3; a published video would otherwise fall
-    // through to `/blog/[slug]`, which does not serve it (404).
-    if (post.kind === "video") continue;
-
-    const href =
-      post.kind === "lesson"
-        ? {
-            pathname: "/bai-hoc/[topic]/[slug]" as const,
-            params: { topic: post.topic as string, slug: post.slug },
-          }
-        : {
-            pathname: "/blog/[slug]" as const,
-            params: { slug: post.slug },
-          };
-
-    entries.push({
-      url: url(href, post.locale),
-      // Omit rather than lie when the row has no publish timestamp.
-      ...(post.published_at ? { lastModified: new Date(post.published_at) } : {}),
-      changeFrequency: "monthly",
-      priority: 0.6,
-    });
-  }
+  entries.push(...postSitemapEntries(data));
 
   return entries;
 }

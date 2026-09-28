@@ -1,5 +1,6 @@
 import { routing, type Locale } from "@/i18n/routing";
 import { TOPIC_IDS, type TopicId } from "@/lib/constants";
+import { localizedPath, postPath } from "@/lib/paths";
 import type { PostKind } from "@/lib/types";
 
 /**
@@ -18,29 +19,6 @@ export type PostRow = {
   topic: TopicId | null;
 };
 
-type PathKey = keyof typeof routing.pathnames;
-
-/**
- * Resolves one entry of `routing.pathnames` to a localized, absolute path.
- *
- * This re-derives what next-intl's own `getPathname` (see src/i18n/navigation
- * and src/app/sitemap.ts) computes from the same `routing.pathnames` table,
- * rather than calling it directly: `getPathname` pulls in `next/navigation`
- * through next-intl's navigation factory, which Vitest's plain Node
- * environment cannot resolve (a pre-existing ESM interop gap between Next 14
- * and Vite/Vitest, unrelated to this module), so no test in this repo can
- * import `@/i18n/navigation`. Reading `routing.pathnames` directly keeps this
- * a single source of truth while staying testable.
- */
-function localizedPath(key: PathKey, locale: Locale, params?: Record<string, string>): string {
-  const entry = routing.pathnames[key];
-  const template: string = typeof entry === "string" ? entry : entry[locale];
-  const path = params
-    ? Object.entries(params).reduce((acc, [name, value]) => acc.replace(`[${name}]`, value), template)
-    : template;
-  return path === "/" ? `/${locale}` : `/${locale}${path}`;
-}
-
 /**
  * Every path whose cached rendering could depend on the given rows.
  *
@@ -54,19 +32,15 @@ export function revalidatePostRows(rows: PostRow[]): string[] {
     paths.add(localizedPath("/", locale));
     paths.add(localizedPath("/blog", locale));
     paths.add(localizedPath("/bai-hoc", locale));
+    paths.add(localizedPath("/video", locale));
   }
 
   for (const row of rows) {
     if (row.kind === "lesson" && row.topic) {
       paths.add(localizedPath("/bai-hoc/[topic]", row.locale, { topic: row.topic }));
-      paths.add(
-        localizedPath("/bai-hoc/[topic]/[slug]", row.locale, { topic: row.topic, slug: row.slug })
-      );
-    } else if (row.kind === "forum") {
-      paths.add(localizedPath("/blog/[slug]", row.locale, { slug: row.slug }));
     }
-    // A video row only needs the listings above refreshed — per-video pages
-    // arrive in DA3, so there is nothing else to revalidate yet.
+    const own = postPath(row, row.locale);
+    if (own) paths.add(own);
   }
 
   return [...paths];

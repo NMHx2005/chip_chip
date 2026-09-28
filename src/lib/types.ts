@@ -1,5 +1,6 @@
 import type { Locale } from "@/i18n/routing";
 import type { TopicId } from "@/lib/constants";
+import type { VideoPlatform } from "@/lib/video";
 
 export type PostKind = "lesson" | "forum" | "video";
 export type PostStatus = "draft" | "published";
@@ -29,7 +30,15 @@ export type Post = {
   content: unknown;
   publishedAt: string | null;
   updatedAt: string;
+  /** Video fields: always null on lessons and blog posts. */
+  videoPlatform: VideoPlatform | null;
+  videoExternalId: string | null;
+  videoSource: VideoSource | null;
+  channelName: string | null;
 };
+
+/** A video post plus the lesson group it points back to. */
+export type VideoPost = Post & { relatedLessonTranslationId: string | null };
 
 /** Just the fields a card or list row needs. */
 export type PostSummary = Pick<
@@ -43,6 +52,10 @@ export type PostSummary = Pick<
   | "topic"
   | "difficulty"
   | "publishedAt"
+  | "videoPlatform"
+  | "videoExternalId"
+  | "videoSource"
+  | "channelName"
 >;
 
 export type Comment = {
