@@ -1,13 +1,13 @@
 import { notFound } from "next/navigation";
 import type { JSONContent } from "@tiptap/react";
 import { PostEditor, type Draft } from "@/components/admin/PostEditor";
-import { SharedFieldsPanel } from "@/components/admin/SharedFieldsPanel";
+import { SharedFieldsPanel, type LessonOption } from "@/components/admin/SharedFieldsPanel";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
 import { routing, type Locale } from "@/i18n/routing";
 import type { TopicId } from "@/lib/constants";
 import type { Difficulty, VideoSource } from "@/lib/types";
-import { embedUrl, type VideoPlatform } from "@/lib/video";
+import { watchUrl, type VideoPlatform } from "@/lib/video";
 
 export const dynamic = "force-dynamic";
 
@@ -79,12 +79,27 @@ export default async function EditPostPage({
   const missingLocale = routing.locales.some((locale) => !drafts[locale].id);
 
   // Rebuilt from the stored (platform, id) pair rather than read back as a
-  // URL — see src/lib/video.ts — so this panel resends it unchanged instead
-  // of clearing it when saving topic/difficulty.
+  // URL — see src/lib/video.ts. The watch link is what staff would paste, and
+  // parseVideoUrl reads it back to the same pair.
   const videoUrl =
     primary.video_platform && primary.video_external_id
-      ? embedUrl({ platform: primary.video_platform, externalId: primary.video_external_id })
+      ? watchUrl({ platform: primary.video_platform, externalId: primary.video_external_id })
       : "";
+
+  // A video can point at one lesson; staff pick it by its Vietnamese title.
+  let lessonOptions: LessonOption[] = [];
+  if (primary.kind === "video") {
+    const { data: lessons } = await supabase
+      .from("posts")
+      .select("translation_id, title")
+      .eq("kind", "lesson")
+      .eq("locale", "vi")
+      .order("title");
+    lessonOptions = (lessons ?? []).map((lesson) => ({
+      translationId: lesson.translation_id as string,
+      title: (lesson.title as string) || "(chưa có tiêu đề)",
+    }));
+  }
 
   return (
     <div className="flex flex-col gap-6">
@@ -117,6 +132,7 @@ export default async function EditPostPage({
           videoSource={primary.video_source}
           channelName={primary.channel_name ?? ""}
           relatedLessonTranslationId={primary.related_lesson_translation_id}
+          lessonOptions={lessonOptions}
         />
       )}
 
