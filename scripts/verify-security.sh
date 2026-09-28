@@ -137,6 +137,9 @@ check "không lưu được platform thiếu id video (hoặc ngược lại)" "
 check "tên kênh trên 120 ký tự bị chặn" "posts_channel_name_length" "$(sql_violation \
   "insert into public.posts (locale, kind, slug, channel_name)
    values ('vi', 'video', 'sec-vidchan-$$', repeat('x', 121));")"
+check "không gắn tên kênh vào bài học" "posts_channel_name_only_on_videos" "$(sql_violation \
+  "insert into public.posts (locale, kind, slug, topic, channel_name)
+   values ('vi', 'lesson', 'sec-lesschan-$$', 'nguyen-ly', 'x');")"
 
 echo
 echo "S — tìm kiếm không dấu"
