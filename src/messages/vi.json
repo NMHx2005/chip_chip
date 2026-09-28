@@ -370,7 +370,7 @@
           "locale": "Một cookie tên NEXT_LOCALE ghi nhớ ngôn ngữ bạn chọn.",
           "local": "Trình duyệt ghi nhớ vài lựa chọn giao diện, ví dụ cột chủ đề đang thu gọn. Dữ liệu này nằm trên máy bạn, không gửi về máy chủ.",
           "video": "Video YouTube và TikTok chỉ tải khi bạn bấm phát (YouTube ở chế độ youtube-nocookie). Ảnh xem trước của video YouTube tải từ máy chủ của YouTube. Khi video đã phát, chính sách của nền tảng đó được áp dụng.",
-          "staff": "Cookie đăng nhập chỉ dùng cho ban biên tập ở trang quản trị."
+          "staff": "Cookie đăng nhập chỉ tồn tại cho ban biên tập khi đăng nhập; nó giữ họ đăng nhập trên toàn trang và đánh dấu bình luận trả lời là của tác giả. Người đọc thường không bao giờ nhận cookie này."
         }
       },
       "use": {

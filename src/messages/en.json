@@ -370,7 +370,7 @@
           "locale": "One cookie, NEXT_LOCALE, remembers the language you chose.",
           "local": "Your browser remembers a few display choices, such as a collapsed topic column. That stays on your device and is never sent to the server.",
           "video": "YouTube and TikTok videos load only when you press play (YouTube in its youtube-nocookie mode). YouTube preview images load from YouTube's servers. Once a video plays, that platform's own policy applies.",
-          "staff": "Sign-in cookies are used only by the editors on the admin pages."
+          "staff": "The sign-in cookie exists only for editors who log in; it keeps them signed in across the site and marks their comment replies as the author's. Readers never receive it."
         }
       },
       "use": {
