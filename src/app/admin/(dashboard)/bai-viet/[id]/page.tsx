@@ -12,7 +12,7 @@ type Row = {
   id: string;
   translation_id: string;
   locale: Locale;
-  kind: "lesson" | "forum";
+  kind: "lesson" | "forum" | "video";
   topic: TopicId | null;
   title: string;
   slug: string;
@@ -76,7 +76,7 @@ export default async function EditPostPage({
           {primary.title || "(chưa có tiêu đề)"}
         </h1>
         <p className="mt-1.5 text-sm text-text-muted">
-          {primary.kind === "lesson" ? "Bài học" : "Diễn đàn"}
+          {{ lesson: "Bài học", forum: "Blog", video: "Video" }[primary.kind]}
           {primary.topic ? ` · ${primary.topic}` : ""} ·{" "}
           {primary.status === "published" ? "Đã đăng" : "Bản nháp"}
         </p>

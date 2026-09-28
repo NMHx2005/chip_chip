@@ -11,7 +11,7 @@ type Row = {
   id: string;
   translation_id: string;
   locale: "vi" | "en";
-  kind: "lesson" | "forum";
+  kind: "lesson" | "forum" | "video";
   topic: string | null;
   title: string;
   slug: string;
@@ -19,7 +19,7 @@ type Row = {
   updated_at: string;
 };
 
-const KIND_LABEL = { lesson: "Bài học", forum: "Diễn đàn" } as const;
+const KIND_LABEL = { lesson: "Bài học", forum: "Blog", video: "Video" } as const;
 
 function isReady(rows: Row[]) {
   const locales = new Set(rows.map((r) => r.locale));

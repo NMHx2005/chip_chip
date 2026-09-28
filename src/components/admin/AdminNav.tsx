@@ -8,6 +8,7 @@ const ITEMS = [
   { href: "/admin", label: "Tổng quan", exact: true },
   { href: "/admin/bai-viet", label: "Bài viết" },
   { href: "/admin/comments", label: "Bình luận" },
+  { href: "/admin/tin-nhan", label: "Tin nhắn" },
 ];
 
 export function AdminNav() {

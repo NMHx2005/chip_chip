@@ -2,9 +2,10 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
+import { RebuildSearchButton } from "@/components/admin/RebuildSearchButton";
 
 async function countRows(
-  table: "posts" | "comments",
+  table: "posts" | "comments" | "messages",
   filters: Record<string, string | boolean> = {}
 ) {
   const supabase = createClient();
@@ -19,13 +20,14 @@ async function countRows(
 export default async function AdminDashboard() {
   const staff = await requireStaff();
 
-  const [publishedVi, publishedEn, drafts, hiddenComments, pendingEn] =
+  const [publishedVi, publishedEn, drafts, hiddenComments, pendingEn, unhandledMessages] =
     await Promise.all([
       countRows("posts", { status: "published", locale: "vi" }),
       countRows("posts", { status: "published", locale: "en" }),
       countRows("posts", { status: "draft" }),
       countRows("comments", { is_hidden: true }),
       countRows("posts", { status: "draft", locale: "en" }),
+      countRows("messages", { is_handled: false }),
     ]);
 
   const stats = [
@@ -34,6 +36,7 @@ export default async function AdminDashboard() {
     { label: "Bản nháp", value: drafts },
     { label: "Chờ dịch sang EN", value: pendingEn },
     { label: "Bình luận đang ẩn", value: hiddenComments },
+    { label: "Tin nhắn chưa xử lý", value: unhandledMessages },
   ];
 
   return (
@@ -47,7 +50,7 @@ export default async function AdminDashboard() {
         </p>
       </div>
 
-      <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {stats.map((stat) => (
           <div
             key={stat.label}
@@ -83,6 +86,8 @@ export default async function AdminDashboard() {
           Xem tất cả bài viết
         </Link>
       </div>
+
+      <RebuildSearchButton />
     </div>
   );
 }

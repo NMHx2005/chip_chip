@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { TOPIC_IDS, TOPIC_TONE, type TopicId } from "@/lib/constants";
+import { DIFFICULTIES, type Difficulty, type PostKind } from "@/lib/types";
 import { createPost } from "@/app/admin/actions";
 import { readActionResult, sessionExpired } from "@/components/admin/actionResult";
 
@@ -14,13 +15,20 @@ const TOPIC_TITLE: Record<TopicId, string> = {
   "lich-su": "Lịch sử và Phát triển",
 };
 
+const DIFFICULTY_TITLE: Record<Difficulty, string> = {
+  basic: "Cơ bản",
+  intermediate: "Trung bình",
+  advanced: "Nâng cao",
+};
+
 export function NewPostForm() {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
-  const [kind, setKind] = useState<"lesson" | "forum">("forum");
+  const [kind, setKind] = useState<PostKind>("forum");
   const [topic, setTopic] = useState<TopicId>(TOPIC_IDS[0]);
+  const [difficulty, setDifficulty] = useState<Difficulty>("basic");
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
 
@@ -32,8 +40,8 @@ export function NewPostForm() {
       const result = readActionResult(
         await createPost({
           kind,
-          topic: kind === "lesson" ? topic : null,
-          difficulty: null,
+          topic: kind === "forum" ? null : topic,
+          difficulty: kind === "forum" ? null : difficulty,
           title,
           slug,
         })
@@ -61,8 +69,9 @@ export function NewPostForm() {
         <div className="flex gap-2">
           {(
             [
-              { value: "forum", label: "Diễn đàn" },
+              { value: "forum", label: "Blog" },
               { value: "lesson", label: "Bài học" },
+              { value: "video", label: "Video" },
             ] as const
           ).map((option) => (
             <button
@@ -83,7 +92,7 @@ export function NewPostForm() {
         </div>
       </fieldset>
 
-      {kind === "lesson" && (
+      {kind !== "forum" && (
         <fieldset className="flex flex-col gap-2">
           <legend className="mb-1 text-sm font-medium text-text">Chủ đề</legend>
           <div className="flex flex-wrap gap-2">
@@ -107,6 +116,30 @@ export function NewPostForm() {
                 <span className={topic === id ? "" : "text-text-nav"}>
                   {TOPIC_TITLE[id]}
                 </span>
+              </button>
+            ))}
+          </div>
+        </fieldset>
+      )}
+
+      {kind !== "forum" && (
+        <fieldset className="flex flex-col gap-2">
+          <legend className="mb-1 text-sm font-medium text-text">Độ khó</legend>
+          <div className="flex flex-wrap gap-2">
+            {DIFFICULTIES.map((level) => (
+              <button
+                key={level}
+                type="button"
+                onClick={() => setDifficulty(level)}
+                aria-pressed={difficulty === level}
+                className={cn(
+                  "cursor-pointer rounded-xl border px-4 py-2.5 text-sm font-medium transition-colors",
+                  difficulty === level
+                    ? "border-border bg-surface-muted text-accent"
+                    : "border-border bg-surface text-text-nav hover:border-black/20"
+                )}
+              >
+                {DIFFICULTY_TITLE[level]}
               </button>
             ))}
           </div>

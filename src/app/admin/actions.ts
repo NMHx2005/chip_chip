@@ -374,6 +374,35 @@ export async function rebuildSearchText(): Promise<ActionResult & { updated?: nu
   return { ok: true, updated };
 }
 
+export async function setMessageHandled(
+  messageId: string,
+  handled: boolean
+): Promise<ActionResult> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+  if (!isUuid(messageId)) return fail("Mã tin nhắn không hợp lệ.");
+
+  const { error } = await createClient()
+    .from("messages")
+    .update({ is_handled: handled })
+    .eq("id", messageId);
+
+  if (error) return fail(error.message);
+  revalidatePath("/admin/tin-nhan");
+  return { ok: true };
+}
+
+export async function deleteMessage(messageId: string): Promise<ActionResult> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+  if (!isUuid(messageId)) return fail("Mã tin nhắn không hợp lệ.");
+
+  const { error } = await createClient().from("messages").delete().eq("id", messageId);
+  if (error) return fail(error.message);
+  revalidatePath("/admin/tin-nhan");
+  return { ok: true };
+}
+
 /** Signs out and returns to the login screen. */
 export async function signOutAndRedirect() {
   const supabase = createClient();
