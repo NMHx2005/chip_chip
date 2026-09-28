@@ -3,8 +3,10 @@ import "server-only";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured, requireSupabase } from "@/lib/supabase/config";
 import type { Locale } from "@/i18n/routing";
-import type { TopicId } from "@/lib/constants";
-import type { Comment, Difficulty, Post, PostKind, PostSummary } from "@/lib/types";
+import { TOPIC_IDS, type TopicId } from "@/lib/constants";
+import { listingOrder, pageRange } from "@/lib/listing-order";
+import type { ListingParams } from "@/lib/listing-params";
+import type { Comment, Difficulty, Post, PostKind, PostSummary, VideoPost } from "@/lib/types";
 import { videoRefFrom } from "@/lib/video";
 
 /**
@@ -153,6 +155,148 @@ export async function countLessonsByTopic(
     counts[topic] = (counts[topic] ?? 0) + 1;
   }
   return counts;
+}
+
+type PageOf = { posts: PostSummary[]; total: number };
+
+function toPage(
+  scope: string,
+  { data, error, count }: { data: Row[] | null; error: { code: string; message: string } | null; count: number | null }
+): PageOf {
+  if (error) {
+    // PGRST103: the requested page starts past the last row. That is an empty
+    // page (a stale or hand-edited ?page=), not a failure worth logging.
+    if (error.code !== "PGRST103") console.error(`[${scope}]`, error.message);
+    return { posts: [], total: 0 };
+  }
+  return { posts: (data ?? []).map(toSummary), total: count ?? 0 };
+}
+
+/** One page of published lessons, newest first, optionally narrowed. */
+export async function listLessons(
+  locale: Locale,
+  { topic, difficulty, page }: Pick<ListingParams, "topic" | "difficulty" | "page">
+): Promise<PageOf> {
+  if (!requireSupabase("listLessons")) return { posts: [], total: 0 };
+
+  const supabase = createClient();
+  const { from, to } = pageRange(page);
+  let query = supabase
+    .from("posts")
+    .select(SUMMARY_COLUMNS, { count: "exact" })
+    .eq("status", "published")
+    .eq("locale", locale)
+    .eq("kind", "lesson");
+
+  if (topic) query = query.eq("topic", topic);
+  if (difficulty) query = query.eq("difficulty", difficulty);
+
+  for (const clause of listingOrder("newest")) {
+    query = query.order(clause.column, { ascending: clause.ascending, nullsFirst: clause.nullsFirst });
+  }
+
+  return toPage("listLessons", await query.range(from, to));
+}
+
+/** One page of published videos, filtered and sorted as the URL asks. */
+export async function listVideos(locale: Locale, params: ListingParams): Promise<PageOf> {
+  if (!requireSupabase("listVideos")) return { posts: [], total: 0 };
+
+  const supabase = createClient();
+  const { from, to } = pageRange(params.page);
+  let query = supabase
+    .from("posts")
+    .select(SUMMARY_COLUMNS, { count: "exact" })
+    .eq("status", "published")
+    .eq("locale", locale)
+    .eq("kind", "video");
+
+  if (params.platform) query = query.eq("video_platform", params.platform);
+  if (params.source) query = query.eq("video_source", params.source);
+  if (params.topic) query = query.eq("topic", params.topic);
+  if (params.difficulty) query = query.eq("difficulty", params.difficulty);
+
+  for (const clause of listingOrder(params.sort)) {
+    query = query.order(clause.column, { ascending: clause.ascending, nullsFirst: clause.nullsFirst });
+  }
+
+  return toPage("listVideos", await query.range(from, to));
+}
+
+export async function getVideoBySlug(locale: Locale, slug: string): Promise<VideoPost | null> {
+  if (!requireSupabase("getVideoBySlug")) return null;
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("posts")
+    .select(`${POST_COLUMNS}, related_lesson_translation_id`)
+    .eq("status", "published")
+    .eq("locale", locale)
+    .eq("kind", "video")
+    .eq("slug", slug)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[getVideoBySlug]", error.message);
+    return null;
+  }
+  if (!data) return null;
+  const related = data.related_lesson_translation_id;
+  return { ...toPost(data), relatedLessonTranslationId: typeof related === "string" ? related : null };
+}
+
+/** Published videos in this locale that point at the given lesson group. */
+export async function listRelatedVideos(
+  locale: Locale,
+  lessonTranslationId: string
+): Promise<PostSummary[]> {
+  if (!requireSupabase("listRelatedVideos")) return [];
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("posts")
+    .select(SUMMARY_COLUMNS)
+    .eq("status", "published")
+    .eq("locale", locale)
+    .eq("kind", "video")
+    .eq("related_lesson_translation_id", lessonTranslationId)
+    .order("published_at", { ascending: false })
+    .limit(6);
+
+  if (error) {
+    console.error("[listRelatedVideos]", error.message);
+    return [];
+  }
+  return (data ?? []).map(toSummary);
+}
+
+/**
+ * The published lesson of a translation group in one locale, so a video page
+ * can link back to it. Null when the lesson is unpublished, deleted, or has
+ * lost its topic — the link then simply does not render.
+ */
+export async function getLessonByTranslation(
+  locale: Locale,
+  translationId: string
+): Promise<{ slug: string; topic: TopicId; title: string } | null> {
+  if (!requireSupabase("getLessonByTranslation")) return null;
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("posts")
+    .select("slug, topic, title")
+    .eq("status", "published")
+    .eq("locale", locale)
+    .eq("kind", "lesson")
+    .eq("translation_id", translationId)
+    .maybeSingle();
+
+  if (error) {
+    console.error("[getLessonByTranslation]", error.message);
+    return null;
+  }
+  const topic = TOPIC_IDS.find((id) => id === data?.topic);
+  return data && topic ? { slug: String(data.slug), topic, title: String(data.title ?? "") } : null;
 }
 
 export async function getPostBySlug(
@@ -309,7 +453,8 @@ export async function countComments(postId: string): Promise<number> {
 export async function searchPosts(
   locale: Locale,
   query: string,
-  kinds: PostKind[] = ["lesson", "forum", "video"]
+  kinds: PostKind[] = ["lesson", "forum", "video"],
+  limit = 30
 ): Promise<PostSummary[]> {
   const q = query.trim();
   if (!q) return [];
@@ -320,7 +465,8 @@ export async function searchPosts(
     p_query: q,
     p_locale: locale,
     p_kinds: kinds,
-    p_limit: 30,
+    // search_posts clamps this to 1–50 itself.
+    p_limit: limit,
   });
 
   if (error) {
