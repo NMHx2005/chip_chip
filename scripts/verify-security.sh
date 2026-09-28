@@ -171,6 +171,19 @@ check "tài khoản chưa kích hoạt không đọc được tin nhắn" "[]" \
   "$(curl -s "$API_URL/rest/v1/messages?select=id" "${auth[@]}")"
 
 echo
+echo "U — cập nhật chỉ mục tìm kiếm không được tính là sửa bài"
+# Inserts don't fire the update trigger, so the seeded value should stick
+# without a follow-up UPDATE — verified separately while writing this check.
+psql "$DB_URL" -q -c "insert into public.posts (locale, kind, slug, updated_at)
+  values ('vi', 'forum', 'sec-upd-$$', '2020-01-01');"
+psql "$DB_URL" -q -c "update public.posts set plain_text = 'x' where slug = 'sec-upd-$$';"
+check "chỉ sửa plain_text thì updated_at không đổi" "2020-01-01" \
+  "$(psql "$DB_URL" -t -A -c "select updated_at::date from public.posts where slug = 'sec-upd-$$';")"
+psql "$DB_URL" -q -c "update public.posts set title = 'y' where slug = 'sec-upd-$$';"
+check "sửa tiêu đề vẫn cập nhật updated_at" "$(date +%Y-%m-%d)" \
+  "$(psql "$DB_URL" -t -A -c "select updated_at::date from public.posts where slug = 'sec-upd-$$';")"
+
+echo
 echo "D2 — cổng đăng bài của nhóm dịch"
 # Publishing needs an activated staff member; the throwaway account is promoted
 # only here, after every check that needs it to be an outsider has run.
