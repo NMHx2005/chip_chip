@@ -11,6 +11,12 @@
  * input. Tags are therefore matched quote-aware, and attribute values are
  * decoded before being re-escaped — otherwise `?a=1&amp;b=2` would come out
  * as `?a=1&amp;amp;b=2` and every link with a query string would break.
+ *
+ * Tag boundaries are found with a single left-to-right scan (`parseTag`)
+ * rather than a regex: a regex that back-searches for a closing `>` across
+ * an unbounded run of non-`>` characters retries at every `<` it fails on,
+ * which is quadratic on malformed input such as `"<a b".repeat(50000)`
+ * (200 KB with no `>` at all).
  */
 
 const ALLOWED_TAGS = new Set([
@@ -61,8 +67,69 @@ const ALLOWED_ATTR = new Set([
 /** Dropped together with everything up to their closing tag. */
 const FORBIDDEN_WITH_BODY = new Set(["script", "style", "iframe", "object", "embed", "form"]);
 
-// A quoted value may contain `>`; `[^>]*` would end the tag inside it.
-const TAG = /<(\/?)([a-zA-Z][a-zA-Z0-9]*)\b((?:[^>"']|"[^"]*"|'[^']*')*)>/g;
+const NAME_START = /[a-zA-Z]/;
+const NAME_CHAR = /[a-zA-Z0-9]/;
+
+interface ParsedTag {
+  closing: boolean;
+  name: string;
+  attrs: string;
+  selfClosing: boolean;
+  /** Index of the character right after the tag's closing `>`. */
+  end: number;
+}
+
+/**
+ * Parses one tag starting at `html[start]` (must be `<`).
+ *
+ * Returns `null` when `<` is not followed by a valid tag name — it is then
+ * a literal character, and the caller resumes scanning at `start + 1`.
+ * Returns `"unterminated"` when a valid tag name has no closing `>`
+ * anywhere in the rest of the string; the caller then treats everything
+ * from `start` to the end of the input as text in one step. Both outcomes
+ * keep the scan linear: a name check is O(1), and an unterminated tag is
+ * detected by a single forward pass that ends the whole scan, rather than
+ * one attempt per `<`.
+ */
+function parseTag(html: string, start: number): ParsedTag | null | "unterminated" {
+  const len = html.length;
+  let i = start + 1;
+  let closing = false;
+  if (html[i] === "/") {
+    closing = true;
+    i++;
+  }
+
+  const nameStart = i;
+  if (i >= len || !NAME_START.test(html[i])) return null;
+  i++;
+  while (i < len && NAME_CHAR.test(html[i])) i++;
+  const name = html.slice(nameStart, i).toLowerCase();
+
+  const attrsStart = i;
+  let quote: string | null = null;
+  while (i < len) {
+    const c = html[i];
+    if (quote) {
+      if (c === quote) quote = null;
+    } else if (c === '"' || c === "'") {
+      quote = c;
+    } else if (c === ">") {
+      break;
+    }
+    i++;
+  }
+  if (i >= len) return "unterminated";
+
+  let attrs = html.slice(attrsStart, i);
+  // A trailing `/` right before `>` marks a self-closing tag; excluded here
+  // so it is never mistaken for the tail of an unquoted attribute value
+  // (`<img src=x/>` must not sanitize to `src="x/"`).
+  const selfClosing = attrs.endsWith("/");
+  if (selfClosing) attrs = attrs.slice(0, -1);
+
+  return { closing, name, attrs, selfClosing, end: i + 1 };
+}
 
 const NAMED_ENTITIES: Record<string, string> = {
   amp: "&",
@@ -121,33 +188,43 @@ function sanitizeAttrs(raw: string): string {
 }
 
 export function sanitizeArticleHtml(html: string): string {
+  const len = html.length;
   let out = "";
-  let last = 0;
+  let textStart = 0;
   let skipping: string | null = null;
+  let i = 0;
 
-  for (const match of html.matchAll(TAG)) {
-    const [raw, closing, tag, attrs] = match;
-    const name = tag.toLowerCase();
-    const text = html.slice(last, match.index);
-    last = match.index + raw.length;
+  while (i < len) {
+    if (html.charCodeAt(i) !== 60 /* '<' */) {
+      i++;
+      continue;
+    }
 
-    if (skipping) {
-      if (closing && name === skipping) skipping = null;
+    const tag = parseTag(html, i);
+
+    if (tag === "unterminated") break; // everything from here on is text
+    if (tag === null) {
+      // '<' not followed by a tag name — a literal character, not a tag.
+      i++;
       continue;
     }
 
     // Text between tags is already escaped by generateHTML; a bare `<` here
     // can only come from hand-written HTML and is kept as text.
-    out += text.replace(/</g, "&lt;");
+    if (!skipping) out += html.slice(textStart, i).replace(/</g, "&lt;");
 
-    if (FORBIDDEN_WITH_BODY.has(name)) {
-      if (!closing && !raw.endsWith("/>")) skipping = name;
-      continue;
+    if (skipping) {
+      if (tag.closing && tag.name === skipping) skipping = null;
+    } else if (FORBIDDEN_WITH_BODY.has(tag.name)) {
+      if (!tag.closing && !tag.selfClosing) skipping = tag.name;
+    } else if (ALLOWED_TAGS.has(tag.name)) {
+      out += tag.closing ? `</${tag.name}>` : `<${tag.name}${sanitizeAttrs(tag.attrs)}>`;
     }
-    if (!ALLOWED_TAGS.has(name)) continue;
-    out += closing ? `</${name}>` : `<${name}${sanitizeAttrs(attrs)}>`;
+
+    i = tag.end;
+    textStart = i;
   }
 
-  if (!skipping) out += html.slice(last).replace(/</g, "&lt;");
+  if (!skipping) out += html.slice(textStart).replace(/</g, "&lt;");
   return out;
 }

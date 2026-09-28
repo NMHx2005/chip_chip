@@ -68,6 +68,32 @@ describe("sanitizeArticleHtml — attribute values", () => {
   });
 });
 
+describe("sanitizeArticleHtml — malformed input performance", () => {
+  it("sanitizes 200 KB of unclosed tags in under 200ms", () => {
+    const html = "<a b".repeat(50000);
+    const start = performance.now();
+    const result = sanitizeArticleHtml(html);
+    const elapsed = performance.now() - start;
+
+    expect(elapsed).toBeLessThan(200);
+    expect(result).not.toContain("<a");
+  });
+
+  it("sanitizes 260 KB of unclosed quoted attributes in under 200ms", () => {
+    const html = '<p title="x"'.repeat(20000);
+    const start = performance.now();
+    const result = sanitizeArticleHtml(html);
+    const elapsed = performance.now() - start;
+
+    expect(elapsed).toBeLessThan(200);
+    expect(result).not.toContain("<p");
+  });
+
+  it("does not swallow the '/' of a self-closing tag into an unquoted attribute value", () => {
+    expect(sanitizeArticleHtml("<img src=x/>")).toBe('<img src="x">');
+  });
+});
+
 describe("render.ts module graph", () => {
   it("does not import isomorphic-dompurify", () => {
     const src = readFileSync(
