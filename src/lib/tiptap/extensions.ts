@@ -5,6 +5,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { TableKit } from "@tiptap/extension-table";
 import TextAlign from "@tiptap/extension-text-align";
 import StarterKit from "@tiptap/starter-kit";
+import { Figure } from "@/lib/tiptap/nodes/figure";
 
 /**
  * The single source of truth for which nodes and marks an article may contain.
@@ -60,4 +61,6 @@ export const articleExtensions = [
   // Inline and block formulas. Only the LaTeX is stored; the public page
   // typesets it on the server (see math.ts), the editor in the browser.
   Mathematics,
+
+  Figure,
 ];

@@ -272,6 +272,34 @@
   color: #0d0d0d;
 }
 
+.chip-prose {
+  counter-reset: figure;
+}
+
+.chip-prose figure {
+  margin: 2em 0;
+}
+
+/* The counter lives on the caption, so only captioned figures are numbered. */
+.chip-prose figcaption {
+  counter-increment: figure;
+  margin-top: 0.625rem;
+  color: #3e424d;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.chip-prose figcaption::before {
+  content: "Hình " counter(figure) ". ";
+  font-weight: 600;
+  color: #0d0d0d;
+}
+
+.chip-prose figcaption:lang(en)::before {
+  content: "Figure " counter(figure) ". ";
+}
+
 /* Hero video hover-card: a bright dash traveling the notch outline, drawn as an
    SVG stroke so it follows the bottom-right scoop. pathLength is normalised to
    100, so the dash offset animates exactly one full perimeter. */

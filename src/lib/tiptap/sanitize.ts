@@ -49,6 +49,8 @@ const ALLOWED_TAGS = new Set([
   // Formula placeholders; math.ts swaps them for KaTeX after sanitising.
   "span",
   "div",
+  "figure",
+  "figcaption",
 ]);
 
 const ALLOWED_ATTR = new Set([

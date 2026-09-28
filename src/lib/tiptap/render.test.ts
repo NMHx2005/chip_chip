@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { extractHeadings } from "@/lib/tiptap/headings";
+import { isAllowedFigureSrc } from "@/lib/tiptap/nodes/figure";
 import { articleToPlainText, renderArticle } from "@/lib/tiptap/render";
 
 /**
@@ -220,6 +221,58 @@ describe("formulas elsewhere in the pipeline", () => {
     expect(renderArticle(content)).toContain(
       '<h2 id="dinh-luat-e-hf">Định luật <span class="math-inline">'
     );
+  });
+});
+
+describe("renderArticle — figures", () => {
+  it("renders an image with its caption", () => {
+    expect(
+      renderArticle(
+        doc({ type: "figure", attrs: { src: "https://cdn.test/w.png", alt: "Tấm wafer", caption: "Tấm wafer 300 mm" } })
+      )
+    ).toBe(
+      '<figure><img src="https://cdn.test/w.png" alt="Tấm wafer" loading="lazy" decoding="async"><figcaption>Tấm wafer 300 mm</figcaption></figure>'
+    );
+  });
+
+  it("leaves out an empty caption and a source that is not https", () => {
+    expect(
+      renderArticle(doc({ type: "figure", attrs: { src: "javascript:alert(1)", alt: "x", caption: "" } }))
+    ).toBe("<figure></figure>");
+  });
+
+  it("escapes markup in the caption and alt text", () => {
+    const html = renderArticle(
+      doc({ type: "figure", attrs: { src: "https://cdn.test/a.png", alt: 'a" onerror="x', caption: "<b>V</b> > 5" } })
+    );
+    expect(html).toBe(
+      '<figure><img src="https://cdn.test/a.png" alt="a&quot; onerror=&quot;x" loading="lazy" decoding="async"><figcaption>&lt;b&gt;V&lt;/b&gt; &gt; 5</figcaption></figure>'
+    );
+  });
+
+  it("puts the caption, not the alt text, into the plain text", () => {
+    expect(
+      articleToPlainText(
+        doc(
+          { type: "figure", attrs: { src: "https://cdn.test/a.png", alt: "ảnh", caption: "Tấm wafer" } },
+          paragraph(text("sau"))
+        ),
+        500
+      )
+    ).toBe("Tấm wafer sau");
+  });
+});
+
+describe("isAllowedFigureSrc", () => {
+  it.each([
+    ["https://cdn.test/a.png", undefined, true],
+    ["http://127.0.0.1:54321/storage/v1/object/public/post-images/a.png", "http://127.0.0.1:54321", true],
+    ["http://127.0.0.1:54321/storage/v1/object/private/a.png", "http://127.0.0.1:54321", false],
+    ["http://evil.test/storage/v1/object/public/a.png", "http://127.0.0.1:54321", false],
+    ["data:image/png;base64,AAAA", "http://127.0.0.1:54321", false],
+    [null, "http://127.0.0.1:54321", false],
+  ])("%s with project %s → %s", (src, project, expected) => {
+    expect(isAllowedFigureSrc(src, project)).toBe(expected);
   });
 });
 
