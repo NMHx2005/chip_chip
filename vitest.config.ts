@@ -14,5 +14,8 @@ export default defineConfig({
   test: {
     environment: "node",
     include: ["src/**/*.test.ts"],
+    // Vitest 2 derives the minimum from the CPU count, so `--maxWorkers=N`
+    // below that count throws "minThreads and maxThreads must not conflict".
+    minWorkers: 1,
   },
 });
