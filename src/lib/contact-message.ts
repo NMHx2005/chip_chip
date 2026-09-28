@@ -1,4 +1,5 @@
 import { routing, type Locale } from "@/i18n/routing";
+import { EMAIL_PATTERN, MESSAGE_LIMITS } from "@/lib/contact-client";
 import { isUuid } from "@/lib/shared-fields";
 
 /**
@@ -24,11 +25,11 @@ type Result =
   | { ok: true; honeypot: false; value: MessageInput }
   | { ok: false; error: string };
 
-// Must match the CHECK constraints on public.messages.
-const MAX_NAME = 80;
-const MAX_EMAIL = 254;
-const MAX_BODY = 4000;
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Shared with the browser forms so both sides refuse the same input.
+const MAX_NAME = MESSAGE_LIMITS.name;
+const MAX_EMAIL = MESSAGE_LIMITS.email;
+const MAX_BODY = MESSAGE_LIMITS.body;
+const EMAIL = EMAIL_PATTERN;
 
 function text(value: unknown): string | null {
   if (typeof value !== "string") return null;
