@@ -305,6 +305,54 @@ describe("renderArticle — callouts", () => {
   });
 });
 
+describe("renderArticle — references", () => {
+  const list = (...items: string[]) => ({
+    type: "orderedList",
+    content: items.map((item) => ({ type: "listItem", content: [paragraph(text(item))] })),
+  });
+
+  it("renders the list and the reviewers line", () => {
+    expect(
+      renderArticle(doc({ type: "references", attrs: { reviewers: "TS. Nguyễn A" }, content: [list("Sze, Physics")] }))
+    ).toBe(
+      '<section class="references" data-type="references"><div class="references-list"><ol><li><p>Sze, Physics</p></li></ol></div><p class="reviewers">TS. Nguyễn A</p></section>'
+    );
+  });
+
+  it("omits the reviewers line when there is none", () => {
+    expect(renderArticle(doc({ type: "references", content: [list("Sze")] }))).toBe(
+      '<section class="references" data-type="references"><div class="references-list"><ol><li><p>Sze</p></li></ol></div></section>'
+    );
+  });
+
+  it("keeps a source link's query string intact", () => {
+    const html = renderArticle(
+      doc({
+        type: "references",
+        content: [
+          {
+            type: "orderedList",
+            content: [
+              {
+                type: "listItem",
+                content: [paragraph(text("Sze", [{ type: "link", attrs: { href: "https://x.test/?a=1&b=2" } }]))],
+              },
+            ],
+          },
+        ],
+      })
+    );
+    expect(html).toContain('href="https://x.test/?a=1&amp;b=2"');
+    expect(html).toContain('rel="noopener noreferrer nofollow"');
+  });
+
+  it("puts sources and reviewers into the plain text", () => {
+    expect(
+      articleToPlainText(doc({ type: "references", attrs: { reviewers: "TS. A" }, content: [list("Sze")] }))
+    ).toBe("Sze TS. A");
+  });
+});
+
 describe("articleToPlainText", () => {
   it("strips tags and truncates for a meta description", () => {
     const long = "a".repeat(300);

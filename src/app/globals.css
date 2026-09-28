@@ -341,6 +341,39 @@
 .chip-prose .callout-warning:lang(en)::before { content: "Warning"; }
 .chip-prose .callout-example:lang(en)::before { content: "Example"; }
 
+.chip-prose .references {
+  margin-top: 3em;
+  border-top: 1px solid #d1d1d1;
+  padding-top: 1.5em;
+  font-size: 0.9375rem;
+}
+
+.chip-prose .references::before {
+  content: "Nguồn tham khảo";
+  display: block;
+  margin-bottom: 0.75em;
+  color: #0d0d0d;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.chip-prose .references:lang(en)::before {
+  content: "References";
+}
+
+.chip-prose .references .reviewers {
+  margin-top: 1em;
+  color: #3e424d;
+}
+
+.chip-prose .references .reviewers::before {
+  content: "Được góp ý bởi ";
+}
+
+.chip-prose .references .reviewers:lang(en)::before {
+  content: "Reviewed by ";
+}
+
 /* Hero video hover-card: a bright dash traveling the notch outline, drawn as an
    SVG stroke so it follows the bottom-right scoop. pathLength is normalised to
    100, so the dash offset animates exactly one full perimeter. */

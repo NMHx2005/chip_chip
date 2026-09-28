@@ -52,6 +52,7 @@ const ALLOWED_TAGS = new Set([
   "figure",
   "figcaption",
   "aside",
+  "section",
 ]);
 
 const ALLOWED_ATTR = new Set([

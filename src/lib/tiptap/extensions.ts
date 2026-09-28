@@ -7,6 +7,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import StarterKit from "@tiptap/starter-kit";
 import { Callout } from "@/lib/tiptap/nodes/callout";
 import { Figure } from "@/lib/tiptap/nodes/figure";
+import { References } from "@/lib/tiptap/nodes/references";
 
 /**
  * The single source of truth for which nodes and marks an article may contain.
@@ -65,4 +66,5 @@ export const articleExtensions = [
 
   Figure,
   Callout,
+  References,
 ];
