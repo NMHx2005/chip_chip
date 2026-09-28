@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { lookUpStaff } from "@/lib/auth";
-import { routing } from "@/i18n/routing";
+import { routing, type Locale } from "@/i18n/routing";
 import { slugify } from "@/lib/post-slug";
 import { articleToPlainText } from "@/lib/tiptap/render";
 import {
@@ -13,6 +13,7 @@ import {
   validateNewPostFields,
   type SharedFieldsInput,
 } from "@/lib/shared-fields";
+import { revalidatePostRows, type PostRow } from "@/lib/revalidate-paths";
 import type { Difficulty, PostKind } from "@/lib/types";
 import type { TopicId } from "@/lib/constants";
 
@@ -46,18 +47,15 @@ const SESSION_ENDED: ActionResult = {
 /** Long enough for any real article; the search index ranks body text lowest anyway. */
 const PLAIN_TEXT_LIMIT = 20000;
 
-/** Drop every cached rendering of a post so the edit shows up immediately. */
-async function revalidatePost(slug: string, kind: PostKind, topic: TopicId | null) {
-  for (const locale of routing.locales) {
-    revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/blog`);
-    revalidatePath(`/${locale}/bai-hoc`);
-    if (kind === "lesson" && topic) revalidatePath(`/${locale}/bai-hoc/${topic}`);
-  }
-  if (kind === "forum") {
-    for (const locale of routing.locales) {
-      revalidatePath(`/${locale}/blog/${slug}`);
-    }
+/**
+ * Drop every cached rendering of the given post rows so an edit shows up
+ * immediately — the listings, and (per row, since each locale has its own
+ * slug and, for a lesson, its own topic at the time it was fetched) the
+ * lesson topic/detail pages or the blog detail page.
+ */
+async function revalidatePost(rows: PostRow[]) {
+  for (const path of revalidatePostRows(rows)) {
+    revalidatePath(path);
   }
 }
 
@@ -121,7 +119,14 @@ export async function savePost(input: SavePostInput): Promise<ActionResult> {
     return fail(error.message);
   }
 
-  await revalidatePost(data.slug, data.kind as PostKind, data.topic as TopicId | null);
+  await revalidatePost([
+    {
+      locale: data.locale as Locale,
+      slug: data.slug,
+      kind: data.kind as PostKind,
+      topic: data.topic as TopicId | null,
+    },
+  ]);
   return { ok: true };
 }
 
@@ -211,16 +216,17 @@ export async function publishTranslation(
 
   const { data } = await supabase
     .from("posts")
-    .select("slug, kind, topic")
+    .select("locale, slug, kind, topic")
     .eq("translation_id", translationId);
 
-  for (const row of data ?? []) {
-    await revalidatePost(
-      row.slug as string,
-      row.kind as PostKind,
-      row.topic as TopicId | null
-    );
-  }
+  await revalidatePost(
+    (data ?? []).map((row) => ({
+      locale: row.locale as Locale,
+      slug: row.slug as string,
+      kind: row.kind as PostKind,
+      topic: row.topic as TopicId | null,
+    }))
+  );
 
   return { ok: true };
 }
@@ -320,17 +326,15 @@ export async function saveSharedFields(
 
   const supabase = createClient();
 
-  const { data: group } = await supabase
+  const { data: rows } = await supabase
     .from("posts")
-    .select("kind, slug, status")
-    .eq("translation_id", translationId)
-    .limit(1)
-    .maybeSingle();
+    .select("locale, slug, kind, topic, status")
+    .eq("translation_id", translationId);
 
-  if (!group) return fail("Không tìm thấy bài viết.");
+  if (!rows || rows.length === 0) return fail("Không tìm thấy bài viết.");
 
-  const kind = group.kind as PostKind;
-  const published = group.status === "published";
+  const kind = rows[0].kind as PostKind;
+  const published = rows[0].status === "published";
   const built = buildSharedFieldsPatch(kind, input, published);
   if (!built.ok) return fail(built.error);
 
@@ -341,7 +345,21 @@ export async function saveSharedFields(
 
   if (error) return fail(error.message);
 
-  await revalidatePost(group.slug as string, kind, built.patch.topic);
+  // Revalidate both the rows' old shape and their new one, so a topic change
+  // clears the old topic page too, not just the new one.
+  const oldRows: PostRow[] = rows.map((row) => ({
+    locale: row.locale as Locale,
+    slug: row.slug as string,
+    kind,
+    topic: row.topic as TopicId | null,
+  }));
+  const newRows: PostRow[] = rows.map((row) => ({
+    locale: row.locale as Locale,
+    slug: row.slug as string,
+    kind,
+    topic: built.patch.topic,
+  }));
+  await revalidatePost([...oldRows, ...newRows]);
   return { ok: true };
 }
 
