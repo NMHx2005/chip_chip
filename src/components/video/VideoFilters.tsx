@@ -18,6 +18,54 @@ function videosHref(query: Record<string, string>): ListingHref {
   return { pathname: "/video", query };
 }
 
+type FilterGroupsProps = {
+  t: Awaited<ReturnType<typeof getTranslations<"videos">>>;
+  tTopics: Awaited<ReturnType<typeof getTranslations<"topics">>>;
+  tDifficulty: Awaited<ReturnType<typeof getTranslations<"difficulty">>>;
+  option: <K extends "platform" | "source" | "topic" | "difficulty">(
+    key: K,
+    value: ListingParams[K],
+    label: string
+  ) => { key: string; label: string; href: ListingHref; active: boolean };
+};
+
+/** The four filter groups, shared by the mobile disclosure and the desktop panel. */
+function FilterGroups({ t, tTopics, tDifficulty, option }: FilterGroupsProps) {
+  return (
+    <>
+      <FilterPills
+        label={t("platform")}
+        options={[
+          option("platform", null, t("all")),
+          ...VIDEO_PLATFORMS.map((p) => option("platform", p, PLATFORM_LABEL[p])),
+        ]}
+      />
+      <FilterPills
+        label={t("source")}
+        options={[
+          option("source", null, t("all")),
+          option("source", "own", t("sourceOwn")),
+          option("source", "curated", t("sourceCurated")),
+        ]}
+      />
+      <FilterPills
+        label={t("topic")}
+        options={[
+          option("topic", null, t("all")),
+          ...TOPIC_IDS.map((id) => option("topic", id, tTopics(`${id}.title`))),
+        ]}
+      />
+      <FilterPills
+        label={tDifficulty("label")}
+        options={[
+          option("difficulty", null, t("all")),
+          ...DIFFICULTIES.map((level) => option("difficulty", level, tDifficulty(level))),
+        ]}
+      />
+    </>
+  );
+}
+
 /**
  * The filter bar of the video listing. Everything is a link or a GET form,
  * so it works without JavaScript and every state has a shareable URL.
@@ -56,12 +104,14 @@ export async function VideoFilters({ locale, current }: { locale: Locale; curren
 
       {/*
        * Below `lg` the filter groups are hidden behind a native disclosure so
-       * they don't fill the whole first screen; from `lg` up the summary is
-       * hidden and the content is forced visible regardless of `open`, so
-       * the panel reads as an always-expanded filter bar with no JS involved.
+       * they don't fill the whole first screen. From `lg` up, closed-details
+       * content is `content-visibility: hidden` in current browsers and no
+       * CSS can override that, so the desktop panel is a second, separate
+       * copy of the groups rendered in a plain `div` instead of relying on
+       * forcing the `<details>` open.
        */}
-      <details className="group" open={activeFilterCount > 0}>
-        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-xl border border-border bg-surface px-4 text-sm font-semibold text-text marker:content-none [&::-webkit-details-marker]:hidden lg:hidden">
+      <details className="group lg:hidden" open={activeFilterCount > 0}>
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-xl border border-border bg-surface px-4 text-sm font-semibold text-text marker:content-none [&::-webkit-details-marker]:hidden">
           <span>
             {activeFilterCount > 0
               ? t("filtersToggleActive", { count: activeFilterCount })
@@ -70,38 +120,14 @@ export async function VideoFilters({ locale, current }: { locale: Locale; curren
           <ChevronDown className="size-4 shrink-0 transition-transform group-open:rotate-180" strokeWidth={2.2} />
         </summary>
 
-        <div className="mt-4 flex flex-col gap-4 lg:!flex lg:mt-0">
-          <FilterPills
-            label={t("platform")}
-            options={[
-              option("platform", null, t("all")),
-              ...VIDEO_PLATFORMS.map((p) => option("platform", p, PLATFORM_LABEL[p])),
-            ]}
-          />
-          <FilterPills
-            label={t("source")}
-            options={[
-              option("source", null, t("all")),
-              option("source", "own", t("sourceOwn")),
-              option("source", "curated", t("sourceCurated")),
-            ]}
-          />
-          <FilterPills
-            label={t("topic")}
-            options={[
-              option("topic", null, t("all")),
-              ...TOPIC_IDS.map((id) => option("topic", id, tTopics(`${id}.title`))),
-            ]}
-          />
-          <FilterPills
-            label={tDifficulty("label")}
-            options={[
-              option("difficulty", null, t("all")),
-              ...DIFFICULTIES.map((level) => option("difficulty", level, tDifficulty(level))),
-            ]}
-          />
+        <div className="mt-4 flex flex-col gap-4">
+          <FilterGroups t={t} tTopics={tTopics} tDifficulty={tDifficulty} option={option} />
         </div>
       </details>
+
+      <div className="hidden flex-col gap-4 lg:flex">
+        <FilterGroups t={t} tTopics={tTopics} tDifficulty={tDifficulty} option={option} />
+      </div>
 
       <div className="flex flex-wrap items-end justify-between gap-3 border-t border-border pt-4">
         <form method="get" action={getPathname({ href: "/video", locale })} className="flex flex-wrap items-end gap-2">
