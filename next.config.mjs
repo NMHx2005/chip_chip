@@ -11,6 +11,9 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
  * styles is unavoidable while Tailwind and satori emit inline style
  * attributes; scripts get `unsafe-inline` only because Next's bootstrap
  * scripts are inline and nonce support needs per-request rendering.
+ * `unsafe-eval` is added in dev only, for React Fast Refresh's eval'd module
+ * updates — the production bundle has no eval/new Function, so shipping it
+ * there would only widen the XSS blast radius for nothing.
  *
  * The Supabase origin is read from the environment rather than hard-coded:
  * the browser client uploads images and the storage bucket serves them, and a
@@ -59,7 +62,7 @@ const YOUTUBE_THUMBNAILS = { protocol: "https", hostname: "i.ytimg.com", pathnam
 
 const CSP = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   // i.ytimg.com: thumbnails on the click-to-load video facades in articles.
   `img-src 'self' data: blob: ${supabaseOrigin} https://i.ytimg.com`,
