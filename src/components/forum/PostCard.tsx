@@ -24,7 +24,7 @@ export async function PostCard({
         params: { topic: post.topic ?? "", slug: post.slug },
       } as const)
     : ({
-        pathname: "/dien-dan/[slug]",
+        pathname: "/blog/[slug]",
         params: { slug: post.slug },
       } as const);
 

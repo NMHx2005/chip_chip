@@ -9,7 +9,7 @@ export const NAV_ITEMS: {
 }[] = [
   { key: "home", href: "/" },
   { key: "lessons", href: "/bai-hoc" },
-  { key: "forum", href: "/dien-dan" },
+  { key: "forum", href: "/blog" },
   { key: "about", href: "/gioi-thieu" },
 ];
 

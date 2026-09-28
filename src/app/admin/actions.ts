@@ -40,13 +40,13 @@ const SESSION_ENDED: ActionResult = {
 async function revalidatePost(slug: string, kind: PostKind, topic: TopicId | null) {
   for (const locale of routing.locales) {
     revalidatePath(`/${locale}`);
-    revalidatePath(`/${locale}/dien-dan`);
+    revalidatePath(`/${locale}/blog`);
     revalidatePath(`/${locale}/bai-hoc`);
     if (kind === "lesson" && topic) revalidatePath(`/${locale}/bai-hoc/${topic}`);
   }
   if (kind === "forum") {
     for (const locale of routing.locales) {
-      revalidatePath(`/${locale}/dien-dan/${slug}`);
+      revalidatePath(`/${locale}/blog/${slug}`);
     }
   }
 }
@@ -223,7 +223,7 @@ export async function unpublishTranslation(
   if (error) return fail(error.message);
 
   for (const locale of routing.locales) {
-    revalidatePath(`/${locale}/dien-dan`);
+    revalidatePath(`/${locale}/blog`);
     revalidatePath(`/${locale}/bai-hoc`);
   }
   return { ok: true };
@@ -245,7 +245,7 @@ export async function deleteTranslation(
   if (error) return fail(error.message);
 
   for (const locale of routing.locales) {
-    revalidatePath(`/${locale}/dien-dan`);
+    revalidatePath(`/${locale}/blog`);
     revalidatePath(`/${locale}/bai-hoc`);
   }
   return { ok: true };
@@ -268,7 +268,7 @@ export async function setCommentHidden(
   if (error) return fail(error.message);
 
   for (const locale of routing.locales) {
-    revalidatePath(`/${locale}/dien-dan`);
+    revalidatePath(`/${locale}/blog`);
   }
   return { ok: true };
 }
@@ -283,7 +283,7 @@ export async function deleteComment(commentId: string): Promise<ActionResult> {
   if (error) return fail(error.message);
 
   for (const locale of routing.locales) {
-    revalidatePath(`/${locale}/dien-dan`);
+    revalidatePath(`/${locale}/blog`);
   }
   return { ok: true };
 }

@@ -22,8 +22,8 @@ export const routing = defineRouting({
       vi: "/bai-hoc/[topic]/[slug]",
       en: "/lessons/[topic]/[slug]",
     },
-    "/dien-dan": { vi: "/dien-dan", en: "/forum" },
-    "/dien-dan/[slug]": { vi: "/dien-dan/[slug]", en: "/forum/[slug]" },
+    "/blog": "/blog",
+    "/blog/[slug]": "/blog/[slug]",
     "/gioi-thieu": { vi: "/gioi-thieu", en: "/about" },
   },
 });

@@ -17,7 +17,7 @@ export default async function ForumPostNotFound() {
         </h1>
 
         <Link
-          href="/dien-dan"
+          href="/blog"
           className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-black"
         >
           <ArrowLeft className="size-4" strokeWidth={2.2} />

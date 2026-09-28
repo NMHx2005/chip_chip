@@ -329,7 +329,7 @@ export function CommentSection({
                 </p>
                 <Link
                   href={{
-                    pathname: "/dien-dan/[slug]",
+                    pathname: "/blog/[slug]",
                     params: { slug },
                     query: {
                       comments: Math.min(shownRoots + ROOT_PAGE_SIZE, maxRoots),

@@ -7,7 +7,7 @@
   "nav": {
     "home": "Home",
     "lessons": "Lessons",
-    "forum": "Forum",
+    "forum": "Blog",
     "about": "About",
     "join": "Join us",
     "openMenu": "Open menu",
@@ -53,10 +53,10 @@
       "note": "Company names and logos are the property of their respective owners and are used here for educational and informational purposes."
     },
     "latestPosts": {
-      "headline": "From the forum",
+      "headline": "From the blog",
       "description": "The latest analysis and writing from the community.",
       "viewAll": "View all posts",
-      "empty": "The forum has no posts yet. Check back soon!"
+      "empty": "The blog has no posts yet. Check back soon!"
     },
     "join": {
       "headline": "Join us",
@@ -119,13 +119,13 @@
     "videoDescription": "A series of short videos explaining semiconductor concepts visually, published in parallel on TikTok."
   },
   "forum": {
-    "title": "Forum",
-    "description": "Analysis, perspectives and writing shared by the community about semiconductors.",
+    "title": "Blog",
+    "description": "Analysis, perspectives and notes on semiconductors.",
     "empty": "No posts yet. Please check back soon!",
     "readMore": "Read more",
     "publishedOn": "Published {date}",
     "updatedOn": "Updated {date}",
-    "backToForum": "Back to Forum",
+    "backToForum": "Back to the blog",
     "notFound": "This post could not be found.",
     "tableOfContents": "On this page",
     "emptyArticle": "This article has no content yet."

@@ -7,7 +7,7 @@
   "nav": {
     "home": "Trang chủ",
     "lessons": "Bài học",
-    "forum": "Diễn đàn",
+    "forum": "Blog",
     "about": "Giới thiệu",
     "join": "Tham gia cùng chúng tôi",
     "openMenu": "Mở menu",
@@ -53,10 +53,10 @@
       "note": "Tên và logo công ty thuộc quyền sở hữu của các công ty tương ứng, được sử dụng tại đây cho mục đích giới thiệu và giáo dục."
     },
     "latestPosts": {
-      "headline": "Từ diễn đàn",
+      "headline": "Từ Blog",
       "description": "Những bài phân tích và chia sẻ mới nhất từ cộng đồng.",
       "viewAll": "Xem tất cả bài viết",
-      "empty": "Diễn đàn chưa có bài viết nào. Quay lại sau nhé!"
+      "empty": "Blog chưa có bài viết nào. Quay lại sau nhé!"
     },
     "join": {
       "headline": "Tham gia cùng chúng tôi",
@@ -119,13 +119,13 @@
     "videoDescription": "Chuỗi video ngắn giải thích các khái niệm bán dẫn bằng hình ảnh, đăng tải song song trên TikTok."
   },
   "forum": {
-    "title": "Diễn đàn",
-    "description": "Nơi đăng những bài phân tích, góc nhìn và chia sẻ của cộng đồng về bán dẫn.",
+    "title": "Blog",
+    "description": "Những bài phân tích, góc nhìn và ghi chép về bán dẫn.",
     "empty": "Chưa có bài viết nào. Hãy quay lại sau nhé!",
     "readMore": "Đọc tiếp",
     "publishedOn": "Đăng ngày {date}",
     "updatedOn": "Cập nhật ngày {date}",
-    "backToForum": "Về Diễn đàn",
+    "backToForum": "Về Blog",
     "notFound": "Không tìm thấy bài viết này.",
     "tableOfContents": "Nội dung bài",
     "emptyArticle": "Bài viết chưa có nội dung."

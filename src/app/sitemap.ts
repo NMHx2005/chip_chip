@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 /** Public routes, excluding admin and API. */
-const STATIC_ROUTES = ["/", "/bai-hoc", "/dien-dan", "/gioi-thieu"] as const;
+const STATIC_ROUTES = ["/", "/bai-hoc", "/blog", "/gioi-thieu"] as const;
 
 function url(href: Parameters<typeof getPathname>[0]["href"], locale: string) {
   return `${SITE_URL}${getPathname({ href, locale })}`;
@@ -51,7 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   for (const post of data ?? []) {
     // A lesson row without a topic cannot form a valid `/bai-hoc/[topic]/...`
-    // URL, and falling through to `/dien-dan/[slug]` would 404 instead.
+    // URL, and falling through to `/blog/[slug]` would 404 instead.
     if (post.kind === "lesson" && !post.topic) continue;
 
     const href =
@@ -61,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             params: { topic: post.topic as string, slug: post.slug },
           }
         : {
-            pathname: "/dien-dan/[slug]" as const,
+            pathname: "/blog/[slug]" as const,
             params: { slug: post.slug },
           };
 

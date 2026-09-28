@@ -49,10 +49,10 @@ export async function generateMetadata({
     },
     alternates: {
       // Built through next-intl's localised routing rather than string
-      // concatenation, so the English canonical resolves to `/en/forum/...`
-      // instead of the source locale's `/en/dien-dan/...`, which 307s.
+      // concatenation, so the English canonical resolves to `/en/blog/...`
+      // instead of the source locale's `/en/blog/...`, which 307s.
       canonical: getPathname({
-        href: { pathname: "/dien-dan/[slug]", params: { slug: post.slug } },
+        href: { pathname: "/blog/[slug]", params: { slug: post.slug } },
         locale: locale as Locale,
       }),
       languages: Object.fromEntries(
@@ -63,10 +63,10 @@ export async function generateMetadata({
               l,
               alt
                 ? getPathname({
-                    href: { pathname: "/dien-dan/[slug]", params: { slug: alt } },
+                    href: { pathname: "/blog/[slug]", params: { slug: alt } },
                     locale: l,
                   })
-                : getPathname({ href: "/dien-dan", locale: l }),
+                : getPathname({ href: "/blog", locale: l }),
             ];
           })
         )
@@ -120,7 +120,7 @@ export default async function ForumPostPage({
     <article className="px-5 py-14 md:px-8 md:py-20">
       <div className="mx-auto w-full max-w-3xl">
         <Link
-          href="/dien-dan"
+          href="/blog"
           className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-accent"
         >
           <ArrowLeft className="size-4" strokeWidth={2.2} />
@@ -152,7 +152,7 @@ export default async function ForumPostPage({
               <Link
                 key={alt.locale}
                 href={{
-                  pathname: "/dien-dan/[slug]",
+                  pathname: "/blog/[slug]",
                   params: { slug: alt.slug },
                 }}
                 locale={alt.locale}

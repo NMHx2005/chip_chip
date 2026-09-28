@@ -1,4 +1,5 @@
 import createNextIntlPlugin from "next-intl/plugin";
+import { LEGACY_REDIRECTS } from "./src/lib/legacy-redirects.mjs";
 
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
@@ -91,6 +92,9 @@ const SECURITY_HEADERS = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  async redirects() {
+    return LEGACY_REDIRECTS;
+  },
   async headers() {
     return [
       { source: "/:path*", headers: SECURITY_HEADERS },

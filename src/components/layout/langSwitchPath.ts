@@ -20,7 +20,7 @@ import type { StaticPathname } from "@/i18n/routing";
 const SECTION_FALLBACK: Record<string, StaticPathname> = {
   "/bai-hoc/[topic]": "/bai-hoc",
   "/bai-hoc/[topic]/[slug]": "/bai-hoc",
-  "/dien-dan/[slug]": "/dien-dan",
+  "/blog/[slug]": "/blog",
 };
 
 export function safePathFor(pathname: string): StaticPathname | string {

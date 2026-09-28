@@ -22,12 +22,12 @@ describe("safePathFor", () => {
     expect(safePathFor("/bai-hoc/[topic]/[slug]")).toBe("/bai-hoc");
   });
 
-  it("sends a forum article to the forum listing", () => {
-    expect(safePathFor("/dien-dan/[slug]")).toBe("/dien-dan");
+  it("sends a blog article to the blog listing", () => {
+    expect(safePathFor("/blog/[slug]")).toBe("/blog");
   });
 
   it("leaves static routes untouched", () => {
-    for (const route of ["/", "/bai-hoc", "/dien-dan", "/gioi-thieu"]) {
+    for (const route of ["/", "/bai-hoc", "/blog", "/gioi-thieu"]) {
       expect(safePathFor(route)).toBe(route);
     }
   });
@@ -38,8 +38,8 @@ describe("safePathFor", () => {
       "/bai-hoc",
       "/bai-hoc/[topic]",
       "/bai-hoc/[topic]/[slug]",
-      "/dien-dan",
-      "/dien-dan/[slug]",
+      "/blog",
+      "/blog/[slug]",
       "/gioi-thieu",
     ];
 
