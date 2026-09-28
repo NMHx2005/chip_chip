@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { X } from "lucide-react";
+import { ChevronDown, X } from "lucide-react";
 import { FilterPills, type ListingHref } from "@/components/listing/FilterPills";
 import { Link, getPathname } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -40,12 +40,11 @@ export async function VideoFilters({ locale, current }: { locale: Locale; curren
     active: current[key] === value,
   });
 
-  const isFiltered =
-    current.platform !== null ||
-    current.source !== null ||
-    current.topic !== null ||
-    current.difficulty !== null ||
-    current.sort !== DEFAULT_LISTING.sort;
+  const activeFilterCount = [current.platform, current.source, current.topic, current.difficulty].filter(
+    (value) => value !== null
+  ).length;
+
+  const isFiltered = activeFilterCount > 0 || current.sort !== DEFAULT_LISTING.sort;
 
   // The sort form re-submits every other filter as hidden fields; the page
   // starts over at 1, like any other change.
@@ -55,35 +54,54 @@ export async function VideoFilters({ locale, current }: { locale: Locale; curren
     <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-5 md:p-6">
       <h2 className="sr-only">{t("filtersLabel")}</h2>
 
-      <FilterPills
-        label={t("platform")}
-        options={[
-          option("platform", null, t("all")),
-          ...VIDEO_PLATFORMS.map((p) => option("platform", p, PLATFORM_LABEL[p])),
-        ]}
-      />
-      <FilterPills
-        label={t("source")}
-        options={[
-          option("source", null, t("all")),
-          option("source", "own", t("sourceOwn")),
-          option("source", "curated", t("sourceCurated")),
-        ]}
-      />
-      <FilterPills
-        label={t("topic")}
-        options={[
-          option("topic", null, t("all")),
-          ...TOPIC_IDS.map((id) => option("topic", id, tTopics(`${id}.title`))),
-        ]}
-      />
-      <FilterPills
-        label={tDifficulty("label")}
-        options={[
-          option("difficulty", null, t("all")),
-          ...DIFFICULTIES.map((level) => option("difficulty", level, tDifficulty(level))),
-        ]}
-      />
+      {/*
+       * Below `lg` the filter groups are hidden behind a native disclosure so
+       * they don't fill the whole first screen; from `lg` up the summary is
+       * hidden and the content is forced visible regardless of `open`, so
+       * the panel reads as an always-expanded filter bar with no JS involved.
+       */}
+      <details className="group" open={activeFilterCount > 0}>
+        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-xl border border-border bg-surface px-4 text-sm font-semibold text-text marker:content-none [&::-webkit-details-marker]:hidden lg:hidden">
+          <span>
+            {activeFilterCount > 0
+              ? t("filtersToggleActive", { count: activeFilterCount })
+              : t("filtersToggle")}
+          </span>
+          <ChevronDown className="size-4 shrink-0 transition-transform group-open:rotate-180" strokeWidth={2.2} />
+        </summary>
+
+        <div className="mt-4 flex flex-col gap-4 lg:!flex lg:mt-0">
+          <FilterPills
+            label={t("platform")}
+            options={[
+              option("platform", null, t("all")),
+              ...VIDEO_PLATFORMS.map((p) => option("platform", p, PLATFORM_LABEL[p])),
+            ]}
+          />
+          <FilterPills
+            label={t("source")}
+            options={[
+              option("source", null, t("all")),
+              option("source", "own", t("sourceOwn")),
+              option("source", "curated", t("sourceCurated")),
+            ]}
+          />
+          <FilterPills
+            label={t("topic")}
+            options={[
+              option("topic", null, t("all")),
+              ...TOPIC_IDS.map((id) => option("topic", id, tTopics(`${id}.title`))),
+            ]}
+          />
+          <FilterPills
+            label={tDifficulty("label")}
+            options={[
+              option("difficulty", null, t("all")),
+              ...DIFFICULTIES.map((level) => option("difficulty", level, tDifficulty(level))),
+            ]}
+          />
+        </div>
+      </details>
 
       <div className="flex flex-wrap items-end justify-between gap-3 border-t border-border pt-4">
         <form method="get" action={getPathname({ href: "/video", locale })} className="flex flex-wrap items-end gap-2">

@@ -141,6 +141,8 @@
     "title": "Videos",
     "description": "Short videos that explain semiconductors visually: made by Chíp Chíp, or picked from trusted channels.",
     "filtersLabel": "Filter videos",
+    "filtersToggle": "Filters",
+    "filtersToggleActive": "Filters ({count})",
     "platform": "Platform",
     "source": "Source",
     "topic": "Topic",

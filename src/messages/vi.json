@@ -141,6 +141,8 @@
     "title": "Video",
     "description": "Video ngắn giải thích bán dẫn bằng hình ảnh: do Chíp Chíp tự thực hiện, hoặc được tuyển chọn từ những kênh uy tín.",
     "filtersLabel": "Lọc video",
+    "filtersToggle": "Bộ lọc",
+    "filtersToggleActive": "Bộ lọc ({count})",
     "platform": "Nền tảng",
     "source": "Nguồn",
     "topic": "Chủ đề",
