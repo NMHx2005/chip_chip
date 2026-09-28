@@ -13,6 +13,15 @@ export const NAV_ITEMS: {
   { key: "about", href: "/gioi-thieu" },
 ];
 
+/** The two entries under "Lessons" in the navbar. */
+export const LESSON_SUBNAV: {
+  key: "lessonsTheory" | "lessonsVideo";
+  href: StaticPathname;
+}[] = [
+  { key: "lessonsTheory", href: "/bai-hoc" },
+  { key: "lessonsVideo", href: "/video" },
+];
+
 export const TOPIC_IDS = [
   "dinh-nghia",
   "nguyen-ly",

@@ -7,6 +7,8 @@
   "nav": {
     "home": "Home",
     "lessons": "Lessons",
+    "lessonsTheory": "Theory",
+    "lessonsVideo": "Videos",
     "forum": "Blog",
     "about": "About",
     "join": "Join us",

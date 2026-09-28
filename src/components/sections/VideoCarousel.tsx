@@ -174,7 +174,7 @@ export function VideoCarousel() {
 
           <div className="mt-10 text-center">
             <Link
-              href="/bai-hoc"
+              href="/video"
               className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
             >
               {t("cta")}

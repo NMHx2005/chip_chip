@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { LangSwitch } from "@/components/layout/LangSwitch";
+import { LessonsMenu } from "@/components/layout/LessonsMenu";
 import { Logo } from "@/components/layout/Logo";
 import { SocialLinks } from "@/components/layout/SocialLinks";
 import { DURATION, EASE_STANDARD } from "@/components/motion";
@@ -12,7 +13,7 @@ import { GlassPill } from "@/components/ui/GlassPill";
 import { MenuIcon } from "@/components/ui/MenuIcon";
 import { PillButtonCta } from "@/components/ui/PillButton";
 import { Link, usePathname } from "@/i18n/navigation";
-import { NAV_ITEMS } from "@/lib/constants";
+import { LESSON_SUBNAV, NAV_ITEMS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
 function isActive(pathname: string, href: string) {
@@ -85,6 +86,15 @@ export function Navbar() {
               >
                 {NAV_ITEMS.map((item) => {
                   const active = isActive(pathname, item.href);
+
+                  if (item.key === "lessons") {
+                    return (
+                      <LessonsMenu
+                        key={item.key}
+                        active={LESSON_SUBNAV.some((sub) => isActive(pathname, sub.href))}
+                      />
+                    );
+                  }
 
                   return (
                     <Link
@@ -174,18 +184,42 @@ export function Navbar() {
                 const active = isActive(pathname, item.href);
 
                 return (
-                  <Link
-                    key={item.key}
-                    href={item.href}
-                    onClick={() => setMobileOpen(false)}
-                    aria-current={active ? "page" : undefined}
-                    className={cn(
-                      "block border-b border-white/10 px-4 py-5 text-xl tracking-[-0.01em] transition-colors",
-                      active ? "text-white" : "text-white/70"
+                  <div key={item.key} className="border-b border-white/10">
+                    <Link
+                      href={item.href}
+                      onClick={() => setMobileOpen(false)}
+                      aria-current={active ? "page" : undefined}
+                      className={cn(
+                        "block px-4 py-5 text-xl tracking-[-0.01em] transition-colors",
+                        active ? "text-white" : "text-white/70"
+                      )}
+                    >
+                      {t(item.key)}
+                    </Link>
+
+                    {item.key === "lessons" && (
+                      <ul className="-mt-2 pb-3 pl-8">
+                        {LESSON_SUBNAV.map((sub) => {
+                          const subActive = isActive(pathname, sub.href);
+                          return (
+                            <li key={sub.key}>
+                              <Link
+                                href={sub.href}
+                                onClick={() => setMobileOpen(false)}
+                                aria-current={subActive ? "page" : undefined}
+                                className={cn(
+                                  "flex min-h-11 items-center text-base transition-colors",
+                                  subActive ? "text-white" : "text-white/70"
+                                )}
+                              >
+                                {t(sub.key)}
+                              </Link>
+                            </li>
+                          );
+                        })}
+                      </ul>
                     )}
-                  >
-                    {t(item.key)}
-                  </Link>
+                  </div>
                 );
               })}
             </nav>
