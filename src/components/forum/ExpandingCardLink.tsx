@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { EASE_STANDARD } from "@/components/motion";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { PostHref } from "@/lib/paths";
-import { EXPAND_MS, isPlainLeftClick } from "@/lib/plain-click";
+import { classifyCardClick, EXPAND_MS } from "@/lib/plain-click";
 
 type Box = { top: number; left: number; width: number; height: number };
 
@@ -48,8 +48,13 @@ export function ExpandingCardLink({
   }, [from]);
 
   const onClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (prefersReducedMotion || from || !isPlainLeftClick(event)) return;
+    const outcome = classifyCardClick(event, {
+      prefersReducedMotion: Boolean(prefersReducedMotion),
+      alreadyExpanding: from !== null,
+    });
+    if (outcome === "ignore") return;
     event.preventDefault();
+    if (outcome === "swallow") return;
     const rect = event.currentTarget.getBoundingClientRect();
     setFrom({ top: rect.top, left: rect.left, width: rect.width, height: rect.height });
     router.prefetch(href);

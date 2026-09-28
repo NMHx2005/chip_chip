@@ -28,3 +28,23 @@ export function isPlainLeftClick(event: ClickLike): boolean {
     !event.altKey
   );
 }
+
+export type CardClickOutcome = "ignore" | "swallow" | "expand";
+
+/**
+ * What ExpandingCardLink's onClick should do with an activation.
+ *
+ * `alreadyExpanding` wins over every other check: a second activation while
+ * the first one's panel is still growing must be swallowed (`preventDefault`,
+ * do nothing), not `"ignore"`d. Left to the browser, next/link navigates
+ * immediately on that second click while the first click's timer is still
+ * armed to push the same href again a moment later.
+ */
+export function classifyCardClick(
+  event: ClickLike,
+  { prefersReducedMotion, alreadyExpanding }: { prefersReducedMotion: boolean; alreadyExpanding: boolean }
+): CardClickOutcome {
+  if (alreadyExpanding) return "swallow";
+  if (prefersReducedMotion || !isPlainLeftClick(event)) return "ignore";
+  return "expand";
+}
