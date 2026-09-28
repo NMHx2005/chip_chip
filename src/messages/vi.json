@@ -135,6 +135,29 @@
     "pageEmpty": "Trang này không có nội dung.",
     "backToFirst": "Về trang đầu"
   },
+  "videos": {
+    "title": "Video",
+    "description": "Video ngắn giải thích bán dẫn bằng hình ảnh: do Chíp Chíp tự thực hiện, hoặc được tuyển chọn từ những kênh uy tín.",
+    "filtersLabel": "Lọc video",
+    "platform": "Nền tảng",
+    "source": "Nguồn",
+    "topic": "Chủ đề",
+    "all": "Tất cả",
+    "sourceOwn": "Của Chíp Chíp",
+    "sourceCurated": "Tuyển chọn",
+    "sourceCuratedBy": "Tuyển chọn · {channel}",
+    "sort": "Sắp xếp",
+    "sortOptions": {
+      "newest": "Mới nhất",
+      "oldest": "Cũ nhất",
+      "easiest": "Dễ trước",
+      "hardest": "Khó trước"
+    },
+    "applySort": "Áp dụng",
+    "clearFilters": "Xoá lọc",
+    "empty": "Chưa có video nào. Quay lại sau nhé!",
+    "emptyFiltered": "Không có video nào khớp bộ lọc này."
+  },
   "forum": {
     "title": "Blog",
     "description": "Những bài phân tích, góc nhìn và ghi chép về bán dẫn.",

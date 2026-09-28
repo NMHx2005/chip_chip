@@ -54,6 +54,9 @@ const imageRemotePatterns = supabaseUrl
       },
     ];
 
+/** Video thumbnails on the video cards (see thumbnailUrl in src/lib/video.ts). */
+const YOUTUBE_THUMBNAILS = { protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" };
+
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
@@ -111,7 +114,7 @@ const nextConfig = {
     formats: ["image/avif", "image/webp"],
     // Static assets are fingerprinted, so they can be cached for a year.
     minimumCacheTTL: 31536000,
-    remotePatterns: imageRemotePatterns,
+    remotePatterns: [...imageRemotePatterns, YOUTUBE_THUMBNAILS],
   },
   experimental: {
     optimizePackageImports: ["lucide-react", "framer-motion"],

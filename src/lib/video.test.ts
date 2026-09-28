@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { embedUrl, parseVideoUrl, videoRefFrom, watchUrl } from "@/lib/video";
+import { embedUrl, parseVideoUrl, thumbnailUrl, videoRefFrom, watchUrl } from "@/lib/video";
 
 const YT = { platform: "youtube", externalId: "dQw4w9WgXcQ" } as const;
 const TT = { platform: "tiktok", externalId: "7231338487075638570" } as const;
@@ -83,5 +83,15 @@ describe("watchUrl", () => {
   it("links to the video's own page", () => {
     expect(watchUrl(YT)).toBe("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
     expect(watchUrl(TT)).toBe("https://www.tiktok.com/embed/v2/7231338487075638570");
+  });
+});
+
+describe("thumbnailUrl", () => {
+  it("points a YouTube video at its i.ytimg.com still", () => {
+    expect(thumbnailUrl(YT)).toBe("https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg");
+  });
+
+  it("has no still for TikTok", () => {
+    expect(thumbnailUrl(TT)).toBeNull();
   });
 });

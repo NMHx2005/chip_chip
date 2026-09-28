@@ -135,6 +135,29 @@
     "pageEmpty": "There is nothing on this page.",
     "backToFirst": "Back to the first page"
   },
+  "videos": {
+    "title": "Videos",
+    "description": "Short videos that explain semiconductors visually: made by Chíp Chíp, or picked from trusted channels.",
+    "filtersLabel": "Filter videos",
+    "platform": "Platform",
+    "source": "Source",
+    "topic": "Topic",
+    "all": "All",
+    "sourceOwn": "By Chíp Chíp",
+    "sourceCurated": "Curated",
+    "sourceCuratedBy": "Curated · {channel}",
+    "sort": "Sort by",
+    "sortOptions": {
+      "newest": "Newest",
+      "oldest": "Oldest",
+      "easiest": "Easiest first",
+      "hardest": "Hardest first"
+    },
+    "applySort": "Apply",
+    "clearFilters": "Clear filters",
+    "empty": "No videos yet. Please check back soon!",
+    "emptyFiltered": "No videos match these filters."
+  },
   "forum": {
     "title": "Blog",
     "description": "Analysis, perspectives and notes on semiconductors.",

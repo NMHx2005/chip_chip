@@ -100,6 +100,16 @@ export function watchUrl(ref: VideoRef): string {
     : `https://www.tiktok.com/embed/v2/${id}`;
 }
 
+/**
+ * The still shown before a video plays. YouTube serves one per id; TikTok has
+ * no stable public thumbnail URL, so its cards draw a neutral frame instead.
+ */
+export function thumbnailUrl(ref: VideoRef): string | null {
+  return ref.platform === "youtube"
+    ? `https://i.ytimg.com/vi/${encodeURIComponent(ref.externalId)}/hqdefault.jpg`
+    : null;
+}
+
 export const PLATFORM_LABEL: Record<VideoPlatform, string> = {
   youtube: "YouTube",
   tiktok: "TikTok",
