@@ -61,4 +61,13 @@ describe("localizedPath", () => {
     expect(localizedPath("/tim-kiem", "en")).toBe("/en/search");
     expect(localizedPath("/", "en")).toBe("/en");
   });
+
+  it("resolves the DA4 trust pages per locale", () => {
+    expect(localizedPath("/lien-he", "vi")).toBe("/vi/lien-he");
+    expect(localizedPath("/lien-he", "en")).toBe("/en/contact");
+    expect(localizedPath("/dong-gop", "vi")).toBe("/vi/dong-gop");
+    expect(localizedPath("/dong-gop", "en")).toBe("/en/contribute");
+    expect(localizedPath("/chinh-sach-bao-mat", "vi")).toBe("/vi/chinh-sach-bao-mat");
+    expect(localizedPath("/chinh-sach-bao-mat", "en")).toBe("/en/privacy");
+  });
 });

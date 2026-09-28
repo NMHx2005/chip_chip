@@ -28,6 +28,9 @@ export const routing = defineRouting({
     "/video": { vi: "/video", en: "/videos" },
     "/video/[slug]": { vi: "/video/[slug]", en: "/videos/[slug]" },
     "/tim-kiem": { vi: "/tim-kiem", en: "/search" },
+    "/lien-he": { vi: "/lien-he", en: "/contact" },
+    "/dong-gop": { vi: "/dong-gop", en: "/contribute" },
+    "/chinh-sach-bao-mat": { vi: "/chinh-sach-bao-mat", en: "/privacy" },
   },
 });
 

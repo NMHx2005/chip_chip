@@ -1,7 +1,38 @@
 import type { MetadataRoute } from "next";
-import { postPath } from "@/lib/paths";
+import { routing, type StaticPathname } from "@/i18n/routing";
+import { localizedPath, postPath } from "@/lib/paths";
 import { postRowsFrom } from "@/lib/revalidate-paths";
 import { SITE_URL } from "@/lib/site";
+
+/** Public routes without params, excluding admin and API. */
+// The search page is left out on purpose: it is `noindex`.
+export const STATIC_ROUTES: readonly StaticPathname[] = [
+  "/",
+  "/bai-hoc",
+  "/video",
+  "/blog",
+  "/gioi-thieu",
+  "/lien-he",
+  "/dong-gop",
+  "/chinh-sach-bao-mat",
+];
+
+/**
+ * One entry per static route and locale.
+ *
+ * No meaningful timestamp exists for these routes, so `lastModified` is
+ * omitted rather than stamped with the request time — reporting every page
+ * as just-changed on every crawl trains Googlebot to distrust the field.
+ */
+export function staticSitemapEntries(): MetadataRoute.Sitemap {
+  return STATIC_ROUTES.flatMap((route) =>
+    routing.locales.map((locale) => ({
+      url: `${SITE_URL}${localizedPath(route, locale)}`,
+      changeFrequency: route === "/" ? ("weekly" as const) : ("monthly" as const),
+      priority: route === "/" ? 1 : 0.8,
+    }))
+  );
+}
 
 /** A published `posts` row as the sitemap reads it. */
 export type SitemapPostRow = {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { postSitemapEntries } from "@/lib/sitemap-entries";
+import { postSitemapEntries, staticSitemapEntries } from "@/lib/sitemap-entries";
 import { SITE_URL } from "@/lib/site";
 
 describe("postSitemapEntries", () => {
@@ -36,5 +36,36 @@ describe("postSitemapEntries", () => {
       ])
     ).toEqual([]);
     expect(postSitemapEntries(null)).toEqual([]);
+  });
+});
+
+describe("staticSitemapEntries", () => {
+  const urls = staticSitemapEntries().map((e) => e.url);
+
+  it("lists the contact, contribute and privacy pages in both languages", () => {
+    expect(urls).toEqual(
+      expect.arrayContaining([
+        `${SITE_URL}/vi/lien-he`,
+        `${SITE_URL}/en/contact`,
+        `${SITE_URL}/vi/dong-gop`,
+        `${SITE_URL}/en/contribute`,
+        `${SITE_URL}/vi/chinh-sach-bao-mat`,
+        `${SITE_URL}/en/privacy`,
+      ])
+    );
+  });
+
+  it("keeps the existing pages and leaves search out", () => {
+    expect(urls).toEqual(
+      expect.arrayContaining([`${SITE_URL}/vi`, `${SITE_URL}/en/lessons`, `${SITE_URL}/en/about`])
+    );
+    expect(urls.some((url) => url.includes("/tim-kiem") || url.includes("/search"))).toBe(false);
+    expect(new Set(urls).size).toBe(urls.length);
+  });
+
+  it("gives the homepage the top priority and no fake timestamps", () => {
+    const home = staticSitemapEntries().find((e) => e.url === `${SITE_URL}/vi`);
+    expect(home).toMatchObject({ priority: 1, changeFrequency: "weekly" });
+    expect(staticSitemapEntries().every((e) => !("lastModified" in e))).toBe(true);
   });
 });
