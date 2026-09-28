@@ -158,7 +158,9 @@ check "câu rất dài vẫn trả 200" "200" "$(status -X POST "$API_URL/rest/v
 echo
 echo "M — hộp thư chỉ ban điều hành đọc được"
 psql "$DB_URL" -q -c "insert into public.messages (kind, name, body, locale)
-  values ('contact', 'sec-check-$$', 'x', 'vi');" 2>/dev/null || true
+  values ('contact', 'sec-check-$$', 'x', 'vi');"
+check "tin nhắn giả lập được tạo" "1" \
+  "$(psql "$DB_URL" -t -A -c "select count(*) from public.messages where name = 'sec-check-$$';")"
 msg='{"kind":"contact","name":"x","body":"x","locale":"vi"}'
 check "anon không INSERT được tin nhắn" "denied" \
   "$(denied -X POST "$API_URL/rest/v1/messages" -H "apikey: $ANON_KEY" \
