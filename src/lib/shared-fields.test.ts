@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { buildSharedFieldsPatch, isUuid, type SharedFieldsInput } from "@/lib/shared-fields";
+import {
+  buildSharedFieldsPatch,
+  isUuid,
+  validateNewPostFields,
+  type SharedFieldsInput,
+} from "@/lib/shared-fields";
 
 const base: SharedFieldsInput = {
   topic: "nguyen-ly",
@@ -107,6 +112,37 @@ describe("buildSharedFieldsPatch", () => {
     expect(
       buildSharedFieldsPatch("video", { ...base, channelName: "x".repeat(121) }).ok
     ).toBe(false);
+  });
+});
+
+describe("validateNewPostFields", () => {
+  it("clears topic and difficulty for a blog post", () => {
+    expect(validateNewPostFields("forum", "nguyen-ly", "basic")).toEqual({
+      ok: true,
+      topic: null,
+      difficulty: null,
+    });
+  });
+
+  it("requires a topic for a lesson", () => {
+    expect(validateNewPostFields("lesson", null, "basic")).toEqual({
+      ok: false,
+      error: "Bài học cần chọn chủ đề.",
+    });
+  });
+
+  it("accepts a video without a topic", () => {
+    expect(validateNewPostFields("video", null, "basic")).toEqual({
+      ok: true,
+      topic: null,
+      difficulty: "basic",
+    });
+  });
+
+  it("rejects values a crafted request could send", () => {
+    expect(validateNewPostFields("hack" as never, null, null).ok).toBe(false);
+    expect(validateNewPostFields("lesson", "hack" as never, "basic").ok).toBe(false);
+    expect(validateNewPostFields("video", "nguyen-ly", "expert" as never).ok).toBe(false);
   });
 });
 

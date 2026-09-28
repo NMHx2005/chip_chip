@@ -102,3 +102,44 @@ export function buildSharedFieldsPatch(kind: PostKind, input: SharedFieldsInput)
     },
   };
 }
+
+const POST_KINDS: readonly PostKind[] = ["lesson", "forum", "video"];
+
+type NewPostFieldsResult =
+  | { ok: true; topic: TopicId | null; difficulty: Difficulty | null }
+  | { ok: false; error: string };
+
+/**
+ * Validates the fields `createPost` writes on row creation.
+ *
+ * `createPost` is a public HTTP endpoint, so `kind`/`topic`/`difficulty` are
+ * checked here rather than trusted to the DB's enum types and CHECK
+ * constraints, which would otherwise be the only thing standing between a
+ * crafted request and a raw Postgres error surfacing to the caller.
+ */
+export function validateNewPostFields(
+  kind: PostKind,
+  topic: TopicId | null,
+  difficulty: Difficulty | null
+): NewPostFieldsResult {
+  if (!POST_KINDS.includes(kind)) {
+    return { ok: false, error: "Loại bài không hợp lệ." };
+  }
+
+  if (kind === "forum") {
+    return { ok: true, topic: null, difficulty: null };
+  }
+
+  if (topic !== null && !TOPIC_IDS.includes(topic)) {
+    return { ok: false, error: "Chủ đề không hợp lệ." };
+  }
+  if (difficulty !== null && !DIFFICULTIES.includes(difficulty)) {
+    return { ok: false, error: "Độ khó không hợp lệ." };
+  }
+
+  if (kind === "lesson" && topic === null) {
+    return { ok: false, error: "Bài học cần chọn chủ đề." };
+  }
+
+  return { ok: true, topic, difficulty };
+}

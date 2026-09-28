@@ -7,7 +7,12 @@ import { lookUpStaff } from "@/lib/auth";
 import { routing } from "@/i18n/routing";
 import { slugify } from "@/lib/post-slug";
 import { articleToPlainText } from "@/lib/tiptap/render";
-import { buildSharedFieldsPatch, isUuid, type SharedFieldsInput } from "@/lib/shared-fields";
+import {
+  buildSharedFieldsPatch,
+  isUuid,
+  validateNewPostFields,
+  type SharedFieldsInput,
+} from "@/lib/shared-fields";
 import type { Difficulty, PostKind } from "@/lib/types";
 import type { TopicId } from "@/lib/constants";
 
@@ -145,6 +150,9 @@ export async function createPost(args: {
   const baseSlug = slugify(args.slug || title);
   if (!baseSlug) return fail("Không tạo được đường dẫn từ tiêu đề.");
 
+  const fields = validateNewPostFields(args.kind, args.topic, args.difficulty);
+  if (!fields.ok) return fail(fields.error);
+
   const translationId = crypto.randomUUID();
 
   const { data, error } = await supabase
@@ -154,8 +162,8 @@ export async function createPost(args: {
         translation_id: translationId,
         locale: "vi",
         kind: args.kind,
-        topic: args.kind === "forum" ? null : args.topic,
-        difficulty: args.kind === "forum" ? null : args.difficulty,
+        topic: fields.topic,
+        difficulty: fields.difficulty,
         title,
         slug: baseSlug,
         author_id: staff.id,
@@ -164,8 +172,8 @@ export async function createPost(args: {
         translation_id: translationId,
         locale: "en",
         kind: args.kind,
-        topic: args.kind === "forum" ? null : args.topic,
-        difficulty: args.kind === "forum" ? null : args.difficulty,
+        topic: fields.topic,
+        difficulty: fields.difficulty,
         title: "",
         slug: `${baseSlug}-en`,
         author_id: staff.id,
