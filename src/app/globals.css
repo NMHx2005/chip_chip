@@ -300,6 +300,47 @@
   content: "Figure " counter(figure) ". ";
 }
 
+.chip-prose .callout {
+  border: 1px solid #d1d1d1;
+  border-left: 4px solid #314344;
+  border-radius: 12px;
+  background: #f5f5f5;
+  padding: 1rem 1.25rem;
+}
+
+.chip-prose .callout > * + * {
+  margin-top: 0.75em;
+}
+
+.chip-prose .callout::before {
+  display: block;
+  margin-bottom: 0.375rem;
+  color: #3e424d;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Variants differ by weight and line style, never by hue. */
+.chip-prose .callout-warning {
+  border-left-color: #0d0d0d;
+  border-left-width: 6px;
+}
+
+.chip-prose .callout-example {
+  border-left-style: dashed;
+}
+
+.chip-prose .callout-note::before { content: "Ghi chú"; }
+.chip-prose .callout-tip::before { content: "Mẹo"; }
+.chip-prose .callout-warning::before { content: "Lưu ý"; }
+.chip-prose .callout-example::before { content: "Ví dụ"; }
+.chip-prose .callout-note:lang(en)::before { content: "Note"; }
+.chip-prose .callout-tip:lang(en)::before { content: "Tip"; }
+.chip-prose .callout-warning:lang(en)::before { content: "Warning"; }
+.chip-prose .callout-example:lang(en)::before { content: "Example"; }
+
 /* Hero video hover-card: a bright dash traveling the notch outline, drawn as an
    SVG stroke so it follows the bottom-right scoop. pathLength is normalised to
    100, so the dash offset animates exactly one full perimeter. */

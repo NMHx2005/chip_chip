@@ -5,6 +5,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { TableKit } from "@tiptap/extension-table";
 import TextAlign from "@tiptap/extension-text-align";
 import StarterKit from "@tiptap/starter-kit";
+import { Callout } from "@/lib/tiptap/nodes/callout";
 import { Figure } from "@/lib/tiptap/nodes/figure";
 
 /**
@@ -63,4 +64,5 @@ export const articleExtensions = [
   Mathematics,
 
   Figure,
+  Callout,
 ];

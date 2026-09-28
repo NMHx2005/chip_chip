@@ -51,6 +51,7 @@ const ALLOWED_TAGS = new Set([
   "div",
   "figure",
   "figcaption",
+  "aside",
 ]);
 
 const ALLOWED_ATTR = new Set([
@@ -69,6 +70,7 @@ const ALLOWED_ATTR = new Set([
   "rowspan",
   "data-type",
   "data-latex",
+  "data-variant",
 ]);
 
 /** Dropped together with everything up to their closing tag. */

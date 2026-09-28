@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { extractHeadings } from "@/lib/tiptap/headings";
+import { calloutVariant } from "@/lib/tiptap/nodes/callout";
 import { isAllowedFigureSrc } from "@/lib/tiptap/nodes/figure";
 import { articleToPlainText, renderArticle } from "@/lib/tiptap/render";
 
@@ -273,6 +274,34 @@ describe("isAllowedFigureSrc", () => {
     [null, "http://127.0.0.1:54321", false],
   ])("%s with project %s → %s", (src, project, expected) => {
     expect(isAllowedFigureSrc(src, project)).toBe(expected);
+  });
+});
+
+describe("renderArticle — callouts", () => {
+  it("renders each variant as a labelled aside", () => {
+    expect(
+      renderArticle(doc({ type: "callout", attrs: { variant: "warning" }, content: [paragraph(text("Cẩn thận"))] }))
+    ).toBe('<aside class="callout callout-warning" data-variant="warning"><p>Cẩn thận</p></aside>');
+  });
+
+  it("falls back to a note for an unknown variant", () => {
+    expect(
+      renderArticle(
+        doc({ type: "callout", attrs: { variant: 'x" onclick="alert(1)' }, content: [paragraph(text("Lạ"))] })
+      )
+    ).toBe('<aside class="callout callout-note" data-variant="note"><p>Lạ</p></aside>');
+  });
+
+  it("normalises variants the same way when parsing", () => {
+    expect(calloutVariant("tip")).toBe("tip");
+    expect(calloutVariant("TIP")).toBe("note");
+    expect(calloutVariant(undefined)).toBe("note");
+  });
+
+  it("puts the callout's text into the plain text", () => {
+    expect(
+      articleToPlainText(doc({ type: "callout", attrs: { variant: "tip" }, content: [paragraph(text("Ghi nhớ"))] }))
+    ).toBe("Ghi nhớ");
   });
 });
 
