@@ -239,7 +239,6 @@ Font là TTF chứ không phải woff2: satori không đọc được woff2. Hai
 | Hằng số             | Cần gì                                        |
 | ------------------- | --------------------------------------------- |
 | `SOCIAL_LINKS`      | URL fanpage Facebook và TikTok                |
-| `JOIN_FORM_URL`     | Link Google Form đăng ký thành viên           |
 
 - `public/video/*.mp4` là video giữ chỗ mượn từ dự án Strike Robot để xem
   hiệu ứng. Nội dung không liên quan bán dẫn — phải thay hết trước khi lên

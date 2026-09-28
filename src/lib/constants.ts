@@ -81,10 +81,6 @@ export const SOCIAL_LINKS: {
   { key: "tiktok", href: "" },
 ];
 
-/** Google Form for member sign-up. Swap in the real form URL (the `viewform`
- *  link, not the `edit` link) once it exists. */
-export const JOIN_FORM_URL = "";
-
 /** Public contact address, shown in the homepage join block and on the
  *  Contact page once the mailbox exists. Blank hides it everywhere. */
 export const CONTACT_EMAIL = "";
@@ -141,23 +137,17 @@ export type CountryBand = (typeof COUNTRY_BANDS)[number];
 export const PAGE_SIZE = 9;
 
 /**
- * Organisational units from the project plan.
- *
- * Only the structure lives here — names and descriptions are translated, and
- * individual member profiles are added once the team supplies photos and bios.
+ * The author shown on the About page. PLACEHOLDER until DA5: the name and
+ * story live in `about.author.*` in the message files; `photo` is a path
+ * under `public/` (or null, which draws neutral initials instead).
  */
-export const TEAM_UNITS = [
-  { id: "leadership", headcount: "02" },
-  { id: "advisor", headcount: "01" },
-  { id: "academic", headcount: "03" },
-  { id: "technology", headcount: "01" },
-  { id: "communications", headcount: "03" },
-  { id: "finance", headcount: "02" },
-  { id: "people", headcount: "03" },
-  { id: "ambassador", headcount: "10–20" },
-] as const;
+export const AUTHOR: { photo: string | null } = { photo: null };
 
-export type TeamUnitId = (typeof TEAM_UNITS)[number]["id"];
+/**
+ * People credited under "People who helped" on the About page. The section is
+ * hidden while this is empty. `role` is shown as written, in both languages.
+ */
+export const CONTRIBUTORS: { name: string; role: string }[] = [];
 
 
 /**

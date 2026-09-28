@@ -62,11 +62,9 @@
     },
     "join": {
       "headline": "Tham gia cùng chúng tôi",
-      "description": "Project Chíp Chíp đang tìm những bạn trẻ muốn cùng xây dựng cộng đồng học tập bán dẫn. Điền vào form bên dưới để đăng ký.",
-      "formCta": "Mở form đăng ký",
-      "formNote": "Form mở trong cửa sổ mới. Chúng tôi chỉ dùng thông tin bạn cung cấp để liên hệ về dự án.",
-      "badge": "Dự án Chíp Chíp · Học bán dẫn miễn phí · ",
-      "formPending": "Form đăng ký sẽ mở trong thời gian tới."
+      "description": "Chíp Chíp đang tìm những bạn muốn cùng viết, dịch, làm video hoặc báo lỗi để bài học tốt hơn.",
+      "cta": "Xem cách đóng góp",
+      "badge": "Dự án Chíp Chíp · Học bán dẫn miễn phí · "
     },
     "videos": {
       "title": "Vẫn chưa đủ hấp dẫn sao? Thử học qua video nhé!",
@@ -208,61 +206,80 @@
   "about": {
     "title": "Giới thiệu",
     "hero": {
-      "headline": "Những người đứng sau Project Chíp Chíp",
-      "description": "Chúng tôi là một nhóm học sinh, sinh viên và kỹ sư muốn mang kiến thức bán dẫn tới gần hơn với học sinh Việt Nam."
+      "headline": "Người đứng sau Project Chíp Chíp",
+      "description": "Chíp Chíp là dự án một người làm: một chỗ học bán dẫn bằng tiếng Việt, miễn phí cho mọi học sinh, và luôn mở cho những ai muốn góp sức."
     },
-    "mission": {
-      "headline": "Chuyện bắt đầu từ một câu hỏi",
-      "body": "Vì sao một học sinh cấp ba có thể hiểu van tim hoạt động ra sao, nhưng lại không biết con chip trong chiếc điện thoại mình cầm mỗi ngày được làm thế nào? Bán dẫn ở khắp nơi, nhưng kiến thức về nó lại nằm rải rác trong tài liệu tiếng Anh, trong bài giảng đại học, trong những video không có phụ đề. Học sinh Việt Nam không thiếu tò mò — các em thiếu một chỗ để bắt đầu. Project Chíp Chíp làm chỗ bắt đầu đó: tài liệu tiếng Việt, đi từ khái niệm đơn giản nhất, miễn phí cho tất cả mọi người."
+    "author": {
+      "label": "Về tác giả",
+      "name": "[Tên tác giả]",
+      "role": "[Vai trò, ví dụ: sinh viên ngành thiết kế vi mạch] · Người viết và duy trì Chíp Chíp",
+      "photoAlt": "Ảnh chân dung của [Tên tác giả]",
+      "story1": "[Câu chuyện, đoạn 1] Mình bắt đầu tìm hiểu về bán dẫn từ [thời điểm], khi [sự kiện khiến bạn tò mò]. Tài liệu tốt gần như chỉ có bằng tiếng Anh, và mình mất khá lâu mới hiểu được những điều lẽ ra có thể giải thích đơn giản hơn.",
+      "story2": "[Câu chuyện, đoạn 2] Chíp Chíp là trang mình ước đã có từ hồi đó. Mình tự viết bài, tự dựng trang, và nhờ bạn bè, thầy cô góp ý để nội dung đúng và dễ hiểu.",
+      "whyTitle": "Vì sao có Chíp Chíp",
+      "why": "Vì sao một học sinh cấp ba có thể hiểu van tim hoạt động ra sao, nhưng lại không biết con chip trong chiếc điện thoại mình cầm mỗi ngày được làm thế nào? Bán dẫn ở khắp nơi, nhưng kiến thức về nó lại nằm rải rác trong tài liệu tiếng Anh, trong bài giảng đại học, trong những video không có phụ đề. Học sinh Việt Nam không thiếu tò mò — các em thiếu một chỗ để bắt đầu. Project Chíp Chíp làm chỗ bắt đầu đó: tài liệu tiếng Việt, đi từ khái niệm đơn giản nhất, miễn phí cho tất cả mọi người."
     },
-    "team": {
-      "headline": "Cơ cấu tổ chức",
-      "description": "Project Chíp Chíp vận hành theo 08 đơn vị, mỗi ban phụ trách một mảng riêng. Nhân sự Gen 1.0 sẽ được giới thiệu tại đây sau khi chốt danh sách.",
-      "headcountLabel": "{count} người",
-      "units": {
-        "leadership": {
-          "name": "Trưởng / Phó Dự án",
-          "description": "Quản lý tiến độ tổng thể, định hướng tầm nhìn và duy trì các hoạt động của dự án."
+    "commitments": {
+      "headline": "Mục đích minh bạch",
+      "description": "Bốn cam kết này không thay đổi, dù sau này dự án lớn đến đâu.",
+      "items": {
+        "free": {
+          "title": "Miễn phí",
+          "body": "Mọi bài học, video và bài viết đều đọc được miễn phí, không cần tài khoản."
         },
-        "advisor": {
-          "name": "Cố vấn Chuyên môn",
-          "description": "Đồng hành và định hướng về mặt kiến thức, bảo đảm tính chính xác và chất lượng học thuật."
+        "noAds": {
+          "title": "Không quảng cáo",
+          "body": "Không banner, không bài quảng cáo trá hình, không nhà tài trợ chen vào nội dung."
         },
-        "academic": {
-          "name": "Ban Chuyên môn",
-          "description": "Thiết kế học thuật, soạn form khảo sát, biên soạn E-book và lên kịch bản nội dung."
+        "noFees": {
+          "title": "Không thu tiền",
+          "body": "Không khoá học trả phí, không gói hội viên, không xin chuyển khoản."
         },
-        "technology": {
-          "name": "Ban Công nghệ",
-          "description": "Thiết kế, phát triển và vận hành website cùng các hệ thống công nghệ của dự án."
+        "noDataSale": {
+          "title": "Không bán dữ liệu",
+          "body": "Chúng tôi thu rất ít dữ liệu, và không bán hay trao đổi dữ liệu đó với ai."
+        }
+      },
+      "privacyLink": "Xem dữ liệu nào được thu và vì sao"
+    },
+    "faq": {
+      "headline": "Câu hỏi thường gặp",
+      "items": {
+        "free": {
+          "question": "Chíp Chíp có miễn phí không?",
+          "answer": "Có. Mọi nội dung đều miễn phí và không cần đăng ký tài khoản. Dự án không bán gì và không có phần nội dung trả phí."
         },
-        "communications": {
-          "name": "Ban Truyền thông",
-          "description": "Quản lý fanpage và các nền tảng, xây dựng kế hoạch truyền thông và triển khai chiến dịch."
+        "author": {
+          "question": "Ai viết các bài trên Chíp Chíp?",
+          "answer": "Phần lớn bài do tác giả của dự án viết. Bài có người đóng góp hoặc góp ý thì ghi tên họ ở cuối bài."
         },
-        "finance": {
-          "name": "Ban Tài chính – Đối ngoại",
-          "description": "Xây dựng hồ sơ tài trợ, kết nối doanh nghiệp và tổ chức giáo dục, mời diễn giả và mentor."
+        "mistake": {
+          "question": "Thấy bài sai thì báo ở đâu?",
+          "answer": "Bấm nút \"Báo lỗi bài này\" ở cuối bài, hoặc viết qua trang Liên hệ. Tác giả đọc mọi báo lỗi và sửa bài khi cần."
         },
-        "people": {
-          "name": "Ban Nhân sự",
-          "description": "Chăm sóc tinh thần thành viên, nhắc deadline, quản lý hồ sơ và cấp giấy chứng nhận."
+        "classroom": {
+          "question": "Giáo viên có dùng bài cho lớp học được không?",
+          "answer": "Được. Bạn cứ dùng bài cho việc dạy học không thu phí, chỉ cần ghi nguồn Project Chíp Chíp và dẫn link tới bài gốc."
         },
-        "ambassador": {
-          "name": "Đại sứ Truyền thông",
-          "description": "Lan tỏa thông tin về dự án, kết nối học sinh tại trường học và cộng đồng địa phương."
+        "ads": {
+          "question": "Trang có quảng cáo không?",
+          "answer": "Không. Trang không có quảng cáo, không dùng cookie quảng cáo và không bán dữ liệu người đọc."
+        },
+        "english": {
+          "question": "Có bản tiếng Anh không?",
+          "answer": "Có. Bài chỉ được đăng khi đã có đủ bản tiếng Việt và tiếng Anh. Nút chuyển ngôn ngữ nằm trên thanh điều hướng."
         }
       }
     },
-    "join": {
-      "headline": "Tham gia cùng chúng tôi",
-      "description": "Nếu bạn muốn đóng góp cho cộng đồng, hãy điền vào form đăng ký. Chúng tôi liên hệ lại qua email.",
-      "benefit1": "Nhận Giấy chứng nhận từ dự án sau khi hoàn thành ít nhất 80% khối lượng công việc.",
-      "benefit2": "Được đào tạo về bán dẫn trong học tập và công việc thực tế.",
-      "benefit3": "Mở rộng mạng lưới quan hệ với các bạn trẻ, diễn giả và chuyên gia trong ngành.",
-      "benefit4": "Làm đẹp CV và portfolio cho học bổng hoặc các chương trình ngoại khóa.",
-      "formCta": "Mở form đăng ký",
-      "formNote": "Form mở trong cửa sổ mới."
+    "contributors": {
+      "headline": "Những người đã đồng hành",
+      "description": "Cảm ơn những người đã viết, dịch, góp ý và báo lỗi cho Chíp Chíp."
+    },
+    "cta": {
+      "headline": "Cùng làm Chíp Chíp tốt hơn",
+      "description": "Bạn có thể viết bài, dịch, làm video hoặc đơn giản là báo một lỗi sai. Mỗi đóng góp đều được ghi nhận.",
+      "contribute": "Xem cách đóng góp",
+      "contact": "Liên hệ tác giả"
     }
   },
   "contact": {

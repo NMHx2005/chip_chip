@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowUpRight, Clock } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
   AnimatedButtonLabel,
@@ -15,12 +15,7 @@ import {
 } from "@/components/motion";
 import { CircularText } from "@/components/ui/CircularText";
 import { Link } from "@/i18n/navigation";
-import {
-  CONTACT_EMAIL,
-  CTA_BACKDROP,
-  JOIN_FORM_URL,
-  NAV_ITEMS,
-} from "@/lib/constants";
+import { CONTACT_EMAIL, CTA_BACKDROP, NAV_ITEMS } from "@/lib/constants";
 
 /**
  * Closing block of the homepage, built to Strike's CTA layout: a black card
@@ -101,32 +96,15 @@ export function JoinCta() {
               variants={prefersReducedMotion ? undefined : fadeUp}
               className="mt-9 flex flex-col items-start gap-3 md:items-center"
             >
-              {/* Until the form exists there is nothing to click. A disabled
-                  pill still reads as a button and invites a tap that does
-                  nothing, so the pending state is plain text instead. */}
-              {JOIN_FORM_URL ? (
-                <>
-                  <a
-                    href={JOIN_FORM_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onMouseEnter={() => setHovered(true)}
-                    onMouseLeave={() => setHovered(false)}
-                    className="inline-flex h-[52px] items-center gap-2 rounded-3xl bg-white px-6 text-base font-semibold text-accent transition-transform duration-200 hover:scale-[1.02]"
-                  >
-                    <AnimatedButtonLabel active={hovered}>
-                      {t("formCta")}
-                    </AnimatedButtonLabel>
-                    <ArrowUpRight className="size-[18px]" strokeWidth={2.2} />
-                  </a>
-                  <p className="text-xs text-white/85">{t("formNote")}</p>
-                </>
-              ) : (
-                <p className="inline-flex items-center gap-2 rounded-2xl border border-dashed border-white/40 px-5 py-3 text-sm text-white/90">
-                  <Clock className="size-4 shrink-0" strokeWidth={2} />
-                  {t("formPending")}
-                </p>
-              )}
+              <Link
+                href="/dong-gop"
+                onMouseEnter={() => setHovered(true)}
+                onMouseLeave={() => setHovered(false)}
+                className="inline-flex h-[52px] items-center gap-2 rounded-3xl bg-white px-6 text-base font-semibold text-accent transition-transform duration-200 hover:scale-[1.02]"
+              >
+                <AnimatedButtonLabel active={hovered}>{t("cta")}</AnimatedButtonLabel>
+                <ArrowRight className="size-[18px]" strokeWidth={2.2} />
+              </Link>
 
               {CONTACT_EMAIL && (
                 <a
