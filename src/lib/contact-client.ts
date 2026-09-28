@@ -83,6 +83,9 @@ const ERROR_BY_CODE: Record<string, MessageErrorKey> = {
   post_invalid: "postNotFound",
   post_not_found: "postNotFound",
   rate_limited: "rateLimited",
+  // No dedicated copy — a body over the size limit is as unrecoverable from
+  // the sender's point of view as any other server-side rejection.
+  payload_too_large: "generic",
 };
 
 /** Maps the route's `{ error }` code to a message key; unknown codes read as generic. */

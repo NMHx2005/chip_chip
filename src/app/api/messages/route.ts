@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/config";
 import { clientIp, hashIp } from "@/lib/rate-limit";
 import { parseMessagePayload } from "@/lib/contact-message";
+import { isBodyTooLarge } from "@/lib/request-size";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,6 +21,10 @@ const WINDOW_MINUTES = 60;
 export async function POST(request: NextRequest) {
   if (!isSupabaseAdminConfigured) {
     return NextResponse.json({ error: "server_not_configured" }, { status: 503 });
+  }
+
+  if (isBodyTooLarge(request.headers)) {
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
   }
 
   let payload: unknown;

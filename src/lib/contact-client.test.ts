@@ -93,6 +93,7 @@ describe("messageErrorKey", () => {
     expect(messageErrorKey("email_invalid")).toBe("emailInvalid");
     expect(messageErrorKey("post_not_found")).toBe("postNotFound");
     expect(messageErrorKey("post_invalid")).toBe("postNotFound");
+    expect(messageErrorKey("payload_too_large")).toBe("generic");
   });
 
   it("reads anything else as a generic failure", () => {

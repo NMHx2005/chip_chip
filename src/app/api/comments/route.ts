@@ -3,6 +3,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseAdminConfigured } from "@/lib/supabase/config";
 import { clientIp, hashIp } from "@/lib/rate-limit";
+import { isBodyTooLarge } from "@/lib/request-size";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,6 +19,10 @@ export async function POST(request: NextRequest) {
       { error: "server_not_configured" },
       { status: 503 }
     );
+  }
+
+  if (isBodyTooLarge(request.headers)) {
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
   }
 
   let payload: Record<string, unknown>;
