@@ -164,7 +164,8 @@
     "switchTo": {
       "vi": "Xem bản tiếng Việt",
       "en": "Xem bản tiếng Anh"
-    }
+    },
+    "related": "Video liên quan"
   },
   "forum": {
     "title": "Blog",

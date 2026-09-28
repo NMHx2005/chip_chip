@@ -6,8 +6,9 @@ import { ArrowLeft } from "lucide-react";
 import { ArticleBody } from "@/components/forum/ArticleBody";
 import { ArticleToc } from "@/components/forum/ArticleToc";
 import { UpdatedAt } from "@/components/forum/UpdatedAt";
+import { VideoCard } from "@/components/video/VideoCard";
 import { Link, getPathname } from "@/i18n/navigation";
-import { getPostBySlug, getTranslationSlug } from "@/lib/queries/posts";
+import { getPostBySlug, getTranslationSlug, listRelatedVideos } from "@/lib/queries/posts";
 import { articleToPlainText } from "@/lib/tiptap/render";
 import { TOPIC_IDS, TOPIC_TONE, type TopicId } from "@/lib/constants";
 import { routing, type Locale } from "@/i18n/routing";
@@ -78,6 +79,10 @@ export default async function LessonArticlePage({ params }: { params: Params }) 
   if (!post) notFound();
 
   const tone = TOPIC_TONE[topicId];
+  const [relatedVideos, tVideos] = await Promise.all([
+    listRelatedVideos(locale as Locale, post.translationId),
+    getTranslations("videos"),
+  ]);
 
   return (
     <article className="px-5 py-14 md:px-8 md:py-20">
@@ -139,6 +144,19 @@ export default async function LessonArticlePage({ params }: { params: Params }) 
         <div className="mt-10">
           <ArticleBody content={post.content} locale={locale as Locale} />
         </div>
+
+        {relatedVideos.length > 0 && (
+          <section aria-labelledby="related-videos" className="mt-16 border-t border-border pt-10">
+            <h2 id="related-videos" className="text-lg font-bold tracking-[-0.01em] text-text">
+              {tVideos("related")}
+            </h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {relatedVideos.map((video) => (
+                <VideoCard key={video.id} post={video} compact />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </article>
   );
