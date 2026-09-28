@@ -26,18 +26,29 @@ import { cn } from "@/lib/utils";
  * as `LangSwitch` (rounded pill, two `px-2.5 py-1 text-[11px]` labels) so the
  * bar does not jump once the real one mounts.
  */
-function LangSwitchFallback({ className }: { className?: string }) {
+function LangSwitchFallback({
+  className,
+  variant = "light",
+}: {
+  className?: string;
+  variant?: "light" | "dark";
+}) {
+  const labelClass =
+    variant === "dark"
+      ? "rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-white/60"
+      : "rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-text-muted";
+
   return (
     <div
       aria-hidden
-      className={cn("flex items-center rounded-full bg-surface-muted p-0.5", className)}
+      className={cn(
+        "flex items-center rounded-full p-0.5",
+        variant === "dark" ? "bg-white/10" : "bg-surface-muted",
+        className
+      )}
     >
-      <span className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-text-muted">
-        VI
-      </span>
-      <span className="rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-[0.08em] text-text-muted">
-        EN
-      </span>
+      <span className={labelClass}>VI</span>
+      <span className={labelClass}>EN</span>
     </div>
   );
 }
@@ -267,7 +278,7 @@ export function Navbar() {
 
             <div className="flex flex-col gap-5 px-6 pb-10">
               <div className="flex items-center justify-between">
-                <Suspense fallback={<LangSwitchFallback />}>
+                <Suspense fallback={<LangSwitchFallback variant="dark" />}>
                   <LangSwitch
                     variant="dark"
                     onSwitch={() => setMobileOpen(false)}
