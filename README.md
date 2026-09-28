@@ -74,23 +74,36 @@ thay vì vào được trang quản trị.
 
 ### Lên production
 
-```bash
-npx supabase link --project-ref <ref>
-npx supabase db push
-```
+**Thứ tự dưới đây bắt buộc, không được đảo:** code mới của DA1 select thẳng
+cột `posts.difficulty`, cột này chỉ tồn tại sau khi migration chạy. Deploy code
+trước khi migrate nghĩa là mọi danh sách bài trả về rỗng và mọi trang bài viết
+404 cho tới khi migration chạy xong.
 
-Migration gần đây nhất thêm blog/video/tìm kiếm/hộp thư:
+1. **Sao lưu** cơ sở dữ liệu (`pg_dump` hoặc bản sao lưu tương đương) trước khi
+   đụng vào production.
+2. **Chạy migration trước khi merge/deploy code này**:
 
-- `20260928000000_video_kind.sql`, `20260928000100_video_difficulty.sql` —
-  loại bài Video và ràng buộc độ khó theo loại bài
-- `20260928000200_search.sql` — `plain_text`, `search_vector`, hàm `search_posts`
-- `20260928000300_messages.sql` — bảng `messages` cho `/admin/tin-nhan`
-- `20260928000400_updated_at_ignores_search_text.sql` — cập nhật chỉ mục
-  tìm kiếm không còn tính là sửa bài (`updated_at` giữ nguyên)
+   ```bash
+   npx supabase link --project-ref <ref>
+   npx supabase db push
+   ```
 
-Sau `db push`, vào `/admin` và bấm "Cập nhật chỉ mục tìm kiếm" một lần để
-điền `plain_text` cho các bài đã có từ trước — từ đó về sau `savePost` tự
-giữ nó cập nhật.
+   Migration gần đây nhất thêm blog/video/tìm kiếm/hộp thư:
+
+   - `20260928000000_video_kind.sql`, `20260928000100_video_difficulty.sql` —
+     loại bài Video và ràng buộc độ khó theo loại bài
+   - `20260928000200_search.sql` — `plain_text`, `search_vector`, hàm `search_posts`
+   - `20260928000300_messages.sql` — bảng `messages` cho `/admin/tin-nhan`
+   - `20260928000400_updated_at_ignores_search_text.sql` — cập nhật chỉ mục
+     tìm kiếm không còn tính là sửa bài (`updated_at` giữ nguyên)
+3. **Deploy code** (merge nhánh này, để Vercel build và lên bản mới).
+4. Vào `/admin` và bấm **"Cập nhật chỉ mục tìm kiếm"** một lần để điền
+   `plain_text` cho các bài đã có từ trước — từ đó về sau `savePost` tự giữ nó
+   cập nhật.
+5. Trước khi đăng lại (republish) bất kỳ bài học/video nào có từ trước DA1,
+   vào `/admin/bai-viet/[id]` và **đặt độ khó** cho bài đó qua bảng "Chủ đề &
+   độ khó" — publishing giờ đòi độ khó cho `kind = lesson` và `kind = video`,
+   và các bài cũ chưa có giá trị này (`difficulty = null`).
 
 Rồi điền biến môi trường trên Vercel (xem `.env.example`). **Không** commit
 `SUPABASE_SERVICE_ROLE_KEY` — khoá này bỏ qua toàn bộ RLS.
