@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { clientIp, hashIp } from "@/lib/rate-limit";
-import { isBodyTooLarge } from "@/lib/request-size";
+import { isBodyTooLarge, readJsonWithLimit } from "@/lib/request-size";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -24,12 +24,13 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  let payload: Record<string, unknown>;
-  try {
-    payload = await request.json();
-  } catch {
-    return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+  const parsedBody = await readJsonWithLimit<Record<string, unknown>>(request);
+  if (!parsedBody.ok) {
+    return parsedBody.reason === "too_large"
+      ? NextResponse.json({ error: "payload_too_large" }, { status: 413 })
+      : NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
+  const payload = parsedBody.value;
 
   // Honeypot: a real reader never fills a field they cannot see. Answer with
   // success so the bot does not learn to skip it.

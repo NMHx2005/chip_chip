@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { clientIp, hashIp } from "@/lib/rate-limit";
 import { parseMessagePayload } from "@/lib/contact-message";
-import { isBodyTooLarge } from "@/lib/request-size";
+import { isBodyTooLarge, readJsonWithLimit } from "@/lib/request-size";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,14 +26,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "server_not_configured" }, { status: 503 });
   }
 
-  let payload: unknown;
-  try {
-    payload = await request.json();
-  } catch {
-    return NextResponse.json({ error: "invalid_json" }, { status: 400 });
+  const parsedBody = await readJsonWithLimit(request);
+  if (!parsedBody.ok) {
+    return parsedBody.reason === "too_large"
+      ? NextResponse.json({ error: "payload_too_large" }, { status: 413 })
+      : NextResponse.json({ error: "invalid_json" }, { status: 400 });
   }
 
-  const parsed = parseMessagePayload(payload);
+  const parsed = parseMessagePayload(parsedBody.value);
   if (!parsed.ok) return NextResponse.json({ error: parsed.error }, { status: 400 });
   // Answer a bot with success so it does not learn to skip the field.
   if (parsed.honeypot) return NextResponse.json({ ok: true });
