@@ -131,8 +131,12 @@ export default async function VideoPage({
 
         {ref && (
           <>
-            {/* Built only from the validated (platform, id); see videoFacadeHtml. */}
-            <div className="chip-prose mt-6" dangerouslySetInnerHTML={{ __html: videoFacadeHtml(ref, locale as Locale) }} />
+            {/* Built only from the validated (platform, id); see videoFacadeHtml.
+                Eager: this facade image is the page's LCP element. */}
+            <div
+              className="chip-prose mt-6"
+              dangerouslySetInnerHTML={{ __html: videoFacadeHtml(ref, locale as Locale, { eager: true }) }}
+            />
             <VideoFacades />
           </>
         )}

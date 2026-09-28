@@ -17,4 +17,16 @@ describe("videoFacadeHtml", () => {
     expect(html).toContain('aria-label="Phát video trên TikTok"');
     expect(html).not.toContain("<img");
   });
+
+  it("lazy-loads the thumbnail by default", () => {
+    const ref = { platform: "youtube", externalId: "dQw4w9WgXcQ" } as const;
+    expect(videoFacadeHtml(ref, "en")).toContain('loading="lazy"');
+  });
+
+  it("loads the thumbnail eagerly and at high priority when asked to", () => {
+    const ref = { platform: "youtube", externalId: "dQw4w9WgXcQ" } as const;
+    const html = videoFacadeHtml(ref, "en", { eager: true });
+    expect(html).toContain('loading="eager" fetchpriority="high"');
+    expect(html).not.toContain('loading="lazy"');
+  });
 });
