@@ -172,6 +172,9 @@ export function SharedFieldsPanel({
               className="h-11 cursor-pointer rounded-xl border border-border bg-surface px-3 text-sm outline-none focus:border-black/30"
             >
               <option value="">Không có</option>
+              {related && !lessonOptions.some((lesson) => lesson.translationId === related) && (
+                <option value={related}>(Bài học không còn tồn tại)</option>
+              )}
               {lessonOptions.map((lesson) => (
                 <option key={lesson.translationId} value={lesson.translationId}>
                   {lesson.title}

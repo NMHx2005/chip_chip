@@ -89,12 +89,15 @@ export default async function EditPostPage({
   // A video can point at one lesson; staff pick it by its Vietnamese title.
   let lessonOptions: LessonOption[] = [];
   if (primary.kind === "video") {
+    // Lessons list is larger by design than comments/tin-nhan (.limit(200));
+    // still bounded so this query can't grow unbounded with the catalog.
     const { data: lessons } = await supabase
       .from("posts")
       .select("translation_id, title")
       .eq("kind", "lesson")
       .eq("locale", "vi")
-      .order("title");
+      .order("title")
+      .limit(500);
     lessonOptions = (lessons ?? []).map((lesson) => ({
       translationId: lesson.translation_id as string,
       title: (lesson.title as string) || "(chưa có tiêu đề)",
