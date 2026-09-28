@@ -42,7 +42,7 @@ export default async function AdminMessagesPage({
     .limit(200);
   if (!showAll) query = query.eq("is_handled", false);
 
-  const { data } = await query;
+  const { data, error } = await query;
   const rows = (data ?? []) as Row[];
 
   const postIds = Array.from(new Set(rows.flatMap((r) => (r.post_id ? [r.post_id] : []))));
@@ -84,7 +84,11 @@ export default async function AdminMessagesPage({
         ))}
       </nav>
 
-      {rows.length === 0 ? (
+      {error ? (
+        <p className="rounded-2xl border border-red-200 bg-red-50 px-6 py-16 text-center text-sm text-red-700">
+          Không đọc được hộp thư. Thử tải lại trang.
+        </p>
+      ) : rows.length === 0 ? (
         <p className="rounded-2xl border border-dashed border-border px-6 py-16 text-center text-sm text-text-muted">
           {showAll ? "Chưa có tin nhắn nào." : "Không còn tin nào chờ xử lý."}
         </p>

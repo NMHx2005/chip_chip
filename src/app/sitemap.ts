@@ -54,6 +54,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // URL, and falling through to `/blog/[slug]` would 404 instead.
     if (post.kind === "lesson" && !post.topic) continue;
 
+    // Video pages arrive in DA3; a published video would otherwise fall
+    // through to `/blog/[slug]`, which does not serve it (404).
+    if (post.kind === "video") continue;
+
     const href =
       post.kind === "lesson"
         ? {
