@@ -123,7 +123,7 @@ DA2 (công cụ viết bài) **không có migration mới**: chỉ cần deploy 
 
 ### Dịch nháp bằng AI và quyền riêng tư
 
-Nút "Dịch nháp bằng AI" gửi **nội dung bài viết** (tiêu đề, tóm tắt, chữ trong thân bài, chú thích và mô tả ảnh, dòng người góp ý) tới máy chủ của DeepSeek (`api.deepseek.com`) để dịch. Không gửi email, bình luận, tin nhắn hay bất kỳ dữ liệu nào của người đọc; công thức, khối mã và địa chỉ link không rời server. Bản dịch chỉ được nạp vào tab EN như thay đổi chưa lưu — không có gì được ghi vào cơ sở dữ liệu cho tới khi người viết đọc lại và bấm "Lưu". Mỗi lần bấm gửi tối đa 60 000 ký tự.
+Nút "Dịch nháp bằng AI" gửi **nội dung bài viết** (tiêu đề, tóm tắt, chữ trong thân bài, chú thích và mô tả ảnh) tới máy chủ của DeepSeek (`api.deepseek.com`) để dịch. Dòng "Được góp ý bởi …" không bao giờ rời server — tên người góp ý là danh từ riêng nên được giữ nguyên, không dịch. Không gửi email, bình luận, tin nhắn hay bất kỳ dữ liệu nào của người đọc; công thức, khối mã và địa chỉ link không rời server. Bản dịch chỉ được nạp vào tab EN như thay đổi chưa lưu — không có gì được ghi vào cơ sở dữ liệu cho tới khi người viết đọc lại và bấm "Lưu". Mỗi lần bấm gửi tối đa 60 000 ký tự.
 
 ## Cấu trúc
 
@@ -201,8 +201,8 @@ YouTube/TikTok khi người đọc bấm vào.
 
 **Các khối soạn bài** (toolbar ở `/admin/bai-viet/[id]`):
 
-- **Công thức** — nút Σ (trong dòng) hoặc √ (khối), gõ LaTeX vào hộp thoại; hiện dạng KaTeX ngay trong trình soạn.
-- **Ảnh / Hình có chú thích** — nút ảnh để chèn ảnh trần, nút ảnh+ để chèn hình có `alt` và chú thích, đánh số "Hình 1.", "Hình 2." tự động khi có chú thích.
+- **Công thức** — nút √ (trong dòng) hoặc Σ (khối), gõ LaTeX vào hộp thoại; hiện dạng KaTeX ngay trong trình soạn.
+- **Ảnh / Hình có chú thích** — nút ảnh+ để chèn ảnh trần, nút ảnh để chèn hình có `alt` và chú thích, đánh số "Hình 1.", "Hình 2." tự động khi có chú thích.
 - **Callout** — menu thả xuống 4 loại: Ghi chú, Mẹo, Lưu ý, Ví dụ.
 - **Nguồn tham khảo** — nút Nguồn tham khảo chèn khối danh sách có số thứ tự; nút Người góp ý (chỉ hiện khi đã có khối này) đặt dòng "Được góp ý bởi …".
 - **Video** — nút Video, dán link YouTube hoặc TikTok; hiện lại thumbnail trong trình soạn, còn trang công khai dựng facade bấm-để-phát.
