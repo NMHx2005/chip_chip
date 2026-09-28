@@ -135,6 +135,71 @@ describe("translateSegments", () => {
     expect(fetchImpl).toHaveBeenCalledTimes(2);
     expect(result.map((r) => r.id)).toEqual(["s1", "s2"]);
   });
+
+  it("does not start a new batch when less than 20s of the budget remains", async () => {
+    const long = [
+      { id: "s1", text: "x".repeat(BATCH_CHARS - 10) },
+      { id: "s2", text: "x".repeat(BATCH_CHARS - 10) },
+    ];
+    let clock = 0;
+    const fetchImpl = vi.fn<typeof fetch>(async (_url, init) => {
+      // Leaves 10s of a 70s budget after the first batch — too little to start another.
+      clock += 60_000;
+      const { segments } = JSON.parse(JSON.parse(String(init?.body)).messages[1].content);
+      return reply(JSON.stringify({ translations: segments }));
+    });
+    const result = await translateSegments(long, {
+      apiKey: "k",
+      fetchImpl,
+      deadline: 70_000,
+      now: () => clock,
+    });
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+    expect(result.map((r) => r.id)).toEqual(["s1"]);
+  });
+
+  it("returns the batches already translated instead of throwing when a later batch aborts", async () => {
+    const long = [
+      { id: "s1", text: "x".repeat(BATCH_CHARS - 10) },
+      { id: "s2", text: "x".repeat(BATCH_CHARS - 10) },
+    ];
+    const fetchImpl = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(reply(JSON.stringify({ translations: [{ id: "s1", text: "S1" }] })))
+      .mockRejectedValueOnce(new DOMException("The operation was aborted", "AbortError"));
+
+    const result = await translateSegments(long, { apiKey: "k", fetchImpl });
+
+    expect(result).toEqual([{ id: "s1", text: "S1" }]);
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
+
+  it("returns an empty result without throwing when the very first batch aborts on a deadline-shortened timeout", async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => {
+      throw new DOMException("The operation was aborted", "TimeoutError");
+    });
+
+    const result = await translateSegments(items, {
+      apiKey: "k",
+      fetchImpl,
+      deadline: 50_000,
+      now: () => 0,
+    });
+
+    expect(result).toEqual([]);
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
+  it("still throws the friendly error when the first batch aborts on a full, un-shortened timeout", async () => {
+    const fetchImpl = vi.fn<typeof fetch>(async () => {
+      throw new DOMException("The operation was aborted", "TimeoutError");
+    });
+
+    await expect(translateSegments(items, { apiKey: "k", fetchImpl })).rejects.toThrow(
+      "Không kết nối được DeepSeek hoặc quá thời gian chờ. Thử lại."
+    );
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
 });
 
 describe("batchSegments", () => {

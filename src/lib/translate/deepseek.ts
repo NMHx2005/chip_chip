@@ -14,11 +14,16 @@ export type TranslateItem = { id: string; text: string };
 
 export class TranslateError extends Error {}
 
+/** A request failed to connect or timed out — as opposed to an API/parse error. */
+class ConnectionError extends TranslateError {}
+
 export const DEFAULT_MODEL = "deepseek-v4-pro";
 const ENDPOINT = "https://api.deepseek.com/chat/completions";
 /** Characters of segment text per request, so one answer fits in max_tokens. */
 export const BATCH_CHARS = 8000;
 const REQUEST_TIMEOUT_MS = 60_000;
+/** Don't start a new batch with less budget than this left — it would likely abort anyway. */
+const MIN_BATCH_BUDGET_MS = 20_000;
 
 const SYSTEM_PROMPT = [
   "You translate Vietnamese lesson text about semiconductors into English for high-school students.",
@@ -117,7 +122,7 @@ async function requestBatch(
         signal: AbortSignal.timeout(timeoutMs),
       });
     } catch {
-      throw new TranslateError("Không kết nối được DeepSeek hoặc quá thời gian chờ. Thử lại.");
+      throw new ConnectionError("Không kết nối được DeepSeek hoặc quá thời gian chờ. Thử lại.");
     }
 
     if (!response.ok) throw new TranslateError(statusMessage(response.status));
@@ -137,8 +142,15 @@ async function requestBatch(
 
 /**
  * Translates segments batch by batch, in order. Returns every translation
- * received; segments of batches skipped because of `deadline` are simply
- * absent, and the caller keeps them in Vietnamese.
+ * received; segments of batches skipped or cut short because of `deadline`
+ * are simply absent, and the caller keeps them in Vietnamese.
+ *
+ * A batch is never started with less than `MIN_BATCH_BUDGET_MS` of budget
+ * left. And if a request aborts because its own timeout was shortened by the
+ * deadline, or if earlier batches already produced results, that failure is
+ * treated as "ran out of time" rather than a hard error: translation stops
+ * and whatever was collected so far is returned. A first batch that aborts
+ * on its full, un-shortened timeout still surfaces the friendly error.
  */
 export async function translateSegments(
   items: TranslateItem[],
@@ -149,9 +161,16 @@ export async function translateSegments(
   const results: TranslateItem[] = [];
   for (const batch of batchSegments(items)) {
     const remaining = deadline - now();
-    if (remaining <= 0) break;
+    if (remaining < MIN_BATCH_BUDGET_MS) break;
     const timeoutMs = Math.min(REQUEST_TIMEOUT_MS, remaining);
-    results.push(...(await requestBatch(batch, { apiKey, model, fetchImpl, timeoutMs })));
+    try {
+      results.push(...(await requestBatch(batch, { apiKey, model, fetchImpl, timeoutMs })));
+    } catch (error) {
+      if (error instanceof ConnectionError && (timeoutMs < REQUEST_TIMEOUT_MS || results.length > 0)) {
+        break;
+      }
+      throw error;
+    }
   }
   return results;
 }
