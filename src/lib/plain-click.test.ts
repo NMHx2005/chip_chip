@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { classifyCardClick, EXPAND_MS, isPlainLeftClick } from "@/lib/plain-click";
+import { classifyCardClick, EXPAND_MS, PANEL_FADE_MS, isPlainLeftClick } from "@/lib/plain-click";
 
 const plain = {
   button: 0,
@@ -32,6 +32,12 @@ describe("EXPAND_MS", () => {
   it("stays inside the 350–450 ms window", () => {
     expect(EXPAND_MS).toBeGreaterThanOrEqual(350);
     expect(EXPAND_MS).toBeLessThanOrEqual(450);
+  });
+});
+
+describe("PANEL_FADE_MS", () => {
+  it("is a positive delay added on top of EXPAND_MS", () => {
+    expect(PANEL_FADE_MS).toBeGreaterThan(0);
   });
 });
 

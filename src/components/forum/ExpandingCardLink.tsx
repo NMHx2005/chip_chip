@@ -6,7 +6,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { EASE_STANDARD } from "@/components/motion";
 import { Link, useRouter } from "@/i18n/navigation";
 import type { PostHref } from "@/lib/paths";
-import { classifyCardClick, EXPAND_MS } from "@/lib/plain-click";
+import { classifyCardClick, EXPAND_MS, PANEL_FADE_MS } from "@/lib/plain-click";
 
 type Box = { top: number; left: number; width: number; height: number };
 
@@ -35,9 +35,17 @@ export function ExpandingCardLink({
   const prefersReducedMotion = useReducedMotion();
   const [from, setFrom] = useState<Box | null>(null);
   const [grown, setGrown] = useState(false);
+  const [faded, setFaded] = useState(false);
   const timer = useRef<number | undefined>(undefined);
+  const fadeTimer = useRef<number | undefined>(undefined);
 
-  useEffect(() => () => window.clearTimeout(timer.current), []);
+  useEffect(
+    () => () => {
+      window.clearTimeout(timer.current);
+      window.clearTimeout(fadeTimer.current);
+    },
+    []
+  );
 
   // Mount at the card's box first, then switch to full screen on the next
   // frame so `layout` has a before and an after to animate between.
@@ -57,8 +65,14 @@ export function ExpandingCardLink({
     if (outcome === "swallow") return;
     const rect = event.currentTarget.getBoundingClientRect();
     setFrom({ top: rect.top, left: rect.left, width: rect.width, height: rect.height });
+    setFaded(false);
     router.prefetch(href);
     timer.current = window.setTimeout(() => router.push(href), EXPAND_MS);
+    // No `loading.tsx` covers the destination (it made a missing article
+    // answer 200 instead of 404), so if we are still here this long after
+    // navigation started, the panel has nothing left to wait for — fade it
+    // out and let the listing underneath show through again.
+    fadeTimer.current = window.setTimeout(() => setFaded(true), EXPAND_MS + PANEL_FADE_MS);
   };
 
   return (
@@ -71,7 +85,16 @@ export function ExpandingCardLink({
           <motion.div
             aria-hidden
             layout
-            transition={{ layout: { duration: EXPAND_MS / 1000, ease: EASE_STANDARD } }}
+            animate={{ opacity: faded ? 0 : 1 }}
+            onAnimationComplete={() => {
+              // Guarded so the grow animation's own completion (opacity never
+              // changes there) does not unmount the panel early.
+              if (faded) setFrom(null);
+            }}
+            transition={{
+              layout: { duration: EXPAND_MS / 1000, ease: EASE_STANDARD },
+              opacity: { duration: 0.3 },
+            }}
             className="fixed z-[1500] border border-border bg-surface shadow-card-hover"
             style={
               grown

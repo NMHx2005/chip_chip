@@ -4,6 +4,16 @@
  */
 export const EXPAND_MS = 400;
 
+/**
+ * How long, after navigation starts, `ExpandingCardLink` waits before fading
+ * its full-screen panel back out. There is no `loading.tsx` boundary for the
+ * detail routes it links to (removed — it made a missing article answer 200
+ * instead of 404), so a slow article load has nothing to show while it waits
+ * and would otherwise leave the reader staring at a blank panel forever.
+ * Fading out reveals the still-mounted listing underneath instead.
+ */
+export const PANEL_FADE_MS = 600;
+
 type ClickLike = {
   button: number;
   metaKey: boolean;
