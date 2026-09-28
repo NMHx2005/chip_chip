@@ -3,16 +3,19 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { LangSwitch } from "@/components/layout/LangSwitch";
 import { LessonsMenu } from "@/components/layout/LessonsMenu";
 import { Logo } from "@/components/layout/Logo";
 import { SocialLinks } from "@/components/layout/SocialLinks";
 import { DURATION, EASE_STANDARD } from "@/components/motion";
+import { SearchBox } from "@/components/search/SearchBox";
+import { SearchForm } from "@/components/search/SearchForm";
 import { GlassPill } from "@/components/ui/GlassPill";
 import { MenuIcon } from "@/components/ui/MenuIcon";
 import { PillButtonCta } from "@/components/ui/PillButton";
-import { Link, usePathname } from "@/i18n/navigation";
+import { Link, getPathname, usePathname } from "@/i18n/navigation";
+import type { Locale } from "@/i18n/routing";
 import { LESSON_SUBNAV, NAV_ITEMS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +26,8 @@ function isActive(pathname: string, href: string) {
 
 export function Navbar() {
   const t = useTranslations("nav");
+  const tSearch = useTranslations("search");
+  const locale = useLocale() as Locale;
   const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -132,6 +137,7 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
+            <SearchBox className="hidden lg:block" />
             <SocialLinks className="hidden md:flex" />
             <LangSwitch className="hidden sm:flex" />
             <PillButtonCta href="/gioi-thieu" className="hidden md:inline-flex">
@@ -179,7 +185,17 @@ export function Navbar() {
               </button>
             </div>
 
-            <nav className="mt-4 flex-1 px-3" aria-label={t("openMenu")}>
+            <div className="mt-2 px-5">
+              <SearchForm
+                action={getPathname({ href: "/tim-kiem", locale })}
+                label={tSearch("label")}
+                placeholder={tSearch("placeholder")}
+                submitLabel={tSearch("submit")}
+                variant="dark"
+              />
+            </div>
+
+            <nav className="mt-4 flex-1 overflow-y-auto px-3" aria-label={t("openMenu")}>
               {NAV_ITEMS.map((item) => {
                 const active = isActive(pathname, item.href);
 

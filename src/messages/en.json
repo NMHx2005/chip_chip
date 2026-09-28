@@ -169,6 +169,26 @@
     },
     "related": "Related videos"
   },
+  "search": {
+    "title": "Search",
+    "description": "Search the lessons, videos and blog of Project Chíp Chíp.",
+    "label": "Search the site",
+    "placeholder": "e.g. semiconductor, transistor…",
+    "submit": "Search",
+    "open": "Open search",
+    "close": "Close search",
+    "prompt": "Type a keyword to search the lessons, videos and blog.",
+    "resultsFor": "Results for “{query}”",
+    "noResults": "Nothing found for “{query}”. Try a shorter keyword.",
+    "groups": {
+      "lesson": "Lessons",
+      "video": "Videos",
+      "forum": "Blog"
+    },
+    "resultCount": "{count, plural, one {# result} other {# results}}",
+    "resultCountCapped": "{count}+ results",
+    "showingFirst": "Showing the first {shown}."
+  },
   "forum": {
     "title": "Blog",
     "description": "Analysis, perspectives and notes on semiconductors.",
