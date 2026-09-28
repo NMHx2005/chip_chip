@@ -21,6 +21,7 @@ failures=0
 
 cleanup() {
   psql "$DB_URL" -q -c "delete from public.posts where slug like 'sec-%-$$%';" >/dev/null 2>&1 || true
+  psql "$DB_URL" -q -c "delete from public.messages where name = 'sec-check-$$';" >/dev/null 2>&1 || true
   psql "$DB_URL" -q -c "delete from auth.users where email = '$EMAIL';" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
@@ -153,6 +154,19 @@ long_body="{\"p_query\":\"$long\",\"p_locale\":\"vi\"}"
 check "câu rất dài vẫn trả 200" "200" "$(status -X POST "$API_URL/rest/v1/rpc/search_posts" \
   -H "apikey: $ANON_KEY" -H 'Content-Type: application/json' \
   -d "$long_body")"
+
+echo
+echo "M — hộp thư chỉ ban điều hành đọc được"
+psql "$DB_URL" -q -c "insert into public.messages (kind, name, body, locale)
+  values ('contact', 'sec-check-$$', 'x', 'vi');" 2>/dev/null || true
+msg='{"kind":"contact","name":"x","body":"x","locale":"vi"}'
+check "anon không INSERT được tin nhắn" "denied" \
+  "$(denied -X POST "$API_URL/rest/v1/messages" -H "apikey: $ANON_KEY" \
+     -H 'Content-Type: application/json' -d "$msg")"
+check "anon không đọc được tin nhắn" "[]" \
+  "$(curl -s "$API_URL/rest/v1/messages?select=id" -H "apikey: $ANON_KEY")"
+check "tài khoản chưa kích hoạt không đọc được tin nhắn" "[]" \
+  "$(curl -s "$API_URL/rest/v1/messages?select=id" "${auth[@]}")"
 
 echo
 echo "D2 — cổng đăng bài của nhóm dịch"
