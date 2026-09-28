@@ -27,3 +27,20 @@ const SECTION_FALLBACK: Record<string, StaticPathname> = {
 export function safePathFor(pathname: string): StaticPathname | string {
   return SECTION_FALLBACK[pathname] ?? pathname;
 }
+
+/**
+ * The `router.replace` target for a locale switch: `safePathFor`'s target,
+ * plus the current search query when switching from the search results page
+ * — otherwise the switch would silently drop it and land on an empty
+ * search page.
+ */
+export function switchTarget(
+  pathname: string,
+  searchQuery: string | null
+): StaticPathname | string | { pathname: StaticPathname | string; query: { q: string } } {
+  const target = safePathFor(pathname);
+  if (pathname === "/tim-kiem" && searchQuery) {
+    return { pathname: target, query: { q: searchQuery } };
+  }
+  return target;
+}

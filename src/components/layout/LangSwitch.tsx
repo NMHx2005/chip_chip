@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import {
@@ -8,7 +9,7 @@ import {
   routing,
   type Locale,
 } from "@/i18n/routing";
-import { safePathFor } from "@/components/layout/langSwitchPath";
+import { switchTarget } from "@/components/layout/langSwitchPath";
 import { cn } from "@/lib/utils";
 
 export function LangSwitch({
@@ -22,6 +23,7 @@ export function LangSwitch({
 }) {
   const locale = useLocale() as Locale;
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const t = useTranslations("nav");
 
@@ -29,9 +31,10 @@ export function LangSwitch({
     if (next === locale) return;
     onSwitch?.();
 
-    const target = safePathFor(pathname);
-    // `safePathFor` has resolved every parameterised template to a static
-    // route, so what reaches `replace` never needs params.
+    // `switchTarget` has resolved every parameterised template to a static
+    // route, so what reaches `replace` never needs params — except the
+    // search query it carries over from the search results page.
+    const target = switchTarget(pathname, searchParams.get("q"));
     router.replace(target as Parameters<typeof router.replace>[0], {
       locale: next,
     });

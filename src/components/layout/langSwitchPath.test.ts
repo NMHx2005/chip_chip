@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { safePathFor } from "@/components/layout/langSwitchPath";
+import { safePathFor, switchTarget } from "@/components/layout/langSwitchPath";
 
 /**
  * Regression tests for the locale switch target.
@@ -55,5 +55,28 @@ describe("safePathFor", () => {
     for (const route of routes) {
       expect(safePathFor(route)).not.toContain("[");
     }
+  });
+});
+
+/**
+ * Regression tests for the language switch on the search page: switching
+ * language used to drop `q`, dumping the reader on an empty search page.
+ */
+describe("switchTarget", () => {
+  it("carries the search query when switching from the search page", () => {
+    expect(switchTarget("/tim-kiem", "thue thu nhap")).toEqual({
+      pathname: "/tim-kiem",
+      query: { q: "thue thu nhap" },
+    });
+  });
+
+  it("leaves the search page path alone when there is no query", () => {
+    expect(switchTarget("/tim-kiem", null)).toBe("/tim-kiem");
+    expect(switchTarget("/tim-kiem", "")).toBe("/tim-kiem");
+  });
+
+  it("ignores a search query on every other route", () => {
+    expect(switchTarget("/bai-hoc", "thue")).toBe("/bai-hoc");
+    expect(switchTarget("/video/[slug]", "thue")).toBe("/video");
   });
 });
