@@ -30,7 +30,6 @@ export async function generateMetadata(): Promise<Metadata> {
       template: `%s | ${t("siteName")}`,
     },
     description: t("description"),
-    robots: { index: true, follow: true },
     openGraph: {
       type: "website",
       siteName: t("siteName"),
