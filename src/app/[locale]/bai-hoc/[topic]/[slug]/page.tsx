@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowLeft } from "lucide-react";
+import { ReportMistake } from "@/components/contact/ReportMistake";
 import { ArticleBody } from "@/components/forum/ArticleBody";
 import { ArticleToc } from "@/components/forum/ArticleToc";
 import { UpdatedAt } from "@/components/forum/UpdatedAt";
@@ -144,6 +145,8 @@ export default async function LessonArticlePage({ params }: { params: Params }) 
         <div className="mt-10">
           <ArticleBody content={post.content} locale={locale as Locale} />
         </div>
+
+        <ReportMistake postId={post.id} />
 
         {relatedVideos.length > 0 && (
           <section aria-labelledby="related-videos" className="mt-16 border-t border-border pt-10">

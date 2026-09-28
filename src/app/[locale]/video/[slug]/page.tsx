@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowLeft, BookOpen, ExternalLink, Languages } from "lucide-react";
+import { ReportMistake } from "@/components/contact/ReportMistake";
 import { ArticleBody } from "@/components/forum/ArticleBody";
 import {
   CommentSection,
@@ -210,6 +211,8 @@ export default async function VideoPage({
         <div className="mt-10">
           <ArticleBody content={post.content} locale={locale as Locale} />
         </div>
+
+        <ReportMistake postId={post.id} />
 
         <CommentSection
           postId={post.id}

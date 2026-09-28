@@ -3,6 +3,7 @@ import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowLeft, Languages } from "lucide-react";
+import { ReportMistake } from "@/components/contact/ReportMistake";
 import { ArticleBody } from "@/components/forum/ArticleBody";
 import { ArticleToc } from "@/components/forum/ArticleToc";
 import { UpdatedAt } from "@/components/forum/UpdatedAt";
@@ -183,6 +184,8 @@ export default async function ForumPostPage({
         <div className="mt-10">
           <ArticleBody content={post.content} locale={locale as Locale} />
         </div>
+
+        <ReportMistake postId={post.id} />
 
         <CommentSection
           postId={post.id}
