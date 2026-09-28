@@ -19,19 +19,21 @@ import { sanitizeArticleHtml } from "@/lib/tiptap/sanitize";
 export function renderArticle(content: unknown): string {
   if (!content || typeof content !== "object") return "";
 
-  let html: string;
+  let raw: string;
   try {
-    const raw = generateHTML(
+    raw = generateHTML(
       content as Parameters<typeof generateHTML>[0],
       articleExtensions
     );
-    html = withHeadingIds(raw, extractHeadings(content));
   } catch {
     // Malformed JSON in the column — render nothing rather than a 500.
     return "";
   }
 
-  return sanitizeArticleHtml(html);
+  // Ids go in after sanitising: the sanitiser escapes `<` inside attribute
+  // values, so an alt text containing "<h2>" can no longer be mistaken for a
+  // heading and shift every anchor after it.
+  return withHeadingIds(sanitizeArticleHtml(raw), extractHeadings(content));
 }
 
 /** Plain-text preview for meta descriptions and search results. */

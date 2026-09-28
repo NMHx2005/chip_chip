@@ -96,6 +96,26 @@ describe("renderArticle", () => {
   });
 });
 
+describe("renderArticle — attribute values", () => {
+  it("keeps heading anchors and link query strings intact around tricky alt text", () => {
+    const html = renderArticle(
+      doc(
+        { type: "image", attrs: { src: "https://cdn.test/a.png", alt: "<h2>giả</h2>" } },
+        { type: "heading", attrs: { level: 2 }, content: [text("Thật")] },
+        paragraph(
+          text("Sze", [{ type: "link", attrs: { href: "https://x.test/?a=1&b=2" } }])
+        )
+      )
+    );
+
+    expect(html).toBe(
+      '<img loading="lazy" decoding="async" src="https://cdn.test/a.png" alt="&lt;h2&gt;giả&lt;/h2&gt;">' +
+        '<h2 id="that">Thật</h2>' +
+        '<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://x.test/?a=1&amp;b=2">Sze</a></p>'
+    );
+  });
+});
+
 describe("articleToPlainText", () => {
   it("strips tags and truncates for a meta description", () => {
     const long = "a".repeat(300);
