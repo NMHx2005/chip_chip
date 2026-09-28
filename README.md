@@ -1,7 +1,9 @@
 # Project Chíp Chíp — Website
 
 Website cộng đồng học tập bán dẫn phi lợi nhuận cho học sinh trung học phổ thông.
-Song ngữ Việt / Anh, gồm 4 mục công khai — **Trang chủ · Bài học · Diễn đàn · Giới thiệu** — và một trang quản trị để ban điều hành soạn bài, duyệt bình luận.
+Song ngữ Việt / Anh, gồm các mục công khai — **Trang chủ · Bài học · Video · Blog ·
+Tìm kiếm · Giới thiệu · Liên hệ · Đóng góp · Chính sách bảo mật** — và một trang
+quản trị để ban điều hành soạn bài, duyệt bình luận, đọc tin nhắn.
 
 ## Chạy dự án
 
@@ -26,8 +28,9 @@ công khai render với nội dung rỗng thay vì lỗi — hữu ích khi mớ
 
 ## Cơ sở dữ liệu
 
-Schema nằm ở `supabase/migrations/`. Ba bảng chính: `profiles`, `posts`, `comments`,
-cùng `comment_rate_limit` cho việc chống spam.
+Schema nằm ở `supabase/migrations/`. Các bảng chính: `profiles`, `posts`, `comments`,
+`messages` (tin liên hệ / góp ý / báo lỗi), cùng `comment_rate_limit` — dùng chung
+cho cả bình luận lẫn tin nhắn, phân biệt bằng cột `scope`.
 
 ### Chạy local
 
@@ -74,50 +77,78 @@ thay vì vào được trang quản trị.
 
 ### Lên production
 
-**Thứ tự dưới đây bắt buộc, không được đảo:** code mới của DA1 select thẳng
-cột `posts.difficulty`, cột này chỉ tồn tại sau khi migration chạy. Deploy code
-trước khi migrate nghĩa là mọi danh sách bài trả về rỗng và mọi trang bài viết
-404 cho tới khi migration chạy xong.
+**Thứ tự dưới đây bắt buộc, không được đảo:**
 
 1. **Sao lưu** cơ sở dữ liệu (`pg_dump` hoặc bản sao lưu tương đương) trước khi
    đụng vào production.
-2. **Chạy migration trước khi merge/deploy code này**:
+2. **Kiểm ở local trước**, trên một DB dùng bỏ (không phải production):
+
+   ```bash
+   npx supabase db reset          # áp toàn bộ migration từ đầu vào DB local
+   ./scripts/verify-security.sh   # phải xanh hết (32/32) trước khi đi tiếp
+   ```
+
+3. **Chạy migration trên production**, trước khi merge/deploy code này — code
+   mới của DA1 select thẳng cột `posts.difficulty`, cột này chỉ tồn tại sau khi
+   migration chạy; deploy code trước khi migrate nghĩa là mọi danh sách bài trả
+   về rỗng và mọi trang bài viết 404 cho tới khi migration chạy xong:
 
    ```bash
    npx supabase link --project-ref <ref>
    npx supabase db push
    ```
 
-   Migration gần đây nhất thêm blog/video/tìm kiếm/hộp thư:
+   Toàn bộ migration theo thứ tự áp dụng:
 
+   - `20260912000000_init.sql` — schema gốc (`profiles`, `posts`, `comments`)
+   - `20260913000000_harden_access.sql` — vá bảo mật: `is_active` mặc định
+     `false`, ẩn `comments.author_email`, `comment_rate_limit` + khoá giao dịch
    - `20260928000000_video_kind.sql`, `20260928000100_video_difficulty.sql` —
      loại bài Video và ràng buộc độ khó theo loại bài
    - `20260928000200_search.sql` — `plain_text`, `search_vector`, hàm `search_posts`
-   - `20260928000300_messages.sql` — bảng `messages` cho `/admin/tin-nhan`
+   - `20260928000300_messages.sql` — bảng `messages` cho `/admin/tin-nhan`,
+     `comment_rate_limit` thêm cột `scope` dùng chung cho bình luận và tin nhắn
    - `20260928000400_updated_at_ignores_search_text.sql` — cập nhật chỉ mục
      tìm kiếm không còn tính là sửa bài (`updated_at` giữ nguyên)
-3. **Deploy code** (merge nhánh này, để Vercel build và lên bản mới).
-4. Vào `/admin` và bấm **"Cập nhật chỉ mục tìm kiếm"** một lần để điền
+   - `20260928000500_channel_name_only_on_videos.sql` — ràng buộc `channel_name`
+     (đã giới hạn 120 ký tự từ migration trước) chỉ được điền trên bài Video
+4. **Deploy code** (merge nhánh này, để Vercel build và lên bản mới).
+5. Vào `/admin` và bấm **"Cập nhật chỉ mục tìm kiếm"** một lần để điền
    `plain_text` cho các bài đã có từ trước — từ đó về sau `savePost` tự giữ nó
    cập nhật.
-5. Trước khi đăng lại (republish) bất kỳ bài học/video nào có từ trước DA1,
+6. Trước khi đăng lại (republish) bất kỳ bài học/video nào có từ trước DA1,
    vào `/admin/bai-viet/[id]` và **đặt độ khó** cho bài đó qua bảng "Chủ đề &
    độ khó" — publishing giờ đòi độ khó cho `kind = lesson` và `kind = video`,
    và các bài cũ chưa có giá trị này (`difficulty = null`).
+7. **Tắt tự đăng ký** trong Supabase Dashboard (*Authentication → Sign In /
+   Providers → Allow new users to sign up*) và **kích hoạt tài khoản admin**
+   thật (xem SQL ở mục "Tạo tài khoản quản trị đầu tiên" phía trên) — lớp
+   phòng thủ thứ hai, lớp thứ nhất vẫn là `is_active`.
+8. **Quyết định về HSTS preload.** `next.config.mjs` gửi header
+   `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`
+   khi build production — `preload` đưa domain vào danh sách preload cứng của
+   trình duyệt, gần như không thể gỡ nhanh nếu cần quay lại HTTP. Xác nhận
+   domain đã chạy HTTPS ổn định trước khi để nguyên; bỏ `preload` nếu chưa chắc.
 
-Rồi điền biến môi trường trên Vercel (xem `.env.example`). **Không** commit
-`SUPABASE_SERVICE_ROLE_KEY` — khoá này bỏ qua toàn bộ RLS.
+Rồi điền biến môi trường trên Vercel. **Không** commit `SUPABASE_SERVICE_ROLE_KEY`
+— khoá này bỏ qua toàn bộ RLS.
 
-Các biến tuỳ chọn:
+### Biến môi trường
 
-| Biến | Mặc định | Dùng để làm gì |
-|---|---|---|
-| `COMMENT_IP_SALT` | lấy tạm từ service role key | Muối băm IP cho rate limit. Đặt riêng để xoay service key không làm mất hết bộ đếm. |
-| `TRUSTED_PROXY_HOPS` | `1` | Số proxy đứng trước app. Vercel hoặc một nginx thì để `1`; thêm CDN ở ngoài thì `2`. Đọc sai số này là rate limit bị bypass. |
-| `DEEPSEEK_API_KEY` | (trống) | Bật nút "Dịch nháp bằng AI" ở tab EN của trình soạn bài. Không có thì nút tắt kèm lời giải thích. Chỉ đặt ở server (không có tiền tố `NEXT_PUBLIC_`). |
-| `DEEPSEEK_MODEL` | `deepseek-v4-pro` | Model DeepSeek dùng để dịch nháp, ví dụ `deepseek-flash` nếu muốn rẻ và nhanh hơn. |
+| Biến | Dùng để làm gì |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | URL project Supabase (public, lộ ra trình duyệt). Bắt buộc để kết nối cơ sở dữ liệu. |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Khoá anon Supabase (public). Dùng cho mọi truy vấn phía client/server chạy dưới quyền RLS. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Khoá service role, bỏ qua RLS. Chỉ dùng ở server (route handler, Server Action, `rate-limit.ts`) — **không bao giờ** có tiền tố `NEXT_PUBLIC_`, không commit. |
+| `NEXT_PUBLIC_SITE_URL` | Domain gốc dùng cho metadata, sitemap, robots.txt, ảnh OG. Inline lúc build; không đọc được sau khi deploy. Bỏ trống thì rơi về `https://projectchipchip.org` (`src/lib/site.ts`). |
+| `COMMENT_IP_SALT` | Muối băm IP cho rate limit bình luận/tin nhắn. Mặc định lấy tạm từ service role key — đặt riêng để xoay service key không làm mất hết bộ đếm. |
+| `TRUSTED_PROXY_HOPS` | Số proxy đứng trước app, mặc định `1`. Vercel hoặc một nginx thì để `1`; thêm CDN ở ngoài thì `2`. Đọc sai số này là rate limit bị bypass. |
+| `DEEPSEEK_API_KEY` | Bật nút "Dịch nháp bằng AI" ở tab EN của trình soạn bài. Không có thì nút tắt kèm lời giải thích. Chỉ đặt ở server. |
+| `DEEPSEEK_MODEL` | Model DeepSeek dùng để dịch nháp, mặc định `deepseek-v4-pro`; đổi sang ví dụ `deepseek-flash` nếu muốn rẻ và nhanh hơn. |
 
-`.env.example` chưa có hai biến DeepSeek — chủ dự án tự thêm (công cụ tự động không đọc được file này).
+`.env.example` chưa có hai biến DeepSeek và chưa chắc đã khớp danh sách trên —
+chủ dự án tự đối chiếu và cập nhật (công cụ tự động không đọc được file này
+trong môi trường này).
 
 DA2 (công cụ viết bài) **không có migration mới**: chỉ cần deploy code; đặt `DEEPSEEK_API_KEY` nếu muốn dùng dịch nháp.
 
@@ -176,7 +207,8 @@ src/
 │   ├── search/            SearchForm, SearchBox
 │   ├── admin/             PostEditor, EditorToolbar, AdminNav, …
 │   ├── ui/                PillButton, AutoplayVideo, GlassPill, StarBorder, …
-│   └── animations/        framer-motion variants dùng chung
+│   └── motion/            tokens, variants, AnimatedSection, ScrollReveal3D,
+│                           StickyBackdrop, TiltCard, VideoHoverCard, useVideoHoverCard, …
 └── middleware.ts          next-intl + phiên Supabase + chặn /admin
 ```
 
@@ -263,7 +295,12 @@ trong ngoặc vuông, ví dụ "[Tên tác giả]". DA5 thay theo danh sách nà
 | `public/video/*.mp4`, `src/lib/constants.ts` | `CAROUSEL_VIDEOS` | 6 clip carousel trang chủ — giữ chỗ, cùng nguồn |
 | `public/video/*.mp4`, `src/lib/constants.ts` | `TOPIC_VIDEOS` | Clip theo chủ đề cạnh accordion trang chủ — giữ chỗ, cùng nguồn |
 | `src/lib/constants.ts` | `ABOUT_BANNER` | Ảnh cạnh tiêu đề trang Giới thiệu — hiện là hình vẽ giữ chỗ |
+| `src/lib/constants.ts` | `CTA_BACKDROP` | Ảnh nền khối CTA cuối trang chủ — hiện là nền tối vẽ giữ chỗ |
+| `src/lib/constants.ts` | `HOME_VIDEO_CREDIT` | `{ label, href } \| null` — dòng ghi nguồn dưới video mở trang chủ; `null` thì ẩn |
+| `src/lib/constants.ts` | `COUNTRY_BANDS[].companies[].logo` | Logo từng công ty (Nvidia, TSMC, ASML, Samsung, …) — hiện toàn bộ là `null`, hiện tên chữ thay logo |
 | `src/components/layout/Logo.tsx` | logo | Chữ dạng wordmark giữ chỗ — thay bằng logo vector thật |
+| Biến môi trường | `NEXT_PUBLIC_SITE_URL` | Domain thật khi lên production — biến này được inline lúc build (xem mục Biến môi trường bên dưới), không đọc được sau khi deploy; fallback nếu bỏ trống là `https://projectchipchip.org` (`src/lib/site.ts`) |
+| Cơ sở dữ liệu production | — | Xoá bài test/demo còn sót lại và các dòng trùng lặp trước khi công khai — các đợt DA1–DA4 để lại dữ liệu nghiệm thu trên stack local (đã dọn ở đó), nhưng phải kiểm tra riêng trên DB production trước khi ra mắt |
 
 Trang Chính sách bảo mật (`privacy.*`) mô tả đúng cách code chạy ngày
 2026-09-28 (bảng `comments`, `messages`, `comment_rate_limit`, cookie
@@ -291,10 +328,15 @@ Ngoài ra: logo vector bản trong suốt, bản đồ silhouette các nước, 
 - Mục quốc gia chưa có bản đồ silhouette, cờ và logo công ty — chờ asset
 - Chưa có trang riêng cho từng quốc gia
 
-### Module đang chờ asset
+### Giới hạn đã biết
 
-Những file dưới đây đã viết xong nhưng chưa nối vào đâu, vì phụ thuộc clip 30s
-hoặc ảnh tương tác. Không phải code thừa — nối vào khi asset tới:
-
-`components/ui/HeroVideoCard.tsx`, `components/ui/ScrollVideoReveal.tsx`,
-`components/animations/scrollVideoReveal.ts`, `hooks/useVideoHoverCard.ts`
+- **404 render phía client trước khi hydrate xong.** Next 14 (App Router) stream
+  phần khung trang trước rồi mới đẩy nội dung `not-found` qua RSC — mã trạng thái
+  HTTP luôn đúng (404), nhưng HTML thô ban đầu là khung chung của Next chứ chưa
+  phải layout thật; nội dung thật chỉ xuất hiện sau khi React hydrate ở trình
+  duyệt. Cần nâng cấp qua khỏi dòng Next 14 mới sửa triệt để.
+- **Mọi trang công khai render theo từng request**, không cache tĩnh — Supabase
+  server client đọc cookie (phiên đăng nhập) trên mọi trang nên không route nào
+  được prerender. Lưu lượng lúc ra mắt còn nhỏ nên chưa cần xử lý; cải thiện
+  bằng một client Supabase không đọc cookie cho các trang thuần đọc, để dành
+  sau ra mắt.
