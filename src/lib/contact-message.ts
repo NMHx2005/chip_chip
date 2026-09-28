@@ -34,6 +34,19 @@ function text(value: unknown): string | null {
   return typeof value === "string" ? value.trim() : null;
 }
 
+/**
+ * Builds a `mailto:` href for a reader-supplied address.
+ *
+ * `EMAIL` above only checks shape, not content — `a@b.com?bcc=x&subject=y`
+ * passes it, and an unescaped href would let that querystring inject mailto
+ * headers into the staff member's mail client. Percent-encoding the whole
+ * addr-spec (RFC 6068) keeps it inert while still resolving to the same
+ * address.
+ */
+export function mailtoHref(email: string): string {
+  return `mailto:${encodeURIComponent(email)}`;
+}
+
 export function parseMessagePayload(payload: unknown): Result {
   if (typeof payload !== "object" || payload === null || Array.isArray(payload)) {
     return { ok: false, error: "invalid_payload" };

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseMessagePayload } from "@/lib/contact-message";
+import { mailtoHref, parseMessagePayload } from "@/lib/contact-message";
 
 const valid = {
   kind: "feedback",
@@ -74,5 +74,20 @@ describe("parseMessagePayload", () => {
     expect(result.ok && !result.honeypot && result.value.postId).toBe(
       "3f2b8c1e-4d5a-4b6c-8d7e-9f0a1b2c3d4e"
     );
+  });
+});
+
+describe("mailtoHref", () => {
+  it("round-trips a normal address", () => {
+    const email = "lan@example.com";
+    const href = mailtoHref(email);
+    expect(decodeURIComponent(href.slice("mailto:".length))).toBe(email);
+  });
+
+  it("percent-encodes header-injection characters", () => {
+    const href = mailtoHref("a@b.com?bcc=x@evil.test&subject=Hi");
+    expect(href.startsWith("mailto:")).toBe(true);
+    const afterPrefix = href.slice("mailto:".length);
+    expect(afterPrefix).not.toMatch(/[?&=]/);
   });
 });

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
 import { MessageActions } from "@/components/admin/MessageActions";
+import { mailtoHref } from "@/lib/contact-message";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -112,7 +113,7 @@ export default async function AdminMessagesPage({
 
                 {row.email && (
                   <a
-                    href={`mailto:${row.email}`}
+                    href={mailtoHref(row.email)}
                     className="mt-0.5 block font-mono text-[11px] text-text-muted hover:text-accent"
                   >
                     {row.email}
