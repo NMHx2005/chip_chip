@@ -30,7 +30,10 @@ export default async function ForumPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations("forum");
+  const [t, tPagination] = await Promise.all([
+    getTranslations("forum"),
+    getTranslations("pagination"),
+  ]);
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1);
 
   const { posts, total } = await listForumPosts(locale as Locale, {
@@ -57,16 +60,19 @@ export default async function ForumPage({
             {t("empty")}
           </p>
         ) : (
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} expand />
-            ))}
-          </div>
+          <>
+            <h2 className="sr-only">{t("postsHeading")}</h2>
+            <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {posts.map((post) => (
+                <PostCard key={post.id} post={post} expand />
+              ))}
+            </div>
+          </>
         )}
 
         {totalPages > 1 && (
           <nav
-            aria-label="Pagination"
+            aria-label={tPagination("label")}
             className="mt-10 flex items-center justify-center gap-2"
           >
             {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (

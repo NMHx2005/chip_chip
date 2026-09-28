@@ -198,6 +198,7 @@
   "forum": {
     "title": "Blog",
     "description": "Analysis, perspectives and notes on semiconductors.",
+    "postsHeading": "List of posts",
     "empty": "No posts yet. Please check back soon!",
     "readMore": "Read more",
     "publishedOn": "Published {date}",
@@ -448,6 +449,8 @@
     "notFoundTitle": "Page not found",
     "notFoundDescription": "The page you are looking for does not exist or has moved.",
     "backHome": "Back to Home",
-    "errorDescription": "Something went wrong while loading this page. Please try again."
+    "errorDescription": "Something went wrong while loading this page. Please try again.",
+    "video": "video",
+    "playVideo": "Play {label}"
   }
 }

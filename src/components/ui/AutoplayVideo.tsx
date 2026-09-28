@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
 type AutoplayVideoProps = {
@@ -47,6 +48,7 @@ export function AutoplayVideo({
   paused = false,
   fit = "cover",
 }: AutoplayVideoProps) {
+  const t = useTranslations("common");
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const prefersReducedMotion = useReducedMotion();
@@ -234,7 +236,7 @@ export function AutoplayVideo({
           {!isMobileInlinePlaying && (
             <button
               type="button"
-              aria-label={`Play ${ariaLabel ?? "video"}`}
+              aria-label={t("playVideo", { label: ariaLabel ?? t("video") })}
               className="absolute inset-0 flex items-center justify-center bg-black/5 transition-colors active:bg-black/10"
               onClick={toggleMobileInlinePlay}
             >

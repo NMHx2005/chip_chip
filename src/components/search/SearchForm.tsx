@@ -43,8 +43,8 @@ export function SearchForm({
           className={cn(
             "h-11 w-full rounded-xl border px-3.5 text-base outline-none md:text-sm",
             dark
-              ? "border-white/20 bg-white/10 text-white placeholder:text-white/60 focus:border-white/50"
-              : "border-border bg-surface text-text placeholder:text-text-muted focus:border-black/40"
+              ? "border-white/20 bg-white/10 text-white placeholder:text-white/60 focus:border-white/50 focus-visible:ring-2 focus-visible:ring-white"
+              : "border-border bg-surface text-text placeholder:text-text-muted focus:border-black/40 focus-visible:ring-2 focus-visible:ring-accent"
           )}
         />
       </label>
