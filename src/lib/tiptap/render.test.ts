@@ -161,6 +161,46 @@ describe("renderArticle — formulas", () => {
   });
 });
 
+describe("renderArticle — formula DoS bounds", () => {
+  it("refuses to typeset a formula longer than 2000 characters", () => {
+    const latex = "x+".repeat(250000); // 500,000 characters
+    const start = performance.now();
+    const html = renderArticle(doc(paragraph(inlineMath(latex))));
+    const elapsed = performance.now() - start;
+
+    expect(elapsed).toBeLessThan(200);
+    expect(html).toContain('<code class="math-error">');
+    expect(html).toContain(`${latex.slice(0, 200)}…`);
+  });
+
+  it("renders a runaway macro expansion as an error quickly", () => {
+    const start = performance.now();
+    const html = renderArticle(doc(paragraph(inlineMath("\\def\\a{\\a\\a}\\a"))));
+    const elapsed = performance.now() - start;
+
+    expect(elapsed).toBeLessThan(200);
+    expect(html).toContain("katex-error");
+  });
+
+  it("bounds an oversized \\rule to maxSize instead of the requested size", () => {
+    const start = performance.now();
+    const html = renderArticle(doc(paragraph(inlineMath("\\rule{999999em}{999999em}"))));
+    const elapsed = performance.now() - start;
+
+    expect(elapsed).toBeLessThan(200);
+    expect(html).not.toMatch(/(width|height):999999em/);
+    expect(html).toContain("border-right-width:20em");
+  });
+
+  it("still typesets a formula right at the 2000-character limit", () => {
+    const latex = "x".repeat(2000);
+    const html = renderArticle(doc(paragraph(inlineMath(latex))));
+
+    expect(html).toContain('<span class="math-inline"><span class="katex">');
+    expect(html).not.toContain('class="math-error"');
+  });
+});
+
 describe("formulas elsewhere in the pipeline", () => {
   it("contributes raw LaTeX to the plain text", () => {
     expect(

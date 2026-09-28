@@ -20,11 +20,25 @@ export const KATEX_OPTIONS = {
 // prepareArticle: the index is all the attribute ever holds.
 const PLACEHOLDER = /<(span|div) data-latex="(\d+)" data-type="(?:inline|block)-math"><\/\1>/g;
 
+// KaTeX's parse time grows super-linearly with input length — measured at
+// ~87s for a 500,000-character formula — and nothing upstream bounds how
+// long a stored formula can be. Longer LaTeX is never handed to KaTeX.
+const MAX_LATEX_LENGTH = 2000;
+
+function truncate(latex: string): string {
+  return latex.length > 200 ? `${latex.slice(0, 200)}…` : latex;
+}
+
+function errorMarkup(latex: string): string {
+  return `<code class="math-error">${escapeHtml(truncate(latex))}</code>`;
+}
+
 function typeset({ latex, display }: Formula): string {
+  if (latex.length > MAX_LATEX_LENGTH) return errorMarkup(latex);
   try {
     return katex.renderToString(latex, { ...KATEX_OPTIONS, displayMode: display });
   } catch {
-    return `<code class="math-error">${escapeHtml(latex)}</code>`;
+    return errorMarkup(latex);
   }
 }
 
@@ -43,6 +57,6 @@ export function renderMath(html: string, formulas: Formula[]): string {
 export function mathToText(html: string, formulas: Formula[]): string {
   return html.replace(PLACEHOLDER, (_match, _tag, index: string) => {
     const formula = formulas[Number(index)];
-    return formula ? ` ${escapeHtml(formula.latex)} ` : "";
+    return formula ? ` ${escapeHtml(truncate(formula.latex))} ` : "";
   });
 }
