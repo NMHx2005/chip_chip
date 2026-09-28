@@ -13,15 +13,15 @@ const MAX_BODY = 2000;
 const MAX_NAME = 80;
 
 export async function POST(request: NextRequest) {
+  if (isBodyTooLarge(request.headers)) {
+    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
+  }
+
   if (!isSupabaseAdminConfigured) {
     return NextResponse.json(
       { error: "server_not_configured" },
       { status: 503 }
     );
-  }
-
-  if (isBodyTooLarge(request.headers)) {
-    return NextResponse.json({ error: "payload_too_large" }, { status: 413 });
   }
 
   let payload: Record<string, unknown>;
