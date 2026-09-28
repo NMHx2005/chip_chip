@@ -123,6 +123,8 @@ DA2 (công cụ viết bài) **không có migration mới**: chỉ cần deploy 
 
 DA3 (bài học, video, tìm kiếm) cũng **không có migration mới**. Tab `?tab=video` cũ của trang Bài học chuyển hẳn (308) sang `/vi/video`.
 
+DA4 (trang uy tín, blog) **không có migration mới**: form Liên hệ và "Báo lỗi bài này" dùng `/api/messages` và bảng `messages` có sẵn, chung giới hạn 3 tin mỗi giờ cho mỗi IP (đã băm).
+
 ### Dịch nháp bằng AI và quyền riêng tư
 
 Nút "Dịch nháp bằng AI" gửi **nội dung bài viết** (tiêu đề, tóm tắt, chữ trong thân bài, chú thích và mô tả ảnh) tới máy chủ của DeepSeek (`api.deepseek.com`) để dịch. Dòng "Được góp ý bởi …" không bao giờ rời server — tên người góp ý là danh từ riêng nên được giữ nguyên, không dịch. Không gửi email, bình luận, tin nhắn hay bất kỳ dữ liệu nào của người đọc; công thức, khối mã và địa chỉ link không rời server. Bản dịch chỉ được nạp vào tab EN như thay đổi chưa lưu — không có gì được ghi vào cơ sở dữ liệu cho tới khi người viết đọc lại và bấm "Lưu". Mỗi lần bấm gửi tối đa 60 000 ký tự.
@@ -138,7 +140,10 @@ src/
 │   │   ├── video/                 Video → [slug]
 │   │   ├── tim-kiem/              Kết quả tìm kiếm (noindex)
 │   │   ├── blog/                  Blog → [slug]
-│   │   └── gioi-thieu/            Giới thiệu
+│   │   ├── gioi-thieu/            Giới thiệu (tác giả, cam kết, FAQ)
+│   │   ├── lien-he/               Liên hệ (form gửi /api/messages)
+│   │   ├── dong-gop/              Đóng góp
+│   │   └── chinh-sach-bao-mat/    Chính sách bảo mật
 │   ├── admin/             # CMS, tiếng Việt, không có tiền tố ngôn ngữ
 │   │   ├── (auth)/dang-nhap/      Đăng nhập
 │   │   └── (dashboard)/           Tổng quan · Bài viết · Bình luận · Tin nhắn
@@ -163,7 +168,8 @@ src/
 ├── components/
 │   ├── layout/            Navbar, Footer, Logo, LangSwitch, SocialLinks
 │   ├── sections/          các section trang chủ + trang nội dung
-│   ├── forum/             PostCard, ArticleBody, CommentSection
+│   ├── forum/             PostCard, ExpandingCardLink, ArticleBody, CommentSection
+│   ├── contact/           MessageForm, ReportMistake ("Báo lỗi bài này")
 │   ├── lessons/           LessonsListing, TopicSidebar (trang Bài học + chủ đề)
 │   ├── video/             VideoCard, VideoFilters
 │   ├── listing/           FilterPills, Pagination (dùng chung)
@@ -185,6 +191,9 @@ src/
 | `/vi/tim-kiem`    | `/en/search`   |
 | `/vi/blog`        | `/en/blog`     |
 | `/vi/gioi-thieu`  | `/en/about`    |
+| `/vi/lien-he`     | `/en/contact`  |
+| `/vi/dong-gop`    | `/en/contribute` |
+| `/vi/chinh-sach-bao-mat` | `/en/privacy` |
 
 Khai báo ở `src/i18n/routing.ts`. Slug bài viết **không** bản địa hoá — mỗi bản dịch
 có slug riêng trong database.
@@ -231,6 +240,35 @@ Font là TTF chứ không phải woff2: satori không đọc được woff2. Hai
 `next.config.mjs` — thiếu dòng đó thì ảnh chạy ở máy nhưng 404 trên Vercel.
 
 ## Việc còn lại
+
+### Nội dung cần thay trước khi ra mắt
+
+DA4 dựng các trang uy tín bằng câu chữ mẫu. Chỗ nào là mẫu thì câu chữ tự ghi
+trong ngoặc vuông, ví dụ "[Tên tác giả]". DA5 thay theo danh sách này
+(khoá message có ở **cả** `src/messages/vi.json` và `en.json`):
+
+| Nơi | Khoá / hằng số | Cần gì |
+| --- | --- | --- |
+| Messages | `about.author.name`, `about.author.role`, `about.author.photoAlt` | Tên, vai trò thật của tác giả |
+| Messages | `about.author.story1`, `about.author.story2` | Câu chuyện thật, 2 đoạn |
+| Messages | `about.faq.items.*` (6 câu: `free`, `author`, `mistake`, `classroom`, `ads`, `english`) | **Câu mẫu** — duyệt lại từng câu, nhất là `classroom` (điều kiện dùng bài cho lớp học) |
+| Messages | `contact.aside.responseBody` | Thời gian phản hồi thật |
+| Messages | `contribute.*` | Duyệt lại bốn cách đóng góp cho khớp cách làm thật |
+| `src/lib/constants.ts` | `AUTHOR.photo` | Đường dẫn ảnh trong `public/`; `null` thì hiện chữ cái đầu |
+| `src/lib/constants.ts` | `CONTRIBUTORS` | `{ name, role }[]`; rỗng thì mục "Những người đã đồng hành" ẩn |
+| `src/lib/constants.ts` | `CONTACT_EMAIL` | Email liên hệ; rỗng thì ẩn ở trang Liên hệ và khối cuối trang chủ |
+| `src/lib/constants.ts` | `SOCIAL_LINKS` | URL Facebook, TikTok; rỗng thì ẩn |
+| `src/lib/constants.ts` | `PRIVACY_UPDATED` | Đổi khi sửa chính sách bảo mật |
+| `public/video/*.mp4`, `src/lib/constants.ts` | `HOME_VIDEO` | Clip mở trang chủ — giữ chỗ mượn từ dự án Strike Robot |
+| `public/video/*.mp4`, `src/lib/constants.ts` | `CAROUSEL_VIDEOS` | 6 clip carousel trang chủ — giữ chỗ, cùng nguồn |
+| `public/video/*.mp4`, `src/lib/constants.ts` | `TOPIC_VIDEOS` | Clip theo chủ đề cạnh accordion trang chủ — giữ chỗ, cùng nguồn |
+| `src/lib/constants.ts` | `ABOUT_BANNER` | Ảnh cạnh tiêu đề trang Giới thiệu — hiện là hình vẽ giữ chỗ |
+| `src/components/layout/Logo.tsx` | logo | Chữ dạng wordmark giữ chỗ — thay bằng logo vector thật |
+
+Trang Chính sách bảo mật (`privacy.*`) mô tả đúng cách code chạy ngày
+2026-09-28 (bảng `comments`, `messages`, `comment_rate_limit`, cookie
+`NEXT_LOCALE`, dịch nháp DeepSeek). Đổi cách thu hoặc lưu dữ liệu thì sửa
+trang này cùng lúc.
 
 ### Đang chờ dữ liệu
 
