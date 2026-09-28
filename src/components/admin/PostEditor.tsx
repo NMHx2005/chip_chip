@@ -3,12 +3,17 @@
 import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { EditorContent, useEditor, type Editor, type JSONContent } from "@tiptap/react";
-import { Check, ImagePlus, TriangleAlert } from "lucide-react";
+import { Check, ImagePlus, Languages, TriangleAlert } from "lucide-react";
 import "katex/dist/katex.min.css";
 import { EditorToolbar } from "@/components/admin/EditorToolbar";
 import { buildEditorExtensions } from "@/components/admin/editor-extensions";
 import { promptMath } from "@/components/admin/math-prompt";
-import { publishTranslation, savePost, unpublishTranslation } from "@/app/admin/actions";
+import {
+  publishTranslation,
+  savePost,
+  translateDraft,
+  unpublishTranslation,
+} from "@/app/admin/actions";
 import { UploadError, uploadPostImage } from "@/lib/supabase/upload";
 import { LOCALE_LABELS, routing, type Locale } from "@/i18n/routing";
 import { slugify } from "@/lib/post-slug";
@@ -34,10 +39,13 @@ export function PostEditor({
   translationId,
   initialDrafts,
   status,
+  translateEnabled,
 }: {
   translationId: string;
   initialDrafts: Record<Locale, Draft>;
   status: "draft" | "published";
+  /** Whether the server has a DeepSeek key; the button explains itself when not. */
+  translateEnabled: boolean;
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -55,6 +63,7 @@ export function PostEditor({
   const [message, setMessage] = useState<string | null>(null);
   const [publishError, setPublishError] = useState<string | null>(null);
   const [uploadingCover, setUploadingCover] = useState(false);
+  const [translating, setTranslating] = useState(false);
   const coverInputRef = useRef<HTMLInputElement>(null);
 
   // The editor instance is shared across tabs, so callbacks read the active
@@ -283,6 +292,62 @@ export function PostEditor({
     });
   };
 
+  const runTranslate = () => {
+    const en = draftsRef.current.en;
+    const hasEnglish =
+      en.title.trim().length > 0 ||
+      en.excerpt.trim().length > 0 ||
+      (en.content?.content?.length ?? 0) > 0;
+    if (
+      hasEnglish &&
+      !window.confirm("Bản tiếng Anh đang có nội dung. Thay toàn bộ bằng bản dịch nháp?")
+    ) {
+      return;
+    }
+
+    setTranslating(true);
+    setMessage(null);
+    startTransition(async () => {
+      try {
+        const result = readActionResult(await translateDraft(translationId));
+        if (!result) return;
+        if (sessionExpired(result)) {
+          router.replace("/admin/dang-nhap");
+          return;
+        }
+        if (!result.ok || !result.draft) {
+          setState("error");
+          setMessage(result.error ?? "Không dịch được.");
+          return;
+        }
+
+        const content = result.draft.content as JSONContent;
+        updateDraft("en", {
+          title: result.draft.title,
+          excerpt: result.draft.excerpt,
+          content,
+        });
+        // The reader may have switched tabs while the request ran; only the
+        // EN tab's editor content is replaced, never the VI one on screen.
+        if (activeRef.current === "en") {
+          editor
+            ?.chain()
+            .setMeta("addToHistory", false)
+            .setContent(content, { emitUpdate: false })
+            .run();
+        }
+        setState("idle");
+        setMessage(
+          result.untranslated
+            ? `Đã dịch nháp. ${result.untranslated}/${result.total} đoạn vẫn là tiếng Việt vì bản dịch làm hỏng định dạng — hãy dịch tay các đoạn đó, đọc lại rồi bấm "Lưu".`
+            : 'Đã dịch nháp. Đọc lại, sửa chỗ chưa ổn rồi bấm "Lưu".'
+        );
+      } finally {
+        setTranslating(false);
+      }
+    });
+  };
+
   const current = drafts[active];
   const bothComplete = routing.locales.every(
     (locale) =>
@@ -429,6 +494,27 @@ export function PostEditor({
           có thể soạn nội dung nhưng chưa thể lưu bản này — cần tạo lại bài để
           có đủ hai ngôn ngữ.
         </p>
+      )}
+
+      {active === "en" && (
+        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-border bg-surface px-4 py-3">
+          <button
+            type="button"
+            onClick={runTranslate}
+            disabled={!translateEnabled || translating || dirty.vi || !current.id}
+            className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-semibold text-text transition-colors hover:border-black/20 disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            <Languages className="size-4" strokeWidth={2.2} />
+            {translating ? "Đang dịch…" : "Dịch nháp bằng AI"}
+          </button>
+          <p className="text-xs text-text-muted">
+            {!translateEnabled
+              ? "Chưa bật: máy chủ chưa có DEEPSEEK_API_KEY."
+              : dirty.vi
+                ? "Lưu bản tiếng Việt trước — bản dịch lấy từ bản đã lưu."
+                : "Dịch từ bản tiếng Việt đã lưu bằng DeepSeek. Công thức, ảnh và link giữ nguyên; kết quả chưa được lưu cho tới khi bạn bấm \"Lưu\"."}
+          </p>
+        </div>
       )}
 
       {/* Metadata for the active locale */}

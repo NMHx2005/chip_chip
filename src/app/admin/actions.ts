@@ -14,6 +14,12 @@ import {
   type SharedFieldsInput,
 } from "@/lib/shared-fields";
 import { revalidatePostRows, type PostRow } from "@/lib/revalidate-paths";
+import { TranslateError, translateSegments } from "@/lib/translate/deepseek";
+import {
+  applyTranslations,
+  prepareTranslation,
+  type DraftText,
+} from "@/lib/translate/segments";
 import type { Difficulty, PostKind } from "@/lib/types";
 import type { TopicId } from "@/lib/constants";
 
@@ -420,6 +426,67 @@ export async function deleteMessage(messageId: string): Promise<ActionResult> {
   if (error) return fail(error.message);
   revalidatePath("/admin/tin-nhan");
   return { ok: true };
+}
+
+/** Leaves room under the edit page's `maxDuration` (120 s) for the DB read and the reply. */
+const TRANSLATE_BUDGET_MS = 100_000;
+
+export type TranslateDraftResult = ActionResult & {
+  draft?: DraftText;
+  /** Segments kept in Vietnamese because the model's answer did not fit. */
+  untranslated?: number;
+  total?: number;
+};
+
+/**
+ * Drafts the English version of a group from its saved Vietnamese row.
+ *
+ * Writes nothing: the editor loads the result into the EN tab as unsaved
+ * changes, and the writer saves through `savePost` after reading it. Only the
+ * article's own text goes to DeepSeek.
+ */
+export async function translateDraft(translationId: string): Promise<TranslateDraftResult> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+  if (!isUuid(translationId)) return fail("Mã bài viết không hợp lệ.");
+
+  const apiKey = process.env.DEEPSEEK_API_KEY;
+  if (!apiKey) return fail("Chưa cấu hình DEEPSEEK_API_KEY nên chưa dịch bằng AI được.");
+
+  const startedAt = Date.now();
+  const { data: vi } = await createClient()
+    .from("posts")
+    .select("title, excerpt, content")
+    .eq("translation_id", translationId)
+    .eq("locale", "vi")
+    .maybeSingle();
+
+  if (!vi) return fail("Không tìm thấy bản tiếng Việt của bài này.");
+
+  const source: DraftText = {
+    title: vi.title ?? "",
+    excerpt: vi.excerpt ?? "",
+    content: vi.content ?? { type: "doc", content: [] },
+  };
+
+  const prepared = prepareTranslation(source);
+  if (!prepared.ok) return fail(prepared.error);
+
+  try {
+    const translations = await translateSegments(
+      prepared.segments.map(({ id, text }) => ({ id, text })),
+      {
+        apiKey,
+        model: process.env.DEEPSEEK_MODEL || undefined,
+        deadline: startedAt + TRANSLATE_BUDGET_MS,
+      }
+    );
+    const { draft, untranslated } = applyTranslations(source, prepared.segments, translations);
+    return { ok: true, draft, untranslated, total: prepared.segments.length };
+  } catch (error) {
+    if (error instanceof TranslateError) return fail(error.message);
+    return fail("Không dịch được lúc này. Thử lại sau.");
+  }
 }
 
 /** Signs out and returns to the login screen. */

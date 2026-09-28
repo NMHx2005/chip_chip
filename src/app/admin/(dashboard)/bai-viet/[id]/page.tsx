@@ -10,6 +10,9 @@ import type { Difficulty, VideoSource } from "@/lib/types";
 import { watchUrl, type VideoPlatform } from "@/lib/video";
 
 export const dynamic = "force-dynamic";
+// "Dịch nháp bằng AI" runs as a Server Action of this page and may send
+// several sequential requests to DeepSeek (see translateDraft).
+export const maxDuration = 120;
 
 type Row = {
   id: string;
@@ -143,6 +146,7 @@ export default async function EditPostPage({
         translationId={anchor.translation_id as string}
         initialDrafts={drafts}
         status={primary.status}
+        translateEnabled={Boolean(process.env.DEEPSEEK_API_KEY)}
       />
     </div>
   );
