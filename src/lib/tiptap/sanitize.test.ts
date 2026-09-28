@@ -89,8 +89,33 @@ describe("sanitizeArticleHtml — malformed input performance", () => {
     expect(result).not.toContain("<p");
   });
 
-  it("does not swallow the '/' of a self-closing tag into an unquoted attribute value", () => {
-    expect(sanitizeArticleHtml("<img src=x/>")).toBe('<img src="x">');
+});
+
+describe("sanitizeArticleHtml — trailing slash in an unquoted value", () => {
+  it("keeps a '/' that is the tail of an unquoted value, as browsers do", () => {
+    expect(sanitizeArticleHtml("<img src=x/>")).toBe('<img src="x/">');
+  });
+
+  it("treats whitespace before '/' as the self-closing solidus", () => {
+    expect(sanitizeArticleHtml("<img src=x />")).toBe('<img src="x">');
+  });
+
+  it("keeps the trailing slash of a URL ending right before '>'", () => {
+    expect(sanitizeArticleHtml("<a href=https://example.com/>l</a>")).toBe(
+      '<a href="https://example.com/">l</a>'
+    );
+  });
+
+  it("still drops a script body when its unquoted src ends in a slash", () => {
+    expect(
+      sanitizeArticleHtml(
+        "<script src=http://evil.com/>alert(1)</script><p>next</p>"
+      )
+    ).toBe("<p>next</p>");
+  });
+
+  it("never treats a script as self-closing, even with a genuine solidus", () => {
+    expect(sanitizeArticleHtml("<script/>alert(1)</script>ok")).toBe("ok");
   });
 });
 

@@ -69,12 +69,12 @@ const FORBIDDEN_WITH_BODY = new Set(["script", "style", "iframe", "object", "emb
 
 const NAME_START = /[a-zA-Z]/;
 const NAME_CHAR = /[a-zA-Z0-9]/;
+const WHITESPACE = /\s/;
 
 interface ParsedTag {
   closing: boolean;
   name: string;
   attrs: string;
-  selfClosing: boolean;
   /** Index of the character right after the tag's closing `>`. */
   end: number;
 }
@@ -122,13 +122,19 @@ function parseTag(html: string, start: number): ParsedTag | null | "unterminated
   if (i >= len) return "unterminated";
 
   let attrs = html.slice(attrsStart, i);
-  // A trailing `/` right before `>` marks a self-closing tag; excluded here
-  // so it is never mistaken for the tail of an unquoted attribute value
-  // (`<img src=x/>` must not sanitize to `src="x/"`).
-  const selfClosing = attrs.endsWith("/");
-  if (selfClosing) attrs = attrs.slice(0, -1);
+  // A `/` right before `>` is only a self-closing solidus — not the tail of
+  // an unquoted value — when it directly follows the tag name, whitespace,
+  // or a closing quote, mirroring the HTML tokenizer's before-attribute-name
+  // state. `<img src=x/>` keeps the slash in the value; `<img src=x />`
+  // (whitespace before the slash) does not.
+  if (attrs.endsWith("/")) {
+    const before = attrs.length > 1 ? attrs[attrs.length - 2] : "";
+    if (before === "" || WHITESPACE.test(before) || before === '"' || before === "'") {
+      attrs = attrs.slice(0, -1);
+    }
+  }
 
-  return { closing, name, attrs, selfClosing, end: i + 1 };
+  return { closing, name, attrs, end: i + 1 };
 }
 
 const NAMED_ENTITIES: Record<string, string> = {
@@ -216,7 +222,11 @@ export function sanitizeArticleHtml(html: string): string {
     if (skipping) {
       if (tag.closing && tag.name === skipping) skipping = null;
     } else if (FORBIDDEN_WITH_BODY.has(tag.name)) {
-      if (!tag.closing && !tag.selfClosing) skipping = tag.name;
+      // Browsers never treat a non-void, non-foreign element such as
+      // <script> as self-closing, no matter what precedes its final `/>` —
+      // an opening tag here always starts a skip until the matching close
+      // tag (or EOF), so its body can never leak as text.
+      if (!tag.closing) skipping = tag.name;
     } else if (ALLOWED_TAGS.has(tag.name)) {
       out += tag.closing ? `</${tag.name}>` : `<${tag.name}${sanitizeAttrs(tag.attrs)}>`;
     }
