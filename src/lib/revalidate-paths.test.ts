@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { revalidatePostRows, type PostRow } from "@/lib/revalidate-paths";
+import { postRowsFrom, revalidatePostRows, type PostRow } from "@/lib/revalidate-paths";
 
 describe("revalidatePostRows", () => {
   it("always revalidates the home, blog and lessons listings for both locales", () => {
@@ -64,5 +64,45 @@ describe("revalidatePostRows", () => {
     ];
     const paths = revalidatePostRows(rows);
     expect(paths.filter((p) => p === "/vi/bai-hoc/nguyen-ly/bai-x")).toHaveLength(1);
+  });
+});
+
+describe("postRowsFrom", () => {
+  it("lets unpublishing or deleting a lesson clear its own detail and topic pages in both locales", () => {
+    const paths = revalidatePostRows(
+      postRowsFrom([
+        { locale: "vi", slug: "chat-ban-dan", kind: "lesson", topic: "nguyen-ly" },
+        { locale: "en", slug: "semiconductors", kind: "lesson", topic: "nguyen-ly" },
+      ])
+    );
+    expect(paths).toEqual(
+      expect.arrayContaining([
+        "/vi/bai-hoc/nguyen-ly",
+        "/vi/bai-hoc/nguyen-ly/chat-ban-dan",
+        "/en/lessons/nguyen-ly",
+        "/en/lessons/nguyen-ly/semiconductors",
+      ])
+    );
+  });
+
+  it("lets unpublishing or deleting a blog post clear its own detail pages", () => {
+    const paths = revalidatePostRows(
+      postRowsFrom([
+        { locale: "vi", slug: "tin-vi", kind: "forum", topic: null },
+        { locale: "en", slug: "news-en", kind: "forum", topic: null },
+      ])
+    );
+    expect(paths).toEqual(expect.arrayContaining(["/vi/blog/tin-vi", "/en/blog/news-en"]));
+  });
+
+  it("skips rows it cannot place and treats an unknown topic as none", () => {
+    expect(
+      postRowsFrom([
+        { locale: "fr", slug: "x", kind: "lesson", topic: "nguyen-ly" },
+        { locale: "vi", slug: "y", kind: "podcast", topic: null },
+        { locale: "vi", slug: "z", kind: "lesson", topic: "khong-co" },
+      ])
+    ).toEqual([{ locale: "vi", slug: "z", kind: "lesson", topic: null }]);
+    expect(postRowsFrom(null)).toEqual([]);
   });
 });

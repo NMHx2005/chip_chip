@@ -1,5 +1,5 @@
 import { routing, type Locale } from "@/i18n/routing";
-import type { TopicId } from "@/lib/constants";
+import { TOPIC_IDS, type TopicId } from "@/lib/constants";
 import type { PostKind } from "@/lib/types";
 
 /**
@@ -70,4 +70,33 @@ export function revalidatePostRows(rows: PostRow[]): string[] {
   }
 
   return [...paths];
+}
+
+const POST_KINDS: readonly string[] = ["lesson", "forum", "video"];
+
+function isLocale(value: string): value is Locale {
+  return (routing.locales as readonly string[]).includes(value);
+}
+
+function isPostKind(value: string): value is PostKind {
+  return POST_KINDS.includes(value);
+}
+
+function isTopicId(value: string | null): value is TopicId {
+  return value !== null && (TOPIC_IDS as readonly string[]).includes(value);
+}
+
+/**
+ * Turns `posts` rows as read back from the database (`locale, slug, kind,
+ * topic`) into PostRow values. A row whose locale or kind is not one the app
+ * knows is skipped rather than guessed at.
+ */
+export function postRowsFrom(
+  rows: { locale: string; slug: string; kind: string; topic: string | null }[] | null
+): PostRow[] {
+  return (rows ?? []).flatMap((row) =>
+    isLocale(row.locale) && isPostKind(row.kind)
+      ? [{ locale: row.locale, slug: row.slug, kind: row.kind, topic: isTopicId(row.topic) ? row.topic : null }]
+      : []
+  );
 }

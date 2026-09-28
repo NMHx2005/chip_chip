@@ -13,7 +13,7 @@ import {
   validateNewPostFields,
   type SharedFieldsInput,
 } from "@/lib/shared-fields";
-import { revalidatePostRows, type PostRow } from "@/lib/revalidate-paths";
+import { postRowsFrom, revalidatePostRows, type PostRow } from "@/lib/revalidate-paths";
 import { TranslateError, translateSegments } from "@/lib/translate/deepseek";
 import {
   applyTranslations,
@@ -245,16 +245,20 @@ export async function unpublishTranslation(
 
   const supabase = createClient();
 
+  // Read first: the group's own detail and topic pages are cached too, and
+  // only the rows know their slugs and topic.
+  const { data: rows } = await supabase
+    .from("posts")
+    .select("locale, slug, kind, topic")
+    .eq("translation_id", translationId);
+
   const { error } = await supabase.rpc("unpublish_translation", {
     p_translation_id: translationId,
   });
 
   if (error) return fail(error.message);
 
-  for (const locale of routing.locales) {
-    revalidatePath(`/${locale}/blog`);
-    revalidatePath(`/${locale}/bai-hoc`);
-  }
+  await revalidatePost(postRowsFrom(rows));
   return { ok: true };
 }
 
@@ -266,6 +270,12 @@ export async function deleteTranslation(
 
   const supabase = createClient();
 
+  // After the delete there is nothing left to read the slugs from.
+  const { data: rows } = await supabase
+    .from("posts")
+    .select("locale, slug, kind, topic")
+    .eq("translation_id", translationId);
+
   const { error } = await supabase
     .from("posts")
     .delete()
@@ -273,10 +283,7 @@ export async function deleteTranslation(
 
   if (error) return fail(error.message);
 
-  for (const locale of routing.locales) {
-    revalidatePath(`/${locale}/blog`);
-    revalidatePath(`/${locale}/bai-hoc`);
-  }
+  await revalidatePost(postRowsFrom(rows));
   return { ok: true };
 }
 
