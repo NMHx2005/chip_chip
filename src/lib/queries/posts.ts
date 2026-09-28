@@ -4,7 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured, requireSupabase } from "@/lib/supabase/config";
 import type { Locale } from "@/i18n/routing";
 import type { TopicId } from "@/lib/constants";
-import type { Comment, Post, PostSummary } from "@/lib/types";
+import type { Comment, Difficulty, Post, PostKind, PostSummary } from "@/lib/types";
 
 /**
  * Read queries for published content.
@@ -14,10 +14,10 @@ import type { Comment, Post, PostSummary } from "@/lib/types";
  */
 
 const SUMMARY_COLUMNS =
-  "id, title, slug, excerpt, cover_image_url, kind, topic, published_at";
+  "id, title, slug, excerpt, cover_image_url, kind, topic, difficulty, published_at";
 
 const POST_COLUMNS =
-  "id, translation_id, locale, kind, topic, title, slug, excerpt, cover_image_url, content, published_at, updated_at";
+  "id, translation_id, locale, kind, topic, difficulty, title, slug, excerpt, cover_image_url, content, published_at, updated_at";
 
 type Row = Record<string, unknown>;
 
@@ -30,6 +30,7 @@ function toSummary(row: Row): PostSummary {
     coverImageUrl: (row.cover_image_url as string | null) ?? null,
     kind: row.kind as PostSummary["kind"],
     topic: (row.topic as TopicId | null) ?? null,
+    difficulty: (row.difficulty as Difficulty | null) ?? null,
     publishedAt: (row.published_at as string | null) ?? null,
   };
 }
@@ -290,4 +291,32 @@ export async function countComments(postId: string): Promise<number> {
     .eq("is_hidden", false);
 
   return count ?? 0;
+}
+
+/**
+ * Accent-insensitive search over published posts (see search_posts in the
+ * migrations). A blank query never reaches the database.
+ */
+export async function searchPosts(
+  locale: Locale,
+  query: string,
+  kinds: PostKind[] = ["lesson", "forum", "video"]
+): Promise<PostSummary[]> {
+  const q = query.trim();
+  if (!q) return [];
+  if (!requireSupabase("searchPosts")) return [];
+
+  const supabase = createClient();
+  const { data, error } = await supabase.rpc("search_posts", {
+    p_query: q,
+    p_locale: locale,
+    p_kinds: kinds,
+    p_limit: 30,
+  });
+
+  if (error) {
+    console.error("[searchPosts]", error.message);
+    return [];
+  }
+  return ((data ?? []) as Row[]).map(toSummary);
 }

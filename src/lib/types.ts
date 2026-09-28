@@ -1,8 +1,13 @@
 import type { Locale } from "@/i18n/routing";
 import type { TopicId } from "@/lib/constants";
 
-export type PostKind = "lesson" | "forum";
+export type PostKind = "lesson" | "forum" | "video";
 export type PostStatus = "draft" | "published";
+
+export const DIFFICULTIES = ["basic", "intermediate", "advanced"] as const;
+export type Difficulty = (typeof DIFFICULTIES)[number];
+
+export type VideoSource = "own" | "curated";
 
 /**
  * A published article, resolved to a single locale (VI or EN).
@@ -16,6 +21,7 @@ export type Post = {
   locale: Locale;
   kind: PostKind;
   topic: TopicId | null;
+  difficulty: Difficulty | null;
   title: string;
   slug: string;
   excerpt: string | null;
@@ -35,6 +41,7 @@ export type PostSummary = Pick<
   | "coverImageUrl"
   | "kind"
   | "topic"
+  | "difficulty"
   | "publishedAt"
 >;
 
