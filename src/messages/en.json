@@ -110,13 +110,30 @@
   "lessons": {
     "title": "Lessons",
     "description": "Semiconductor knowledge from fundamentals to advanced topics, organised by theme.",
-    "tabTheory": "Theory",
-    "tabVideo": "Video",
     "backToLessons": "Back to Lessons",
     "backToTopic": "Back to {topic}",
     "notFound": "This article could not be found.",
-    "videoComingSoon": "Videos are still being produced. Check back soon!",
-    "videoDescription": "A series of short videos explaining semiconductor concepts visually, published in parallel on TikTok."
+    "allTopics": "All",
+    "topicsHeading": "Topics",
+    "collapseTopics": "Collapse the topic column",
+    "expandTopics": "Expand the topic column",
+    "empty": "No lessons yet. Please check back soon!",
+    "emptyFiltered": "No lessons at this level yet."
+  },
+  "difficulty": {
+    "label": "Difficulty",
+    "all": "All",
+    "basic": "Basic",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced"
+  },
+  "pagination": {
+    "label": "Pagination",
+    "previous": "Previous page",
+    "next": "Next page",
+    "page": "Page {page}",
+    "pageEmpty": "There is nothing on this page.",
+    "backToFirst": "Back to the first page"
   },
   "forum": {
     "title": "Blog",

@@ -110,13 +110,30 @@
   "lessons": {
     "title": "Bài học",
     "description": "Kiến thức bán dẫn từ cơ bản tới nâng cao, chia theo chủ đề.",
-    "tabTheory": "Lý thuyết",
-    "tabVideo": "Video",
     "backToLessons": "Về trang Bài học",
     "backToTopic": "Về chủ đề {topic}",
     "notFound": "Không tìm thấy bài viết này.",
-    "videoComingSoon": "Video đang được hoàn thiện. Quay lại sau nhé!",
-    "videoDescription": "Chuỗi video ngắn giải thích các khái niệm bán dẫn bằng hình ảnh, đăng tải song song trên TikTok."
+    "allTopics": "Tất cả",
+    "topicsHeading": "Chủ đề",
+    "collapseTopics": "Thu gọn cột chủ đề",
+    "expandTopics": "Mở cột chủ đề",
+    "empty": "Chưa có bài học nào. Quay lại sau nhé!",
+    "emptyFiltered": "Chưa có bài học nào ở mức độ này."
+  },
+  "difficulty": {
+    "label": "Độ khó",
+    "all": "Tất cả",
+    "basic": "Cơ bản",
+    "intermediate": "Trung bình",
+    "advanced": "Nâng cao"
+  },
+  "pagination": {
+    "label": "Phân trang",
+    "previous": "Trang trước",
+    "next": "Trang sau",
+    "page": "Trang {page}",
+    "pageEmpty": "Trang này không có nội dung.",
+    "backToFirst": "Về trang đầu"
   },
   "forum": {
     "title": "Blog",

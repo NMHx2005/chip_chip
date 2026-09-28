@@ -86,3 +86,20 @@ export function listingQuery(
   if (next.page > 1) query.page = String(next.page);
   return query;
 }
+
+/**
+ * Which page numbers a pagination bar shows: all of them up to seven pages,
+ * otherwise the first, the last and the neighbours of the current page, with
+ * a "gap" wherever numbers are skipped. A page past the end (a stale link)
+ * still gets a bar that leads back into range.
+ */
+export function pageWindow(page: number, totalPages: number): (number | "gap")[] {
+  if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
+
+  const shown = [1, page - 1, page, page + 1, totalPages]
+    .filter((n) => n >= 1 && n <= totalPages)
+    .filter((n, i, all) => all.indexOf(n) === i)
+    .sort((a, b) => a - b);
+
+  return shown.flatMap((n, i) => (i > 0 && n - shown[i - 1] > 1 ? ["gap" as const, n] : [n]));
+}

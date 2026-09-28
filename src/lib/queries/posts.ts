@@ -104,31 +104,6 @@ export async function listForumPosts(
   return { posts: (data ?? []).map(toSummary), total: count ?? 0 };
 }
 
-export async function listLessonPosts(
-  locale: Locale,
-  topic?: TopicId
-): Promise<PostSummary[]> {
-  if (!requireSupabase("listLessonPosts")) return [];
-
-  const supabase = createClient();
-  let query = supabase
-    .from("posts")
-    .select(SUMMARY_COLUMNS)
-    .eq("status", "published")
-    .eq("locale", locale)
-    .eq("kind", "lesson")
-    .order("published_at", { ascending: false });
-
-  if (topic) query = query.eq("topic", topic);
-
-  const { data, error } = await query;
-  if (error) {
-    console.error("[listLessonPosts]", error.message);
-    return [];
-  }
-  return (data ?? []).map(toSummary);
-}
-
 /** How many published lessons sit under each topic — drives the topic cards. */
 export async function countLessonsByTopic(
   locale: Locale

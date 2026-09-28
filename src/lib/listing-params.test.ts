@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   DEFAULT_LISTING,
   listingQuery,
+  pageWindow,
   parseListingParams,
   type ListingParams,
 } from "@/lib/listing-params";
@@ -96,5 +97,24 @@ describe("listingQuery", () => {
 
   it("moves to another page without touching the filters", () => {
     expect(listingQuery(current, { page: 5 })).toMatchObject({ page: "5", sort: "oldest" });
+  });
+});
+
+describe("pageWindow", () => {
+  it("shows every page up to seven", () => {
+    expect(pageWindow(1, 1)).toEqual([1]);
+    expect(pageWindow(4, 7)).toEqual([1, 2, 3, 4, 5, 6, 7]);
+    expect(pageWindow(1, 0)).toEqual([]);
+  });
+
+  it("shows the ends and the current page's neighbours beyond seven", () => {
+    expect(pageWindow(1, 20)).toEqual([1, 2, "gap", 20]);
+    expect(pageWindow(10, 20)).toEqual([1, "gap", 9, 10, 11, "gap", 20]);
+    expect(pageWindow(3, 20)).toEqual([1, 2, 3, 4, "gap", 20]);
+    expect(pageWindow(20, 20)).toEqual([1, "gap", 19, 20]);
+  });
+
+  it("still leads back into range from a page past the end", () => {
+    expect(pageWindow(40, 20)).toEqual([1, "gap", 20]);
   });
 });

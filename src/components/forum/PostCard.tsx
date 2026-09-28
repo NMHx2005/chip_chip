@@ -16,6 +16,7 @@ export async function PostCard({
   const format = await getFormatter();
   const t = await getTranslations("forum");
   const tTopics = await getTranslations("topics");
+  const tDifficulty = await getTranslations("difficulty");
   const tone = post.topic ? TOPIC_TONE[post.topic] : null;
 
   const href = postHref(post);
@@ -56,6 +57,11 @@ export async function PostCard({
             style={{ background: tone.soft, color: tone.text }}
           >
             {tTopics(`${post.topic}.title`)}
+          </span>
+        )}
+        {post.difficulty && (
+          <span className="rounded-full border border-border px-2.5 py-1 text-[11px] font-semibold text-text-muted">
+            {tDifficulty(post.difficulty)}
           </span>
         )}
         {post.publishedAt && (

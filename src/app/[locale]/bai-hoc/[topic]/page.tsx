@@ -1,91 +1,49 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { ArrowLeft } from "lucide-react";
-import { PostCard } from "@/components/forum/PostCard";
-import { Link } from "@/i18n/navigation";
-import { listLessonPosts } from "@/lib/queries/posts";
-import { localeAlternates } from "@/lib/seo";
-import { TOPIC_IDS, TOPIC_TONE, type TopicId } from "@/lib/constants";
+import { LessonsListing } from "@/components/lessons/LessonsListing";
 import type { Locale } from "@/i18n/routing";
+import { TOPIC_IDS } from "@/lib/constants";
+import type { SearchParams } from "@/lib/listing-params";
+import { localeAlternates } from "@/lib/seo";
 
 type Params = Promise<{ locale: string; topic: string }>;
+
+export const revalidate = 3600;
 
 export function generateStaticParams() {
   return TOPIC_IDS.map((topic) => ({ topic }));
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Params;
-}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
   const { locale, topic } = await params;
-  if (!TOPIC_IDS.includes(topic as TopicId)) return {};
+  const topicId = TOPIC_IDS.find((id) => id === topic);
+  if (!topicId) return {};
 
   const t = await getTranslations({ locale, namespace: "topics" });
   return {
-    title: t(`${topic as TopicId}.title`),
-    description: t(`${topic as TopicId}.description`),
+    title: t(`${topicId}.title`),
+    description: t(`${topicId}.description`),
+    // Each topic page is its own canonical URL, never `/bai-hoc`.
     alternates: localeAlternates(
-      { pathname: "/bai-hoc/[topic]", params: { topic } },
+      { pathname: "/bai-hoc/[topic]", params: { topic: topicId } },
       locale as Locale
     ),
   };
 }
 
-export default async function TopicPage({ params }: { params: Params }) {
+export default async function TopicPage({
+  params,
+  searchParams,
+}: {
+  params: Params;
+  searchParams: SearchParams;
+}) {
   const { locale, topic } = await params;
   setRequestLocale(locale);
 
-  if (!TOPIC_IDS.includes(topic as TopicId)) notFound();
+  const topicId = TOPIC_IDS.find((id) => id === topic);
+  if (!topicId) notFound();
 
-  const topicId = topic as TopicId;
-  const t = await getTranslations("topics");
-  const tLessons = await getTranslations("lessons");
-  const tone = TOPIC_TONE[topicId];
-
-  const posts = await listLessonPosts(locale as Locale, topicId);
-
-  return (
-    <section className="px-5 py-14 md:px-8 md:py-20">
-      <div className="mx-auto w-full max-w-content">
-        <Link
-          href="/bai-hoc"
-          className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-accent"
-        >
-          <ArrowLeft className="size-4" strokeWidth={2.2} />
-          {tLessons("backToLessons")}
-        </Link>
-
-        <header className="mt-8 max-w-2xl">
-          <span
-            className="inline-flex rounded-full px-3 py-1 text-xs font-semibold"
-            style={{ background: tone.soft, color: tone.text }}
-          >
-            {tLessons("tabTheory")}
-          </span>
-
-          <h1 className="mt-4 text-balance text-[30px] font-extrabold leading-tight tracking-[-0.03em] text-text md:text-[42px]">
-            {t(`${topicId}.title`)}
-          </h1>
-          <p className="mt-4 text-pretty text-base leading-relaxed text-text-muted">
-            {t(`${topicId}.description`)}
-          </p>
-        </header>
-
-        {posts.length === 0 ? (
-          <p className="mt-12 rounded-2xl border border-dashed border-border px-6 py-16 text-center text-sm text-text-muted">
-            {t("empty")}
-          </p>
-        ) : (
-          <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
-  );
+  return <LessonsListing locale={locale as Locale} topic={topicId} searchParams={searchParams} />;
 }
