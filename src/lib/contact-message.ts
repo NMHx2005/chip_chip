@@ -31,7 +31,12 @@ const MAX_BODY = 4000;
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function text(value: unknown): string | null {
-  return typeof value === "string" ? value.trim() : null;
+  if (typeof value !== "string") return null;
+  // Postgres text columns reject \u0000 outright (a raw 500 from the insert,
+  // after the rate limit has already been spent), so it is refused here as
+  // the same "field is wrong" outcome as any other malformed input.
+  if (value.includes("\u0000")) return null;
+  return value.trim();
 }
 
 /**

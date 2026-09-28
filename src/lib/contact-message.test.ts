@@ -51,6 +51,23 @@ describe("parseMessagePayload", () => {
     expect(parseMessagePayload(payload)).toEqual({ ok: false, error });
   });
 
+  it("rejects a NUL character in name instead of letting Postgres 500", () => {
+    // Postgres text columns reject \u0000 outright; without this check the
+    // request would pass validation, burn a rate-limit slot, and then fail
+    // with a raw database error on insert.
+    expect(parseMessagePayload({ ...valid, name: "Lan\u0000" })).toEqual({
+      ok: false,
+      error: "name_length",
+    });
+  });
+
+  it("rejects a NUL character in body instead of letting Postgres 500", () => {
+    expect(parseMessagePayload({ ...valid, body: "Bài hay\u0000 quá" })).toEqual({
+      ok: false,
+      error: "body_length",
+    });
+  });
+
   it("rejects non-string fields instead of throwing", () => {
     for (const bad of [["x"], { a: 1 }, 42, null, true]) {
       expect(parseMessagePayload({ ...valid, name: bad }).ok).toBe(false);
