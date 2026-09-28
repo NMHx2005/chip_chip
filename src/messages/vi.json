@@ -389,7 +389,7 @@
       "retention": {
         "title": "Giữ trong bao lâu",
         "items": {
-          "counter": "Mã băm IP của bộ đếm chống spam tự xoá sau 1 ngày.",
+          "counter": "Mã băm IP của bộ đếm chống spam bị xoá khoảng 1 ngày sau, vào lần kiểm tra giới hạn tần suất kế tiếp.",
           "content": "Bình luận và tin nhắn được giữ tới khi bạn yêu cầu xoá, hoặc tới khi ban biên tập gỡ chúng."
         }
       },
@@ -397,7 +397,7 @@
         "title": "Chia sẻ với ai",
         "items": {
           "sell": "Chúng tôi không bán, không cho thuê và không trao đổi dữ liệu của bạn.",
-          "host": "Dữ liệu được lưu trên dịch vụ cơ sở dữ liệu Supabase mà dự án sử dụng.",
+          "host": "Dữ liệu được lưu trên dịch vụ cơ sở dữ liệu Supabase mà dự án sử dụng. Bên lưu trữ trang web (Vercel) cũng giữ nhật ký truy cập tiêu chuẩn, có thể gồm địa chỉ IP.",
           "translate": "Khi tác giả dịch nháp một bài, nội dung bài viết đó được gửi tới DeepSeek để dịch. Bình luận, tin nhắn và thông tin của người đọc không bao giờ được gửi đi."
         }
       },

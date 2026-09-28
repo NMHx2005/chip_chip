@@ -389,7 +389,7 @@
       "retention": {
         "title": "How long it is kept",
         "items": {
-          "counter": "The hashed IP codes used by the spam counter are deleted automatically after 1 day.",
+          "counter": "The hashed IP codes used by the spam counter are deleted about a day later, whenever the next rate check runs.",
           "content": "Comments and messages are kept until you ask for them to be deleted, or until the editors remove them."
         }
       },
@@ -397,7 +397,7 @@
         "title": "Who it is shared with",
         "items": {
           "sell": "We do not sell, rent or trade your data.",
-          "host": "Data is stored with Supabase, the database service the project uses.",
+          "host": "Data is stored with Supabase, the database service the project uses. The hosting provider that serves the website (Vercel) also keeps standard request logs, which may include IP addresses.",
           "translate": "When the author drafts a translation of an article, that article's text is sent to DeepSeek to be translated. Comments, messages and reader details are never sent."
         }
       },
