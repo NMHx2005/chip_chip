@@ -322,7 +322,7 @@ export async function saveSharedFields(
 
   const { data: group } = await supabase
     .from("posts")
-    .select("kind, slug")
+    .select("kind, slug, status")
     .eq("translation_id", translationId)
     .limit(1)
     .maybeSingle();
@@ -330,7 +330,8 @@ export async function saveSharedFields(
   if (!group) return fail("Không tìm thấy bài viết.");
 
   const kind = group.kind as PostKind;
-  const built = buildSharedFieldsPatch(kind, input);
+  const published = group.status === "published";
+  const built = buildSharedFieldsPatch(kind, input, published);
   if (!built.ok) return fail(built.error);
 
   const { error } = await supabase

@@ -1,10 +1,13 @@
 import { notFound } from "next/navigation";
 import type { JSONContent } from "@tiptap/react";
 import { PostEditor, type Draft } from "@/components/admin/PostEditor";
+import { SharedFieldsPanel } from "@/components/admin/SharedFieldsPanel";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
 import { routing, type Locale } from "@/i18n/routing";
 import type { TopicId } from "@/lib/constants";
+import type { Difficulty, VideoSource } from "@/lib/types";
+import { embedUrl, type VideoPlatform } from "@/lib/video";
 
 export const dynamic = "force-dynamic";
 
@@ -14,12 +17,18 @@ type Row = {
   locale: Locale;
   kind: "lesson" | "forum" | "video";
   topic: TopicId | null;
+  difficulty: Difficulty | null;
   title: string;
   slug: string;
   excerpt: string | null;
   cover_image_url: string | null;
   content: JSONContent;
   status: "draft" | "published";
+  video_platform: VideoPlatform | null;
+  video_external_id: string | null;
+  video_source: VideoSource | null;
+  channel_name: string | null;
+  related_lesson_translation_id: string | null;
 };
 
 const EMPTY_DOC: JSONContent = { type: "doc", content: [] };
@@ -43,7 +52,7 @@ export default async function EditPostPage({
   const { data } = await supabase
     .from("posts")
     .select(
-      "id, translation_id, locale, kind, topic, title, slug, excerpt, cover_image_url, content, status"
+      "id, translation_id, locale, kind, topic, difficulty, title, slug, excerpt, cover_image_url, content, status, video_platform, video_external_id, video_source, channel_name, related_lesson_translation_id"
     )
     .eq("translation_id", anchor.translation_id);
 
@@ -69,6 +78,14 @@ export default async function EditPostPage({
   const primary = rows.find((r) => r.id === params.id) ?? rows[0];
   const missingLocale = routing.locales.some((locale) => !drafts[locale].id);
 
+  // Rebuilt from the stored (platform, id) pair rather than read back as a
+  // URL — see src/lib/video.ts — so this panel resends it unchanged instead
+  // of clearing it when saving topic/difficulty.
+  const videoUrl =
+    primary.video_platform && primary.video_external_id
+      ? embedUrl({ platform: primary.video_platform, externalId: primary.video_external_id })
+      : "";
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -88,6 +105,19 @@ export default async function EditPostPage({
           có thể chỉnh sửa bản còn lại bên dưới, nhưng cần tạo lại bài để có đủ
           bản Việt và Anh.
         </p>
+      )}
+
+      {(primary.kind === "lesson" || primary.kind === "video") && (
+        <SharedFieldsPanel
+          translationId={anchor.translation_id as string}
+          kind={primary.kind}
+          initialTopic={primary.topic}
+          initialDifficulty={primary.difficulty}
+          videoUrl={videoUrl}
+          videoSource={primary.video_source}
+          channelName={primary.channel_name ?? ""}
+          relatedLessonTranslationId={primary.related_lesson_translation_id}
+        />
       )}
 
       <PostEditor

@@ -113,6 +113,36 @@ describe("buildSharedFieldsPatch", () => {
       buildSharedFieldsPatch("video", { ...base, channelName: "x".repeat(121) }).ok
     ).toBe(false);
   });
+
+  describe("published group", () => {
+    it("refuses to clear difficulty on an already-published lesson", () => {
+      expect(
+        buildSharedFieldsPatch("lesson", { ...base, difficulty: null }, true)
+      ).toEqual({ ok: false, error: "Bài đã đăng cần giữ độ khó." });
+    });
+
+    it("refuses to clear difficulty on an already-published video", () => {
+      expect(
+        buildSharedFieldsPatch("video", { ...base, topic: null, difficulty: null }, true)
+      ).toEqual({ ok: false, error: "Bài đã đăng cần giữ độ khó." });
+    });
+
+    it("still allows keeping a difficulty on a published lesson", () => {
+      const result = buildSharedFieldsPatch("lesson", base, true);
+      expect(result.ok && result.patch.difficulty).toBe("basic");
+    });
+
+    it("does not require difficulty on an unpublished (default) group", () => {
+      const result = buildSharedFieldsPatch("lesson", { ...base, difficulty: null });
+      expect(result.ok && result.patch.difficulty).toBeNull();
+    });
+
+    it("does not gate a blog post, which never has a difficulty", () => {
+      expect(buildSharedFieldsPatch("forum", { ...base, difficulty: null }, true).ok).toBe(
+        true
+      );
+    });
+  });
 });
 
 describe("validateNewPostFields", () => {

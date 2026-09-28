@@ -50,7 +50,18 @@ const EMPTY: SharedFieldsPatch = {
   related_lesson_translation_id: null,
 };
 
-export function buildSharedFieldsPatch(kind: PostKind, input: SharedFieldsInput): Result {
+/**
+ * `published` gates clearing `difficulty` once a group is live: without it, a
+ * lesson or video that already passed publish_translation's difficulty check
+ * could have that field wiped here afterwards, leaving a published article
+ * with no difficulty shown. Defaults to false so every other caller (new
+ * drafts, callers that don't know the group's status) is unaffected.
+ */
+export function buildSharedFieldsPatch(
+  kind: PostKind,
+  input: SharedFieldsInput,
+  published = false
+): Result {
   if (kind === "forum") return { ok: true, patch: EMPTY };
 
   if (input.topic !== null && !TOPIC_IDS.includes(input.topic)) {
@@ -58,6 +69,9 @@ export function buildSharedFieldsPatch(kind: PostKind, input: SharedFieldsInput)
   }
   if (input.difficulty !== null && !DIFFICULTIES.includes(input.difficulty)) {
     return { ok: false, error: "Độ khó không hợp lệ." };
+  }
+  if (published && input.difficulty === null) {
+    return { ok: false, error: "Bài đã đăng cần giữ độ khó." };
   }
 
   if (kind === "lesson") {
