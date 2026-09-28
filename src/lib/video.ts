@@ -76,3 +76,31 @@ export function embedUrl(ref: VideoRef): string {
     ? `https://www.youtube-nocookie.com/embed/${id}`
     : `https://www.tiktok.com/embed/v2/${id}`;
 }
+
+/**
+ * Rebuilds a reference from untrusted parts — an article's JSON or a data
+ * attribute in the page — accepting only what `parseVideoUrl` could produce.
+ */
+export function videoRefFrom(platform: unknown, externalId: unknown): VideoRef | null {
+  if (typeof externalId !== "string") return null;
+  if (platform === "youtube" && YOUTUBE_ID.test(externalId)) {
+    return { platform, externalId };
+  }
+  if (platform === "tiktok" && TIKTOK_ID.test(externalId)) {
+    return { platform, externalId };
+  }
+  return null;
+}
+
+/** Where the no-JavaScript fallback link sends the reader. */
+export function watchUrl(ref: VideoRef): string {
+  const id = encodeURIComponent(ref.externalId);
+  return ref.platform === "youtube"
+    ? `https://www.youtube.com/watch?v=${id}`
+    : `https://www.tiktok.com/embed/v2/${id}`;
+}
+
+export const PLATFORM_LABEL: Record<VideoPlatform, string> = {
+  youtube: "YouTube",
+  tiktok: "TikTok",
+};

@@ -72,6 +72,8 @@ const ALLOWED_ATTR = new Set([
   "data-type",
   "data-latex",
   "data-variant",
+  "data-platform",
+  "data-external-id",
 ]);
 
 /** Dropped together with everything up to their closing tag. */

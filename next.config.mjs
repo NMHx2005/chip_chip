@@ -58,12 +58,14 @@ const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
   "style-src 'self' 'unsafe-inline'",
-  `img-src 'self' data: blob: ${supabaseOrigin}`,
+  // i.ytimg.com: thumbnails on the click-to-load video facades in articles.
+  `img-src 'self' data: blob: ${supabaseOrigin} https://i.ytimg.com`,
   `media-src 'self' blob: ${supabaseOrigin}`,
   "font-src 'self' data:",
   // Dev needs the websocket Next uses for hot reload.
   `connect-src 'self' ${supabaseOrigin} ${supabaseOrigin.replace(/^http/, "ws")}${isDev ? " ws: http://127.0.0.1:* http://localhost:*" : ""}`,
-  "frame-src 'self' https://docs.google.com",
+  // Video players, created only after a reader clicks a facade (VideoFacades).
+  "frame-src 'self' https://docs.google.com https://www.youtube-nocookie.com https://www.tiktok.com",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",

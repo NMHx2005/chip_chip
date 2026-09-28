@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { embedUrl, parseVideoUrl } from "@/lib/video";
+import { embedUrl, parseVideoUrl, videoRefFrom, watchUrl } from "@/lib/video";
 
 const YT = { platform: "youtube", externalId: "dQw4w9WgXcQ" } as const;
 const TT = { platform: "tiktok", externalId: "7231338487075638570" } as const;
@@ -58,5 +58,30 @@ describe("embedUrl", () => {
   it("round-trips: an embed URL parses back to the same reference", () => {
     expect(parseVideoUrl(embedUrl(YT))).toEqual(YT);
     expect(parseVideoUrl(embedUrl(TT))).toEqual(TT);
+  });
+});
+
+describe("videoRefFrom", () => {
+  it("accepts what parseVideoUrl could produce", () => {
+    expect(videoRefFrom("youtube", "dQw4w9WgXcQ")).toEqual(YT);
+    expect(videoRefFrom("tiktok", "7231338487075638570")).toEqual(TT);
+  });
+
+  it.each([
+    ["youtube", "dQw4w9WgXc"],
+    ["youtube", 'dQw4w9WgXcQ"'],
+    ["tiktok", "dQw4w9WgXcQ"],
+    ["vimeo", "dQw4w9WgXcQ"],
+    ["youtube", 12345678901],
+    [undefined, undefined],
+  ])("refuses (%s, %s)", (platform, id) => {
+    expect(videoRefFrom(platform, id)).toBeNull();
+  });
+});
+
+describe("watchUrl", () => {
+  it("links to the video's own page", () => {
+    expect(watchUrl(YT)).toBe("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
+    expect(watchUrl(TT)).toBe("https://www.tiktok.com/embed/v2/7231338487075638570");
   });
 });

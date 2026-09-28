@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import "katex/dist/katex.min.css";
+import { VideoFacades } from "@/components/forum/VideoFacades";
 import { renderArticle } from "@/lib/tiptap/render";
 
 /**
@@ -25,6 +26,9 @@ export async function ArticleBody({ content }: { content: unknown }) {
   }
 
   return (
-    <div className="chip-prose" dangerouslySetInnerHTML={{ __html: html }} />
+    <>
+      <div className="chip-prose" dangerouslySetInnerHTML={{ __html: html }} />
+      {html.includes('class="video-facade"') && <VideoFacades />}
+    </>
   );
 }

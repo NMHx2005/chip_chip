@@ -353,6 +353,56 @@ describe("renderArticle — references", () => {
   });
 });
 
+describe("renderArticle — videos", () => {
+  const video = (platform: unknown, externalId: unknown) => ({ type: "video", attrs: { platform, externalId } });
+
+  it("renders a YouTube video as a click-to-load facade", () => {
+    expect(renderArticle(doc(video("youtube", "dQw4w9WgXcQ")))).toBe(
+      '<figure class="video-embed video-embed-youtube"><a class="video-facade" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" data-video-platform="youtube" data-video-id="dQw4w9WgXcQ"><img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="" loading="lazy" decoding="async"><span class="video-facade-play" aria-hidden="true"></span><span class="video-facade-label">YouTube</span></a></figure>'
+    );
+  });
+
+  it("renders a TikTok video without a thumbnail", () => {
+    expect(renderArticle(doc(video("tiktok", "7231338487075638570")))).toBe(
+      '<figure class="video-embed video-embed-tiktok"><a class="video-facade" href="https://www.tiktok.com/embed/v2/7231338487075638570" target="_blank" rel="noopener noreferrer" data-video-platform="tiktok" data-video-id="7231338487075638570"><span class="video-facade-play" aria-hidden="true"></span><span class="video-facade-label">TikTok</span></a></figure>'
+    );
+  });
+
+  it.each([
+    ["an id that fails the pattern", video("youtube", '"><script>')],
+    ["an unknown platform", video("vimeo", "dQw4w9WgXcQ")],
+    ["missing attributes", { type: "video" }],
+  ])("renders nothing for %s", (_label, node) => {
+    expect(renderArticle(doc(node, paragraph(text("sau"))))).toBe("<p>sau</p>");
+  });
+
+  it("never emits an iframe", () => {
+    expect(renderArticle(doc(video("youtube", "dQw4w9WgXcQ")))).not.toContain("<iframe");
+  });
+});
+
+describe("every new node together", () => {
+  it("adds formulas' LaTeX, captions, callouts and references to the plain text, but not videos", () => {
+    expect(
+      articleToPlainText(
+        doc(
+          paragraph(text("Năng lượng "), inlineMath("E = hf")),
+          { type: "figure", attrs: { src: "https://cdn.test/a.png", alt: "ảnh", caption: "Tấm wafer" } },
+          { type: "callout", content: [paragraph(text("Ghi nhớ"))] },
+          { type: "video", attrs: { platform: "youtube", externalId: "dQw4w9WgXcQ" } },
+          blockMath("a < b"),
+          {
+            type: "references",
+            attrs: { reviewers: "TS. A" },
+            content: [{ type: "orderedList", content: [{ type: "listItem", content: [paragraph(text("Sze"))] }] }],
+          }
+        ),
+        500
+      )
+    ).toBe("Năng lượng E = hf Tấm wafer Ghi nhớ a < b Sze TS. A");
+  });
+});
+
 describe("articleToPlainText", () => {
   it("strips tags and truncates for a meta description", () => {
     const long = "a".repeat(300);

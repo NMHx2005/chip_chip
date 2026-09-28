@@ -6,10 +6,11 @@ import { extractHeadings, withHeadingIds } from "@/lib/tiptap/headings";
 import { mathToText, renderMath } from "@/lib/tiptap/math";
 import { prepareArticle, type Formula } from "@/lib/tiptap/prepare";
 import { sanitizeArticleHtml } from "@/lib/tiptap/sanitize";
+import { renderVideos, videosToText } from "@/lib/tiptap/video-embed";
 
 /**
- * Stored Tiptap JSON to sanitised HTML, with formula placeholders still in
- * place.
+ * Stored Tiptap JSON to sanitised HTML, with formula and video placeholders
+ * still in place.
  *
  * Content is stored as JSON rather than HTML so nothing executable is ever
  * persisted. `generateHTML` runs in Node without a DOM (it uses zeed-dom
@@ -43,13 +44,14 @@ function renderSanitized(content: unknown): { html: string; formulas: Formula[] 
 /**
  * Renders stored Tiptap JSON to HTML for the article page.
  *
- * KaTeX HTML is built after sanitising, and only from the LaTeX string in
- * the JSON — never by widening the allow-list.
+ * KaTeX and the video facade are built after sanitising, and only from
+ * validated data — the LaTeX string from the JSON, a video id that matched
+ * its platform's pattern — never by widening the allow-list.
  */
 export function renderArticle(content: unknown): string {
   const rendered = renderSanitized(content);
   if (!rendered) return "";
-  return renderMath(rendered.html, rendered.formulas);
+  return renderVideos(renderMath(rendered.html, rendered.formulas));
 }
 
 /** Plain-text preview for meta descriptions and search results. */
@@ -57,7 +59,7 @@ export function articleToPlainText(content: unknown, limit = 200): string {
   const rendered = renderSanitized(content);
   if (!rendered) return "";
 
-  const text = mathToText(rendered.html, rendered.formulas)
+  const text = videosToText(mathToText(rendered.html, rendered.formulas))
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")

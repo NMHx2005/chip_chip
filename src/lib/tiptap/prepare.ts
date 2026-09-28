@@ -1,3 +1,5 @@
+import { videoRefFrom } from "@/lib/video";
+
 /**
  * Readies stored Tiptap JSON for `generateHTML`.
  *
@@ -8,6 +10,9 @@
  * collected here, and the node keeps only its index. `renderMath` looks the
  * index up after sanitising, so the only LaTeX KaTeX ever sees comes straight
  * from the JSON.
+ *
+ * Video nodes whose (platform, id) would not pass the database constraint are
+ * dropped here, before any HTML exists.
  */
 
 export type Formula = { latex: string; display: boolean };
@@ -30,6 +35,11 @@ export function prepareArticle(content: unknown): PreparedArticle | null {
       const latex = typeof node.attrs?.latex === "string" ? node.attrs.latex : "";
       formulas.push({ latex, display: node.type === "blockMath" });
       return { ...node, attrs: { latex: String(formulas.length - 1) } };
+    }
+
+    if (node.type === "video") {
+      const ref = videoRefFrom(node.attrs?.platform, node.attrs?.externalId);
+      return ref ? { ...node, attrs: { platform: ref.platform, externalId: ref.externalId } } : null;
     }
 
     // A malformed `content` is left for generateHTML to reject, so the

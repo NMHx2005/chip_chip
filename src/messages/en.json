@@ -128,7 +128,8 @@
     "backToForum": "Back to the blog",
     "notFound": "This post could not be found.",
     "tableOfContents": "On this page",
-    "emptyArticle": "This article has no content yet."
+    "emptyArticle": "This article has no content yet.",
+    "videoFrameTitle": "Embedded {platform} video"
   },
   "about": {
     "title": "About",
