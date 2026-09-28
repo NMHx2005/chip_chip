@@ -5,7 +5,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { DURATION, EASE_STANDARD } from "@/components/motion";
-import { Link } from "@/i18n/navigation";
+import { Link, usePathname } from "@/i18n/navigation";
 import { LESSON_SUBNAV } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
@@ -21,10 +21,16 @@ import { cn } from "@/lib/utils";
  */
 export function LessonsMenu({ active }: { active: boolean }) {
   const t = useTranslations("nav");
+  const pathname = usePathname();
   const prefersReducedMotion = useReducedMotion();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  // Set while hover opened the menu, so the click that naturally follows a
+  // hover (mouseenter then mousedown on the same button) does not toggle it
+  // shut again — that click only clears the flag. Keyboard/touch opens leave
+  // this false, so they still toggle normally.
+  const openedByHoverRef = useRef(false);
   const listId = useId();
 
   useEffect(() => {
@@ -45,15 +51,28 @@ export function LessonsMenu({ active }: { active: boolean }) {
     };
   }, [open]);
 
+  // Back/Forward can change the route without the menu ever receiving a
+  // click, blur or outside pointerdown — close it so it doesn't linger.
+  useEffect(() => {
+    setOpen(false);
+    openedByHoverRef.current = false;
+  }, [pathname]);
+
   return (
     <div
       ref={rootRef}
       className="relative"
       onPointerEnter={(event) => {
-        if (event.pointerType === "mouse") setOpen(true);
+        if (event.pointerType === "mouse") {
+          openedByHoverRef.current = true;
+          setOpen(true);
+        }
       }}
       onPointerLeave={(event) => {
-        if (event.pointerType === "mouse") setOpen(false);
+        if (event.pointerType === "mouse") {
+          openedByHoverRef.current = false;
+          setOpen(false);
+        }
       }}
       onBlur={(event) => {
         const next = event.relatedTarget;
@@ -65,7 +84,15 @@ export function LessonsMenu({ active }: { active: boolean }) {
         type="button"
         aria-expanded={open}
         aria-controls={listId}
-        onClick={() => setOpen((value) => !value)}
+        onClick={() => {
+          // The click that follows a hover-open just claims the menu for
+          // click/keyboard control from here on; it must not toggle it shut.
+          if (openedByHoverRef.current) {
+            openedByHoverRef.current = false;
+            return;
+          }
+          setOpen((value) => !value);
+        }}
         className={cn(
           "relative flex cursor-pointer items-center gap-1 rounded-full px-4 py-2 text-sm font-medium leading-none transition-colors",
           active ? "bg-primary text-white" : "text-text-nav hover:bg-surface-muted hover:text-accent"
