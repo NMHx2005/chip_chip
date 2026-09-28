@@ -1,181 +1,183 @@
 # Bàn giao — Project Chíp Chíp
 
-Cập nhật: 14/09/2026 · Nhánh: `fix/security-hardening` · Commit cuối: `ab64a43`
+Cập nhật: 29/09/2026 · Nhánh: `feat/da5-hoan-thien`
 
 ---
 
-## 1. Chạy dự án
+## 1. Trạng thái cây làm việc
+
+`feat/da5-hoan-thien` đứng trên `main` cục bộ (main ahead of `origin/main` 86
+commit — **chưa có gì được push lên GitHub**, toàn bộ DA1–DA5 vẫn nằm ở máy
+local). Nhánh này thêm 14 commit lên trên `main` cục bộ: 13 commit sửa lỗi/độ
+hoàn thiện của đợt DA5 (CSP, ẩn `/motion-gallery` ở production, 404 hoá URL lạ,
+hreflang trung thực, giới hạn kích thước request, a11y, SEO rẻ tiền, tách
+service-role key khỏi bundle client) cộng commit cập nhật tài liệu này.
+
+Cây làm việc sạch — không có gì sửa dở ngoài các file `.claude/`,
+`.commandcode/`, `.crossweave/` (rác công cụ, không phải của dự án).
+
+---
+
+## 2. Đã có gì (DA1–DA5)
+
+**DA1 — Nền dữ liệu.** Migration cho loại bài Video, độ khó (3 mức, bắt buộc
+với `lesson`/`video`), tìm kiếm không dấu (`plain_text`, `search_vector`, hàm
+`search_posts`), bảng `messages` cho hộp thư liên hệ/góp ý/báo lỗi, và đổi tên
+Diễn đàn → Blog (redirect 301 giữ query). Mọi dự án con sau đứng trên nền này.
+
+**DA2 — Công cụ viết bài.** Các node Tiptap mới trong trình soạn:
+công thức (KaTeX, inline + khối), Hình có chú thích đánh số tự động, Callout
+4 loại, Nguồn tham khảo + người góp ý, nhúng Video (YouTube/TikTok, facade
+bấm-để-phát). Nút "Dịch nháp bằng AI" gọi DeepSeek từ server, giữ nguyên cấu
+trúc Tiptap/công thức/hình, không tự ghi đè bản EN đã có nội dung.
+
+**DA3 — Bài học, Video, Tìm kiếm (giao diện công khai).** Trang Bài học với
+cột chủ đề thu/giãn + lưới thẻ; trang Video với bộ lọc nguồn/độ khó và sắp xếp
+Mới/Cũ/Đơn giản/Phức tạp; ô tìm kiếm toàn site trên navbar, trang kết quả
+render ở server, gõ không dấu vẫn ra kết quả có dấu.
+
+**DA4 — Uy tín và Blog.** Trang Giới thiệu (Về tác giả, mục đích minh bạch,
+FAQ, "Những người đã đồng hành"), Liên hệ/Góp ý và Đóng góp, Chính sách bảo
+mật, nút "Báo lỗi bài này" trên mỗi bài, thẻ Blog nở tại chỗ khi bấm trước khi
+chuyển trang.
+
+**DA5 — Hoàn thiện trước ra mắt.** Đợt rà soát (audit) không tìm thấy lỗi
+chặn ra mắt ở tầng code; các việc mở ra từ audit đã sửa: CSP chỉ cho phép
+`unsafe-eval` ở dev, ẩn `/motion-gallery` ở production, 404 hoá URL không
+khớp route nào, hreflang không trỏ vào bản dịch không tồn tại, `LangSwitch`
+sau `Suspense`, giới hạn kích thước request (413, cả khi client stream/chunk
+để né header `content-length`), sửa vài điểm a11y, vài cải thiện SEO rẻ tiền
+(404 quá trang cuối, bỏ `host:` phi chuẩn khỏi `robots.ts`), và tách
+`SUPABASE_SERVICE_ROLE_KEY` ra khỏi file mà client component import được.
+Một hạng mục (client Supabase không đọc cookie để cache được) chủ động để lại
+cho sau ra mắt — xem mục 7.
+
+---
+
+## 3. Chạy local
 
 ```bash
-npx supabase start          # cần Docker
-npx next build && npx next start -p 3000
+npx supabase start                    # cần Docker
+NODE_ENV=development npx next dev     # xem bẫy NODE_ENV bên dưới
 ```
 
-Quản trị: `http://localhost:3000/admin` — `admin@chipchip.local` / `chipchip2026`
+**Bẫy môi trường:** nếu shell có sẵn `NODE_ENV=production`, `next dev` chết ở
+middleware với `EvalError: Code generation from strings disallowed`. Luôn chạy
+`NODE_ENV=development npx next dev`.
 
-Trang trưng bày hiệu ứng (nội bộ, đã chặn khỏi công cụ tìm kiếm): `/motion-gallery`
+**Bẫy nghiêm trọng hơn:** đừng chạy `next build` trong khi `next start` (hay
+`next dev`) đang phục vụ cùng thư mục — build ghi đè `.next` giữa chừng và
+trang vỡ với *"Application error: a client-side exception"*, trông như lỗi
+code nhưng không phải. Dừng server đang chạy trước khi build.
 
-**Bẫy môi trường:** shell có sẵn `NODE_ENV=production` làm `next dev` chết ở middleware. Dùng `NODE_ENV=development npx next dev`.
+`supabase start` in ra `Project URL` và hai khoá — điền vào `.env.local`
+(xem README, mục "Biến môi trường", để biết đủ danh sách biến).
 
-**Bẫy nghiêm trọng hơn:** đừng chạy `next build` trong khi `next start` đang phục vụ cùng thư mục. Build ghi đè `.next` và trang sẽ vỡ với lỗi *"Application error: a client-side exception"*. Tôi đã dính đúng lỗi này và mất một lúc mới nhận ra không phải lỗi code.
+### Tạo tài khoản admin local
 
----
-
-## 2. Trạng thái cây làm việc
-
-**Sạch.** Không có gì sửa dở. Thư mục `.commandcode/` là rác của công cụ, không phải của dự án — xoá được.
-
-Việc cuối cùng chạy xong là cho hero cao trọn màn hình (commit `ab64a43`): khối tiêu đề dùng `min-h-[calc(100dvh-68px)]`, `md:` là `76px` — số lấy trực tiếp từ khối đệm thật trong `Navbar.tsx:145`, không phải đoán. Dùng chiều cao *tối thiểu* nên màn hình thấp thì trang dài ra chứ không cắt nội dung.
-
-Đã chứng minh bằng phép tính rằng đỉnh video luôn nằm dưới đáy khung nhìn ít nhất 56px ở cả 1440×900, 768×1024 và 390×844. Ba lệnh kiểm (`tsc`, `lint`, `build`) đều sạch.
-
-**Chưa ai nhìn bằng mắt.** Nên việc đầu tiên nên làm là mở trình duyệt xác nhận: tiêu đề căn giữa dọc, video không lộ ra trong màn hình đầu, và ở màn thấp nội dung không bị cắt.
-
-## 3. Đã xong
-
-### Nền tảng (từ các phiên trước)
-
-Next.js 14 App Router · TypeScript · Tailwind · next-intl (URL bản địa hoá) · Supabase (Postgres + Auth + Storage) · Tiptap · Vitest (65 test).
-
-Cổng duyệt bài nằm ở Postgres: `publish_translation` là `SECURITY DEFINER`, đăng cả hai ngôn ngữ trong một giao dịch — không có đường đăng lệch một nửa.
-
-Bình luận không ghi trực tiếp từ trình duyệt; mọi thứ qua `/api/comments` dùng service role.
-
-**Bảo mật đã vá và kiểm chứng bằng khai thác thật** (`./scripts/verify-security.sh`, 9/9):
-- Tài khoản mới mặc định `is_active = false` — đăng ký không còn đồng nghĩa với quyền quản trị
-- `comments.author_email` không còn là cột công khai
-- Giới hạn tần suất đếm và ghi trong một giao dịch có khoá
-
-### Giai đoạn 1 — thư viện chuyển động (xong)
-
-`src/components/motion/` — 21 tệp, port từ `Strike_Robot_LandingPage_Desing`:
-
-`tokens.ts` (nguồn sự thật duy nhất cho easing/thời lượng) · `variants.ts` · `AnimatedSection` · `ScrollReveal3D` · `StickyBackdrop` · `MainSection` · `SceneFillOverlay` · `TiltCard` · `DriftTextPath` · `AnimatedButtonLabel` · `VideoHoverCard` · `useHoldToReveal` · `useSharedScrollProgress` · `useVideoHoverCard`
-
-**Chữ ký chuyển động** (lấy từ mã Strike, đừng đổi): easing `[0.25, 0.1, 0.25, 1]`, thời lượng 0.5–0.7s (chuẩn 0.6), stagger 0.12s trễ đầu 0.1s, mốc cuộn `once: true, margin: "-100px"`.
-
-### Giai đoạn 2 — trang chủ (xong)
-
-PAGE 1–5 dựng trên thư viện trên. Gồm băng chuyền 6 video tự viết (không dùng thư viện), lớp phủ chuyển cảnh, thẻ nghiêng khi hover.
-
-### Giai đoạn 2b — sửa theo phản hồi (2/8)
-
-Chủ dự án xem trang chạy thật và nêu 8 điểm. Xong điểm 1 và 2.
+Làm theo đúng SQL ở README, mục **"Tạo tài khoản quản trị đầu tiên"** — tạo
+user qua Admin API rồi kích hoạt bằng UPDATE trực tiếp trên `profiles`. File
+bàn giao trước đây (bản 14/09) có ghi sẵn một email/mật khẩu mẫu ở đây; đã bỏ
+khỏi bản này vì đó là thông tin đăng nhập thật bị commit nhầm vào tài liệu —
+đừng khôi phục lại kiểu đó, luôn tự tạo tài khoản mới bằng SQL.
 
 ---
 
-## 4. Còn phải làm
+## 4. Kiểm chứng — lệnh và con số hiện tại
 
-### 2b — bảy việc còn lại
-
-Plan chi tiết: `docs/superpowers/plans/2026-09-14-giai-doan-2b-sua-theo-feedback.md`
-
-| # | Việc | Tệp chính |
-|---|---|---|
-| ~~1~~ | ~~Bỏ màu tím + bỏ pastel 4 nước~~ | xong, commit `1a7cdbd` |
-| ~~2~~ | ~~Hero trọn màn hình~~ | xong, commit `ab64a43` (chưa kiểm bằng mắt) |
-| 3 | Cột video bên phải khối 4 chủ đề | `LessonTopics.tsx`, `constants.ts` |
-| 4 | Thẻ diễn đàn đều chiều cao + ảnh bìa | `LatestPosts.tsx`, `MotionGrid.tsx`, `PostCard.tsx` |
-| 5 | Dựng lại CTA theo Strike | `JoinCta.tsx` |
-| 6 | Dựng lại footer theo Strike | `Footer.tsx` |
-| 7 | Làm dày khối "Bắt đầu từ điều đơn giản nhất" | `SimpleStart.tsx`, `messages/*.json` |
-| 8 | Nghiệm thu lại bằng trình duyệt | — |
-
-**Lưu ý thứ tự:** task 3 và 5 đều đụng `constants.ts`, đừng chạy song song. Task 6 phụ thuộc task 5 (bỏ liên kết khỏi footer thì CTA phải có liên kết trước).
-
-**Nguồn đối chiếu Strike** — ba chỗ chủ dự án nói "nhìn khác":
-
-| Việc | Tệp Strike | Điểm mấu chốt |
-|---|---|---|
-| Cột video phải | `sections/Features.tsx:531-540` | `hidden h-[480px] w-[800px] shrink-0 overflow-hidden rounded-2xl border lg:block`, video đổi theo mục đang chọn |
-| Khối CTA | `sections/CTA.tsx:20-60` | nền đen + `<Image fill>` phủ kín + `CircularText` mép phải + nội dung căn giữa + hàng liên kết bên trong, `minHeight: 423` |
-| Footer | `sections/Footer.tsx:28-72` | một hàng ngang: logo trái · bản quyền giữa · mạng xã hội phải. Không có cột "Khám phá/Kết nối". |
-
-### Giai đoạn 3 và 4 — chưa bắt đầu
-
-Chủ dự án đã nhận xét các trang trong **"quá sơ sài, không chuyên nghiệp"**. Đúng — vì chưa làm.
-
-- **Giai đoạn 3 — Bài học + Video.** Bài học cần: cột chủ đề bên trái, thanh tìm kiếm, thẻ con, hiệu ứng thu cột trái phóng to bên phải, và danh sách bài thật. Trang Video cần: bộ lọc sắp xếp (Mới/Cũ/Đơn giản/Phức tạp — cần thêm cột `difficulty` vào bảng `posts`), nhúng iframe YouTube/TikTok (phải nới CSP).
-- **Giai đoạn 4 — Blog + Giới thiệu.** Thẻ nở khi bấm; "Meet the team"; câu hỏi thường gặp; biểu mẫu.
-
-Spec: `docs/superpowers/specs/2026-09-13-redesign-chuyen-dong-design.md` mục 7.
-
-**Chưa có plan file cho hai giai đoạn này.**
-
----
-
-## 5. Những quyết định tôi tự đưa ra
-
-Đầy đủ 20 mục ở `.superpowers/sdd/2026-09-14-giai-doan-2-trang-chu/progress.md` (tìm chữ `Ruling`). Những cái đáng để bạn xem lại và bác nếu không đồng ý:
-
-**Giữ chữ VI/EN thay vì cờ quốc gia.** Cờ chỉ quốc gia chứ không chỉ ngôn ngữ, và trình đọc màn hình đọc thành tên nước. Đổi sang cờ chỉ là một dòng.
-
-**Không cài `vanilla-tilt` và không cài thư viện băng chuyền.** Hook `useVanillaTilt` trong Strike không có nơi nào import — hiệu ứng nghiêng thật là CSS ba dòng. Embla trong Strike chỉ dùng để vuốt ngang trên mobile, không giải được bài "ô giữa nổi, hai bên mờ".
-
-**Gộp `Hero` và `VideoReveal` làm một.** Mốc cuộn phải đo theo ref của video và tiêu đề đọc chính mốc đó; hai component riêng thì không chia được.
-
-**Thêm stagger vào `SectionHeading` thay vì chỉ `SimpleStart`.** Component đó dùng chung ở 5 nơi, nên mọi tiêu đề section giờ vào trang cùng nhịp.
-
-**Sửa mất landmark ở cả `LatestPosts` lẫn `VideoCarousel`.** Một `<section>` không có tên trợ năng thì mất hẳn vai trò `region`, không chỉ mất tên.
-
-**Giữ nguyên câu chữ trong tài liệu của bạn** ở khối "Bắt đầu từ những điều đơn giản nhất" — bạn đã xác nhận.
-
----
-
-## 6. Nợ kỹ thuật đã biết
-
-- Hai điểm **màu tím chết** chưa dọn: `rgba` tím trong shadow chưa từng bật của `PillButtonCta`, và bảng màu `topic.*` chưa dùng trong `tailwind.config.ts`. Không hiện ra màn hình, nhưng yêu cầu của bạn là tuyệt đối nên nên quét nốt.
-- `<section>` lồng `<section>` ở `LatestPosts`/`VideoCarousel` — section trong không có tên nên không tạo landmark thứ hai, chỉ là vệ sinh DOM.
-- `COUNTRY_BANDS` dùng `as const` nên kiểu `logo` hẹp thành literal `null`; tự nới khi điền logo thật.
-- `hoverTimer` trong `LessonTopics` là một ref dùng chung cho cả 4 hàng thay vì mỗi hàng một cái. Hành vi vẫn đúng.
-- Ô checkbox trong các plan file **chưa bao giờ được tick** dù việc đã làm. Đừng dùng chúng làm thước đo tiến độ — lịch sử commit mới là bản ghi thật.
-
----
-
-## 7. Tài nguyên còn thiếu
-
-Điền vào `src/lib/constants.ts` là giao diện tự bật.
-
-**Bắt buộc mới chạy được:**
-- Logo vector/PNG nền trong suốt (chuột trong vành trăng) — hiện chưa có, logo đang là chữ
-- Ảnh mascot nền trong suốt
-- Video thật: clip 30s *"The Closest Thing We Have to Alien Technology"* cắt ở ~29s; clip TSMC cắt từ ~15s; 6 video cho băng chuyền
-- Logo công ty nền trong suốt: Nvidia, Broadcom, AMD, Micron, Qualcomm, Intel, TSMC, Samsung, SK hynix, ASML
-- Ảnh đội ngũ cho "Meet the team"
-- URL Facebook, Facebook Group, TikTok · email liên hệ · link Google Form (`viewform`)
-- Nội dung câu hỏi thường gặp
-- **Bài học thật** — thiếu cái này thì trang Bài học chỉ là khung rỗng
-
-**Đang dùng tạm:** 7 video trong `public/video/` mượn từ dự án Strike. Nội dung không liên quan bán dẫn, **phải thay trước khi lên production**.
-
-**Chưa làm được vì thiếu tệp:** ảnh bo mạch làm nền khối bài viết (ảnh trong tài liệu quá nhỏ), clip TSMC cho trang Blog.
-
-**Không đọc được:** `.env.example` bị chặn bởi rule bảo mật của môi trường, nên tôi chưa thêm được hai biến. Bạn tự thêm:
-```
-COMMENT_IP_SALT=
-TRUSTED_PROXY_HOPS=1
+```bash
+npm run typecheck    # tsc --noEmit
+npm run lint         # next lint
+npm test -- --maxWorkers=3
+npm run build
 ```
 
----
+Tại thời điểm viết tài liệu này: `npm test` → **33 file, 354 test, tất cả
+pass**. `npm run lint` sạch, không cảnh báo.
 
-## 8. Trước khi lên production
+```bash
+./scripts/verify-security.sh
+```
 
-1. Chạy `supabase db push` để áp migration siết quyền.
-2. Kích hoạt tài khoản quản trị đầu tiên — trigger giờ tạo profile ở trạng thái **chưa kích hoạt**:
-   ```sql
-   update public.profiles set role = 'admin', is_active = true
-    where id = (select id from auth.users where email = 'you@example.com');
-   ```
-3. Tắt tự đăng ký trong Supabase Dashboard (lớp phòng thủ thứ hai; lớp thứ nhất là `is_active`).
-4. Thay hết video giữ chỗ.
-5. Chạy `./scripts/verify-security.sh` — phải 9/9.
+Diễn lại các cuộc tấn công mà migration `20260913000000_harden_access.sql` và
+các ràng buộc dữ liệu về sau chặn lại — cần một stack Supabase local đang chạy
+(`npx supabase start`), **không bao giờ chạy nhắm vào production**. Hiện có
+**32 kiểm tra**, tất cả phải xanh (32/32) trước khi lên production.
 
 ---
 
-## 9. Quy trình đang dùng
+## 5. Trước khi lên production
 
-Spec → plan → thực thi bằng subagent, mỗi task một subagent mới cộng một vòng review. Sổ tiến độ ở `.superpowers/sdd/<tên-plan>/progress.md` — đây là thứ sống sót qua việc mất ngữ cảnh, tin nó hơn tin trí nhớ.
+Danh sách đầy đủ, đúng thứ tự, nằm ở README — mục **"Lên production"**: sao
+lưu → kiểm ở local trên DB dùng bỏ + `verify-security.sh` xanh hết → chạy
+migration trên production → deploy code → bấm "Cập nhật chỉ mục tìm kiếm" →
+đặt độ khó cho bài học/video có từ trước DA1 rồi mới đăng lại → tắt tự đăng ký
+trong Supabase Dashboard + kích hoạt tài khoản admin thật → quyết định giữ hay
+bỏ `preload` trong header HSTS.
 
-Script hỗ trợ nằm ở `~/.claude/plugins/cache/claude-plugins-official/superpowers/6.3.0/skills/subagent-driven-development/scripts/`.
+---
 
-**Bài học đắt nhất của đợt này:** năm vòng review đọc code đều sạch, nhưng khi mở trình duyệt thì lòi ra hai lỗi — nền dán chưa bao giờ hiện (z-index âm bị nền `body` phủ) và hai thẻ `<main>` lồng nhau. Đọc code không thay được việc nhìn bằng mắt.
+## 6. Nội dung chủ dự án cần điền
+
+Danh sách đầy đủ (khoá message, hằng số trong `src/lib/constants.ts`, biến môi
+trường, dữ liệu production) nằm ở README, mục **"Nội dung cần thay trước khi
+ra mắt"**. Tóm tắt những nhóm lớn nhất: câu chuyện/ảnh tác giả thật, duyệt lại
+6 câu FAQ mẫu, 7 video giữ chỗ (mượn từ dự án Strike Robot, nội dung không
+liên quan bán dẫn), logo + mascot dạng vector nền trong suốt, logo 10 công ty
+theo từng nước, và **nội dung bài học thật** — phần thiếu lớn nhất, hiện trang
+Bài học chỉ là khung rỗng nếu không có bài.
+
+---
+
+## 7. Việc còn để lại — nhóm theo mức khẩn
+
+### Trước khi ra mắt
+
+- Toàn bộ nội dung ở mục 6 (README có danh sách đầy đủ).
+- Dọn dữ liệu production: bài test/demo còn sót và các dòng trùng lặp. Các
+  đợt DA1–DA4 đều để lại dữ liệu nghiệm thu (tài khoản tạm, bài test) trên
+  stack **local** và đã tự dọn ở đó (xem ghi chú "Cleanup" trong từng ledger
+  dưới `.superpowers/sdd/`) — production là một cơ sở dữ liệu khác, phải kiểm
+  tra riêng, không thể giả định đã sạch.
+- Quyết định về `preload` trong header HSTS (mục 5) — gần như không thể gỡ
+  nhanh sau khi domain vào danh sách preload cứng của trình duyệt.
+
+### Có thể để sau ra mắt
+
+- **Client Supabase không đọc cookie cho các trang thuần đọc.** Hiện mọi
+  trang công khai render theo từng request vì client server-side đọc cookie
+  phiên đăng nhập trên mọi trang, nên không trang nào được prerender/cache
+  tĩnh. Audit DA5 chủ động để hạng mục này lại — lưu lượng lúc ra mắt còn nhỏ,
+  chưa đáng chi phí đổi kiến trúc client.
+- **404 của Next 14 còn hiện khung chung trước khi hydrate.** Mã trạng thái
+  HTTP luôn đúng (404), nhưng HTML thô ban đầu của trang chi tiết bài
+  học/video/blog không tồn tại là khung mặc định của Next chứ chưa phải layout
+  thật — nội dung thật chỉ vào DOM sau khi React hydrate. Đây là giới hạn của
+  dòng Next 14 (App Router stream khung trước khi `notFound()` trong Server
+  Component kịp chạy); cần nâng cấp qua khỏi Next 14 mới sửa triệt để. Chi
+  tiết điều tra: `.superpowers/sdd/2026-09-29-da5-hoan-thien/code-wave-report.md`,
+  mục 4.
+- Một số việc "minor (deferred)" cosmetic để lại rải rác trong các ledger
+  DA1–DA4 (`.superpowers/sdd/2026-09-28-da{1..4}-*/progress.md`) — không ảnh
+  hưởng chức năng, ví dụ: tên kênh video dài không được cắt gọn trong thẻ,
+  hộp tìm kiếm trên di động không tự focus, `rebuildSearchText` chạy tuần tự
+  từng dòng (ổn ở quy mô hiện tại). Không có cái nào chặn ra mắt.
+- Trang riêng cho từng quốc gia và bản đồ silhouette các nước — nằm ngoài
+  phạm vi đã chốt ở roadmap (`docs/superpowers/specs/2026-09-28-lo-trinh-nang-cap-design.md`).
+
+---
+
+## 8. Quy trình đang dùng
+
+Spec → plan → thực thi bằng subagent (subagent-driven development), mỗi task
+một subagent mới cộng một vòng review. DA1–DA4 theo đúng vòng này với spec và
+plan riêng dưới `docs/superpowers/specs/` và `docs/superpowers/plans/`. DA5
+chạy tinh gọn hơn — không có spec/plan file, là một đợt rà soát có giới hạn
+(audit → hai đợt sửa: code rồi docs, mỗi đợt kèm review) vì phạm vi đã được
+đợt audit đóng khung sẵn.
+
+Sổ tiến độ (ledger) của từng đợt nằm ở `.superpowers/sdd/<tên-plan>/progress.md`
+— đây là **scratch cá nhân, bị `.gitignore` chặn**, không thuộc lịch sử commit
+và không đi kèm khi bàn giao mã nguồn. Đọc chúng để hiểu quyết định đã đưa ra
+và vì sao, nhưng đừng coi ô checkbox trong các file plan là thước đo tiến độ —
+lịch sử commit mới là bản ghi thật.
