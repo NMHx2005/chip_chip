@@ -8,10 +8,11 @@ Cập nhật: 29/09/2026 · Nhánh: `feat/da5-hoan-thien`
 
 `feat/da5-hoan-thien` đứng trên `main` cục bộ (main ahead of `origin/main` 86
 commit — **chưa có gì được push lên GitHub**, toàn bộ DA1–DA5 vẫn nằm ở máy
-local). Nhánh này thêm 14 commit lên trên `main` cục bộ: 13 commit sửa lỗi/độ
-hoàn thiện của đợt DA5 (CSP, ẩn `/motion-gallery` ở production, 404 hoá URL lạ,
-hreflang trung thực, giới hạn kích thước request, a11y, SEO rẻ tiền, tách
-service-role key khỏi bundle client) cộng commit cập nhật tài liệu này.
+local). Nhánh này gồm các commit sửa lỗi/độ hoàn thiện của đợt DA5 (CSP, ẩn
+`/motion-gallery` ở production, 404 hoá URL lạ, hreflang trung thực, giới hạn
+kích thước request, a11y, SEO rẻ tiền, tách service-role key khỏi bundle
+client) cộng các commit cập nhật tài liệu này — số lượng đang tăng dần, xem
+chính xác bằng `git log main..feat/da5-hoan-thien`.
 
 Cây làm việc sạch — không có gì sửa dở ngoài các file `.claude/`,
 `.commandcode/`, `.crossweave/` (rác công cụ, không phải của dự án).

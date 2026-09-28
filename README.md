@@ -102,12 +102,15 @@ thay vì vào được trang quản trị.
 
    - `20260912000000_init.sql` — schema gốc (`profiles`, `posts`, `comments`)
    - `20260913000000_harden_access.sql` — vá bảo mật: `is_active` mặc định
-     `false`, ẩn `comments.author_email`, `comment_rate_limit` + khoá giao dịch
+     `false`, ẩn `comments.author_email`, bảng `comment_rate_limit` (cột
+     `scope`, khoá giao dịch, hàm `consume_rate_limit(p_scope, …)`) — dùng
+     chung cho bình luận và tin nhắn ngay từ đầu
    - `20260928000000_video_kind.sql`, `20260928000100_video_difficulty.sql` —
      loại bài Video và ràng buộc độ khó theo loại bài
    - `20260928000200_search.sql` — `plain_text`, `search_vector`, hàm `search_posts`
    - `20260928000300_messages.sql` — bảng `messages` cho `/admin/tin-nhan`,
-     `comment_rate_limit` thêm cột `scope` dùng chung cho bình luận và tin nhắn
+     dùng lại `comment_rate_limit` (scope `'message'`) đã có sẵn từ migration
+     bảo mật ở trên
    - `20260928000400_updated_at_ignores_search_text.sql` — cập nhật chỉ mục
      tìm kiếm không còn tính là sửa bài (`updated_at` giữ nguyên)
    - `20260928000500_channel_name_only_on_videos.sql` — ràng buộc `channel_name`
