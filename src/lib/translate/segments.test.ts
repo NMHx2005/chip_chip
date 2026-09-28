@@ -78,9 +78,14 @@ describe("extractSegments", () => {
       { id: "s5", text: "<b><i>Mẹo nhớ</i></b> nhanh" },
       { id: "s6", text: "Tấm wafer" },
       { id: "s7", text: "Hình wafer" },
-      { id: "s8", text: "TS. Nguyễn A" },
-      { id: "s9", text: "Sze, Physics" },
+      { id: "s8", text: "Sze, Physics" },
     ]);
+  });
+
+  it("never extracts reviewer names as a segment", () => {
+    const segments = extractSegments(richDraft);
+    expect(segments.map((segment) => segment.text)).not.toContain("TS. Nguyễn A");
+    expect(segments.some((segment) => segment.target.kind === "attr")).toBe(true); // alt/caption still are
   });
 
   it("never sends code blocks, formulas or link targets", () => {
@@ -140,14 +145,13 @@ describe("applyTranslations", () => {
     ]);
   });
 
-  it("translates title, excerpt, caption, alt and reviewers as plain text", () => {
+  it("translates title, excerpt, caption and alt as plain text", () => {
     const segments = extractSegments(richDraft);
     const english: Record<string, string> = {
       s1: "Semiconductors",
       s2: "Band gap &amp; doping",
       s6: "A wafer",
       s7: "Wafer figure",
-      s8: "Dr. A Nguyen",
     };
     const translations = identity(segments).map((t) => ({ id: t.id, text: english[t.id] ?? t.text }));
     const { draft } = applyTranslations(richDraft, segments, translations);
@@ -155,7 +159,14 @@ describe("applyTranslations", () => {
     expect(draft.title).toBe("Semiconductors");
     expect(draft.excerpt).toBe("Band gap & doping");
     expect(blocks[5].attrs).toEqual({ src: "https://c.test/w.png", alt: "A wafer", caption: "Wafer figure" });
-    expect(blocks[6].attrs).toEqual({ reviewers: "Dr. A Nguyen" });
+  });
+
+  it("keeps the reviewers attribute copied verbatim into the EN draft", () => {
+    const segments = extractSegments(richDraft);
+    const translations = identity(segments).map((t) => ({ id: t.id, text: t.id === "s3" ? "Definition" : t.text }));
+    const { draft } = applyTranslations(richDraft, segments, translations);
+    const blocks = (draft.content as { content: { attrs?: Record<string, unknown> }[] }).content;
+    expect(blocks[6].attrs).toEqual({ reviewers: "TS. Nguyễn A" });
   });
 
   it.each([
@@ -175,7 +186,7 @@ describe("applyTranslations", () => {
   it("counts missing ids and ignores unknown or duplicate ones", () => {
     const segments = extractSegments(richDraft);
     const translations = [
-      ...identity(segments).filter((t) => t.id !== "s3" && t.id !== "s9"),
+      ...identity(segments).filter((t) => t.id !== "s3" && t.id !== "s8"),
       { id: "s99", text: "stray" },
       { id: "s1", text: "Second answer for s1" },
     ];
@@ -199,7 +210,7 @@ describe("applyTranslations", () => {
 describe("prepareTranslation", () => {
   it("returns the segments of an ordinary article", () => {
     const result = prepareTranslation(richDraft);
-    expect(result.ok && result.segments.length).toBe(9);
+    expect(result.ok && result.segments.length).toBe(8);
   });
 
   it("refuses an article with nothing to translate", () => {

@@ -27,7 +27,7 @@ export type DraftText = { title: string; excerpt: string; content: unknown };
 type Target =
   | { kind: "field"; field: "title" | "excerpt" }
   | { kind: "inline"; path: number[]; links: JsonMark[]; formulas: JsonNode[]; tags: string[] }
-  | { kind: "attr"; path: number[]; attr: "alt" | "caption" | "reviewers" };
+  | { kind: "attr"; path: number[]; attr: "alt" | "caption" };
 
 export type Segment = { id: string; text: string; target: Target };
 export type Translation = { id: string; text: string };
@@ -66,10 +66,12 @@ const TAG_MARK: Record<string, string> = {
 };
 
 const TEXT_BLOCKS = new Set(["paragraph", "heading"]);
-const ATTR_SEGMENTS = new Map<string, readonly ("alt" | "caption" | "reviewers")[]>([
+// `references.reviewers` is deliberately absent: reviewer names are proper
+// nouns ("Thầy A" must never come back as "Teacher A"), so they are left out
+// of every segment and simply carried over verbatim into the EN draft.
+const ATTR_SEGMENTS = new Map<string, readonly ("alt" | "caption")[]>([
   ["image", ["alt"]],
   ["figure", ["alt", "caption"]],
-  ["references", ["reviewers"]],
 ]);
 
 function escapeText(value: string): string {
