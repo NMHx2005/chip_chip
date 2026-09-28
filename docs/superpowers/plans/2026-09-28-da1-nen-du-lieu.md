@@ -29,6 +29,10 @@
 2. **Tìm kiếm và `messages` tách thành hai file migration** (`…000200_search.sql`, `…000300_messages.sql`) để mỗi task một file.
 3. **Test "số khoá vi = en" chưa từng tồn tại** dù spec coi là có sẵn — Task 4 thêm nó.
 4. **Chọn độ khó đưa luôn vào form "Viết bài mới"** (Task 9). Không có nó, từ lúc DA1 xong tới lúc DA2 xong sẽ không đăng được bài học mới nào, vì cổng đăng bài giờ đòi độ khó.
+5. **Redirect URL cũ dùng `statusCode: 301` thay vì `permanent: true`**, vì `permanent: true` của Next trả mã 308 chứ không phải 301 (xem `src/lib/legacy-redirects.mjs`).
+6. **Thêm hai migration ngoài kế hoạch ban đầu**: `20260928000400_updated_at_ignores_search_text.sql` (bookkeeping của `rebuildSearchText()` không được tính là sửa bài — xem chú thích trong file) và `20260928000500_channel_name_only_on_videos.sql` (`channel_name` chỉ được gắn trên bài `video`, thêm ở đợt review sau DA1 — Finding R3).
+7. **Thêm chỉ mục riêng `posts_difficulty_idx`** (`kind, locale, status, difficulty`) thay vì mở rộng chỉ mục liệt kê bài viết sẵn có, để tránh phải đổi hình dạng một chỉ mục đang được dùng.
+8. **Postgres cục bộ là bản 17** (spec ghi 15). `create or replace trigger` (dùng ở `posts_touch_updated_at`) chỉ cần Postgres ≥ 14 nên vẫn chạy được, nhưng nên biết stack local không khớp phiên bản spec nêu.
 
 ## Review Focus
 
