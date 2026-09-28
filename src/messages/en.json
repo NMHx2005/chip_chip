@@ -309,6 +309,84 @@
       "sent": "Report sent. Thank you for making this article better!"
     }
   },
+  "contribute": {
+    "title": "Contribute",
+    "description": "Chíp Chíp is made by one person, but it does not have to be made alone. If you want to help, here are four ways — each one starts with a message.",
+    "ways": {
+      "write": {
+        "title": "Write an article",
+        "body": "Understand a semiconductor idea and want to explain it to students? Send an outline or a draft and the author will edit it with you before it goes up. Your name appears at the end of the article."
+      },
+      "translate": {
+        "title": "Translate",
+        "body": "Every article exists in Vietnamese and English. If a translation reads awkwardly or gets a term wrong, suggest a better one."
+      },
+      "video": {
+        "title": "Make a video",
+        "body": "A short video can explain more than a page of text. If you can film, edit or draw, send an idea or a link to something you have made."
+      },
+      "report": {
+        "title": "Report a mistake",
+        "body": "Found an error in an article? Use the \"Report a mistake\" button at the end of every article, or write through the Contact page. Every report is read."
+      }
+    },
+    "cta": "Message the author",
+    "note": "Chíp Chíp pays no fees and charges none. Contributors are credited in the article and under \"People who helped\" on the About page."
+  },
+  "privacy": {
+    "title": "Privacy policy",
+    "description": "Chíp Chíp collects very little. This page says exactly what, what it is for, and how long it is kept.",
+    "updated": "Updated {date}",
+    "sections": {
+      "collect": {
+        "title": "What we collect",
+        "items": {
+          "comments": "When you comment: the name you enter, an optional email and your comment. The name and comment are shown publicly under the article. The email is never shown publicly; only the editors can see it.",
+          "messages": "When you write through the Contact page or the \"Report a mistake\" button: your name, an optional email, your message, the page language and, for a mistake report, the article you were reading. Only the editors can read it.",
+          "ip": "Your IP address is not stored. To stop spam, it is run through a one-way hash with a secret value, producing a code that cannot be reversed and is used only to count how often someone sends.",
+          "none": "Readers need no account. The site uses no advertising cookies and no third-party tracking or analytics tools."
+        }
+      },
+      "device": {
+        "title": "Cookies and data on your device",
+        "items": {
+          "locale": "One cookie, NEXT_LOCALE, remembers the language you chose.",
+          "local": "Your browser remembers a few display choices, such as a collapsed topic column. That stays on your device and is never sent to the server.",
+          "video": "YouTube and TikTok videos load only when you press play (YouTube in its youtube-nocookie mode). YouTube preview images load from YouTube's servers. Once a video plays, that platform's own policy applies.",
+          "staff": "Sign-in cookies are used only by the editors on the admin pages."
+        }
+      },
+      "use": {
+        "title": "What it is used for",
+        "items": {
+          "purpose": "Showing comments, reading and answering messages, fixing mistakes in articles, and blocking spam.",
+          "never": "Never for advertising, marketing email or building reader profiles."
+        }
+      },
+      "retention": {
+        "title": "How long it is kept",
+        "items": {
+          "counter": "The hashed IP codes used by the spam counter are deleted automatically after 1 day.",
+          "content": "Comments and messages are kept until you ask for them to be deleted, or until the editors remove them."
+        }
+      },
+      "sharing": {
+        "title": "Who it is shared with",
+        "items": {
+          "sell": "We do not sell, rent or trade your data.",
+          "host": "Data is stored with Supabase, the database service the project uses.",
+          "translate": "When the author drafts a translation of an article, that article's text is sent to DeepSeek to be translated. Comments, messages and reader details are never sent."
+        }
+      },
+      "rights": {
+        "title": "Your rights",
+        "items": {
+          "request": "You can ask to see, correct or delete your comments and messages. Write through the Contact page, giving the name you used and the article you commented on so we can find them."
+        }
+      }
+    },
+    "contactLink": "Send a request through the Contact page"
+  },
   "comments": {
     "title": "Comments",
     "count": "{count} comments",
@@ -317,7 +395,7 @@
     "nameLabel": "Your name",
     "namePlaceholder": "Jane Doe",
     "emailLabel": "Email",
-    "emailHint": "Never shown publicly. Used to notify you about replies.",
+    "emailHint": "Never shown publicly. Only the editors see it, to get back to you if needed.",
     "emailPlaceholder": "you@example.com",
     "bodyLabel": "Comment",
     "bodyPlaceholder": "Share your thoughts on this post...",

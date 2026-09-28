@@ -309,6 +309,84 @@
       "sent": "Đã gửi báo lỗi. Cảm ơn bạn đã giúp bài tốt hơn!"
     }
   },
+  "contribute": {
+    "title": "Đóng góp",
+    "description": "Chíp Chíp do một người làm, nhưng không cần làm một mình. Nếu bạn muốn giúp, đây là bốn cách, cách nào cũng bắt đầu bằng một tin nhắn.",
+    "ways": {
+      "write": {
+        "title": "Viết bài",
+        "body": "Bạn hiểu một khái niệm bán dẫn và muốn giải thích nó cho học sinh? Gửi dàn ý hoặc bản nháp, tác giả sẽ cùng bạn biên tập trước khi đăng. Tên bạn được ghi ở cuối bài."
+      },
+      "translate": {
+        "title": "Dịch",
+        "body": "Mỗi bài có bản tiếng Việt và tiếng Anh. Nếu bạn thấy bản dịch còn gượng hoặc sai thuật ngữ, hãy đề xuất cách dịch tốt hơn."
+      },
+      "video": {
+        "title": "Làm video",
+        "body": "Một video ngắn đôi khi dễ hiểu hơn cả trang chữ. Nếu bạn quay, dựng hoặc vẽ minh hoạ được, hãy gửi ý tưởng hoặc link video bạn đã làm."
+      },
+      "report": {
+        "title": "Báo lỗi",
+        "body": "Thấy chỗ sai trong bài? Dùng nút \"Báo lỗi bài này\" ở cuối mỗi bài, hoặc viết qua trang Liên hệ. Mọi báo lỗi đều được đọc."
+      }
+    },
+    "cta": "Nhắn cho tác giả",
+    "note": "Chíp Chíp không trả thù lao và không thu phí. Người đóng góp được ghi tên trong bài và ở mục \"Những người đã đồng hành\" trên trang Giới thiệu."
+  },
+  "privacy": {
+    "title": "Chính sách bảo mật",
+    "description": "Chíp Chíp thu rất ít dữ liệu. Trang này nói rõ đó là dữ liệu gì, dùng vào việc gì và giữ trong bao lâu.",
+    "updated": "Cập nhật ngày {date}",
+    "sections": {
+      "collect": {
+        "title": "Chúng tôi thu những gì",
+        "items": {
+          "comments": "Khi bạn bình luận: tên bạn nhập, email (không bắt buộc) và nội dung. Tên và nội dung hiện công khai dưới bài. Email không bao giờ hiện công khai, chỉ ban biên tập xem được.",
+          "messages": "Khi bạn gửi tin qua trang Liên hệ hoặc nút \"Báo lỗi bài này\": tên, email (không bắt buộc), nội dung, ngôn ngữ của trang và bài bạn đang đọc (nếu là báo lỗi). Chỉ ban biên tập đọc được.",
+          "ip": "Địa chỉ IP của bạn không được lưu. Để chống spam, IP được băm một chiều kèm một chuỗi bí mật thành một mã không thể đảo ngược, chỉ dùng để đếm số lần gửi.",
+          "none": "Người đọc không cần tài khoản. Trang không dùng cookie quảng cáo, không dùng công cụ theo dõi hay phân tích của bên thứ ba."
+        }
+      },
+      "device": {
+        "title": "Cookie và dữ liệu trên máy bạn",
+        "items": {
+          "locale": "Một cookie tên NEXT_LOCALE ghi nhớ ngôn ngữ bạn chọn.",
+          "local": "Trình duyệt ghi nhớ vài lựa chọn giao diện, ví dụ cột chủ đề đang thu gọn. Dữ liệu này nằm trên máy bạn, không gửi về máy chủ.",
+          "video": "Video YouTube và TikTok chỉ tải khi bạn bấm phát (YouTube ở chế độ youtube-nocookie). Ảnh xem trước của video YouTube tải từ máy chủ của YouTube. Khi video đã phát, chính sách của nền tảng đó được áp dụng.",
+          "staff": "Cookie đăng nhập chỉ dùng cho ban biên tập ở trang quản trị."
+        }
+      },
+      "use": {
+        "title": "Dùng vào việc gì",
+        "items": {
+          "purpose": "Hiện bình luận, đọc và trả lời tin nhắn, sửa lỗi trong bài, và chặn spam.",
+          "never": "Không dùng để quảng cáo, không gửi thư tiếp thị, không dựng hồ sơ người đọc."
+        }
+      },
+      "retention": {
+        "title": "Giữ trong bao lâu",
+        "items": {
+          "counter": "Mã băm IP của bộ đếm chống spam tự xoá sau 1 ngày.",
+          "content": "Bình luận và tin nhắn được giữ tới khi bạn yêu cầu xoá, hoặc tới khi ban biên tập gỡ chúng."
+        }
+      },
+      "sharing": {
+        "title": "Chia sẻ với ai",
+        "items": {
+          "sell": "Chúng tôi không bán, không cho thuê và không trao đổi dữ liệu của bạn.",
+          "host": "Dữ liệu được lưu trên dịch vụ cơ sở dữ liệu Supabase mà dự án sử dụng.",
+          "translate": "Khi tác giả dịch nháp một bài, nội dung bài viết đó được gửi tới DeepSeek để dịch. Bình luận, tin nhắn và thông tin của người đọc không bao giờ được gửi đi."
+        }
+      },
+      "rights": {
+        "title": "Quyền của bạn",
+        "items": {
+          "request": "Bạn có thể yêu cầu xem, sửa hoặc xoá bình luận và tin nhắn của mình. Hãy viết qua trang Liên hệ, ghi tên bạn đã dùng và bài có bình luận để chúng tôi tìm được."
+        }
+      }
+    },
+    "contactLink": "Gửi yêu cầu qua trang Liên hệ"
+  },
   "comments": {
     "title": "Bình luận",
     "count": "{count} bình luận",
@@ -317,7 +395,7 @@
     "nameLabel": "Tên của bạn",
     "namePlaceholder": "Nguyễn Văn A",
     "emailLabel": "Email",
-    "emailHint": "Không hiển thị công khai. Dùng để thông báo khi có phản hồi.",
+    "emailHint": "Không hiển thị công khai. Chỉ ban biên tập thấy, để liên hệ lại khi cần.",
     "emailPlaceholder": "ban@example.com",
     "bodyLabel": "Nội dung",
     "bodyPlaceholder": "Chia sẻ suy nghĩ của bạn về bài viết này...",

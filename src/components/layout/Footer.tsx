@@ -2,6 +2,7 @@ import { useTranslations } from "next-intl";
 import { Logo } from "@/components/layout/Logo";
 import { SocialLinks } from "@/components/layout/SocialLinks";
 import { Link } from "@/i18n/navigation";
+import { FOOTER_LINKS } from "@/lib/constants";
 
 /**
  * Single-row footer: wordmark left, copyright in the middle, social icons
@@ -48,9 +49,28 @@ export function Footer() {
           <SocialLinks className="md:col-start-3 md:row-start-1 md:justify-self-end" />
         </div>
 
-        <p className="max-w-xs text-center text-xs leading-relaxed text-text-muted md:col-start-2 md:row-start-1 md:max-w-md md:text-sm">
-          {t("copyright", { siteName: tMeta("siteName") })}
-        </p>
+        {/* The trust pages sit in the middle column above the copyright, so the
+            footer stays one grid row on desktop; on a phone the links wrap. */}
+        <div className="flex flex-col items-center gap-2 md:col-start-2 md:row-start-1">
+          <nav aria-label={t("links.label")}>
+            <ul className="flex flex-wrap justify-center gap-x-5">
+              {FOOTER_LINKS.map((link) => (
+                <li key={link.key}>
+                  <Link
+                    href={link.href}
+                    className="inline-flex min-h-11 items-center text-sm text-text-nav underline-offset-4 transition-colors hover:text-accent hover:underline"
+                  >
+                    {t(`links.${link.key}`)}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <p className="max-w-xs text-center text-xs leading-relaxed text-text-muted md:max-w-md md:text-sm">
+            {t("copyright", { siteName: tMeta("siteName") })}
+          </p>
+        </div>
       </div>
     </footer>
   );

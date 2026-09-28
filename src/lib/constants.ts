@@ -13,6 +13,16 @@ export const NAV_ITEMS: {
   { key: "about", href: "/gioi-thieu" },
 ];
 
+/** The trust pages linked from every footer. */
+export const FOOTER_LINKS: {
+  key: "contact" | "contribute" | "privacy";
+  href: StaticPathname;
+}[] = [
+  { key: "contact", href: "/lien-he" },
+  { key: "contribute", href: "/dong-gop" },
+  { key: "privacy", href: "/chinh-sach-bao-mat" },
+];
+
 /** The two entries under "Lessons" in the navbar. */
 export const LESSON_SUBNAV: {
   key: "lessonsTheory" | "lessonsVideo";
@@ -75,9 +85,12 @@ export const SOCIAL_LINKS: {
  *  link, not the `edit` link) once it exists. */
 export const JOIN_FORM_URL = "";
 
-/** Public contact address, shown in the homepage join block once the mailbox
- *  exists. The footer is a single row and has no place for it. */
+/** Public contact address, shown in the homepage join block and on the
+ *  Contact page once the mailbox exists. Blank hides it everywhere. */
 export const CONTACT_EMAIL = "";
+
+/** Date the privacy page was last checked against the code (YYYY-MM-DD). */
+export const PRIVACY_UPDATED = "2026-09-28";
 
 // Same neutral-grayscale rule as TOPIC_TONE above: the four bands are told
 // apart by shade, never by hue (the earlier pastel/hex-per-country look read
