@@ -79,6 +79,19 @@ npx supabase link --project-ref <ref>
 npx supabase db push
 ```
 
+Migration gần đây nhất thêm blog/video/tìm kiếm/hộp thư:
+
+- `20260928000000_video_kind.sql`, `20260928000100_video_difficulty.sql` —
+  loại bài Video và ràng buộc độ khó theo loại bài
+- `20260928000200_search.sql` — `plain_text`, `search_vector`, hàm `search_posts`
+- `20260928000300_messages.sql` — bảng `messages` cho `/admin/tin-nhan`
+- `20260928000400_updated_at_ignores_search_text.sql` — cập nhật chỉ mục
+  tìm kiếm không còn tính là sửa bài (`updated_at` giữ nguyên)
+
+Sau `db push`, vào `/admin` và bấm "Cập nhật chỉ mục tìm kiếm" một lần để
+điền `plain_text` cho các bài đã có từ trước — từ đó về sau `savePost` tự
+giữ nó cập nhật.
+
 Rồi điền biến môi trường trên Vercel (xem `.env.example`). **Không** commit
 `SUPABASE_SERVICE_ROLE_KEY` — khoá này bỏ qua toàn bộ RLS.
 
@@ -97,12 +110,13 @@ src/
 │   ├── [locale]/          # site công khai, có tiền tố ngôn ngữ
 │   │   ├── page.tsx               Trang chủ
 │   │   ├── bai-hoc/               Bài học → [topic] → [slug]
-│   │   ├── dien-dan/              Diễn đàn → [slug]
+│   │   ├── blog/                  Blog → [slug]
 │   │   └── gioi-thieu/            Giới thiệu
 │   ├── admin/             # CMS, tiếng Việt, không có tiền tố ngôn ngữ
 │   │   ├── (auth)/dang-nhap/      Đăng nhập
-│   │   └── (dashboard)/           Tổng quan · Bài viết · Bình luận
+│   │   └── (dashboard)/           Tổng quan · Bài viết · Bình luận · Tin nhắn
 │   ├── api/comments/      # nhận bình luận (rate limit, honeypot)
+│   ├── api/messages/      # nhận tin liên hệ / góp ý (rate limit, honeypot)
 │   ├── opengraph-image.tsx ở mỗi nhánh có trang riêng
 │   ├── sitemap.ts · robots.ts
 │   └── globals.css
@@ -134,7 +148,7 @@ src/
 | Tiếng Việt        | English        |
 | ----------------- | -------------- |
 | `/vi/bai-hoc`     | `/en/lessons`  |
-| `/vi/dien-dan`    | `/en/forum`    |
+| `/vi/blog`        | `/en/blog`     |
 | `/vi/gioi-thieu`  | `/en/about`    |
 
 Khai báo ở `src/i18n/routing.ts`. Slug bài viết **không** bản địa hoá — mỗi bản dịch
@@ -194,7 +208,6 @@ Ngoài ra: logo vector bản trong suốt, bản đồ silhouette các nước, 
 - Mục quốc gia chưa có bản đồ silhouette, cờ và logo công ty — chờ asset
 - Chưa có trang riêng cho từng quốc gia
 - Chưa có tìm kiếm
-- Chưa có test tự động trong repo
 
 ### Module đang chờ asset
 
