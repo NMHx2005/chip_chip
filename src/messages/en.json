@@ -265,6 +265,50 @@
       "formNote": "The form opens in a new window."
     }
   },
+  "contact": {
+    "title": "Contact",
+    "description": "Send a question, some feedback or an offer to work together. The author reads every message.",
+    "form": {
+      "kindLegend": "What are you sending?",
+      "kinds": {
+        "contact": "A message",
+        "feedback": "Feedback"
+      },
+      "nameLabel": "Your name",
+      "emailLabel": "Email (optional)",
+      "emailHint": "Used only to reply to you and never shown anywhere. Leave it blank and we cannot write back.",
+      "bodyLabel": "Message",
+      "bodyHint": "Up to {max} characters.",
+      "submit": "Send message",
+      "submitting": "Sending…",
+      "sent": "Sent. Thank you for writing to Chíp Chíp!"
+    },
+    "errors": {
+      "nameLength": "Please enter your name (up to 80 characters).",
+      "bodyLength": "Please write a message (up to 4000 characters).",
+      "emailInvalid": "That email address does not look right. You can leave it blank.",
+      "postNotFound": "This article no longer exists. Please use the Contact page instead.",
+      "rateLimited": "Each person can send up to 3 messages an hour, counting contact, feedback and mistake reports together. Please try again later.",
+      "network": "Could not connect. Check your connection and send again.",
+      "generic": "Your message was not sent. Please try again in a few minutes."
+    },
+    "aside": {
+      "emailTitle": "Email",
+      "socialTitle": "Social media",
+      "responseTitle": "When to expect a reply",
+      "responseBody": "[Response time] The author usually replies within [number] days. Messages without an email are still read, but cannot be answered.",
+      "limitNote": "To stop spam, each person can send up to 3 messages an hour.",
+      "privacyNote": "What you send is used only to reply to you.",
+      "privacyLink": "Read the privacy policy"
+    },
+    "report": {
+      "toggle": "Report a mistake",
+      "intro": "Spotted an error, something unclear or a broken link? A short description helps the author fix it faster.",
+      "bodyLabel": "What is wrong",
+      "submit": "Send report",
+      "sent": "Report sent. Thank you for making this article better!"
+    }
+  },
   "comments": {
     "title": "Comments",
     "count": "{count} comments",

@@ -265,6 +265,50 @@
       "formNote": "Form mở trong cửa sổ mới."
     }
   },
+  "contact": {
+    "title": "Liên hệ",
+    "description": "Gửi câu hỏi, lời góp ý hoặc đề nghị hợp tác. Mọi tin nhắn đều được tác giả đọc.",
+    "form": {
+      "kindLegend": "Bạn muốn gửi",
+      "kinds": {
+        "contact": "Liên hệ",
+        "feedback": "Góp ý"
+      },
+      "nameLabel": "Tên của bạn",
+      "emailLabel": "Email (không bắt buộc)",
+      "emailHint": "Chỉ dùng để trả lời bạn, không hiển thị ở đâu. Để trống thì chúng tôi không trả lời lại được.",
+      "bodyLabel": "Nội dung",
+      "bodyHint": "Tối đa {max} ký tự.",
+      "submit": "Gửi tin nhắn",
+      "submitting": "Đang gửi…",
+      "sent": "Đã gửi. Cảm ơn bạn đã viết cho Chíp Chíp!"
+    },
+    "errors": {
+      "nameLength": "Vui lòng nhập tên (tối đa 80 ký tự).",
+      "bodyLength": "Vui lòng nhập nội dung (tối đa 4000 ký tự).",
+      "emailInvalid": "Email chưa đúng định dạng. Bạn có thể để trống ô này.",
+      "postNotFound": "Không tìm thấy bài này nữa. Bạn thử gửi qua trang Liên hệ nhé.",
+      "rateLimited": "Mỗi người gửi được tối đa 3 tin mỗi giờ, tính chung cả liên hệ, góp ý và báo lỗi bài. Bạn thử lại sau nhé.",
+      "network": "Không kết nối được. Kiểm tra mạng rồi gửi lại nhé.",
+      "generic": "Chưa gửi được tin nhắn. Bạn thử lại sau ít phút nhé."
+    },
+    "aside": {
+      "emailTitle": "Email",
+      "socialTitle": "Mạng xã hội",
+      "responseTitle": "Khi nào có phản hồi",
+      "responseBody": "[Thời gian phản hồi] Tác giả thường trả lời trong vòng [số] ngày. Tin không kèm email vẫn được đọc, nhưng không trả lời lại được.",
+      "limitNote": "Để chặn spam, mỗi người gửi được tối đa 3 tin mỗi giờ.",
+      "privacyNote": "Thông tin bạn gửi chỉ dùng để trả lời bạn.",
+      "privacyLink": "Xem chính sách bảo mật"
+    },
+    "report": {
+      "toggle": "Báo lỗi bài này",
+      "intro": "Thấy chỗ sai, chỗ khó hiểu hoặc link hỏng? Mô tả ngắn gọn giúp tác giả sửa nhanh hơn.",
+      "bodyLabel": "Lỗi bạn thấy",
+      "submit": "Gửi báo lỗi",
+      "sent": "Đã gửi báo lỗi. Cảm ơn bạn đã giúp bài tốt hơn!"
+    }
+  },
   "comments": {
     "title": "Bình luận",
     "count": "{count} bình luận",
