@@ -10,6 +10,7 @@ import {
   ROOT_PAGE_SIZE,
 } from "@/components/forum/CommentSection";
 import { VideoFacades } from "@/components/forum/VideoFacades";
+import { articleLanguageAlternates } from "@/lib/article-alternates";
 import { Link, getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { TOPIC_TONE } from "@/lib/constants";
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
 
   if (!post) return { title: "404" };
 
-  const description = post.excerpt ?? articleToPlainText(post.content, 160) ?? "";
+  const description = post.excerpt || articleToPlainText(post.content, 160) || undefined;
 
   return {
     title: post.title,
@@ -46,24 +47,27 @@ export async function generateMetadata({ params }: { params: Params }): Promise<
     },
     alternates: {
       // Same approach as the blog and lesson pages: the path is built through
-      // next-intl's localized routing, and a missing translation points the
-      // other language at its video listing instead of a 404.
+      // next-intl's localized routing. A missing translation is left out of
+      // `languages` rather than pointed at the listing page.
       canonical: getPathname({
         href: { pathname: "/video/[slug]", params: { slug: post.slug } },
         locale: locale as Locale,
       }),
-      languages: Object.fromEntries(
-        await Promise.all(
-          routing.locales.map(async (l) => {
-            const alt = await getTranslationSlug(post.translationId, l);
-            return [
-              l,
-              alt
-                ? getPathname({ href: { pathname: "/video/[slug]", params: { slug: alt } }, locale: l })
-                : getPathname({ href: "/video", locale: l }),
-            ];
-          })
-        )
+      languages: articleLanguageAlternates(
+        Object.fromEntries(
+          await Promise.all(
+            routing.locales.map(async (l) => {
+              const alt = await getTranslationSlug(post.translationId, l);
+              return [
+                l,
+                alt
+                  ? getPathname({ href: { pathname: "/video/[slug]", params: { slug: alt } }, locale: l })
+                  : null,
+              ];
+            })
+          )
+        ),
+        routing.defaultLocale
       ),
     },
   };

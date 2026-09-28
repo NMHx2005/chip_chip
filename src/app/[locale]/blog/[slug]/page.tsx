@@ -8,6 +8,7 @@ import { ArticleBody } from "@/components/forum/ArticleBody";
 import { ArticleToc } from "@/components/forum/ArticleToc";
 import { UpdatedAt } from "@/components/forum/UpdatedAt";
 import { CommentSection } from "@/components/forum/CommentSection";
+import { articleLanguageAlternates } from "@/lib/article-alternates";
 import { Link, getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import {
@@ -35,7 +36,7 @@ export async function generateMetadata({
   if (!post) return { title: "404" };
 
   const description =
-    post.excerpt ?? articleToPlainText(post.content, 160) ?? "";
+    post.excerpt || articleToPlainText(post.content, 160) || undefined;
 
   return {
     title: post.title,
@@ -56,21 +57,24 @@ export async function generateMetadata({
         href: { pathname: "/blog/[slug]", params: { slug: post.slug } },
         locale: locale as Locale,
       }),
-      languages: Object.fromEntries(
-        await Promise.all(
-          routing.locales.map(async (l) => {
-            const alt = await getTranslationSlug(post.translationId, l);
-            return [
-              l,
-              alt
-                ? getPathname({
-                    href: { pathname: "/blog/[slug]", params: { slug: alt } },
-                    locale: l,
-                  })
-                : getPathname({ href: "/blog", locale: l }),
-            ];
-          })
-        )
+      languages: articleLanguageAlternates(
+        Object.fromEntries(
+          await Promise.all(
+            routing.locales.map(async (l) => {
+              const alt = await getTranslationSlug(post.translationId, l);
+              return [
+                l,
+                alt
+                  ? getPathname({
+                      href: { pathname: "/blog/[slug]", params: { slug: alt } },
+                      locale: l,
+                    })
+                  : null,
+              ];
+            })
+          )
+        ),
+        routing.defaultLocale
       ),
     },
   };
