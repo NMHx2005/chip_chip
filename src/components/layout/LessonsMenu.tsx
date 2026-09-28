@@ -17,7 +17,8 @@ import { cn } from "@/lib/utils";
  * ordinary links, reached with Tab. It opens on click or Enter/Space, on hover
  * with a mouse (the pointerType check keeps a tap from opening it on
  * pointerenter and then toggling it shut on click), and closes on Escape —
- * returning focus to the button — on a click outside, or when focus leaves it.
+ * returning focus to the button only if focus was inside the menu — on a
+ * click outside, or when focus leaves it.
  */
 export function LessonsMenu({ active }: { active: boolean }) {
   const t = useTranslations("nav");
@@ -40,8 +41,9 @@ export function LessonsMenu({ active }: { active: boolean }) {
     };
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
+      const focusWasInside = rootRef.current?.contains(document.activeElement);
       setOpen(false);
-      buttonRef.current?.focus();
+      if (focusWasInside) buttonRef.current?.focus();
     };
     document.addEventListener("pointerdown", onPointerDown);
     document.addEventListener("keydown", onKeyDown);

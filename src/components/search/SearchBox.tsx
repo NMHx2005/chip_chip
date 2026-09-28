@@ -42,6 +42,10 @@ export function SearchBox({ className }: { className?: string }) {
         setOpen(false);
         buttonRef.current?.focus();
       }}
+      onBlur={(event) => {
+        const next = event.relatedTarget;
+        if (!(next instanceof Node) || !event.currentTarget.contains(next)) setOpen(false);
+      }}
     >
       <button
         ref={buttonRef}
