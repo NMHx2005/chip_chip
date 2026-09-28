@@ -180,8 +180,13 @@ psql "$DB_URL" -q -c "update public.posts set plain_text = 'x' where slug = 'sec
 check "chỉ sửa plain_text thì updated_at không đổi" "2020-01-01" \
   "$(psql "$DB_URL" -t -A -c "select updated_at::date from public.posts where slug = 'sec-upd-$$';")"
 psql "$DB_URL" -q -c "update public.posts set title = 'y' where slug = 'sec-upd-$$';"
-check "sửa tiêu đề vẫn cập nhật updated_at" "$(date +%Y-%m-%d)" \
-  "$(psql "$DB_URL" -t -A -c "select updated_at::date from public.posts where slug = 'sec-upd-$$';")"
+# Compared in SQL rather than against a shell-side $(date +%Y-%m-%d): the
+# shell runs in local time (UTC+7) while `updated_at::date` is UTC, so a run
+# between 00:00 and 07:00 local time used to read yesterday's date on one
+# side and today's on the other and fail for no real reason.
+check "sửa tiêu đề vẫn cập nhật updated_at" "t" \
+  "$(psql "$DB_URL" -t -A -c \
+    "select updated_at > now() - interval '1 minute' from public.posts where slug = 'sec-upd-$$';")"
 
 echo
 echo "D2 — cổng đăng bài của nhóm dịch"
@@ -217,6 +222,20 @@ psql "$DB_URL" -q -c "insert into public.posts
   ('$vid', 'vi', 'video', 'basic', 'x', 'sec-vid-$$-vi', '$doc'),
   ('$vid', 'en', 'video', 'basic', 'x', 'sec-vid-$$-en', '$doc');"
 check "video thiếu đường dẫn thì không đăng được" "video_incomplete" "$(publish_detail "$vid")"
+
+ok=$(uuidgen | tr '[:upper:]' '[:lower:]')
+psql "$DB_URL" -q -c "insert into public.posts
+  (translation_id, locale, kind, topic, difficulty, title, slug, content) values
+  ('$ok', 'vi', 'lesson', 'nguyen-ly', 'basic', 'x', 'sec-ok-$$-vi', '$doc'),
+  ('$ok', 'en', 'lesson', 'nguyen-ly', 'basic', 'x', 'sec-ok-$$-en', '$doc');"
+# publish_translation returns void, so PostgREST answers 204 with no body —
+# publish_detail's ".details" grep never matches, and would misreport a real
+# publish as a rejection. Assert on the HTTP status instead.
+check "bài học hợp lệ thì đăng được" "204" "$(status -X POST "$API_URL/rest/v1/rpc/publish_translation" \
+  "${auth[@]}" -H 'Content-Type: application/json' -d "{\"p_translation_id\":\"$ok\"}")"
+check "cả hai bản chuyển sang published" "2" \
+  "$(psql "$DB_URL" -t -A -c \
+    "select count(*) from public.posts where translation_id = '$ok' and status = 'published';")"
 
 echo
 if [ "$failures" -eq 0 ]; then
