@@ -6,12 +6,15 @@ import {
   AlignCenter,
   AlignLeft,
   AlignRight,
+  BookMarked,
   Bold,
+  Clapperboard,
   Code,
   Heading1,
   Heading2,
   Heading3,
   Highlighter,
+  Image as ImageIcon,
   ImagePlus,
   Italic,
   Link2,
@@ -19,14 +22,27 @@ import {
   ListOrdered,
   Minus,
   Quote,
+  Radical,
   Redo2,
+  Sigma,
   Strikethrough,
   Table2,
   Underline as UnderlineIcon,
   Undo2,
+  Users,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UploadError, uploadPostImage } from "@/lib/supabase/upload";
+import { promptMath } from "@/components/admin/math-prompt";
+import { CALLOUT_VARIANTS, calloutVariant, type CalloutVariant } from "@/lib/tiptap/nodes/callout";
+import { parseVideoUrl } from "@/lib/video";
+
+const CALLOUT_LABEL: Record<CalloutVariant, string> = {
+  note: "Ghi chú",
+  tip: "Mẹo",
+  warning: "Lưu ý",
+  example: "Ví dụ",
+};
 
 function ToolButton({
   onClick,
@@ -66,19 +82,50 @@ function Divider() {
   return <span aria-hidden className="mx-1 h-6 w-px shrink-0 bg-border" />;
 }
 
+/**
+ * Where the article's references block starts, if it has one. Read from the
+ * document rather than the cursor, so the buttons are right wherever the
+ * cursor is — an article gets one references block at most.
+ */
+function findReferences(editor: Editor): number | null {
+  let found: number | null = null;
+  editor.state.doc.descendants((node, pos) => {
+    if (node.type.name === "references") found = pos;
+    return found === null;
+  });
+  return found;
+}
+
 export function EditorToolbar({ editor }: { editor: Editor | null }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  // Which button opened the file picker: a bare image or a captioned figure.
+  const insertAsRef = useRef<"image" | "figure">("image");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   if (!editor) return null;
+
+  const referencesPos = findReferences(editor);
+
+  const pickImage = (insertAs: "image" | "figure") => {
+    insertAsRef.current = insertAs;
+    fileInputRef.current?.click();
+  };
 
   const handleImage = async (file: File) => {
     setError(null);
     setUploading(true);
     try {
       const url = await uploadPostImage(file);
-      editor.chain().focus().setImage({ src: url }).run();
+      if (insertAsRef.current === "figure") {
+        editor
+          .chain()
+          .focus()
+          .insertContent({ type: "figure", attrs: { src: url, alt: "", caption: "" } })
+          .run();
+      } else {
+        editor.chain().focus().setImage({ src: url }).run();
+      }
     } catch (err) {
       setError(
         err instanceof UploadError ? err.message : "Không tải được ảnh lên."
@@ -102,6 +149,66 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       .extendMarkRange("link")
       .setLink({ href: url })
       .run();
+  };
+
+  const applyCallout = (value: string) => {
+    if (value === "none") {
+      editor.chain().focus().lift("callout").run();
+      return;
+    }
+    const variant = calloutVariant(value);
+    if (editor.isActive("callout")) {
+      editor.chain().focus().updateAttributes("callout", { variant }).run();
+    } else {
+      editor.chain().focus().wrapIn("callout", { variant }).run();
+    }
+  };
+
+  const insertReferences = () => {
+    editor
+      .chain()
+      .focus()
+      .insertContent({
+        type: "references",
+        content: [
+          {
+            type: "orderedList",
+            content: [{ type: "listItem", content: [{ type: "paragraph" }] }],
+          },
+        ],
+      })
+      .run();
+  };
+
+  const promptReviewers = () => {
+    const pos = referencesPos;
+    if (pos === null) return;
+    const current = editor.state.doc.nodeAt(pos)?.attrs.reviewers;
+    const value = window.prompt(
+      "Được góp ý bởi (để trống để bỏ dòng này):",
+      typeof current === "string" ? current : ""
+    );
+    if (value === null) return;
+    editor
+      .chain()
+      .focus()
+      .command(({ tr }) => {
+        tr.setNodeAttribute(pos, "reviewers", value.trim());
+        return true;
+      })
+      .run();
+  };
+
+  const promptVideo = () => {
+    const url = window.prompt("Dán link YouTube hoặc TikTok:", "https://");
+    if (url === null) return;
+    const ref = parseVideoUrl(url);
+    if (!ref) {
+      setError("Không đọc được link video. Dán link YouTube hoặc TikTok.");
+      return;
+    }
+    setError(null);
+    editor.chain().focus().insertContent({ type: "video", attrs: ref }).run();
   };
 
   return (
@@ -224,7 +331,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         <ToolButton
           label={uploading ? "Đang tải ảnh…" : "Chèn ảnh"}
           disabled={uploading}
-          onClick={() => fileInputRef.current?.click()}
+          onClick={() => pickImage("image")}
         >
           <ImagePlus className="size-[18px]" strokeWidth={2.2} />
         </ToolButton>
@@ -245,6 +352,66 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
           onClick={() => editor.chain().focus().setHorizontalRule().run()}
         >
           <Minus className="size-[18px]" strokeWidth={2.4} />
+        </ToolButton>
+
+        <Divider />
+
+        <ToolButton
+          label="Công thức trong dòng"
+          active={editor.isActive("inlineMath")}
+          onClick={() => promptMath(editor, "inline")}
+        >
+          <Radical className="size-[18px]" strokeWidth={2.2} />
+        </ToolButton>
+        <ToolButton
+          label="Công thức khối"
+          active={editor.isActive("blockMath")}
+          onClick={() => promptMath(editor, "block")}
+        >
+          <Sigma className="size-[18px]" strokeWidth={2.2} />
+        </ToolButton>
+        <ToolButton
+          label={uploading ? "Đang tải ảnh…" : "Hình có chú thích"}
+          disabled={uploading}
+          onClick={() => pickImage("figure")}
+        >
+          <ImageIcon className="size-[18px]" strokeWidth={2.2} />
+        </ToolButton>
+        <select
+          aria-label="Callout"
+          title="Callout"
+          value=""
+          onChange={(event) => applyCallout(event.target.value)}
+          className="h-9 shrink-0 cursor-pointer rounded-lg border border-border bg-surface px-2 text-sm text-text-nav hover:border-black/20"
+        >
+          <option value="" disabled>
+            Callout…
+          </option>
+          {CALLOUT_VARIANTS.map((variant) => (
+            <option key={variant} value={variant}>
+              {CALLOUT_LABEL[variant]}
+            </option>
+          ))}
+          <option value="none">Bỏ callout</option>
+        </select>
+        <ToolButton
+          label={
+            referencesPos === null ? "Nguồn tham khảo" : "Bài đã có khối nguồn tham khảo"
+          }
+          disabled={referencesPos !== null}
+          onClick={insertReferences}
+        >
+          <BookMarked className="size-[18px]" strokeWidth={2.2} />
+        </ToolButton>
+        <ToolButton
+          label="Người góp ý (dưới nguồn tham khảo)"
+          disabled={referencesPos === null}
+          onClick={promptReviewers}
+        >
+          <Users className="size-[18px]" strokeWidth={2.2} />
+        </ToolButton>
+        <ToolButton label="Video" onClick={promptVideo}>
+          <Clapperboard className="size-[18px]" strokeWidth={2.2} />
         </ToolButton>
 
         <Divider />

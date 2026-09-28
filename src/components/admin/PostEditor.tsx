@@ -1,11 +1,13 @@
 "use client";
 
-import { useCallback, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { EditorContent, useEditor, type JSONContent } from "@tiptap/react";
+import { EditorContent, useEditor, type Editor, type JSONContent } from "@tiptap/react";
 import { Check, ImagePlus, TriangleAlert } from "lucide-react";
+import "katex/dist/katex.min.css";
 import { EditorToolbar } from "@/components/admin/EditorToolbar";
-import { articleExtensions } from "@/lib/tiptap/extensions";
+import { buildEditorExtensions } from "@/components/admin/editor-extensions";
+import { promptMath } from "@/components/admin/math-prompt";
 import { publishTranslation, savePost, unpublishTranslation } from "@/app/admin/actions";
 import { UploadError, uploadPostImage } from "@/lib/supabase/upload";
 import { LOCALE_LABELS, routing, type Locale } from "@/i18n/routing";
@@ -95,8 +97,19 @@ export function PostEditor({
     []
   );
 
+  // Formula nodes report clicks through their extension options, which are
+  // fixed when the editor is created — so they reach the editor via a ref.
+  const editorRef = useRef<Editor | null>(null);
+  const extensions = useMemo(
+    () =>
+      buildEditorExtensions((kind, latex, pos) => {
+        if (editorRef.current) promptMath(editorRef.current, kind, { latex, pos });
+      }),
+    []
+  );
+
   const editor = useEditor({
-    extensions: articleExtensions,
+    extensions,
     content: initialDrafts.vi.content ?? EMPTY_DOC,
     immediatelyRender: false,
     editorProps: {
@@ -108,6 +121,10 @@ export function PostEditor({
       updateDraft(activeRef.current, { content: instance.getJSON() });
     },
   });
+
+  useEffect(() => {
+    editorRef.current = editor;
+  }, [editor]);
 
   const switchTo = (locale: Locale) => {
     if (locale === active) return;
