@@ -141,7 +141,9 @@ hits=$(search "\"ban dan kiem tra$$\"" | grep -o "sec-s[pd]-$$" | sort | tr '\n'
 check "gõ không dấu tìm ra bài có dấu, không lộ bài nháp" "sec-sp-$$ " "$hits"
 check "gõ dở từ cuối vẫn ra kết quả" "sec-sp-$$" \
   "$(search "\"kiem tra$$ da d\"" | grep -o "sec-sp-$$" | head -1)"
-check "câu chỉ có ký tự cú pháp trả mảng rỗng" "[]" "$(search "\"&|!():*\"")"
+# Covers tsquery operators, both quote characters, and an emoji — all get
+# stripped as non-alphanumeric, leaving no token to search on.
+check "câu chỉ có ký tự cú pháp trả mảng rỗng" "[]" "$(search "\"&|!():*'\\\"🙂\"")"
 long=$(printf 'a%.0s' $(seq 1 10000))
 # The JSON body is built in a variable first: macOS's bash 3.2 mis-splits a
 # literal {"a":"b","c":"d"} written straight inside an inline $(...) argument
