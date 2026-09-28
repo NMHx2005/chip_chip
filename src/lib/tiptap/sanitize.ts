@@ -46,6 +46,9 @@ const ALLOWED_TAGS = new Set([
   "tr",
   "th",
   "td",
+  // Formula placeholders; math.ts swaps them for KaTeX after sanitising.
+  "span",
+  "div",
 ]);
 
 const ALLOWED_ATTR = new Set([
@@ -62,6 +65,8 @@ const ALLOWED_ATTR = new Set([
   "id",
   "colspan",
   "rowspan",
+  "data-type",
+  "data-latex",
 ]);
 
 /** Dropped together with everything up to their closing tag. */

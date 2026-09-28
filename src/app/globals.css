@@ -255,6 +255,23 @@
   z-index: 2;
 }
 
+/* ── DA2 article blocks ─────────────────────────────────────────────────────
+   Labels ("Hình", "Ghi chú", "Nguồn tham khảo", …) are generated here from
+   the page language instead of being stored in the article, so one Tiptap
+   document reads correctly in both locales. <html lang> is set by the root
+   layout and kept current by DocumentLang. Greyscale only; every text colour
+   below is at least 7:1 on its background. */
+
+.chip-prose .math-block {
+  margin: 1.5em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.chip-prose .math-error {
+  color: #0d0d0d;
+}
+
 /* Hero video hover-card: a bright dash traveling the notch outline, drawn as an
    SVG stroke so it follows the bottom-right scoop. pathLength is normalised to
    100, so the dash offset animates exactly one full perimeter. */

@@ -3,10 +3,13 @@ import "server-only";
 import { generateHTML } from "@tiptap/html";
 import { articleExtensions } from "@/lib/tiptap/extensions";
 import { extractHeadings, withHeadingIds } from "@/lib/tiptap/headings";
+import { mathToText, renderMath } from "@/lib/tiptap/math";
+import { prepareArticle, type Formula } from "@/lib/tiptap/prepare";
 import { sanitizeArticleHtml } from "@/lib/tiptap/sanitize";
 
 /**
- * Renders stored Tiptap JSON to HTML for the article page.
+ * Stored Tiptap JSON to sanitised HTML, with formula placeholders still in
+ * place.
  *
  * Content is stored as JSON rather than HTML so nothing executable is ever
  * persisted. `generateHTML` runs in Node without a DOM (it uses zeed-dom
@@ -14,32 +17,47 @@ import { sanitizeArticleHtml } from "@/lib/tiptap/sanitize";
  * defence — only staff can write articles, but sanitising on the way out is
  * cheap insurance against a hand-edited database row or a future importer.
  *
- * Heading ids are injected so the table of contents can link to them.
+ * Heading ids are injected after sanitising: the sanitiser escapes `<` inside
+ * attribute values, so an alt text containing "<h2>" can no longer be
+ * mistaken for a heading and shift every anchor after it.
  */
-export function renderArticle(content: unknown): string {
-  if (!content || typeof content !== "object") return "";
+function renderSanitized(content: unknown): { html: string; formulas: Formula[] } | null {
+  const prepared = prepareArticle(content);
+  if (!prepared) return null;
 
   let raw: string;
   try {
     raw = generateHTML(
-      content as Parameters<typeof generateHTML>[0],
+      prepared.doc as Parameters<typeof generateHTML>[0],
       articleExtensions
     );
   } catch {
     // Malformed JSON in the column — render nothing rather than a 500.
-    return "";
+    return null;
   }
 
-  // Ids go in after sanitising: the sanitiser escapes `<` inside attribute
-  // values, so an alt text containing "<h2>" can no longer be mistaken for a
-  // heading and shift every anchor after it.
-  return withHeadingIds(sanitizeArticleHtml(raw), extractHeadings(content));
+  const html = withHeadingIds(sanitizeArticleHtml(raw), extractHeadings(content));
+  return { html, formulas: prepared.formulas };
+}
+
+/**
+ * Renders stored Tiptap JSON to HTML for the article page.
+ *
+ * KaTeX HTML is built after sanitising, and only from the LaTeX string in
+ * the JSON — never by widening the allow-list.
+ */
+export function renderArticle(content: unknown): string {
+  const rendered = renderSanitized(content);
+  if (!rendered) return "";
+  return renderMath(rendered.html, rendered.formulas);
 }
 
 /** Plain-text preview for meta descriptions and search results. */
 export function articleToPlainText(content: unknown, limit = 200): string {
-  const html = renderArticle(content);
-  const text = html
+  const rendered = renderSanitized(content);
+  if (!rendered) return "";
+
+  const text = mathToText(rendered.html, rendered.formulas)
     .replace(/<[^>]+>/g, " ")
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")

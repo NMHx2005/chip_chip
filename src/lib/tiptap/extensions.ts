@@ -1,5 +1,6 @@
 import Highlight from "@tiptap/extension-highlight";
 import Image from "@tiptap/extension-image";
+import { Mathematics } from "@tiptap/extension-mathematics";
 import Placeholder from "@tiptap/extension-placeholder";
 import { TableKit } from "@tiptap/extension-table";
 import TextAlign from "@tiptap/extension-text-align";
@@ -55,4 +56,8 @@ export const articleExtensions = [
   Highlight.configure({
     multicolor: false,
   }),
+
+  // Inline and block formulas. Only the LaTeX is stored; the public page
+  // typesets it on the server (see math.ts), the editor in the browser.
+  Mathematics,
 ];

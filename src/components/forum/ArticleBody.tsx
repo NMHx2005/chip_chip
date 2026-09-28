@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import "katex/dist/katex.min.css";
 import { renderArticle } from "@/lib/tiptap/render";
 
 /**
@@ -7,6 +8,9 @@ import { renderArticle } from "@/lib/tiptap/render";
  * `renderArticle` runs server-side: it converts the stored Tiptap JSON to HTML
  * and sanitises the result. By the time it reaches `dangerouslySetInnerHTML`
  * the markup has already been through the tag allow-list.
+ *
+ * KaTeX's stylesheet is imported here rather than in a layout so that only
+ * article pages pay for it; its fonts are bundled and served from our origin.
  */
 export async function ArticleBody({ content }: { content: unknown }) {
   const html = renderArticle(content);

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { extractHeadings } from "@/lib/tiptap/headings";
 import { articleToPlainText, renderArticle } from "@/lib/tiptap/render";
 
 /**
@@ -16,6 +17,9 @@ const text = (value: string, marks?: unknown[]) => ({
   text: value,
   ...(marks ? { marks } : {}),
 });
+
+const inlineMath = (latex: unknown) => ({ type: "inlineMath", attrs: { latex } });
+const blockMath = (latex: unknown) => ({ type: "blockMath", attrs: { latex } });
 
 describe("renderArticle", () => {
   it("renders the formatting the editor can produce", () => {
@@ -112,6 +116,69 @@ describe("renderArticle — attribute values", () => {
       '<img loading="lazy" decoding="async" src="https://cdn.test/a.png" alt="&lt;h2&gt;giả&lt;/h2&gt;">' +
         '<h2 id="that">Thật</h2>' +
         '<p><a target="_blank" rel="noopener noreferrer nofollow" href="https://x.test/?a=1&amp;b=2">Sze</a></p>'
+    );
+  });
+});
+
+describe("renderArticle — formulas", () => {
+  it("typesets an inline formula with KaTeX on the server", () => {
+    const html = renderArticle(doc(paragraph(text("Năng lượng "), inlineMath("E = hf"))));
+    expect(html).toContain('<p>Năng lượng <span class="math-inline"><span class="katex">');
+    expect(html).toContain('<annotation encoding="application/x-tex">E = hf</annotation>');
+    expect(html).not.toContain("data-latex");
+  });
+
+  it("typesets a block formula in display mode", () => {
+    const html = renderArticle(doc(blockMath("a > b")));
+    expect(html.startsWith('<div class="math-block"><span class="katex-display">')).toBe(true);
+    expect(html).toContain('<math xmlns="http://www.w3.org/1998/Math/MathML" display="block">');
+    expect(html).toContain('<annotation encoding="application/x-tex">a &gt; b</annotation>');
+  });
+
+  it("renders nothing for an empty or non-string formula", () => {
+    expect(renderArticle(doc(blockMath(""), paragraph(text("x"), inlineMath(42))))).toBe("<p>x</p>");
+  });
+
+  it("does not turn \\href into a link", () => {
+    const html = renderArticle(doc(paragraph(inlineMath("\\href{javascript:alert(1)}{x}"))));
+    // KaTeX output contains `<annotation`, so a bare "<a" check would pass by accident.
+    expect(html).not.toMatch(/<a[\s>]/);
+    expect(html).not.toContain('href="');
+  });
+
+  it("keeps markup inside LaTeX from escaping into the page", () => {
+    const html = renderArticle(doc(paragraph(inlineMath('"><script>alert(1)</script>'))));
+    expect(html).not.toContain("<script");
+    expect(html).toContain('<span class="math-inline"><span class="katex">');
+  });
+
+  it("does not treat a placeholder typed as text as a formula", () => {
+    const html = renderArticle(
+      doc(paragraph(text('<span data-latex="0" data-type="inline-math"></span>')), blockMath("x"))
+    );
+    expect(html.startsWith('<p>&lt;span data-latex="0" data-type="inline-math"&gt;&lt;/span&gt;</p>')).toBe(true);
+    expect(html.match(/class="katex"/g)).toHaveLength(1);
+  });
+});
+
+describe("formulas elsewhere in the pipeline", () => {
+  it("contributes raw LaTeX to the plain text", () => {
+    expect(
+      articleToPlainText(doc(paragraph(text("Năng lượng "), inlineMath("E = hf")), blockMath("a < b")), 500)
+    ).toBe("Năng lượng E = hf a < b");
+  });
+
+  it("lists a heading's formula in the table of contents", () => {
+    const content = doc({
+      type: "heading",
+      attrs: { level: 2 },
+      content: [text("Định luật "), inlineMath("E = hf")],
+    });
+    expect(extractHeadings(content)).toEqual([
+      { id: "dinh-luat-e-hf", text: "Định luật E = hf", level: 2 },
+    ]);
+    expect(renderArticle(content)).toContain(
+      '<h2 id="dinh-luat-e-hf">Định luật <span class="math-inline">'
     );
   });
 });

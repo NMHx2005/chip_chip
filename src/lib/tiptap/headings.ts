@@ -15,6 +15,10 @@ type Node = {
 
 function collectText(node: Node): string {
   if (node.type === "text") return node.text ?? "";
+  // A formula in a heading reads as its LaTeX in the table of contents.
+  if (node.type === "inlineMath") {
+    return typeof node.attrs?.latex === "string" ? node.attrs.latex : "";
+  }
   if (!Array.isArray(node.content)) return "";
   return node.content.map(collectText).join("");
 }
