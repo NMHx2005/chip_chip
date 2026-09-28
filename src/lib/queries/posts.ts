@@ -162,7 +162,10 @@ export async function listLessons(
     .select(SUMMARY_COLUMNS, { count: "exact" })
     .eq("status", "published")
     .eq("locale", locale)
-    .eq("kind", "lesson");
+    .eq("kind", "lesson")
+    // A topic-less lesson has no listing card and no page slot; excluding it
+    // here keeps it from opening a gap in the grid or skewing the page count.
+    .not("topic", "is", null);
 
   if (topic) query = query.eq("topic", topic);
   if (difficulty) query = query.eq("difficulty", difficulty);
