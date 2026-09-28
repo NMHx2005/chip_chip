@@ -108,12 +108,22 @@ trước khi migrate nghĩa là mọi danh sách bài trả về rỗng và mọ
 Rồi điền biến môi trường trên Vercel (xem `.env.example`). **Không** commit
 `SUPABASE_SERVICE_ROLE_KEY` — khoá này bỏ qua toàn bộ RLS.
 
-Hai biến tuỳ chọn, nên đặt khi lên production:
+Các biến tuỳ chọn:
 
 | Biến | Mặc định | Dùng để làm gì |
 |---|---|---|
 | `COMMENT_IP_SALT` | lấy tạm từ service role key | Muối băm IP cho rate limit. Đặt riêng để xoay service key không làm mất hết bộ đếm. |
 | `TRUSTED_PROXY_HOPS` | `1` | Số proxy đứng trước app. Vercel hoặc một nginx thì để `1`; thêm CDN ở ngoài thì `2`. Đọc sai số này là rate limit bị bypass. |
+| `DEEPSEEK_API_KEY` | (trống) | Bật nút "Dịch nháp bằng AI" ở tab EN của trình soạn bài. Không có thì nút tắt kèm lời giải thích. Chỉ đặt ở server (không có tiền tố `NEXT_PUBLIC_`). |
+| `DEEPSEEK_MODEL` | `deepseek-v4-pro` | Model DeepSeek dùng để dịch nháp, ví dụ `deepseek-flash` nếu muốn rẻ và nhanh hơn. |
+
+`.env.example` chưa có hai biến DeepSeek — chủ dự án tự thêm (công cụ tự động không đọc được file này).
+
+DA2 (công cụ viết bài) **không có migration mới**: chỉ cần deploy code; đặt `DEEPSEEK_API_KEY` nếu muốn dùng dịch nháp.
+
+### Dịch nháp bằng AI và quyền riêng tư
+
+Nút "Dịch nháp bằng AI" gửi **nội dung bài viết** (tiêu đề, tóm tắt, chữ trong thân bài, chú thích và mô tả ảnh, dòng người góp ý) tới máy chủ của DeepSeek (`api.deepseek.com`) để dịch. Không gửi email, bình luận, tin nhắn hay bất kỳ dữ liệu nào của người đọc; công thức, khối mã và địa chỉ link không rời server. Bản dịch chỉ được nạp vào tab EN như thay đổi chưa lưu — không có gì được ghi vào cơ sở dữ liệu cho tới khi người viết đọc lại và bấm "Lưu". Mỗi lần bấm gửi tối đa 60 000 ký tự.
 
 ## Cấu trúc
 
@@ -183,7 +193,19 @@ theo IP (đã băm), và đánh dấu `is_post_author` khi ban điều hành tr�
 `author_email` không bao giờ được trả về cho client — chỉ hiện trong `/admin/comments`.
 
 **Nội dung bài viết** lưu dạng Tiptap JSON, render sang HTML ở server qua
-`generateHTML` rồi cho qua DOMPurify với allow-list. Không lưu HTML thô.
+`generateHTML` rồi cho qua bộ lọc allow-list không cần DOM
+(`src/lib/tiptap/sanitize.ts`). Công thức (KaTeX) và khung video được dựng
+**sau** bước lọc, chỉ từ dữ liệu đã kiểm tra: chuỗi LaTeX lấy thẳng từ JSON và
+ID video khớp regex của nền tảng. Không lưu HTML thô. Video chỉ tải player
+YouTube/TikTok khi người đọc bấm vào.
+
+**Các khối soạn bài** (toolbar ở `/admin/bai-viet/[id]`):
+
+- **Công thức** — nút Σ (trong dòng) hoặc √ (khối), gõ LaTeX vào hộp thoại; hiện dạng KaTeX ngay trong trình soạn.
+- **Ảnh / Hình có chú thích** — nút ảnh để chèn ảnh trần, nút ảnh+ để chèn hình có `alt` và chú thích, đánh số "Hình 1.", "Hình 2." tự động khi có chú thích.
+- **Callout** — menu thả xuống 4 loại: Ghi chú, Mẹo, Lưu ý, Ví dụ.
+- **Nguồn tham khảo** — nút Nguồn tham khảo chèn khối danh sách có số thứ tự; nút Người góp ý (chỉ hiện khi đã có khối này) đặt dòng "Được góp ý bởi …".
+- **Video** — nút Video, dán link YouTube hoặc TikTok; hiện lại thumbnail trong trình soạn, còn trang công khai dựng facade bấm-để-phát.
 
 ## Ảnh chia sẻ (Open Graph)
 
