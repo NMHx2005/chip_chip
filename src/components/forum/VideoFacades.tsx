@@ -44,6 +44,7 @@ export function VideoFacades() {
         "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
       frame.allowFullscreen = true;
       frame.setAttribute("loading", "lazy");
+      frame.referrerPolicy = "strict-origin-when-cross-origin";
       frame.className = "video-frame";
       facade.replaceWith(frame);
       frame.focus();

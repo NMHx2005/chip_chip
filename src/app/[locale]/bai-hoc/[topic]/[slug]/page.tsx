@@ -137,7 +137,7 @@ export default async function LessonArticlePage({ params }: { params: Params }) 
         <ArticleToc content={post.content} />
 
         <div className="mt-10">
-          <ArticleBody content={post.content} />
+          <ArticleBody content={post.content} locale={locale as Locale} />
         </div>
       </div>
     </article>

@@ -358,14 +358,19 @@ describe("renderArticle — videos", () => {
 
   it("renders a YouTube video as a click-to-load facade", () => {
     expect(renderArticle(doc(video("youtube", "dQw4w9WgXcQ")))).toBe(
-      '<figure class="video-embed video-embed-youtube"><a class="video-facade" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" data-video-platform="youtube" data-video-id="dQw4w9WgXcQ"><img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="" loading="lazy" decoding="async"><span class="video-facade-play" aria-hidden="true"></span><span class="video-facade-label">YouTube</span></a></figure>'
+      '<figure class="video-embed video-embed-youtube"><a class="video-facade" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer" aria-label="Phát video trên YouTube" data-video-platform="youtube" data-video-id="dQw4w9WgXcQ"><img src="https://i.ytimg.com/vi/dQw4w9WgXcQ/hqdefault.jpg" alt="" loading="lazy" decoding="async"><span class="video-facade-play" aria-hidden="true"></span><span class="video-facade-label">YouTube</span></a></figure>'
     );
   });
 
   it("renders a TikTok video without a thumbnail", () => {
     expect(renderArticle(doc(video("tiktok", "7231338487075638570")))).toBe(
-      '<figure class="video-embed video-embed-tiktok"><a class="video-facade" href="https://www.tiktok.com/embed/v2/7231338487075638570" target="_blank" rel="noopener noreferrer" data-video-platform="tiktok" data-video-id="7231338487075638570"><span class="video-facade-play" aria-hidden="true"></span><span class="video-facade-label">TikTok</span></a></figure>'
+      '<figure class="video-embed video-embed-tiktok"><a class="video-facade" href="https://www.tiktok.com/embed/v2/7231338487075638570" target="_blank" rel="noopener noreferrer" aria-label="Phát video trên TikTok" data-video-platform="tiktok" data-video-id="7231338487075638570"><span class="video-facade-play" aria-hidden="true"></span><span class="video-facade-label">TikTok</span></a></figure>'
     );
+  });
+
+  it("gives the facade an accessible name in the page's own locale", () => {
+    const html = renderArticle(doc(video("youtube", "dQw4w9WgXcQ")), "en");
+    expect(html).toContain('aria-label="Play video on YouTube"');
   });
 
   it.each([

@@ -1,6 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import "katex/dist/katex.min.css";
 import { VideoFacades } from "@/components/forum/VideoFacades";
+import type { Locale } from "@/i18n/routing";
 import { renderArticle } from "@/lib/tiptap/render";
 
 /**
@@ -13,8 +14,8 @@ import { renderArticle } from "@/lib/tiptap/render";
  * KaTeX's stylesheet is imported here rather than in a layout so that only
  * article pages pay for it; its fonts are bundled and served from our origin.
  */
-export async function ArticleBody({ content }: { content: unknown }) {
-  const html = renderArticle(content);
+export async function ArticleBody({ content, locale }: { content: unknown; locale: Locale }) {
+  const html = renderArticle(content, locale);
 
   if (!html) {
     const t = await getTranslations("forum");

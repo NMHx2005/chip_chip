@@ -129,7 +129,8 @@
     "notFound": "Không tìm thấy bài viết này.",
     "tableOfContents": "Nội dung bài",
     "emptyArticle": "Bài viết chưa có nội dung.",
-    "videoFrameTitle": "Video {platform} nhúng trong bài"
+    "videoFrameTitle": "Video {platform} nhúng trong bài",
+    "playVideo": "Phát video trên {platform}"
   },
   "about": {
     "title": "Giới thiệu",

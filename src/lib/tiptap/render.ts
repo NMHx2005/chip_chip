@@ -1,6 +1,7 @@
 import "server-only";
 
 import { generateHTML } from "@tiptap/html";
+import type { Locale } from "@/i18n/routing";
 import { articleExtensions } from "@/lib/tiptap/extensions";
 import { extractHeadings, withHeadingIds } from "@/lib/tiptap/headings";
 import { mathToText, renderMath } from "@/lib/tiptap/math";
@@ -47,11 +48,14 @@ function renderSanitized(content: unknown): { html: string; formulas: Formula[] 
  * KaTeX and the video facade are built after sanitising, and only from
  * validated data — the LaTeX string from the JSON, a video id that matched
  * its platform's pattern — never by widening the allow-list.
+ *
+ * `locale` only feeds the video facade's accessible name (see video-embed.ts);
+ * it defaults to Vietnamese so existing callers and tests are unaffected.
  */
-export function renderArticle(content: unknown): string {
+export function renderArticle(content: unknown, locale: Locale = "vi"): string {
   const rendered = renderSanitized(content);
   if (!rendered) return "";
-  return renderVideos(renderMath(rendered.html, rendered.formulas));
+  return renderVideos(renderMath(rendered.html, rendered.formulas), locale);
 }
 
 /** Plain-text preview for meta descriptions and search results. */
