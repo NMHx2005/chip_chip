@@ -121,6 +121,38 @@ check "không gắn độ khó vào bài blog" "blocked" "$(sql_outcome \
    values ('vi', 'forum', 'sec-diff-$$', 'basic');")"
 
 echo
+echo "S — tìm kiếm không dấu"
+check "f_unaccent bỏ dấu cả chữ đ" "Duong ban dan" \
+  "$(psql "$DB_URL" -t -A -c "select public.f_unaccent('Đường bán dẫn');")"
+
+sp=$(uuidgen | tr '[:upper:]' '[:lower:]')
+sd=$(uuidgen | tr '[:upper:]' '[:lower:]')
+psql "$DB_URL" -q -c "insert into public.posts
+  (translation_id, locale, kind, title, slug, status, published_at) values
+  ('$sp', 'vi', 'forum', 'Bán dẫn kiểm tra$$ đã đăng', 'sec-sp-$$', 'published', now()),
+  ('$sd', 'vi', 'forum', 'Bán dẫn kiểm tra$$ bản nháp', 'sec-sd-$$', 'draft', null);"
+
+search() {
+  curl -s -X POST "$API_URL/rest/v1/rpc/search_posts" -H "apikey: $ANON_KEY" \
+    -H 'Content-Type: application/json' \
+    -d "{\"p_query\":$1,\"p_locale\":\"vi\"}"
+}
+hits=$(search "\"ban dan kiem tra$$\"" | grep -o "sec-s[pd]-$$" | sort | tr '\n' ' ')
+check "gõ không dấu tìm ra bài có dấu, không lộ bài nháp" "sec-sp-$$ " "$hits"
+check "gõ dở từ cuối vẫn ra kết quả" "sec-sp-$$" \
+  "$(search "\"kiem tra$$ da d\"" | grep -o "sec-sp-$$" | head -1)"
+check "câu chỉ có ký tự cú pháp trả mảng rỗng" "[]" "$(search "\"&|!():*\"")"
+long=$(printf 'a%.0s' $(seq 1 10000))
+# The JSON body is built in a variable first: macOS's bash 3.2 mis-splits a
+# literal {"a":"b","c":"d"} written straight inside an inline $(...) argument
+# (it misreads the comma as a brace-expansion separator), sending two broken
+# requests instead of one. Assigning it first avoids that.
+long_body="{\"p_query\":\"$long\",\"p_locale\":\"vi\"}"
+check "câu rất dài vẫn trả 200" "200" "$(status -X POST "$API_URL/rest/v1/rpc/search_posts" \
+  -H "apikey: $ANON_KEY" -H 'Content-Type: application/json' \
+  -d "$long_body")"
+
+echo
 echo "D2 — cổng đăng bài của nhóm dịch"
 # Publishing needs an activated staff member; the throwaway account is promoted
 # only here, after every check that needs it to be an outsider has run.
