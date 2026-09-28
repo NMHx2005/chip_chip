@@ -53,7 +53,15 @@ export async function readJsonWithLimit<T = unknown>(
 
     total += value.byteLength;
     if (total > maxBytes) {
-      await reader.cancel();
+      // Best-effort: some streams (or test doubles) reject on cancel. The
+      // body is already oversized regardless of whether the cancel succeeds,
+      // so a rejected cancel must never turn this into an unhandled
+      // rejection / 500 — the caller still needs its 413.
+      try {
+        await reader.cancel();
+      } catch {
+        // ignore
+      }
       return { ok: false, reason: "too_large" };
     }
     chunks.push(value);

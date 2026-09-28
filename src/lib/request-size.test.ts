@@ -53,7 +53,39 @@ describe("isBodyTooLarge", () => {
   });
 });
 
+/**
+ * A chunked request whose underlying stream's `cancel()` rejects — some
+ * streams (proxies, certain polyfills) behave this way. `readJsonWithLimit`
+ * must still resolve with `too_large`, not throw, once the byte limit is
+ * exceeded.
+ */
+function chunkedRequestWithFailingCancel(chunks: string[]): Request {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream<Uint8Array>({
+    start(controller) {
+      for (const chunk of chunks) controller.enqueue(encoder.encode(chunk));
+      controller.close();
+    },
+    cancel() {
+      throw new Error("cancel not supported");
+    },
+  });
+
+  return new Request("http://test.local/api", {
+    method: "POST",
+    body: stream,
+    duplex: "half",
+  } as RequestInit);
+}
+
 describe("readJsonWithLimit", () => {
+  it("still returns too_large when the stream's cancel() rejects", async () => {
+    const request = chunkedRequestWithFailingCancel(["{\"a\":\"", "xxxxxxxxxx", "\"}"]);
+
+    const result = await readJsonWithLimit(request, 10);
+    expect(result).toEqual({ ok: false, reason: "too_large" });
+  });
+
   it("rejects a chunked stream (no content-length) once it exceeds the limit", async () => {
     const request = chunkedRequest(["{\"a\":\"", "xxxxxxxxxx", "\"}"]);
     expect(request.headers.get("content-length")).toBeNull();
