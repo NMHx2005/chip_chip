@@ -1,4 +1,5 @@
 import type { StaticPathname } from "@/i18n/routing";
+import { COUNTRY_CLIPS } from "@/lib/country-clips";
 
 // Hrefs use the internal (default-locale) pathname keys defined in
 // `i18n/routing.ts`; next-intl resolves the localized URL for each locale.
@@ -88,51 +89,133 @@ export const CONTACT_EMAIL = "";
 /** Date the privacy page was last checked against the code (YYYY-MM-DD). */
 export const PRIVACY_UPDATED = "2026-09-28";
 
-// Same neutral-grayscale rule as TOPIC_TONE above: the four bands are told
-// apart by shade, never by hue (the earlier pastel/hex-per-country look read
-// as unprofessional). Text sits on `tone` at >= 4.5:1 in every case.
+export type CountryId = keyof typeof COUNTRY_CLIPS;
+export type CountryCompany = { name: string; logo: string | null; href: string };
+
+// Bands are told apart by shade, never by hue (same rule as TOPIC_TONE above).
+// Text sits on `tone` at >= 4.5:1 in every case. `logo: null` renders the name
+// as text: Micron's logo is not in the shared drive yet.
 export const COUNTRY_BANDS = [
   {
     id: "usa",
     labelKey: "usa",
     tone: "#CDCDCD",
-    /**
-     * Company logos live in `public/logos/`. `logo: null` renders the name as
-     * text, so the band stays correct before the files arrive.
-     */
+    flag: "/countries/usa-flag.webp",
+    map: "/countries/usa-map.svg",
     companies: [
-      { name: "NVIDIA", logo: null },
-      { name: "Broadcom", logo: null },
-      { name: "AMD", logo: null },
-      { name: "Micron", logo: null },
-      { name: "Qualcomm", logo: null },
-      { name: "Intel", logo: null },
+      { name: "NVIDIA", logo: "/logos/nvidia.webp", href: "https://www.nvidia.com" },
+      { name: "Broadcom", logo: "/logos/broadcom.webp", href: "https://www.broadcom.com" },
+      { name: "AMD", logo: "/logos/amd.png", href: "https://www.amd.com" },
+      { name: "Micron", logo: null, href: "https://www.micron.com" },
+      { name: "Qualcomm", logo: "/logos/qualcomm.webp", href: "https://www.qualcomm.com" },
+      { name: "Intel", logo: "/logos/intel.png", href: "https://www.intel.com" },
     ],
+    clip: COUNTRY_CLIPS.usa,
   },
   {
     id: "taiwan",
     labelKey: "taiwan",
-    tone: "#D8D8D8",
-    companies: [{ name: "TSMC", logo: null }],
+    tone: "#D3D3D3",
+    flag: "/countries/taiwan-flag.webp",
+    map: "/countries/taiwan-map.png",
+    companies: [{ name: "TSMC", logo: "/logos/tsmc.webp", href: "https://www.tsmc.com" }],
+    clip: COUNTRY_CLIPS.taiwan,
   },
   {
-    id: "netherlands",
-    labelKey: "netherlands",
-    tone: "#E3E3E3",
-    companies: [{ name: "ASML", logo: null }],
+    id: "china",
+    labelKey: "china",
+    tone: "#DADADA",
+    flag: "/countries/china-flag.webp",
+    map: "/countries/china-map.webp",
+    companies: [{ name: "SMIC", logo: "/logos/smic.webp", href: "https://www.smics.com" }],
+    clip: COUNTRY_CLIPS.china,
   },
   {
     id: "south-korea",
     labelKey: "south-korea",
-    tone: "#EEEEEE",
+    tone: "#E3E3E3",
+    flag: "/countries/south-korea-flag.webp",
+    map: "/countries/south-korea-map.svg",
     companies: [
-      { name: "Samsung", logo: null },
-      { name: "SK hynix", logo: null },
+      { name: "Samsung", logo: "/logos/samsung.svg", href: "https://www.samsung.com" },
+      { name: "SK hynix", logo: "/logos/sk-hynix.webp", href: "https://www.skhynix.com" },
+    ],
+    clip: COUNTRY_CLIPS["south-korea"],
+  },
+  {
+    id: "netherlands",
+    labelKey: "netherlands",
+    tone: "#EEEEEE",
+    flag: "/countries/netherlands-flag.webp",
+    map: "/countries/netherlands-map.webp",
+    companies: [{ name: "ASML", logo: "/logos/asml.webp", href: "https://www.asml.com" }],
+    clip: COUNTRY_CLIPS.netherlands,
+  },
+] as const satisfies readonly {
+  id: CountryId;
+  labelKey: CountryId;
+  tone: string;
+  flag: string;
+  map: string;
+  companies: readonly CountryCompany[];
+  clip: (typeof COUNTRY_CLIPS)[CountryId];
+}[];
+
+export type CountryBand = (typeof COUNTRY_BANDS)[number];
+
+/**
+ * Roles in the chip supply chain, for the Ecosystem diagram. Names without a
+ * logo file are drawn as text.
+ */
+export const ECOSYSTEM_GROUPS = [
+  {
+    id: "equipment",
+    items: [
+      { name: "ASML", logo: "/logos/asml.webp" },
+      { name: "Applied Materials", logo: null },
+      { name: "Lam Research", logo: null },
+      { name: "KLA", logo: null },
+      { name: "Tokyo Electron", logo: null },
+      { name: "Axcelis", logo: null },
+      { name: "ChipMOS", logo: null },
+    ],
+  },
+  {
+    id: "foundries",
+    items: [
+      { name: "TSMC", logo: "/logos/tsmc.webp" },
+      { name: "GlobalFoundries", logo: "/logos/globalfoundries.webp" },
+      { name: "Texas Instruments", logo: "/logos/texas-instruments.webp" },
+      { name: "SMIC", logo: "/logos/smic.webp" },
+      { name: "UMC", logo: "/logos/umc.webp" },
+    ],
+  },
+  {
+    id: "idm",
+    items: [
+      { name: "Intel", logo: "/logos/intel.png" },
+      { name: "Samsung", logo: "/logos/samsung.svg" },
+    ],
+  },
+  {
+    id: "fabless",
+    items: [
+      { name: "NVIDIA", logo: "/logos/nvidia.webp" },
+      { name: "Apple", logo: "/logos/apple.png" },
+      { name: "Qualcomm", logo: "/logos/qualcomm.webp" },
+      { name: "Broadcom", logo: "/logos/broadcom.webp" },
+      { name: "AMD", logo: "/logos/amd.png" },
+    ],
+  },
+  {
+    id: "osat",
+    items: [
+      { name: "Amkor", logo: null },
+      { name: "ASE", logo: null },
+      { name: "SPIL", logo: null },
     ],
   },
 ] as const;
-
-export type CountryBand = (typeof COUNTRY_BANDS)[number];
 
 export const PAGE_SIZE = 9;
 
