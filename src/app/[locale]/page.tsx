@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { CountryBands } from "@/components/sections/CountryBands";
+import { EcosystemDiagram } from "@/components/sections/EcosystemDiagram";
 import { Hero } from "@/components/sections/Hero";
 import { JoinCta } from "@/components/sections/JoinCta";
 import { LatestPosts } from "@/components/sections/LatestPosts";
@@ -63,6 +64,7 @@ export default async function HomePage({
       <MainSection>
         <SimpleStart />
         <LessonTopics counts={topicCounts} />
+        <EcosystemDiagram />
         <CountryBands />
         <VideoCarousel />
         <LatestPosts posts={posts} />
