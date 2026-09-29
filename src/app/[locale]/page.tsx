@@ -55,7 +55,10 @@ export default async function HomePage({
       <SceneFillOverlay targetId="latest-posts" />
 
       <div className="relative">
-        <StickyBackdrop src={HERO_BACKDROP} />
+        <StickyBackdrop
+          src={HERO_BACKDROP}
+          className="[&_img]:scale-105 [&_img]:opacity-40 [&_img]:blur-[6px]"
+        />
         <div className="relative z-10 -mt-[100dvh]">
           <Hero />
         </div>

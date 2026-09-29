@@ -59,17 +59,15 @@ export const TOPIC_TONE: Record<
 
 /**
  * Preview clip shown beside the topic accordion on the homepage, one per
- * topic, swapped as the reader opens a different row.
- *
- * PLACEHOLDERS, same caveat as HOME_VIDEO: these are clips borrowed from the
- * Strike Robot project so the column can be reviewed at all. Replace with four
- * semiconductor clips before launch.
+ * topic, swapped as the reader opens a different row. The four clips are
+ * consecutive 30s cuts of ASML's "Computational lithography: Driving nanometer
+ * precision in microchip manufacturing" (0:00-2:00), credited on the page.
  */
 export const TOPIC_VIDEOS: Record<TopicId, string> = {
-  "dinh-nghia": "/video/clip-1.mp4",
-  "nguyen-ly": "/video/clip-2.mp4",
-  "ung-dung": "/video/clip-3.mp4",
-  "lich-su": "/video/clip-4.mp4",
+  "dinh-nghia": "/video/asml-part1.mp4",
+  "nguyen-ly": "/video/asml-part2.mp4",
+  "ung-dung": "/video/asml-part3.mp4",
+  "lich-su": "/video/asml-part4.mp4",
 };
 
 /** Placeholder until the real Facebook and TikTok pages exist. A blank href
@@ -236,19 +234,23 @@ export const CONTRIBUTORS: { name: string; role: string }[] = [];
 /**
  * Homepage intro clip — the one that stands up as the reader scrolls to it.
  *
- * PLACEHOLDER borrowed from the Strike Robot project so the motion can be
- * reviewed. Replace with the 30s cut of "The Closest Thing We Have to Alien
- * Technology", ending where the narration reaches "the smaller the transistor,
- * the faster the computation". Self-hosted mp4 rather than a YouTube embed: an
- * iframe cannot be muted-autoplayed reliably and cannot be rotated in 3D.
+ * The first 29s of "The Closest Thing We Have to Alien Technology", cut where
+ * the narration reaches "the smaller the transistors, the faster they can
+ * compute". Self-hosted mp4 rather than a YouTube embed: an iframe cannot be
+ * muted-autoplayed reliably and cannot be rotated in 3D.
  */
-export const HOME_VIDEO = "/video/intro-placeholder.mp4";
+export const HOME_VIDEO = "/video/hero-intro.mp4";
 
-/** Credit line under the intro clip. Empty until a real clip is in place. */
-export const HOME_VIDEO_CREDIT: { label: string; href: string } | null = null;
+/** Credit line under the intro clip. */
+export const HOME_VIDEO_CREDIT: { label: string; href: string } | null = {
+  label: "The Closest Thing We Have to Alien Technology",
+  href: "https://www.youtube.com/watch?v=MiUHjLxm3V0",
+};
 
 /**
- * Six clips for the homepage carousel. PLACEHOLDERS, same caveat as above.
+ * Six clips for the homepage carousel. PLACEHOLDERS borrowed from the Strike
+ * Robot project so the carousel can be reviewed; replace with six
+ * semiconductor clips before launch.
  * `topicKey` indexes `home.videos.topics` in the message files.
  */
 export const CAROUSEL_VIDEOS = [
@@ -261,7 +263,7 @@ export const CAROUSEL_VIDEOS = [
 ] as const;
 
 /** Sticky backdrop behind the upper half of the homepage. */
-export const HERO_BACKDROP = "/hero-backdrop.svg";
+export const HERO_BACKDROP = "/hero-backdrop.jpg";
 
 /**
  * Full-bleed backdrop of the homepage join block.

@@ -36,7 +36,7 @@ export function Logo({
         </span>
       )}
 
-      <span className="text-gradient-brand mt-[0.1em] text-[1em] font-extrabold uppercase leading-[0.92] tracking-[-0.02em]">
+      <span className="text-gradient-brand mt-[0.1em] text-[1em] font-extrabold uppercase leading-[0.92] tracking-[0.02em] [word-spacing:0.14em]">
         Chíp Chíp
       </span>
     </span>
