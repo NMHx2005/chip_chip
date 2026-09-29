@@ -1,5 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { embedUrl, parseVideoUrl, thumbnailUrl, videoRefFrom, watchUrl } from "@/lib/video";
+import {
+  embedUrl,
+  parseVideoUrl,
+  thumbnailUrl,
+  videoRefFrom,
+  watchUrl,
+  youtubeClipEmbedUrl,
+} from "@/lib/video";
 
 const YT = { platform: "youtube", externalId: "dQw4w9WgXcQ" } as const;
 const TT = { platform: "tiktok", externalId: "7231338487075638570" } as const;
@@ -93,5 +100,30 @@ describe("thumbnailUrl", () => {
 
   it("has no still for TikTok", () => {
     expect(thumbnailUrl(TT)).toBeNull();
+  });
+});
+
+describe("youtubeClipEmbedUrl", () => {
+  it("builds a privacy-enhanced embed with start and end", () => {
+    expect(youtubeClipEmbedUrl("xaspX81mfzQ", 60, 90)).toBe(
+      "https://www.youtube-nocookie.com/embed/xaspX81mfzQ?start=60&end=90&rel=0&modestbranding=1&autoplay=1"
+    );
+  });
+
+  it("refuses a malformed id", () => {
+    expect(youtubeClipEmbedUrl("not an id", 0, 10)).toBeNull();
+    expect(youtubeClipEmbedUrl("../x", 0, 10)).toBeNull();
+  });
+
+  it("refuses an empty, reversed or negative window", () => {
+    expect(youtubeClipEmbedUrl("xaspX81mfzQ", 10, 10)).toBeNull();
+    expect(youtubeClipEmbedUrl("xaspX81mfzQ", 30, 10)).toBeNull();
+    expect(youtubeClipEmbedUrl("xaspX81mfzQ", -1, 10)).toBeNull();
+  });
+
+  it("refuses non-integer or non-finite times", () => {
+    expect(youtubeClipEmbedUrl("xaspX81mfzQ", 1.5, 10)).toBeNull();
+    expect(youtubeClipEmbedUrl("xaspX81mfzQ", 0, Number.NaN)).toBeNull();
+    expect(youtubeClipEmbedUrl("xaspX81mfzQ", 0, Number.POSITIVE_INFINITY)).toBeNull();
   });
 });

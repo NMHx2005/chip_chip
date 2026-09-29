@@ -78,6 +78,22 @@ export function embedUrl(ref: VideoRef): string {
 }
 
 /**
+ * Embed address for a fixed window of a YouTube video. Returns null instead of
+ * a broken address when the id or the window is unusable, so a bad constant
+ * shows nothing rather than a dead player.
+ */
+export function youtubeClipEmbedUrl(
+  id: string,
+  startSeconds: number,
+  endSeconds: number
+): string | null {
+  if (!YOUTUBE_ID.test(id)) return null;
+  if (!Number.isInteger(startSeconds) || !Number.isInteger(endSeconds)) return null;
+  if (startSeconds < 0 || endSeconds <= startSeconds) return null;
+  return `${embedUrl({ platform: "youtube", externalId: id })}?start=${startSeconds}&end=${endSeconds}&rel=0&modestbranding=1&autoplay=1`;
+}
+
+/**
  * Rebuilds a reference from untrusted parts — an article's JSON or a data
  * attribute in the page — accepting only what `parseVideoUrl` could produce.
  */
