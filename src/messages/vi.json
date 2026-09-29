@@ -484,6 +484,7 @@
     "errorDescription": "Đã có lỗi xảy ra khi tải nội dung. Bạn thử tải lại trang nhé.",
     "video": "video",
     "playVideo": "Phát {label}",
-    "pauseVideo": "Tạm dừng {label}"
+    "pauseVideo": "Tạm dừng {label}",
+    "videoCredit": "Video:"
   }
 }

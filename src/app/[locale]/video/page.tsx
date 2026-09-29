@@ -10,6 +10,7 @@ import type { Locale } from "@/i18n/routing";
 import { LISTING_PAGE_SIZE } from "@/lib/listing-order";
 import { listingQuery, parseListingParams, type SearchParams } from "@/lib/listing-params";
 import { listVideos } from "@/lib/queries/posts";
+import { VIDEO_BANNER } from "@/lib/constants";
 import { localeAlternates } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -65,6 +66,7 @@ export default async function VideosPage({
         eyebrow={t("eyebrow")}
         title={t("title")}
         description={t("description")}
+        backdropImage={VIDEO_BANNER}
       >
         <HeroStat value={total} label={t("title")} />
       </PageHero>

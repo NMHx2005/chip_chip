@@ -1,4 +1,6 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
+import { AutoplayVideo } from "@/components/ui/AutoplayVideo";
 import { cn } from "@/lib/utils";
 
 /**
@@ -18,6 +20,8 @@ export function PageHero({
   description,
   children,
   className,
+  backdropImage,
+  backdropVideo,
 }: {
   eyebrow?: string;
   title: string;
@@ -25,10 +29,39 @@ export function PageHero({
   /** Optional supporting column (e.g. stats or an action). */
   children?: ReactNode;
   className?: string;
+  /** Path under `public/`; faded into the page background behind the text. */
+  backdropImage?: string;
+  /** Muted looping clip used instead of `backdropImage`. */
+  backdropVideo?: string;
 }) {
+  const hasBackdrop = Boolean(backdropImage || backdropVideo);
+
   return (
-    <section className={cn("px-5 pt-12 md:px-8 md:pt-16", className)}>
-      <div className="mx-auto w-full max-w-content">
+    <section
+      className={cn(
+        "px-5 pt-12 md:px-8 md:pt-16",
+        hasBackdrop && "relative overflow-hidden pb-10 md:pb-14",
+        className
+      )}
+    >
+      {hasBackdrop && (
+        <div aria-hidden className="pointer-events-none absolute inset-0">
+          {backdropVideo ? (
+            <AutoplayVideo src={backdropVideo} eager className="opacity-25" />
+          ) : (
+            <Image
+              src={backdropImage!}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover opacity-25"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg/40 to-bg" />
+        </div>
+      )}
+      <div className="relative mx-auto w-full max-w-content">
         <div className="rise-in flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
           <header className="max-w-2xl">
             {eyebrow && (

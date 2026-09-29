@@ -484,6 +484,7 @@
     "errorDescription": "Something went wrong while loading this page. Please try again.",
     "video": "video",
     "playVideo": "Play {label}",
-    "pauseVideo": "Pause {label}"
+    "pauseVideo": "Pause {label}",
+    "videoCredit": "Video:"
   }
 }

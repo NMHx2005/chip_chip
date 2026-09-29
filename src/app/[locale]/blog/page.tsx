@@ -5,7 +5,7 @@ import { PostCard } from "@/components/forum/PostCard";
 import { HeroStat, PageHero } from "@/components/sections/PageHero";
 import { listForumPosts } from "@/lib/queries/posts";
 import { localeAlternates } from "@/lib/seo";
-import { PAGE_SIZE } from "@/lib/constants";
+import { BLOG_CLIP, BLOG_CLIP_CREDIT, PAGE_SIZE } from "@/lib/constants";
 import type { Locale } from "@/i18n/routing";
 
 export async function generateMetadata({
@@ -32,9 +32,10 @@ export default async function ForumPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, tPagination] = await Promise.all([
+  const [t, tPagination, tCommon] = await Promise.all([
     getTranslations("forum"),
     getTranslations("pagination"),
+    getTranslations("common"),
   ]);
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1);
 
@@ -55,9 +56,22 @@ export default async function ForumPage({
         eyebrow={t("eyebrow")}
         title={t("title")}
         description={t("description")}
+        backdropVideo={BLOG_CLIP}
       >
         <HeroStat value={total} label={t("title")} />
       </PageHero>
+
+      <p className="mx-auto mt-4 w-full max-w-content px-5 text-xs text-text-muted md:px-8">
+        {tCommon("videoCredit")}{" "}
+        <a
+          href={BLOG_CLIP_CREDIT.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline underline-offset-4 hover:text-accent"
+        >
+          {BLOG_CLIP_CREDIT.label}
+        </a>
+      </p>
 
       <section className="px-5 py-10 md:px-8 md:py-14">
         <div className="mx-auto w-full max-w-content">

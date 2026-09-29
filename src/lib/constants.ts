@@ -276,12 +276,23 @@ export const HERO_BACKDROP = "/hero-backdrop.jpg";
 export const CTA_BACKDROP = "/cta-backdrop.png";
 
 /**
- * Image beside the heading on the About page.
- *
- * PLACEHOLDER: a wafer-die grid drawn on purpose, because the mascot artwork
- * does not exist yet. Swap the file for the transparent-background mascot when
- * it arrives — the frame is a plain rounded box, so a transparent PNG drops
- * straight in.
+ * Image beside the heading on the About page: a cleanroom engineer reading a
+ * wafer map (Siltronic press photo, supplied by the maintainer).
  */
-export const ABOUT_BANNER = "/about-banner.png";
+export const ABOUT_BANNER = "/about-banner.jpg";
+
+/** Faded behind the Video page heading (supplied by the maintainer). */
+export const VIDEO_BANNER = "/video-banner.jpg";
+
+/**
+ * Muted loop behind the Blog page heading: the opening 18s of the video named
+ * in BLOG_CLIP_CREDIT.
+ */
+export const BLOG_CLIP = "/video/tsmc-open.mp4";
+
+/** Source of the Blog page clip, shown as a small credit under the heading. */
+export const BLOG_CLIP_CREDIT = {
+  label: "TSMC Đã THỐNG TRỊ Ngành Công Nghiệp Bán Dẫn Toàn Cầu Như Thế Nào?",
+  href: "https://www.youtube.com/watch?v=ZZNHC7N7LTM",
+};
 
