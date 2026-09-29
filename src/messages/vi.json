@@ -59,7 +59,29 @@
     "countries": {
       "headline": "Bán dẫn là câu chuyện của cả thế giới",
       "description": "Một con chip đi qua nhiều quốc gia trước khi tới tay bạn. Đây là những cái tên đứng sau ngành công nghiệp đó.",
-      "note": "Tên và logo công ty thuộc quyền sở hữu của các công ty tương ứng, được sử dụng tại đây cho mục đích giới thiệu và giáo dục."
+      "note": "Tên và logo công ty thuộc quyền sở hữu của các công ty tương ứng, được sử dụng tại đây cho mục đích giới thiệu và giáo dục.",
+      "playVideo": "Xem video về {country}",
+      "openSite": "Mở website của {company} (tab mới)",
+      "videoTitle": "Video giới thiệu ngành bán dẫn tại {country}"
+    },
+    "ecosystem": {
+      "headline": "Ai làm gì trong chuỗi cung ứng chip?",
+      "description": "Một con chip cần nhiều loại công ty cùng làm việc: người chế tạo máy móc, người thiết kế, người sản xuất và người đóng gói.",
+      "groups": {
+        "equipment": "Thiết bị",
+        "foundries": "Nhà máy đúc chip (Foundry)",
+        "idm": "Vừa thiết kế vừa sản xuất (IDM)",
+        "fabless": "Chỉ thiết kế (Fabless)",
+        "osat": "Đóng gói và kiểm thử (OSAT)"
+      },
+      "groupHints": {
+        "equipment": "Chế tạo máy móc để làm ra chip",
+        "foundries": "Sản xuất chip theo thiết kế của người khác",
+        "idm": "Tự thiết kế và tự sản xuất",
+        "fabless": "Thiết kế chip, thuê nơi khác sản xuất",
+        "osat": "Cắt, đóng gói và kiểm tra chip thành phẩm"
+      },
+      "note": "Sơ đồ do dự án vẽ lại để minh hoạ; tên và logo thuộc về các công ty tương ứng."
     },
     "latestPosts": {
       "headline": "Từ Blog",
@@ -111,6 +133,7 @@
   "countries": {
     "usa": "Mỹ",
     "taiwan": "Đài Loan",
+    "china": "Trung Quốc",
     "netherlands": "Hà Lan",
     "south-korea": "Hàn Quốc"
   },

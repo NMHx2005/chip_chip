@@ -59,7 +59,29 @@
     "countries": {
       "headline": "Semiconductors are a global story",
       "description": "A single chip crosses many countries before it reaches you. These are the names behind that industry.",
-      "note": "Company names and logos are the property of their respective owners and are used here for educational and informational purposes."
+      "note": "Company names and logos are the property of their respective owners and are used here for educational and informational purposes.",
+      "playVideo": "Watch the video about {country}",
+      "openSite": "Open {company}'s website (new tab)",
+      "videoTitle": "Video about the semiconductor industry in {country}"
+    },
+    "ecosystem": {
+      "headline": "Who does what in the chip supply chain?",
+      "description": "One chip takes many kinds of companies: those who build the machines, design, manufacture and package it.",
+      "groups": {
+        "equipment": "Equipment",
+        "foundries": "Foundries",
+        "idm": "Integrated makers (IDM)",
+        "fabless": "Design only (Fabless)",
+        "osat": "Packaging and testing (OSAT)"
+      },
+      "groupHints": {
+        "equipment": "Builds the machines that make chips",
+        "foundries": "Manufactures chips designed by others",
+        "idm": "Designs and manufactures its own chips",
+        "fabless": "Designs chips, hires others to make them",
+        "osat": "Cuts, packages and tests finished chips"
+      },
+      "note": "Diagram redrawn by the project for illustration; names and logos belong to their respective companies."
     },
     "latestPosts": {
       "headline": "From the blog",
@@ -111,6 +133,7 @@
   "countries": {
     "usa": "USA",
     "taiwan": "Taiwan",
+    "china": "China",
     "netherlands": "Netherlands",
     "south-korea": "South Korea"
   },
