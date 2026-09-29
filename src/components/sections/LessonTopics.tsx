@@ -30,7 +30,7 @@ function TopicRow({
   onHoverStart,
   onHoverEnd,
   prefersReducedMotion,
-  buttonRef,
+  rowRef,
 }: {
   topic: TopicId;
   index: number;
@@ -41,23 +41,18 @@ function TopicRow({
   onHoverStart: () => void;
   onHoverEnd: () => void;
   prefersReducedMotion: boolean | null;
-  buttonRef: (el: HTMLButtonElement | null) => void;
+  rowRef: (el: HTMLDivElement | null) => void;
 }) {
   const t = useTranslations("topics");
   const tSection = useTranslations("home.topics");
   const tone = TOPIC_TONE[topic];
 
   return (
-    <button
-      ref={buttonRef}
-      type="button"
-      onClick={onSelect}
-      onMouseEnter={onHoverStart}
-      onMouseLeave={onHoverEnd}
-      onFocus={onSelect}
-      aria-expanded={isActive}
-      className="relative w-full cursor-pointer px-4 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent sm:px-6"
-    >
+    // The row is a wrapper, not one giant <button>: the panel below the header
+    // holds a real <Link>, and an <a> nested inside a <button> is invalid
+    // HTML and unreliable for assistive tech. The header is the button; the
+    // panel is its sibling.
+    <div ref={rowRef} className="relative w-full">
       <motion.span
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 h-px bg-border"
@@ -80,7 +75,16 @@ function TopicRow({
         }
       />
 
-      <div className="relative flex items-center gap-4 py-5 sm:gap-5">
+      <button
+        type="button"
+        onClick={onSelect}
+        onMouseEnter={onHoverStart}
+        onMouseLeave={onHoverEnd}
+        onFocus={onSelect}
+        aria-expanded={isActive}
+        aria-controls={`topic-panel-${topic}`}
+        className="relative flex w-full cursor-pointer items-center gap-4 px-4 py-5 text-left outline-none focus-visible:ring-2 focus-visible:ring-accent sm:gap-5 sm:px-6"
+      >
         <span
           aria-hidden
           className="size-3 shrink-0 rounded-full transition-transform duration-300"
@@ -121,9 +125,10 @@ function TopicRow({
         >
           <ArrowRight className="size-4 text-text" strokeWidth={2} />
         </motion.span>
-      </div>
+      </button>
 
       <motion.div
+        id={`topic-panel-${topic}`}
         className="relative overflow-hidden"
         initial={false}
         animate={{ height: isActive ? "auto" : 0, opacity: isActive ? 1 : 0 }}
@@ -137,7 +142,7 @@ function TopicRow({
         }
         aria-hidden={!isActive}
       >
-        <div className="pb-6 pl-7 pr-1 sm:pl-8">
+        <div className="pb-6 pl-11 pr-5 sm:pl-14 sm:pr-7">
           <p className="max-w-md text-[15px] leading-relaxed text-text-muted">
             {t(`${topic}.description`)}
           </p>
@@ -165,7 +170,7 @@ function TopicRow({
       {index === TOPIC_IDS.length - 1 && !isActive && (
         <span aria-hidden className="absolute inset-x-0 bottom-0 h-px bg-border" />
       )}
-    </button>
+    </div>
   );
 }
 
@@ -200,6 +205,7 @@ function TopicVideo({ topic }: { topic: TopicId }) {
           <AutoplayVideo
             src={TOPIC_VIDEOS[topic]}
             ariaLabel={t(`${topic}.title`)}
+            controls
             // `contain`, not the default `cover`: the placeholder clips are
             // 2.23:1 and 4:3 while this box is 16:9, and cropping them cut the
             // subject in half. Real 16:9 clips will fill the frame with no bars.
@@ -222,7 +228,7 @@ export function LessonTopics({
   const [indicator, setIndicator] = useState({ top: 0, ready: false });
 
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const itemRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const activeIdRef = useRef(activeId);
   activeIdRef.current = activeId;
 
@@ -293,7 +299,7 @@ export function LessonTopics({
   }, [updateIndicator]);
 
   const setItemRef = useCallback(
-    (id: string) => (el: HTMLButtonElement | null) => {
+    (id: string) => (el: HTMLDivElement | null) => {
       if (el) itemRefs.current.set(id, el);
       else itemRefs.current.delete(id);
     },
@@ -334,7 +340,9 @@ export function LessonTopics({
               }}
               transition={{
                 top: indicator.ready
-                  ? INDICATOR_SPRING
+                  ? prefersReducedMotion
+                    ? { duration: 0 }
+                    : INDICATOR_SPRING
                   : { duration: 0, delay: 0 },
                 opacity: {
                   duration: prefersReducedMotion ? 0 : 0.35,
@@ -362,7 +370,7 @@ export function LessonTopics({
                   onHoverStart={() => openOnHover(topic)}
                   onHoverEnd={cancelHover}
                   prefersReducedMotion={prefersReducedMotion}
-                  buttonRef={setItemRef(topic)}
+                  rowRef={setItemRef(topic)}
                 />
               ))}
             </div>

@@ -14,6 +14,7 @@
     "join": "Tham gia cùng chúng tôi",
     "openMenu": "Mở menu",
     "closeMenu": "Đóng menu",
+    "mainNavigation": "Điều hướng chính",
     "language": "Ngôn ngữ",
     "switchTo": "Chuyển sang {language}",
     "skipToContent": "Chuyển tới nội dung chính",
@@ -115,7 +116,8 @@
   },
   "lessons": {
     "title": "Bài học",
-    "description": "Kiến thức bán dẫn từ cơ bản tới nâng cao, chia theo chủ đề.",
+    "eyebrow": "Thư viện",
+    "description": "Kiến thức bán dẫn viết cho học sinh trung học: đi từ khái niệm đơn giản nhất tới toàn cảnh ngành, chia theo bốn chủ đề và ba mức độ khó.",
     "backToLessons": "Về trang Bài học",
     "backToTopic": "Về chủ đề {topic}",
     "notFound": "Không tìm thấy bài viết này.",
@@ -143,6 +145,7 @@
   },
   "videos": {
     "title": "Video",
+    "eyebrow": "Thư viện",
     "description": "Video ngắn giải thích bán dẫn bằng hình ảnh: do Chíp Chíp tự thực hiện, hoặc được tuyển chọn từ những kênh uy tín.",
     "filtersLabel": "Lọc video",
     "filtersToggle": "Bộ lọc",
@@ -177,7 +180,8 @@
   },
   "search": {
     "title": "Tìm kiếm",
-    "description": "Tìm trong bài học, video và blog của Project Chíp Chíp.",
+    "eyebrow": "Tìm trong Chíp Chíp",
+    "description": "Tìm trong bài học, video và blog của Project Chíp Chíp. Gõ có dấu hay không dấu đều được.",
     "label": "Tìm trên trang",
     "placeholder": "Ví dụ: bán dẫn, transistor…",
     "submit": "Tìm",
@@ -197,7 +201,8 @@
   },
   "forum": {
     "title": "Blog",
-    "description": "Những bài phân tích, góc nhìn và ghi chép về bán dẫn.",
+    "eyebrow": "Góc phân tích",
+    "description": "Phân tích, góc nhìn và ghi chép về bán dẫn cùng ngành công nghiệp đằng sau nó — viết để đọc trong vài phút.",
     "postsHeading": "Danh sách bài viết",
     "empty": "Chưa có bài viết nào. Hãy quay lại sau nhé!",
     "readMore": "Đọc tiếp",
@@ -212,6 +217,7 @@
   },
   "about": {
     "title": "Giới thiệu",
+    "eyebrow": "Về dự án",
     "hero": {
       "headline": "Người đứng sau Project Chíp Chíp",
       "description": "Chíp Chíp là dự án một người làm: một chỗ học bán dẫn bằng tiếng Việt, miễn phí cho mọi học sinh, và luôn mở cho những ai muốn góp sức."
@@ -291,6 +297,7 @@
   },
   "contact": {
     "title": "Liên hệ",
+    "eyebrow": "Chúng tôi lắng nghe",
     "description": "Gửi câu hỏi, lời góp ý hoặc đề nghị hợp tác. Mọi tin nhắn đều được tác giả đọc.",
     "form": {
       "kindLegend": "Bạn muốn gửi",
@@ -335,6 +342,7 @@
   },
   "contribute": {
     "title": "Đóng góp",
+    "eyebrow": "Cùng xây Chíp Chíp",
     "description": "Chíp Chíp do một người làm, nhưng không cần làm một mình. Nếu bạn muốn giúp, đây là bốn cách, cách nào cũng bắt đầu bằng một tin nhắn.",
     "ways": {
       "write": {
@@ -359,6 +367,7 @@
   },
   "privacy": {
     "title": "Chính sách bảo mật",
+    "eyebrow": "Dữ liệu của bạn",
     "description": "Chíp Chíp thu rất ít dữ liệu. Trang này nói rõ đó là dữ liệu gì, dùng vào việc gì và giữ trong bao lâu.",
     "updated": "Cập nhật ngày {date}",
     "sections": {
@@ -451,6 +460,7 @@
     "backHome": "Về Trang chủ",
     "errorDescription": "Đã có lỗi xảy ra khi tải nội dung. Bạn thử tải lại trang nhé.",
     "video": "video",
-    "playVideo": "Phát {label}"
+    "playVideo": "Phát {label}",
+    "pauseVideo": "Tạm dừng {label}"
   }
 }

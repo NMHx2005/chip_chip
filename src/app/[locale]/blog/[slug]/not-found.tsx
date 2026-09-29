@@ -18,7 +18,7 @@ export default async function ForumPostNotFound() {
 
         <Link
           href="/blog"
-          className="mt-8 inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-black"
+          className="mt-8 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-black"
         >
           <ArrowLeft className="size-4" strokeWidth={2.2} />
           {t("backToForum")}

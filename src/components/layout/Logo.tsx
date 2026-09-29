@@ -26,6 +26,7 @@ export function Logo({
       )}
       role="img"
       aria-label="Project Chíp Chíp"
+      translate="no"
     >
       {!compact && (
         <span className="flex w-full items-center gap-[0.5em] text-[0.28em] font-bold uppercase leading-none tracking-[0.4em] text-text">

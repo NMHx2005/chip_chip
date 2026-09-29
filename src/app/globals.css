@@ -72,6 +72,23 @@
   }
 }
 
+/* One-off entrance for interior page headers. The global reduce block above
+   collapses the duration, so this is safe under prefers-reduced-motion. */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.rise-in {
+  animation: rise-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
 /* ── Article body ───────────────────────────────────────────────────────────
    Styles for HTML generated from the stored Tiptap JSON. Kept outside the
    utilities layer so the element selectors are not purged. */

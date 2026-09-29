@@ -14,6 +14,7 @@
     "join": "Join us",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
+    "mainNavigation": "Main navigation",
     "language": "Language",
     "switchTo": "Switch to {language}",
     "skipToContent": "Skip to main content",
@@ -115,7 +116,8 @@
   },
   "lessons": {
     "title": "Lessons",
-    "description": "Semiconductor knowledge from fundamentals to advanced topics, organised by theme.",
+    "eyebrow": "Library",
+    "description": "Semiconductor knowledge written for high-school students: from the simplest ideas to the full industry picture, organised by four topics and three difficulty levels.",
     "backToLessons": "Back to Lessons",
     "backToTopic": "Back to {topic}",
     "notFound": "This article could not be found.",
@@ -143,6 +145,7 @@
   },
   "videos": {
     "title": "Videos",
+    "eyebrow": "Library",
     "description": "Short videos that explain semiconductors visually: made by Chíp Chíp, or picked from trusted channels.",
     "filtersLabel": "Filter videos",
     "filtersToggle": "Filters",
@@ -177,7 +180,8 @@
   },
   "search": {
     "title": "Search",
-    "description": "Search the lessons, videos and blog of Project Chíp Chíp.",
+    "eyebrow": "Search Chíp Chíp",
+    "description": "Search the lessons, videos and blog of Project Chíp Chíp. Accented or unaccented input both work.",
     "label": "Search the site",
     "placeholder": "e.g. semiconductor, transistor…",
     "submit": "Search",
@@ -197,7 +201,8 @@
   },
   "forum": {
     "title": "Blog",
-    "description": "Analysis, perspectives and notes on semiconductors.",
+    "eyebrow": "Perspectives",
+    "description": "Analysis, perspectives and notes on semiconductors and the industry behind them — written to read in a few minutes.",
     "postsHeading": "List of posts",
     "empty": "No posts yet. Please check back soon!",
     "readMore": "Read more",
@@ -212,6 +217,7 @@
   },
   "about": {
     "title": "About",
+    "eyebrow": "About us",
     "hero": {
       "headline": "The person behind Project Chíp Chíp",
       "description": "Chíp Chíp is a one-person project: a place to learn about semiconductors in Vietnamese, free for every student, and always open to anyone who wants to help."
@@ -291,6 +297,7 @@
   },
   "contact": {
     "title": "Contact",
+    "eyebrow": "Get in touch",
     "description": "Send a question, some feedback or an offer to work together. The author reads every message.",
     "form": {
       "kindLegend": "What are you sending?",
@@ -335,6 +342,7 @@
   },
   "contribute": {
     "title": "Contribute",
+    "eyebrow": "Build it with us",
     "description": "Chíp Chíp is made by one person, but it does not have to be made alone. If you want to help, here are four ways — each one starts with a message.",
     "ways": {
       "write": {
@@ -359,6 +367,7 @@
   },
   "privacy": {
     "title": "Privacy policy",
+    "eyebrow": "Your data",
     "description": "Chíp Chíp collects very little. This page says exactly what, what it is for, and how long it is kept.",
     "updated": "Updated {date}",
     "sections": {
@@ -451,6 +460,7 @@
     "backHome": "Back to Home",
     "errorDescription": "Something went wrong while loading this page. Please try again.",
     "video": "video",
-    "playVideo": "Play {label}"
+    "playVideo": "Play {label}",
+    "pauseVideo": "Pause {label}"
   }
 }

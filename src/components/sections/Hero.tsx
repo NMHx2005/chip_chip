@@ -136,6 +136,7 @@ export function Hero() {
                 ariaLabel={t("videoAriaLabel")}
                 loadOnScroll
                 mobileTapFullscreen
+                controls
               />
               <AnimatePresence>
                 {cardVisible && (

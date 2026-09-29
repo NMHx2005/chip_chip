@@ -29,7 +29,7 @@ export function VideoHoverCard({
   const prefersReducedMotion = useReducedMotion();
 
   const content = (
-    <div className="relative rounded-2xl bg-black/45 p-5 backdrop-blur-xl transition-transform duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)] hover:[transform:rotateX(2deg)_rotateY(-5deg)_rotateZ(-1deg)]">
+    <div className="relative rounded-2xl bg-black/45 p-5 backdrop-blur-xl">
       <svg
         className="pointer-events-none absolute inset-0 size-full"
         viewBox="0 0 260 120"

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Pagination } from "@/components/listing/Pagination";
+import { HeroStat, PageHero } from "@/components/sections/PageHero";
 import { VideoCard } from "@/components/video/VideoCard";
 import { VideoFilters } from "@/components/video/VideoFilters";
 import { Link } from "@/i18n/navigation";
@@ -60,17 +61,13 @@ export default async function VideosPage({
 
   return (
     <>
-      <section className="px-5 pt-8 md:px-8 md:pt-12">
-        {/* Neutral placeholder backdrop; the real banner image arrives in DA5. */}
-        <div className="mx-auto w-full max-w-content rounded-3xl bg-brand-gradient px-6 py-14 md:px-12 md:py-20">
-          <h1 className="text-balance text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-white md:text-[44px]">
-            {t("title")}
-          </h1>
-          <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-white/80">
-            {t("description")}
-          </p>
-        </div>
-      </section>
+      <PageHero
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        description={t("description")}
+      >
+        <HeroStat value={total} label={t("title")} />
+      </PageHero>
 
       <section className="px-5 py-10 md:px-8 md:py-14">
         <div className="mx-auto w-full max-w-content">

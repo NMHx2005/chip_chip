@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
@@ -66,6 +66,9 @@ export function Navbar() {
   const prefersReducedMotion = useReducedMotion();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previouslyFocusedRef = useRef<HTMLElement | null>(null);
 
   // Frost the bar once the page has moved, so the hero reads as full-bleed.
   useEffect(() => {
@@ -89,11 +92,47 @@ export function Navbar() {
 
   useEffect(() => {
     if (!mobileOpen) return;
+    previouslyFocusedRef.current = document.activeElement as HTMLElement | null;
+
+    const panel = panelRef.current;
+    closeButtonRef.current?.focus();
+
+    const focusables = () =>
+      panel
+        ? Array.from(
+            panel.querySelectorAll<HTMLElement>(
+              'a[href], button:not([disabled]), input, textarea, select, [tabindex]:not([tabindex="-1"])'
+            )
+          )
+        : [];
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setMobileOpen(false);
+      if (e.key === "Escape") {
+        setMobileOpen(false);
+        return;
+      }
+      // The drawer covers the page but the page is still in the tab order, so
+      // Tab is kept inside the panel until it closes.
+      if (e.key !== "Tab") return;
+      const items = focusables();
+      if (items.length === 0) return;
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      // Return focus to whatever opened the drawer.
+      previouslyFocusedRef.current?.focus();
+    };
   }, [mobileOpen]);
 
   return (
@@ -121,7 +160,7 @@ export function Navbar() {
             <GlassPill radius={999}>
               <nav
                 className="flex items-center gap-1 px-1.5 py-1.5"
-                aria-label={t("home")}
+                aria-label={t("mainNavigation")}
               >
                 {NAV_ITEMS.map((item) => {
                   const active = isActive(pathname, item.href);
@@ -199,6 +238,7 @@ export function Navbar() {
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
+            ref={panelRef}
             id="mobile-menu-panel"
             role="dialog"
             aria-modal="true"
@@ -212,6 +252,7 @@ export function Navbar() {
             <div className="flex items-center justify-between px-5 py-3.5">
               <Logo className="text-[19px] text-white" />
               <button
+                ref={closeButtonRef}
                 type="button"
                 onClick={() => setMobileOpen(false)}
                 aria-label={t("closeMenu")}
@@ -231,7 +272,10 @@ export function Navbar() {
               />
             </div>
 
-            <nav className="mt-4 flex-1 overflow-y-auto px-3" aria-label={t("openMenu")}>
+            <nav
+              className="mt-4 flex-1 overflow-y-auto overscroll-contain px-3"
+              aria-label={t("mainNavigation")}
+            >
               {NAV_ITEMS.map((item) => {
                 const active = isActive(pathname, item.href);
 

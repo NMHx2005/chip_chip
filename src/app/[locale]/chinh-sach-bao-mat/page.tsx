@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { PageHero } from "@/components/sections/PageHero";
 import type { Locale } from "@/i18n/routing";
 import { PRIVACY_UPDATED } from "@/lib/constants";
 import { localeAlternates } from "@/lib/seo";
@@ -44,24 +45,25 @@ export default async function PrivacyPage({
   const [t, format] = await Promise.all([getTranslations("privacy"), getFormatter()]);
 
   return (
-    <article className="px-5 py-14 md:px-8 md:py-20">
-      <div className="mx-auto w-full max-w-3xl">
-        <header>
-          <h1 className="text-balance text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-text md:text-[44px]">
-            {t("title")}
-          </h1>
-          <p className="mt-4 text-pretty text-base leading-relaxed text-text-muted">{t("description")}</p>
-          <p className="mt-3 text-sm text-text-muted">
-            <time dateTime={PRIVACY_UPDATED}>
-              {t("updated", {
-                date: format.dateTime(new Date(`${PRIVACY_UPDATED}T00:00:00Z`), {
-                  dateStyle: "long",
-                  timeZone: "UTC",
-                }),
-              })}
-            </time>
-          </p>
-        </header>
+    <>
+      <PageHero
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        description={t("description")}
+      />
+
+      <article className="px-5 pb-16 md:px-8 md:pb-20">
+        <div className="mx-auto w-full max-w-3xl">
+        <p className="text-sm text-text-muted">
+          <time dateTime={PRIVACY_UPDATED}>
+            {t("updated", {
+              date: format.dateTime(new Date(`${PRIVACY_UPDATED}T00:00:00Z`), {
+                dateStyle: "long",
+                timeZone: "UTC",
+              }),
+            })}
+          </time>
+        </p>
 
         {SECTIONS.map((section) => (
           <section key={section.id} aria-labelledby={`privacy-${section.id}`} className="mt-10">
@@ -85,7 +87,8 @@ export default async function PrivacyPage({
         >
           {t("contactLink")}
         </Link>
-      </div>
-    </article>
+        </div>
+      </article>
+    </>
   );
 }

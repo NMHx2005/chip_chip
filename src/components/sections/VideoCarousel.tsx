@@ -115,12 +115,12 @@ export function VideoCarousel() {
               const topicLabel = t(`topics.${clip.topicKey}`);
 
               return (
-                <motion.button
+                <motion.div
                   key={clip.id}
-                  type="button"
+                  role="group"
+                  aria-roledescription="slide"
                   aria-label={topicLabel}
-                  aria-current={isActive ? "true" : undefined}
-                  onClick={() => (isActive ? undefined : setActive(index))}
+                  aria-hidden={hidden || undefined}
                   drag={isActive ? "x" : false}
                   dragConstraints={{ left: 0, right: 0 }}
                   dragElastic={0.2}
@@ -128,7 +128,7 @@ export function VideoCarousel() {
                     if (info.offset.x < -60) step(1);
                     if (info.offset.x > 60) step(-1);
                   }}
-                  className="absolute left-1/2 top-0 w-[78%] max-w-3xl cursor-pointer md:w-[62%]"
+                  className="absolute left-1/2 top-0 w-[78%] max-w-3xl md:w-[62%]"
                   animate={{
                     x: `calc(-50% + ${offset * 58}%)`,
                     scale: isActive ? 1 : 0.85,
@@ -143,12 +143,30 @@ export function VideoCarousel() {
                   style={{ pointerEvents: hidden ? "none" : "auto" }}
                 >
                   <div className="relative aspect-video w-full overflow-hidden rounded-2xl border border-border bg-primary shadow-card">
-                    <AutoplayVideo src={clip.src} ariaLabel={topicLabel} paused={!isActive} />
+                    {/* The active clip stands alone so it can carry the pause
+                        control; an inactive slide gets a full-tile button that
+                        brings it to the centre. */}
+                    <AutoplayVideo
+                      src={clip.src}
+                      ariaLabel={topicLabel}
+                      paused={!isActive}
+                      controls={isActive}
+                    />
                   </div>
                   <span className="mt-3 inline-flex rounded-full bg-surface-muted px-3 py-1 text-xs font-medium text-text-nav">
                     {topicLabel}
                   </span>
-                </motion.button>
+
+                  {!isActive && (
+                    <button
+                      type="button"
+                      aria-label={topicLabel}
+                      onClick={() => setActive(index)}
+                      tabIndex={hidden ? -1 : 0}
+                      className="absolute inset-0 z-10 cursor-pointer rounded-2xl focus-visible:ring-2 focus-visible:ring-accent"
+                    />
+                  )}
+                </motion.div>
               );
             })}
           </div>

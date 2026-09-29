@@ -48,7 +48,7 @@ function CountryBandRow({
             <li key={company.name}>
               <span
                 className={cn(
-                  "inline-flex items-center rounded-full border border-black/10 bg-white/60 px-3.5 py-1.5 text-[13px] font-semibold text-text/80 backdrop-blur-sm transition-all duration-300 sm:text-sm",
+                  "inline-flex items-center rounded-full border border-black/10 bg-white/60 px-3.5 py-1.5 text-[13px] font-semibold text-text/80 backdrop-blur-sm transition-colors duration-300 sm:text-sm",
                   hovered && "border-black/15 bg-white/90 text-text"
                 )}
               >

@@ -39,6 +39,10 @@ export default async function AboutPage({
       <section className="px-5 pb-10 pt-14 md:px-8 md:pt-20">
         <div className="mx-auto grid w-full max-w-content items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-14">
           <header className="max-w-3xl">
+            <p className="rise-in mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface-muted px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-accent">
+              <span aria-hidden className="size-1.5 rounded-full bg-accent" />
+              {t("eyebrow")}
+            </p>
             <h1 className="text-balance text-[32px] font-extrabold leading-[1.12] tracking-[-0.03em] text-text md:text-[48px]">
               {t("hero.headline")}
             </h1>

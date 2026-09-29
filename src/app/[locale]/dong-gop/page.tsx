@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ArrowRight, Clapperboard, Flag, Languages, PenLine, type LucideIcon } from "lucide-react";
 import { Link } from "@/i18n/navigation";
+import { PageHero } from "@/components/sections/PageHero";
 import type { Locale } from "@/i18n/routing";
 import { localeAlternates } from "@/lib/seo";
 
@@ -37,18 +38,16 @@ export default async function ContributePage({
   const t = await getTranslations("contribute");
 
   return (
-    <section className="px-5 py-14 md:px-8 md:py-20">
-      <div className="mx-auto w-full max-w-content">
-        <header className="max-w-2xl">
-          <h1 className="text-balance text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-text md:text-[44px]">
-            {t("title")}
-          </h1>
-          <p className="mt-4 text-pretty text-base leading-relaxed text-text-muted">
-            {t("description")}
-          </p>
-        </header>
+    <>
+      <PageHero
+        eyebrow={t("eyebrow")}
+        title={t("title")}
+        description={t("description")}
+      />
 
-        <ul className="mt-12 grid gap-4 sm:grid-cols-2">
+      <section className="px-5 pb-16 md:px-8 md:pb-20">
+        <div className="mx-auto w-full max-w-content">
+        <ul className="grid gap-4 sm:grid-cols-2">
           {WAYS.map(({ id, icon: Icon }) => (
             <li
               key={id}
@@ -71,7 +70,8 @@ export default async function ContributePage({
         </ul>
 
         <p className="mt-10 max-w-2xl text-pretty text-sm leading-relaxed text-text-muted">{t("note")}</p>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { SearchForm } from "@/components/search/SearchForm";
+import { PageHero } from "@/components/sections/PageHero";
 import { Link, getPathname } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import type { SearchParams } from "@/lib/listing-params";
@@ -64,13 +65,16 @@ export default async function SearchPage({
   const found = groups.filter((group) => group.posts.length > 0);
 
   return (
-    <section className="px-5 py-16 md:px-8 md:py-20">
-      <div className="mx-auto w-full max-w-3xl">
-        <h1 className="text-balance text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-text md:text-[44px]">
-          {query ? t("resultsFor", { query }) : t("title")}
-        </h1>
+    <>
+      <PageHero
+        eyebrow={t("eyebrow")}
+        title={query ? t("resultsFor", { query }) : t("title")}
+        description={query ? undefined : t("description")}
+      />
 
-        <div className="mt-6">
+      <section className="px-5 pb-16 md:px-8 md:pb-20">
+        <div className="mx-auto w-full max-w-3xl">
+        <div>
           <SearchForm
             action={getPathname({ href: "/tim-kiem", locale: locale as Locale })}
             label={t("label")}
@@ -106,8 +110,9 @@ export default async function SearchPage({
             ))}
           </div>
         )}
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }
 

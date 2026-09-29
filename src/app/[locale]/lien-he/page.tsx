@@ -37,6 +37,10 @@ export default async function ContactPage({
       <div className="mx-auto grid w-full max-w-content gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
         <div>
           <header className="max-w-2xl">
+            <p className="rise-in mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface-muted px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-accent">
+              <span aria-hidden className="size-1.5 rounded-full bg-accent" />
+              {t("eyebrow")}
+            </p>
             <h1 className="text-balance text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-text md:text-[44px]">
               {t("title")}
             </h1>

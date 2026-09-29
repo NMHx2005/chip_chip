@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
+import { Pause, Play } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type AutoplayVideoProps = {
@@ -33,6 +34,12 @@ type AutoplayVideoProps = {
    * is what a box has to do when the clip inside it may be any shape.
    */
   fit?: "cover" | "contain";
+  /**
+   * Show a pause/play control for the autoplaying loop (WCAG 2.2.2). Off by
+   * default because some callers render the video inside a <button>, where a
+   * nested button is invalid — only opt in where the video stands alone.
+   */
+  controls?: boolean;
 };
 
 export function AutoplayVideo({
@@ -47,6 +54,7 @@ export function AutoplayVideo({
   mobileTapFullscreen = false,
   paused = false,
   fit = "cover",
+  controls = false,
 }: AutoplayVideoProps) {
   const t = useTranslations("common");
   const containerRef = useRef<HTMLDivElement>(null);
@@ -65,6 +73,14 @@ export function AutoplayVideo({
   useEffect(() => {
     pausedRef.current = paused;
   }, [paused]);
+
+  // A reader-initiated pause, independent of the `paused` prop: once set, the
+  // loop stays stopped until they press play again.
+  const [userPaused, setUserPaused] = useState(false);
+  const userPausedRef = useRef(false);
+  useEffect(() => {
+    userPausedRef.current = userPaused;
+  }, [userPaused]);
 
   useEffect(() => {
     if (!mobileTapFullscreen) return;
@@ -128,7 +144,7 @@ export function AutoplayVideo({
     // `paused` wins over intersection: a carousel item can be on-screen (even
     // at opacity 0) while explicitly not the active one.
     const tryPlay = () => {
-      if (pausedRef.current) return;
+      if (pausedRef.current || userPausedRef.current) return;
       video.play().catch(() => {});
     };
 
@@ -159,12 +175,19 @@ export function AutoplayVideo({
     const video = videoRef.current;
     if (!video) return;
 
-    if (paused) {
+    if (paused || userPaused) {
       video.pause();
     } else if (!prefersReducedMotion) {
       video.play().catch(() => {});
     }
-  }, [paused, shouldLoad, isPressMode, shouldUseMobileTapPlay, prefersReducedMotion]);
+  }, [
+    paused,
+    userPaused,
+    shouldLoad,
+    isPressMode,
+    shouldUseMobileTapPlay,
+    prefersReducedMotion,
+  ]);
 
   useEffect(() => {
     if (shouldUseMobileTapPlay) return;
@@ -215,8 +238,10 @@ export function AutoplayVideo({
     }
   };
 
+  const showControls = controls && !isPressMode && !prefersReducedMotion;
+
   return (
-    <div ref={containerRef} className={cn("h-full w-full", className)}>
+    <div ref={containerRef} className={cn("group relative h-full w-full", className)}>
       {shouldUseMobileTapPlay ? (
         <div className="group relative h-full w-full overflow-hidden">
           <video
@@ -258,18 +283,41 @@ export function AutoplayVideo({
           )}
         </div>
       ) : shouldLoad ? (
-        <video
-          ref={videoRef}
-          src={src}
-          className={cn("h-full w-full", fit === "cover" ? "object-cover" : "object-contain")}
-          style={{ objectPosition }}
-          autoPlay={!prefersReducedMotion && !isPressMode && !paused}
-          loop
-          muted
-          playsInline
-          preload={isPressMode ? "auto" : "metadata"}
-          aria-label={ariaLabel}
-        />
+        <>
+          <video
+            ref={videoRef}
+            src={src}
+            className={cn("h-full w-full", fit === "cover" ? "object-cover" : "object-contain")}
+            style={{ objectPosition }}
+            autoPlay={!prefersReducedMotion && !isPressMode && !paused}
+            loop
+            muted
+            playsInline
+            preload={isPressMode ? "auto" : "metadata"}
+            aria-label={ariaLabel}
+          />
+          {showControls && (
+            <button
+              type="button"
+              onClick={() => setUserPaused((value) => !value)}
+              aria-label={
+                userPaused
+                  ? t("playVideo", { label: ariaLabel ?? t("video") })
+                  : t("pauseVideo", { label: ariaLabel ?? t("video") })
+              }
+              className={cn(
+                "absolute bottom-2.5 right-2.5 z-20 flex size-9 items-center justify-center rounded-full bg-black/55 text-white transition-opacity hover:bg-black/75 focus-visible:opacity-100",
+                userPaused ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+              )}
+            >
+              {userPaused ? (
+                <Play className="size-4 translate-x-px" strokeWidth={2} aria-hidden />
+              ) : (
+                <Pause className="size-4" strokeWidth={2} aria-hidden />
+              )}
+            </button>
+          )}
+        </>
       ) : null}
     </div>
   );

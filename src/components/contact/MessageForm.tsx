@@ -21,7 +21,7 @@ type Status =
 const CONTACT_KINDS = ["contact", "feedback"] as const satisfies readonly MessageKind[];
 
 const inputClassName =
-  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-base text-text outline-none transition-colors focus-visible:border-accent md:text-sm";
+  "h-11 w-full rounded-xl border border-border bg-surface px-3.5 text-base text-text outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30 md:text-sm";
 
 /**
  * The one form behind /api/messages.
@@ -153,6 +153,7 @@ export function MessageForm({
             type="email"
             maxLength={MESSAGE_LIMITS.email}
             autoComplete="email"
+            spellCheck={false}
             aria-describedby={`${id}-email-hint`}
             aria-invalid={invalidField === "email" ? true : undefined}
             onChange={clearInvalid("email")}
@@ -178,7 +179,7 @@ export function MessageForm({
           aria-describedby={`${id}-body-hint`}
           aria-invalid={invalidField === "body" ? true : undefined}
           onChange={clearInvalid("body")}
-          className="w-full rounded-xl border border-border bg-surface px-3.5 py-3 text-base text-text outline-none transition-colors focus-visible:border-accent md:text-sm"
+          className="w-full rounded-xl border border-border bg-surface px-3.5 py-3 text-base text-text outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30 md:text-sm"
         />
         <p id={`${id}-body-hint`} className="text-xs text-text-muted">
           {t("form.bodyHint", { max: MESSAGE_LIMITS.body })}

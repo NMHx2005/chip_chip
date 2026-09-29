@@ -1,12 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useId, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useFormatter, useTranslations } from "next-intl";
 import { ChevronDown, MessageSquare, Reply } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import type { Comment } from "@/lib/types";
 import { cn } from "@/lib/utils";
+
+type CommentField = "name" | "email" | "body";
+
+/** Which field an API error belongs to, so it can be marked and focused. */
+const ERROR_FIELDS: Record<string, CommentField> = {
+  name_length: "name",
+  body_length: "body",
+  email_invalid: "email",
+};
+
+/** The client mirror of the route's own check, so the reader hears it here first. */
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 /** Root comments revealed per "show more" step. Must match the query default. */
 export const ROOT_PAGE_SIZE = 20;
@@ -101,9 +113,23 @@ function CommentForm({
 }) {
   const t = useTranslations("comments");
   const router = useRouter();
+  const id = useId();
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<{
+    field: CommentField | null;
+    message: string;
+  } | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
+
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+  const bodyRef = useRef<HTMLTextAreaElement>(null);
+  const fieldRef = { name: nameRef, email: emailRef, body: bodyRef } as const;
+
+  const failWith = (field: CommentField | null, message: string) => {
+    setError({ field, message });
+    if (field) fieldRef[field].current?.focus();
+  };
 
   const submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -114,11 +140,14 @@ function CommentForm({
     const data = new FormData(form);
 
     const name = String(data.get("name") ?? "").trim();
+    const email = String(data.get("email") ?? "").trim();
     const body = String(data.get("body") ?? "").trim();
 
-    if (!name) return setError(t("errors.nameRequired"));
-    if (!body) return setError(t("errors.bodyRequired"));
-    if (body.length > 2000) return setError(t("errors.bodyTooLong"));
+    if (!name) return failWith("name", t("errors.nameRequired"));
+    if (email && !EMAIL_RE.test(email))
+      return failWith("email", t("errors.emailInvalid"));
+    if (!body) return failWith("body", t("errors.bodyRequired"));
+    if (body.length > 2000) return failWith("body", t("errors.bodyTooLong"));
 
     setSubmitting(true);
     try {
@@ -129,7 +158,7 @@ function CommentForm({
           postId,
           parentId: replyTo?.id ?? null,
           name,
-          email: String(data.get("email") ?? "").trim(),
+          email,
           body,
           // Honeypot — kept off-screen, real readers never fill it.
           website: String(data.get("website") ?? ""),
@@ -140,7 +169,10 @@ function CommentForm({
 
       if (!response.ok) {
         const key = result.error ? ERROR_KEYS[result.error] : undefined;
-        setError(key ? t(key) : t("errors.generic"));
+        failWith(
+          result.error ? ERROR_FIELDS[result.error] ?? null : null,
+          key ? t(key) : t("errors.generic")
+        );
         return;
       }
 
@@ -150,14 +182,14 @@ function CommentForm({
       onDone();
       router.refresh();
     } catch {
-      setError(t("errors.generic"));
+      failWith(null, t("errors.generic"));
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <form onSubmit={submit} className="flex flex-col gap-3">
+    <form onSubmit={submit} noValidate className="flex flex-col gap-3">
       <h3 className="text-sm font-semibold text-text">
         {replyTo ? t("replyingTo", { name: replyTo.authorName }) : t("formTitle")}
       </h3>
@@ -168,13 +200,23 @@ function CommentForm({
             {t("nameLabel")}
           </span>
           <input
+            ref={nameRef}
+            id={`${id}-name`}
             name="name"
             required
             maxLength={80}
             autoComplete="name"
             placeholder={t("namePlaceholder")}
-            className="h-10 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
+            aria-invalid={error?.field === "name" ? true : undefined}
+            aria-describedby={error?.field === "name" ? `${id}-name-error` : undefined}
+            onChange={() => setError((prev) => (prev?.field === "name" ? null : prev))}
+            className="h-10 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
           />
+          {error?.field === "name" && (
+            <span id={`${id}-name-error`} className="text-xs text-red-600">
+              {error.message}
+            </span>
+          )}
         </label>
 
         <label className="flex flex-col gap-1.5">
@@ -183,25 +225,46 @@ function CommentForm({
             <span className="font-normal">({t("emailHint")})</span>
           </span>
           <input
+            ref={emailRef}
+            id={`${id}-email`}
             name="email"
             type="email"
             autoComplete="email"
+            spellCheck={false}
             placeholder={t("emailPlaceholder")}
-            className="h-10 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
+            aria-invalid={error?.field === "email" ? true : undefined}
+            aria-describedby={error?.field === "email" ? `${id}-email-error` : undefined}
+            onChange={() => setError((prev) => (prev?.field === "email" ? null : prev))}
+            className="h-10 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
           />
+          {error?.field === "email" && (
+            <span id={`${id}-email-error`} className="text-xs text-red-600">
+              {error.message}
+            </span>
+          )}
         </label>
       </div>
 
       <label className="flex flex-col gap-1.5">
         <span className="sr-only">{t("bodyLabel")}</span>
         <textarea
+          ref={bodyRef}
+          id={`${id}-body`}
           name="body"
           required
           rows={4}
           maxLength={2000}
           placeholder={t("bodyPlaceholder")}
-          className="rounded-xl border border-border bg-surface px-3.5 py-3 text-sm outline-none focus:border-border"
+          aria-invalid={error?.field === "body" ? true : undefined}
+          aria-describedby={error?.field === "body" ? `${id}-body-error` : undefined}
+          onChange={() => setError((prev) => (prev?.field === "body" ? null : prev))}
+          className="rounded-xl border border-border bg-surface px-3.5 py-3 text-sm outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
         />
+        {error?.field === "body" && (
+          <span id={`${id}-body-error`} className="text-xs text-red-600">
+            {error.message}
+          </span>
+        )}
       </label>
 
       {/* Honeypot — hidden from people, irresistible to bots. */}
@@ -212,9 +275,9 @@ function CommentForm({
         </label>
       </div>
 
-      {error && (
+      {error && error.field === null && (
         <p role="alert" className="text-sm text-red-600">
-          {error}
+          {error.message}
         </p>
       )}
       {notice && (

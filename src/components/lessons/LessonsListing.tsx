@@ -4,6 +4,7 @@ import { PostCard } from "@/components/forum/PostCard";
 import { FilterPills, type ListingHref } from "@/components/listing/FilterPills";
 import { Pagination } from "@/components/listing/Pagination";
 import { TopicSidebar } from "@/components/lessons/TopicSidebar";
+import { HeroStat, PageHero } from "@/components/sections/PageHero";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { TOPIC_IDS, type TopicId } from "@/lib/constants";
@@ -68,6 +69,7 @@ export async function LessonsListing({
   if (current.page > 1 && current.page > totalPages) notFound();
 
   const allCount = Object.values(counts).reduce((sum, n) => sum + n, 0);
+  const statTotal = topic ? counts[topic] ?? 0 : allCount;
   // Changing topic keeps the difficulty but starts again from page 1.
   const topicQuery = listingQuery(current);
 
@@ -92,18 +94,18 @@ export async function LessonsListing({
           : t("empty");
 
   return (
-    <section className="px-5 py-16 md:px-8 md:py-20">
-      <div className="mx-auto w-full max-w-content">
-        <header className="max-w-2xl">
-          <h1 className="text-balance text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-text md:text-[44px]">
-            {topic ? tTopics(`${topic}.title`) : t("title")}
-          </h1>
-          <p className="mt-4 text-pretty text-base leading-relaxed text-text-muted">
-            {topic ? tTopics(`${topic}.description`) : t("description")}
-          </p>
-        </header>
+    <>
+      <PageHero
+        eyebrow={t("eyebrow")}
+        title={topic ? tTopics(`${topic}.title`) : t("title")}
+        description={topic ? tTopics(`${topic}.description`) : t("description")}
+      >
+        <HeroStat value={statTotal} label={t("title")} />
+      </PageHero>
 
-        <div className="mt-10 lg:flex lg:items-start lg:gap-10">
+      <section className="px-5 py-10 md:px-8 md:py-14">
+        <div className="mx-auto w-full max-w-content">
+          <div className="lg:flex lg:items-start lg:gap-10">
           <TopicSidebar
             heading={t("topicsHeading")}
             collapseLabel={t("collapseTopics")}
@@ -182,8 +184,9 @@ export async function LessonsListing({
               hrefFor={(page) => lessonsHref(topic, listingQuery(current, { page }))}
             />
           </div>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
