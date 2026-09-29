@@ -42,6 +42,7 @@ export function MessageActions({
           type="button"
           disabled={pending}
           title={handled ? "Đánh dấu chưa xử lý" : "Đánh dấu đã xử lý"}
+          aria-label={handled ? "Đánh dấu chưa xử lý" : "Đánh dấu đã xử lý"}
           onClick={() => run(() => setMessageHandled(messageId, !handled))}
           className="flex size-8 cursor-pointer items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-surface-muted hover:text-accent disabled:opacity-50"
         >
@@ -74,6 +75,7 @@ export function MessageActions({
           <button
             type="button"
             title="Xoá vĩnh viễn"
+            aria-label="Xoá vĩnh viễn"
             onClick={() => setConfirming(true)}
             className="flex size-8 cursor-pointer items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-red-50 hover:text-red-600"
           >

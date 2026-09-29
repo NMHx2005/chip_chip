@@ -42,6 +42,7 @@ export function CommentActions({
           type="button"
           disabled={pending}
           title={hidden ? "Hiện bình luận" : "Ẩn bình luận"}
+          aria-label={hidden ? "Hiện bình luận" : "Ẩn bình luận"}
           onClick={() => run(() => setCommentHidden(commentId, !hidden))}
           className="flex size-8 cursor-pointer items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-surface-muted hover:text-accent disabled:opacity-50"
         >
@@ -74,6 +75,7 @@ export function CommentActions({
           <button
             type="button"
             title="Xoá vĩnh viễn"
+            aria-label="Xoá vĩnh viễn"
             onClick={() => setConfirming(true)}
             className="flex size-8 cursor-pointer items-center justify-center rounded-lg text-text-muted transition-colors hover:bg-red-50 hover:text-red-600"
           >

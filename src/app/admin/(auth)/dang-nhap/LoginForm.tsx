@@ -33,7 +33,8 @@ export function LoginForm({ next }: { next: string }) {
           name="email"
           required
           autoComplete="email"
-          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
+          spellCheck={false}
+          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
         />
       </label>
 
@@ -44,7 +45,7 @@ export function LoginForm({ next }: { next: string }) {
           name="password"
           required
           autoComplete="current-password"
-          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
+          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
         />
       </label>
 

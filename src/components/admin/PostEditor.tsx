@@ -20,6 +20,7 @@ import { slugify } from "@/lib/post-slug";
 import { cn } from "@/lib/utils";
 import { applySaveResult, planSave } from "@/components/admin/saveRevision";
 import { readActionResult, sessionExpired } from "@/components/admin/actionResult";
+import { useUnsavedChangesWarning } from "@/components/admin/useUnsavedChangesWarning";
 
 export type Draft = {
   id: string;
@@ -359,6 +360,8 @@ export function PostEditor({
   const hasUnsavedChanges = dirty.vi || dirty.en;
   const canPublish = bothComplete && !hasUnsavedChanges;
 
+  useUnsavedChangesWarning(hasUnsavedChanges);
+
   return (
     <div className="flex flex-col gap-4">
       {/* Locale tabs */}
@@ -527,7 +530,7 @@ export function PostEditor({
             <input
               value={current.title}
               onChange={(e) => updateDraft(active, { title: e.target.value })}
-              className="h-12 rounded-xl border border-border bg-surface px-4 text-lg font-semibold outline-none focus:border-border"
+              className="h-12 rounded-xl border border-border bg-surface px-4 text-lg font-semibold outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
               placeholder={
                 active === "vi"
                   ? "Tiêu đề bài viết"
@@ -546,7 +549,7 @@ export function PostEditor({
             <input
               value={current.slug}
               onChange={(e) => updateDraft(active, { slug: e.target.value })}
-              className="h-11 rounded-xl border border-border bg-surface px-4 font-mono text-sm outline-none focus:border-border"
+              className="h-11 rounded-xl border border-border bg-surface px-4 font-mono text-sm outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
               placeholder="duong-dan-bai-viet"
             />
           </label>
@@ -563,7 +566,7 @@ export function PostEditor({
               onChange={(e) => updateDraft(active, { excerpt: e.target.value })}
               rows={3}
               maxLength={320}
-              className="rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none focus:border-border"
+              className="rounded-xl border border-border bg-surface px-4 py-3 text-sm outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
               placeholder="Một hai câu giới thiệu ngắn về bài viết."
             />
             <span className="text-right text-[11px] text-text-muted">
@@ -578,6 +581,7 @@ export function PostEditor({
             type="button"
             onClick={() => coverInputRef.current?.click()}
             disabled={uploadingCover}
+            aria-label={current.coverImageUrl ? "Đổi ảnh bìa" : "Chọn ảnh bìa"}
             className="relative aspect-video w-full cursor-pointer overflow-hidden rounded-xl border border-dashed border-border bg-surface-muted transition-colors hover:border-black/20 disabled:opacity-60"
           >
             {current.coverImageUrl ? (

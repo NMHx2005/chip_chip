@@ -154,7 +154,7 @@ export function NewPostForm() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           required
-          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
+          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
           placeholder="Ví dụ: Transistor hoạt động như thế nào?"
         />
       </label>
@@ -167,7 +167,7 @@ export function NewPostForm() {
         <input
           value={slug}
           onChange={(e) => setSlug(e.target.value)}
-          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none focus:border-border"
+          className="h-11 rounded-xl border border-border bg-surface px-3.5 text-sm outline-none transition-colors focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30"
           placeholder="transistor-hoat-dong-nhu-the-nao"
         />
       </label>
