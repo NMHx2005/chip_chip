@@ -294,13 +294,15 @@ trong ngoặc vuông, ví dụ "[Tên tác giả]". DA5 thay theo danh sách nà
 | `src/lib/constants.ts` | `CONTACT_EMAIL` | Email liên hệ; rỗng thì ẩn ở trang Liên hệ và khối cuối trang chủ |
 | `src/lib/constants.ts` | `SOCIAL_LINKS` | URL Facebook, TikTok; rỗng thì ẩn |
 | `src/lib/constants.ts` | `PRIVACY_UPDATED` | Đổi khi sửa chính sách bảo mật |
-| `public/video/*.mp4`, `src/lib/constants.ts` | `HOME_VIDEO` | Clip mở trang chủ — giữ chỗ mượn từ dự án Strike Robot |
+| `public/video/hero-intro.mp4`, `src/lib/constants.ts` | `HOME_VIDEO` | Clip mở trang chủ (29s đầu của "The Closest Thing We Have to Alien Technology"). Đã có; cần xin phép hoặc giữ dòng ghi nguồn `HOME_VIDEO_CREDIT` |
 | `public/video/*.mp4`, `src/lib/constants.ts` | `CAROUSEL_VIDEOS` | 6 clip carousel trang chủ — giữ chỗ, cùng nguồn |
-| `public/video/*.mp4`, `src/lib/constants.ts` | `TOPIC_VIDEOS` | Clip theo chủ đề cạnh accordion trang chủ — giữ chỗ, cùng nguồn |
-| `src/lib/constants.ts` | `ABOUT_BANNER` | Ảnh cạnh tiêu đề trang Giới thiệu — hiện là hình vẽ giữ chỗ |
+| `public/video/asml-part1..4.mp4`, `src/lib/constants.ts` | `TOPIC_VIDEOS` | 4 clip 30s của video ASML "Computational lithography" cạnh accordion trang chủ. Đã có; cần ghi nguồn/xin phép |
+| `src/lib/constants.ts` | `ABOUT_BANNER`, `VIDEO_BANNER` | Ảnh Siltronic cạnh tiêu đề trang Giới thiệu và ảnh nền trang Video — cần xác nhận quyền dùng ảnh |
+| `src/lib/constants.ts` | `BLOG_CLIP`, `BLOG_CLIP_CREDIT` | Clip nền và dòng ghi nguồn đầu trang Blog (18s đầu video TSMC) |
+| `src/lib/country-clips.ts` | `COUNTRY_CLIPS` | Đoạn YouTube (id, start, end) cho 5 nước — nhúng, không tải file |
 | `src/lib/constants.ts` | `CTA_BACKDROP` | Ảnh nền khối CTA cuối trang chủ — hiện là nền tối vẽ giữ chỗ |
 | `src/lib/constants.ts` | `HOME_VIDEO_CREDIT` | `{ label, href } \| null` — dòng ghi nguồn dưới video mở trang chủ; `null` thì ẩn |
-| `src/lib/constants.ts` | `COUNTRY_BANDS[].companies[].logo` | Logo từng công ty (Nvidia, TSMC, ASML, Samsung, …) — hiện toàn bộ là `null`, hiện tên chữ thay logo |
+| `src/lib/constants.ts`, `public/logos/` | `COUNTRY_BANDS[].companies[]` | Logo và website từng công ty. Thiếu logo **Micron** (`logo: null`, hiện tên chữ); logo ASML có watermark "cleanpng" mờ, nên thay bản sạch |
 | `src/components/layout/Logo.tsx` | logo | Chữ dạng wordmark giữ chỗ — thay bằng logo vector thật |
 | Biến môi trường | `NEXT_PUBLIC_SITE_URL` | Domain thật khi lên production — biến này được inline lúc build (xem mục Biến môi trường bên dưới), không đọc được sau khi deploy; fallback nếu bỏ trống là `https://projectchipchip.org` (`src/lib/site.ts`) |
 | Cơ sở dữ liệu production | — | Xoá bài test/demo còn sót lại và các dòng trùng lặp trước khi công khai — các đợt DA1–DA4 để lại dữ liệu nghiệm thu trên stack local (đã dọn ở đó), nhưng phải kiểm tra riêng trên DB production trước khi ra mắt |
@@ -318,18 +320,17 @@ trang này cùng lúc.
 | ------------------- | --------------------------------------------- |
 | `SOCIAL_LINKS`      | URL fanpage Facebook và TikTok                |
 
-- `public/video/*.mp4` là video giữ chỗ mượn từ dự án Strike Robot để xem
-  hiệu ứng. Nội dung không liên quan bán dẫn — phải thay hết trước khi lên
-  production. Điểm thay: `HOME_VIDEO` và `CAROUSEL_VIDEOS` trong
-  `src/lib/constants.ts`.
+- `CAROUSEL_VIDEOS` (6 clip carousel trang chủ) vẫn là video giữ chỗ mượn từ
+  dự án Strike Robot (`public/video/clip-1..6.mp4`), nội dung không liên quan
+  bán dẫn — phải thay hết trước khi lên production.
 
-Ngoài ra: logo vector bản trong suốt, bản đồ silhouette các nước, logo công ty,
-ảnh đội ngũ — và **nội dung bài học**, hiện là phần thiếu lớn nhất.
+Ngoài ra: logo vector bản trong suốt, logo Micron, ảnh đội ngũ — và **nội dung
+bài học**, hiện là phần thiếu lớn nhất.
 
 ### Chưa làm
 
-- Mục quốc gia chưa có bản đồ silhouette, cờ và logo công ty — chờ asset
-- Chưa có trang riêng cho từng quốc gia
+- Chưa có trang riêng cho từng quốc gia hay từng công ty: logo công ty đang link
+  ra website chính thức (tab mới)
 
 ### Giới hạn đã biết
 

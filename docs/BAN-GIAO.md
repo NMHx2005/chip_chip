@@ -1,6 +1,6 @@
 # Bàn giao — Project Chíp Chíp
 
-Cập nhật: 29/09/2026 · Nhánh: `feat/da5-hoan-thien`
+Cập nhật: 29/09/2026 · Nhánh: `feat/quoc-gia-video-hero`
 
 ---
 
@@ -14,7 +14,7 @@ kích thước request, a11y, SEO rẻ tiền, tách service-role key khỏi bun
 client) cộng các commit cập nhật tài liệu này — số lượng đang tăng dần, xem
 chính xác bằng `git log main..feat/da5-hoan-thien`.
 
-Cây làm việc sạch — không có gì sửa dở ngoài các file `.claude/`,
+Nhánh `feat/quoc-gia-video-hero` tách ra từ `fix/review-ux-hardening` (đã commit thành ba commit: hardening API, UX quản trị, UX công khai). Cây làm việc sạch — không có gì sửa dở ngoài các file `.claude/`,
 `.commandcode/`, `.crossweave/` (rác công cụ, không phải của dự án).
 
 ---
@@ -52,6 +52,15 @@ sau `Suspense`, giới hạn kích thước request (413, cả khi client stream
 `SUPABASE_SERVICE_ROLE_KEY` ra khỏi file mà client component import được.
 Một hạng mục (client Supabase không đọc cookie để cache được) chủ động để lại
 cho sau ra mắt — xem mục 7.
+
+**Đợt "Second fix" (docx kế hoạch).** Thay các phần giữ chỗ bằng nội dung thật:
+hero có ảnh mạch điện làm mờ và clip 29s; 4 clip ASML cạnh accordion chủ đề;
+sơ đồ Ecosystem (Equipment / Foundry / IDM / Fabless / OSAT) vẽ lại bằng code,
+song ngữ; dải quốc gia mới gồm 5 nước (thêm Trung Quốc) với cờ chồng bản đồ,
+logo công ty hiện khi hover/focus (luôn hiện trên cảm ứng) và bấm ra website
+chính thức, mỗi nước một video YouTube nhúng có mốc start/end (bấm mới tải);
+banner ảnh cho Giới thiệu và Video, clip TSMC làm nền trang Blog; giãn chữ logo.
+Các clip tự host (~22 MB) đã nén 720p không tiếng; các video theo nước chỉ nhúng.
 
 ---
 
@@ -93,7 +102,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **33 file, 354 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **34 file, 372 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
@@ -123,9 +132,9 @@ bỏ `preload` trong header HSTS.
 Danh sách đầy đủ (khoá message, hằng số trong `src/lib/constants.ts`, biến môi
 trường, dữ liệu production) nằm ở README, mục **"Nội dung cần thay trước khi
 ra mắt"**. Tóm tắt những nhóm lớn nhất: câu chuyện/ảnh tác giả thật, duyệt lại
-6 câu FAQ mẫu, 7 video giữ chỗ (mượn từ dự án Strike Robot, nội dung không
-liên quan bán dẫn), logo + mascot dạng vector nền trong suốt, logo 10 công ty
-theo từng nước, và **nội dung bài học thật** — phần thiếu lớn nhất, hiện trang
+6 câu FAQ mẫu, 6 video carousel giữ chỗ (mượn từ dự án Strike Robot, nội dung
+không liên quan bán dẫn), logo + mascot dạng vector nền trong suốt, logo
+Micron (còn thiếu), xác nhận quyền dùng các clip/ảnh đã đưa vào, và **nội dung bài học thật** — phần thiếu lớn nhất, hiện trang
 Bài học chỉ là khung rỗng nếu không có bài.
 
 ---
