@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
+import { isTranslationGroupReady } from "@/lib/shared-fields";
 import { PostRowActions } from "@/components/admin/PostRowActions";
 
 // Admin data must never be cached or prerendered.
@@ -17,18 +18,10 @@ type Row = {
   slug: string;
   status: "draft" | "published";
   updated_at: string;
+  content: unknown;
 };
 
 const KIND_LABEL = { lesson: "Bài học", forum: "Blog", video: "Video" } as const;
-
-function isReady(rows: Row[]) {
-  const locales = new Set(rows.map((r) => r.locale));
-  return (
-    locales.has("vi") &&
-    locales.has("en") &&
-    rows.every((r) => r.title.trim().length > 0)
-  );
-}
 
 export default async function AdminPostsPage() {
   await requireStaff();
@@ -37,7 +30,7 @@ export default async function AdminPostsPage() {
   const { data } = await supabase
     .from("posts")
     .select(
-      "id, translation_id, locale, kind, topic, title, slug, status, updated_at"
+      "id, translation_id, locale, kind, topic, title, slug, status, updated_at, content"
     )
     .order("updated_at", { ascending: false });
 
@@ -86,7 +79,7 @@ export default async function AdminPostsPage() {
       ) : (
         <ul className="flex flex-col gap-3">
           {items.map(({ translationId, group, primary, vi, en }) => {
-            const ready = isReady(group);
+            const ready = isTranslationGroupReady(group);
             const published = primary.status === "published";
 
             return (

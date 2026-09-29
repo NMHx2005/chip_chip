@@ -16,12 +16,18 @@ const WINDOW_MINUTES = 15;
  * Throttles password attempts per source address.
  *
  * GoTrue applies its own limits, but they are tuned for a whole project rather
- * than for a login form with a handful of legitimate users. Returns false when
- * the caller has spent their allowance; missing service-role credentials skip
- * the check rather than locking staff out.
+ * than for a login form with a handful of legitimate users.
+ *
+ * "unavailable" is a deliberate fail-closed answer: if the limiter itself
+ * cannot be consulted (RPC error), the attempt is refused rather than waved
+ * through unthrottled. Missing service-role credentials are the one exception
+ * — the limiter cannot exist without them, and blocking every admin login
+ * would be worse than relying on GoTrue's own limits — so that case skips.
  */
-async function allowAttempt(): Promise<boolean> {
-  if (!isSupabaseAdminConfigured) return true;
+type Attempt = "allow" | "deny" | "unavailable";
+
+async function allowAttempt(): Promise<Attempt> {
+  if (!isSupabaseAdminConfigured) return "allow";
 
   try {
     const { data } = await createAdminClient().rpc("consume_rate_limit", {
@@ -30,9 +36,9 @@ async function allowAttempt(): Promise<boolean> {
       p_limit: MAX_ATTEMPTS,
       p_window_minutes: WINDOW_MINUTES,
     });
-    return data !== false;
+    return data === false ? "deny" : "allow";
   } catch {
-    return true;
+    return "unavailable";
   }
 }
 
@@ -52,9 +58,15 @@ export async function signIn(
     return { error: "Vui lòng nhập email và mật khẩu." };
   }
 
-  if (!(await allowAttempt())) {
+  const attempt = await allowAttempt();
+  if (attempt === "deny") {
     return {
       error: "Quá nhiều lần thử. Vui lòng đợi ít phút rồi đăng nhập lại.",
+    };
+  }
+  if (attempt === "unavailable") {
+    return {
+      error: "Chưa kiểm tra được giới hạn đăng nhập. Vui lòng thử lại sau ít phút.",
     };
   }
 

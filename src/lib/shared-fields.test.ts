@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   buildSharedFieldsPatch,
+  isTranslationGroupReady,
   isUuid,
   validateNewPostFields,
   type SharedFieldsInput,
@@ -173,6 +174,46 @@ describe("validateNewPostFields", () => {
     expect(validateNewPostFields("hack" as never, null, null).ok).toBe(false);
     expect(validateNewPostFields("lesson", "hack" as never, "basic").ok).toBe(false);
     expect(validateNewPostFields("video", "nguyen-ly", "expert" as never).ok).toBe(false);
+  });
+});
+
+describe("isTranslationGroupReady", () => {
+  const doc = (blocks: number) => ({
+    type: "doc",
+    content: Array.from({ length: blocks }, () => ({ type: "paragraph" })),
+  });
+  const row = (locale: "vi" | "en", title: string, content: unknown) => ({
+    locale,
+    title,
+    content,
+  });
+
+  it("is ready when both locales have a title and at least one body block", () => {
+    expect(
+      isTranslationGroupReady([row("vi", "Tiêu đề", doc(1)), row("en", "Title", doc(2))])
+    ).toBe(true);
+  });
+
+  it("is not ready when a locale is missing", () => {
+    expect(isTranslationGroupReady([row("vi", "Tiêu đề", doc(1))])).toBe(false);
+  });
+
+  it("is not ready when a locale has a title but an empty body", () => {
+    expect(
+      isTranslationGroupReady([row("vi", "Tiêu đề", doc(0)), row("en", "Title", doc(1))])
+    ).toBe(false);
+  });
+
+  it("is not ready when a locale has a body but no title", () => {
+    expect(
+      isTranslationGroupReady([row("vi", "  ", doc(1)), row("en", "Title", doc(1))])
+    ).toBe(false);
+  });
+
+  it("is not ready when the content is not a Tiptap document", () => {
+    expect(
+      isTranslationGroupReady([row("vi", "Tiêu đề", null), row("en", "Title", doc(1))])
+    ).toBe(false);
   });
 });
 

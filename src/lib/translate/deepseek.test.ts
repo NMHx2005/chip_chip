@@ -200,6 +200,22 @@ describe("translateSegments", () => {
     );
     expect(fetchImpl).toHaveBeenCalledTimes(1);
   });
+
+  it("keeps the batches already translated when a later batch returns a hard API error", async () => {
+    const long = [
+      { id: "s1", text: "x".repeat(BATCH_CHARS - 10) },
+      { id: "s2", text: "x".repeat(BATCH_CHARS - 10) },
+    ];
+    const fetchImpl = vi
+      .fn<typeof fetch>()
+      .mockResolvedValueOnce(reply(JSON.stringify({ translations: [{ id: "s1", text: "S1" }] })))
+      .mockResolvedValueOnce(new Response("rate limited", { status: 429 }));
+
+    const result = await translateSegments(long, { apiKey: "k", fetchImpl });
+
+    expect(result).toEqual([{ id: "s1", text: "S1" }]);
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+  });
 });
 
 describe("batchSegments", () => {

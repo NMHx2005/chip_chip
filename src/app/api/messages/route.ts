@@ -41,16 +41,7 @@ export async function POST(request: NextRequest) {
   const message = parsed.value;
   const admin = createAdminClient();
 
-  if (message.postId) {
-    const { data: post } = await admin
-      .from("posts")
-      .select("id")
-      .eq("id", message.postId)
-      .eq("status", "published")
-      .maybeSingle();
-    if (!post) return NextResponse.json({ error: "post_not_found" }, { status: 404 });
-  }
-
+  // Throttle before the post lookup so probing non-existent ids costs quota.
   const { data: allowed, error: limitError } = await admin.rpc("consume_rate_limit", {
     p_scope: "message",
     p_key: hashIp(clientIp(request.headers)),
@@ -63,6 +54,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "insert_failed" }, { status: 500 });
   }
   if (!allowed) return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+
+  if (message.postId) {
+    const { data: post } = await admin
+      .from("posts")
+      .select("id")
+      .eq("id", message.postId)
+      .eq("status", "published")
+      .maybeSingle();
+    if (!post) return NextResponse.json({ error: "post_not_found" }, { status: 404 });
+  }
 
   const { error } = await admin.from("messages").insert({
     kind: message.kind,

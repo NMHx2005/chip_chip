@@ -35,6 +35,22 @@ function fail(error: string): ActionResult {
 }
 
 /**
+ * Logs the database error and answers the screen with generic copy.
+ *
+ * PostgREST's `message` (and `details`/`hint`) name tables, columns and
+ * constraints — useful in the server log, not on a page a writer is looking
+ * at. Errors that must reach the writer (a duplicate slug, a publish-gate
+ * rejection) are mapped to their own friendly text before this is reached.
+ */
+function dbFail(
+  context: string,
+  error: { message: string; code?: string }
+): ActionResult {
+  console.error(`[admin:${context}]`, error.code ?? "", error.message);
+  return fail("Không thực hiện được thao tác. Vui lòng thử lại.");
+}
+
+/**
  * What every action returns instead of redirecting when the session has ended.
  *
  * `requireStaff()` answers with a redirect, and a redirect out of a Server
@@ -122,7 +138,7 @@ export async function savePost(input: SavePostInput): Promise<ActionResult> {
     if (error.code === "23505") {
       return fail("Đường dẫn này đã được dùng cho một bài khác cùng ngôn ngữ.");
     }
-    return fail(error.message);
+    return dbFail("savePost", error);
   }
 
   await revalidatePost([
@@ -196,7 +212,7 @@ export async function createPost(args: {
     if (error.code === "23505") {
       return fail("Đường dẫn này đã tồn tại. Chọn tiêu đề hoặc đường dẫn khác.");
     }
-    return fail(error.message);
+    return dbFail("createPost", error);
   }
 
   const viRow = data?.find((row) => row.locale === "vi");
@@ -218,7 +234,13 @@ export async function publishTranslation(
     p_translation_id: translationId,
   });
 
-  if (error) return fail(error.message);
+  // The publish gate raises its own Vietnamese guidance under SQLSTATE 23514
+  // (missing translation, empty body, difficulty missing) — that text is for
+  // the writer. Anything else is an unexpected database failure.
+  if (error) {
+    if (error.code === "23514") return fail(error.message);
+    return dbFail("publishTranslation", error);
+  }
 
   const { data } = await supabase
     .from("posts")
@@ -257,7 +279,7 @@ export async function unpublishTranslation(
     p_translation_id: translationId,
   });
 
-  if (error) return fail(error.message);
+  if (error) return dbFail("unpublishTranslation", error);
 
   await revalidatePost(postRowsFrom(rows));
   return { ok: true };
@@ -283,7 +305,7 @@ export async function deleteTranslation(
     .delete()
     .eq("translation_id", translationId);
 
-  if (error) return fail(error.message);
+  if (error) return dbFail("deleteTranslation", error);
 
   await revalidatePost(postRowsFrom(rows));
   return { ok: true };
@@ -303,7 +325,7 @@ export async function setCommentHidden(
     .update({ is_hidden: hidden })
     .eq("id", commentId);
 
-  if (error) return fail(error.message);
+  if (error) return dbFail("setCommentHidden", error);
 
   for (const locale of routing.locales) {
     revalidatePath(`/${locale}/blog`);
@@ -318,7 +340,7 @@ export async function deleteComment(commentId: string): Promise<ActionResult> {
   const supabase = createClient();
 
   const { error } = await supabase.from("comments").delete().eq("id", commentId);
-  if (error) return fail(error.message);
+  if (error) return dbFail("deleteComment", error);
 
   for (const locale of routing.locales) {
     revalidatePath(`/${locale}/blog`);
@@ -358,7 +380,7 @@ export async function saveSharedFields(
     .update(built.patch)
     .eq("translation_id", translationId);
 
-  if (error) return fail(error.message);
+  if (error) return dbFail("saveSharedFields", error);
 
   // Revalidate both the rows' old shape and their new one, so a topic change
   // clears the old topic page too, not just the new one.
@@ -391,7 +413,7 @@ export async function rebuildSearchText(): Promise<ActionResult & { updated?: nu
 
   const supabase = createClient();
   const { data, error } = await supabase.from("posts").select("id, content, plain_text");
-  if (error) return fail(error.message);
+  if (error) return dbFail("rebuildSearchText:read", error);
 
   let updated = 0;
   for (const row of data ?? []) {
@@ -401,7 +423,7 @@ export async function rebuildSearchText(): Promise<ActionResult & { updated?: nu
       .from("posts")
       .update({ plain_text: text })
       .eq("id", row.id);
-    if (writeError) return fail(writeError.message);
+    if (writeError) return dbFail("rebuildSearchText:write", writeError);
     updated += 1;
   }
 
@@ -421,7 +443,7 @@ export async function setMessageHandled(
     .update({ is_handled: handled })
     .eq("id", messageId);
 
-  if (error) return fail(error.message);
+  if (error) return dbFail("setMessageHandled", error);
   revalidatePath("/admin/tin-nhan");
   return { ok: true };
 }
@@ -432,7 +454,7 @@ export async function deleteMessage(messageId: string): Promise<ActionResult> {
   if (!isUuid(messageId)) return fail("Mã tin nhắn không hợp lệ.");
 
   const { error } = await createClient().from("messages").delete().eq("id", messageId);
-  if (error) return fail(error.message);
+  if (error) return dbFail("deleteMessage", error);
   revalidatePath("/admin/tin-nhan");
   return { ok: true };
 }

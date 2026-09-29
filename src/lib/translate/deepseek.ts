@@ -166,9 +166,13 @@ export async function translateSegments(
     try {
       results.push(...(await requestBatch(batch, { apiKey, model, fetchImpl, timeoutMs })));
     } catch (error) {
-      if (error instanceof ConnectionError && (timeoutMs < REQUEST_TIMEOUT_MS || results.length > 0)) {
-        break;
-      }
+      // Once a batch has succeeded, a later failure of any kind — connection,
+      // rate limit, server error, unreadable answer — stops translation and
+      // keeps what was already collected. Throwing here would discard the
+      // batches already paid for and re-spend them on the next click. A
+      // failure on the very first batch still surfaces as the real error.
+      if (results.length > 0) break;
+      if (error instanceof ConnectionError && timeoutMs < REQUEST_TIMEOUT_MS) break;
       throw error;
     }
   }

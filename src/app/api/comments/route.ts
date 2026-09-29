@@ -3,6 +3,7 @@ import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/adm
 import { createClient } from "@/lib/supabase/server";
 import { clientIp, hashIp } from "@/lib/rate-limit";
 import { isBodyTooLarge, readJsonWithLimit } from "@/lib/request-size";
+import { isUuid } from "@/lib/shared-fields";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -44,8 +45,14 @@ export async function POST(request: NextRequest) {
   let name = String(payload.name ?? "").trim();
   const email = String(payload.email ?? "").trim();
 
-  if (!postId) {
-    return NextResponse.json({ error: "missing_post" }, { status: 400 });
+  // Both ids go straight into `.eq()` filters; anything that is not a UUID
+  // can never match a row, so reject it here rather than round-tripping to
+  // PostgREST (and before the rate limit, so a scan still costs quota).
+  if (!postId || !isUuid(postId)) {
+    return NextResponse.json({ error: "post_invalid" }, { status: 400 });
+  }
+  if (parentId && !isUuid(parentId)) {
+    return NextResponse.json({ error: "parent_not_found" }, { status: 400 });
   }
   if (body.length < 1 || body.length > MAX_BODY) {
     return NextResponse.json({ error: "body_length" }, { status: 400 });
@@ -86,6 +93,26 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "email_invalid" }, { status: 400 });
   }
 
+  // Throttle before the existence lookups: otherwise probing many well-formed
+  // but non-existent post ids would cost nothing.
+  const { data: allowed, error: limitError } = await admin.rpc(
+    "consume_rate_limit",
+    {
+      p_scope: "comment",
+      p_key: hashIp(clientIp(request.headers)),
+      p_limit: MAX_PER_WINDOW,
+      p_window_minutes: WINDOW_MINUTES,
+    }
+  );
+
+  if (limitError) {
+    console.error("[comments] rate limit failed", limitError.message);
+    return NextResponse.json({ error: "insert_failed" }, { status: 500 });
+  }
+  if (!allowed) {
+    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
+  }
+
   // Only allow comments on articles the public can actually read.
   const { data: post } = await admin
     .from("posts")
@@ -111,24 +138,6 @@ export async function POST(request: NextRequest) {
     if (!parent || parent.post_id !== postId || parent.parent_id !== null) {
       return NextResponse.json({ error: "parent_not_found" }, { status: 400 });
     }
-  }
-
-  const { data: allowed, error: limitError } = await admin.rpc(
-    "consume_rate_limit",
-    {
-      p_scope: "comment",
-      p_key: hashIp(clientIp(request.headers)),
-      p_limit: MAX_PER_WINDOW,
-      p_window_minutes: WINDOW_MINUTES,
-    }
-  );
-
-  if (limitError) {
-    console.error("[comments] rate limit failed", limitError.message);
-    return NextResponse.json({ error: "insert_failed" }, { status: 500 });
-  }
-  if (!allowed) {
-    return NextResponse.json({ error: "rate_limited" }, { status: 429 });
   }
 
   const { data: inserted, error } = await admin
