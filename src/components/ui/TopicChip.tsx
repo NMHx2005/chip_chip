@@ -21,7 +21,7 @@ export function TopicChip({
   return (
     <span
       className={cn(
-        "inline-flex max-w-full items-center gap-1.5 self-start rounded-full border border-black/[0.08] py-[3px] pl-[3px] pr-2.5 text-xs font-semibold leading-4 text-[#262626]",
+        "inline-flex max-w-full items-center gap-1.5 self-start justify-self-start rounded-full border border-black/[0.08] py-[3px] pl-[3px] pr-2.5 text-xs font-semibold leading-4 text-[#262626]",
         className
       )}
       style={{ background: tone.soft }}
