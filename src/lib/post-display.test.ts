@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TOPIC_IDS } from "@/lib/constants";
-import { difficultyLevel, revealDelay, topicNumber } from "@/lib/post-display";
+import { cardRevealMotion, difficultyLevel, revealDelay, topicNumber } from "@/lib/post-display";
 
 describe("topicNumber", () => {
   it("numbers the four topics 1 to 4 in learning order", () => {
@@ -34,5 +34,26 @@ describe("revealDelay", () => {
   it("does not stagger a single column", () => {
     expect(revealDelay(0, 1)).toBe(0.05);
     expect(revealDelay(7, 1)).toBe(0.05);
+  });
+});
+
+describe("cardRevealMotion", () => {
+  it("hides the card until it scrolls into view when motion is allowed", () => {
+    for (const reduce of [false, null]) {
+      const motion = cardRevealMotion(reduce);
+      expect(motion.initial).toEqual({ opacity: 0, y: 20 });
+      expect(motion.whileInView).toEqual({ opacity: 1, y: 0 });
+      expect(motion.animate).toBeUndefined();
+    }
+  });
+
+  it("shows the card at once under reduced motion, whatever the server rendered", () => {
+    // The server cannot know the preference and renders the hidden state. The
+    // client must therefore animate to the visible state itself rather than
+    // render a plain element and rely on React to patch the attributes.
+    const motion = cardRevealMotion(true);
+    expect(motion.initial).toBe(false);
+    expect(motion.animate).toEqual({ opacity: 1, y: 0 });
+    expect(motion.whileInView).toBeUndefined();
   });
 });

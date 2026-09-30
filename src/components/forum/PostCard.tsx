@@ -12,15 +12,14 @@ import { topicNumber } from "@/lib/post-display";
 import { cn } from "@/lib/utils";
 
 // Hover styling is for a real pointer only: on touch a "hover" sticks after a
-// tap, so it is scoped to (hover: hover).
-const HOVER = "[@media(hover:hover)]:hover";
-const GROUP_HOVER = "[@media(hover:hover)]:group-hover";
-
+// tap, so it is scoped with [@media(hover:hover)]. Tailwind reads class names as
+// plain text, so every variant below is written out in full: a class assembled
+// from a `${...}` is never generated (see tailwind-classes.test.ts).
 const CARD =
-  `group grid h-full grid-cols-[96px_1fr] gap-x-3 gap-y-2.5 rounded-2xl border border-border bg-surface p-3 transition-[border-color,box-shadow,transform] duration-card ease-standard sm:flex sm:flex-col sm:gap-3 sm:p-4 ${HOVER}:border-black/20 ${HOVER}:shadow-card-hover active:scale-[0.98] motion-reduce:active:scale-100`;
+  "group grid h-full grid-cols-[96px_minmax(0,1fr)] gap-x-3 gap-y-2.5 rounded-2xl border border-border bg-surface p-3 transition-[border-color,box-shadow,transform] duration-card ease-standard [@media(hover:hover)]:hover:border-black/20 [@media(hover:hover)]:hover:shadow-card-hover active:scale-[0.98] motion-reduce:active:scale-100 sm:flex sm:flex-col sm:gap-3 sm:p-4";
 
 const ROW =
-  `group flex h-full flex-col gap-2 rounded-2xl border border-border bg-surface p-5 transition-[border-color,box-shadow] duration-card ease-standard ${HOVER}:border-black/20 ${HOVER}:shadow-card-hover`;
+  "group flex h-full flex-col gap-2 rounded-2xl border border-border bg-surface p-5 transition-[border-color,box-shadow] duration-card ease-standard [@media(hover:hover)]:hover:border-black/20 [@media(hover:hover)]:hover:shadow-card-hover";
 
 /**
  * One card for every post list.
@@ -133,10 +132,7 @@ export async function PostCard({
             alt=""
             fill
             sizes="(max-width: 640px) 96px, (max-width: 1024px) 50vw, 33vw"
-            className={cn(
-              "object-cover transition-transform duration-base ease-standard motion-reduce:transition-none",
-              `${GROUP_HOVER}:scale-[1.03]`
-            )}
+            className="object-cover transition-transform duration-base ease-standard motion-reduce:transition-none [@media(hover:hover)]:group-hover:scale-[1.03] motion-reduce:[@media(hover:hover)]:group-hover:scale-100"
           />
         ) : (
           topic && (
@@ -152,8 +148,9 @@ export async function PostCard({
 
       {topicChip}
 
-      {/* Reserved to three lines so a short title still lines up with its
-          neighbours; the excerpt below does the same. */}
+      {/* The title reserves two lines and clamps at three; the excerpt below
+          reserves three. A short title or excerpt still lines up with its
+          neighbours. */}
       <h3 className="col-start-2 line-clamp-3 text-balance text-base font-bold leading-[1.3] tracking-[-0.01em] text-text sm:col-start-auto sm:min-h-[47px] sm:text-lg">
         {post.title}
       </h3>
@@ -171,16 +168,10 @@ export async function PostCard({
         {dateEl}
         <span
           aria-hidden
-          className={cn(
-            "ml-auto grid size-8 shrink-0 place-items-center rounded-full bg-surface-muted text-text transition-colors duration-card ease-standard",
-            `${GROUP_HOVER}:bg-primary ${GROUP_HOVER}:text-white`
-          )}
+          className="ml-auto grid size-8 shrink-0 place-items-center rounded-full bg-surface-muted text-text transition-colors duration-card ease-standard [@media(hover:hover)]:group-hover:bg-primary [@media(hover:hover)]:group-hover:text-white"
         >
           <ArrowRight
-            className={cn(
-              "size-4 transition-transform duration-card ease-standard motion-reduce:transition-none",
-              `${GROUP_HOVER}:translate-x-0.5`
-            )}
+            className="size-4 transition-transform duration-card ease-standard motion-reduce:transition-none [@media(hover:hover)]:group-hover:translate-x-0.5 motion-reduce:[@media(hover:hover)]:group-hover:translate-x-0"
             strokeWidth={2}
           />
         </span>

@@ -62,6 +62,7 @@ const config: Config = {
         fast: "250ms",
         card: "300ms",
         panel: "450ms",
+        base: "600ms",
       },
 
       fontFamily: {

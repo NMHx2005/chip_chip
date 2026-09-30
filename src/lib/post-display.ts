@@ -18,3 +18,25 @@ export function difficultyLevel(difficulty: Difficulty): 1 | 2 | 3 {
 export function revealDelay(index: number, columns = 3): number {
   return Math.round((0.05 + (index % columns) * 0.07) * 100) / 100;
 }
+
+/**
+ * Motion props for CardReveal. The server cannot know the visitor's
+ * reduced-motion setting and renders the hidden starting state, so under
+ * reduced motion the client must animate to the visible state itself: it
+ * cannot swap in a different element and rely on React to patch the
+ * server-rendered attributes, which it does not do while hydrating.
+ */
+export function cardRevealMotion(reduce: boolean | null) {
+  if (reduce) {
+    return {
+      initial: false as const,
+      animate: { opacity: 1, y: 0 },
+      whileInView: undefined,
+    };
+  }
+  return {
+    initial: { opacity: 0, y: 20 },
+    animate: undefined,
+    whileInView: { opacity: 1, y: 0 },
+  };
+}
