@@ -1,5 +1,7 @@
 import { PostCard } from "@/components/forum/PostCard";
 import { SegmentedFilter } from "@/components/lessons/SegmentedFilter";
+import { TopicNav, type TopicNavEntry } from "@/components/lessons/TopicNav";
+import { TopicTrail } from "@/components/lessons/TopicTrail";
 import { Pagination } from "@/components/listing/Pagination";
 import { CardReveal } from "@/components/motion";
 import { Button } from "@/components/ui/Button";
@@ -85,6 +87,22 @@ const SAMPLES: { caption: string; post: PostSummary; showTopic?: boolean }[] = [
   },
 ];
 
+const NAV_ENTRIES: TopicNavEntry[] = [
+  { key: "all", label: "Tất cả", count: 47, href: "/bai-hoc", active: false, topic: null },
+  { key: "dinh-nghia", label: "Định nghĩa", count: 12, href: "/bai-hoc", active: false, topic: "dinh-nghia" },
+  { key: "nguyen-ly", label: "Nguyên lý", count: 13, href: "/bai-hoc", active: true, topic: "nguyen-ly" },
+  { key: "ung-dung", label: "Ứng dụng", count: 11, href: "/bai-hoc", active: false, topic: "ung-dung" },
+  { key: "lich-su", label: "Lịch sử và Phát triển", count: 11, href: "/bai-hoc", active: false, topic: "lich-su" },
+];
+
+const NAV_ENTRIES_EN: TopicNavEntry[] = [
+  { key: "all", label: "All", count: 47, href: "/bai-hoc", active: true, topic: null },
+  { key: "dinh-nghia", label: "What is a semiconductor", count: 12, href: "/bai-hoc", active: false, topic: "dinh-nghia" },
+  { key: "nguyen-ly", label: "How they work", count: 13, href: "/bai-hoc", active: false, topic: "nguyen-ly" },
+  { key: "ung-dung", label: "Applications", count: 11, href: "/bai-hoc", active: false, topic: "ung-dung" },
+  { key: "lich-su", label: "History & development", count: 11, href: "/bai-hoc", active: false, topic: "lich-su" },
+];
+
 export async function PostCardSamples() {
   return (
     <div className="mx-auto flex w-full max-w-content flex-col gap-10 px-5 md:px-8">
@@ -117,6 +135,30 @@ export async function PostCardSamples() {
             <DifficultyMark difficulty="advanced" label="Advanced" />
           </div>
         </div>
+      </section>
+
+      <section id="topicnav" className="flex flex-col gap-4">
+        <h2 className="text-h2 text-text md:text-h2-lg">TopicNav (từ 1024px) và TopicTrail (dưới 1024px)</h2>
+        <div className="flex flex-wrap items-start gap-10">
+          <TopicNav
+            heading="Chủ đề"
+            collapseLabel="Thu gọn cột chủ đề"
+            expandLabel="Mở cột chủ đề"
+            hint={{ lead: "Mới bắt đầu?", link: "Chọn chủ đề 1, mức Cơ bản", href: "/bai-hoc" }}
+            entries={NAV_ENTRIES}
+            className="!static"
+          />
+          <TopicNav
+            heading="Topics"
+            collapseLabel="Collapse topics"
+            expandLabel="Expand topics"
+            hint={{ lead: "New here?", link: "Start with topic 1, Basic", href: "/bai-hoc" }}
+            entries={NAV_ENTRIES_EN}
+            className="!static"
+          />
+        </div>
+        <TopicTrail label="Chủ đề" entries={NAV_ENTRIES} />
+        <TopicTrail label="Topics" entries={NAV_ENTRIES_EN} />
       </section>
 
       <section id="segmented" className="flex flex-col gap-4">
