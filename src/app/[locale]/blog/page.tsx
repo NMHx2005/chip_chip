@@ -72,8 +72,8 @@ export default async function ForumPage({
 
       <section className="px-5 py-10 md:px-8 md:py-14">
         <div className="mx-auto w-full max-w-content">
-          {/* Page changes link here, clear of the fixed navbar. */}
-          <div id={LIST_ID} className="scroll-mt-24">
+          {/* Page changes link here; `html { scroll-padding-top }` clears the navbar. */}
+          <div id={LIST_ID}>
             <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
               <h2 className="text-[26px] font-extrabold leading-[1.2] tracking-[-0.02em] text-text">
                 {t("listHeading")}

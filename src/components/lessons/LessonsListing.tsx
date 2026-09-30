@@ -13,6 +13,7 @@ import { PageHero } from "@/components/sections/PageHero";
 import type { Locale } from "@/i18n/routing";
 import { TOPIC_IDS, type TopicId } from "@/lib/constants";
 import { lessonHeroStats, startHere } from "@/lib/lesson-listing";
+import { withHash } from "@/lib/video-listing";
 import { LISTING_PAGE_SIZE } from "@/lib/listing-order";
 import {
   DEFAULT_LISTING,
@@ -32,11 +33,6 @@ function lessonsHref(topic: TopicId | null, query: Record<string, string>): List
 }
 
 const GRID_ID = "danh-sach";
-
-/** Send a page change to the top of the list instead of leaving the reader mid-page. */
-function toGrid(href: ListingHref): ListingHref {
-  return typeof href === "string" ? href : ({ ...href, hash: GRID_ID } as ListingHref);
-}
 
 /**
  * The lessons listing, shared by `/bai-hoc` and `/bai-hoc/[topic]`.
@@ -170,8 +166,8 @@ export async function LessonsListing({
                 </p>
               </div>
 
-              {/* Page changes link here (see `toGrid`), clear of the fixed navbar. */}
-              <div id={GRID_ID} className="scroll-mt-24">
+              {/* Page changes link here (see `withHash`); `html { scroll-padding-top }` clears the navbar. */}
+              <div id={GRID_ID}>
                 <h2 className="sr-only">{t("listHeading")}</h2>
 
                 {posts.length === 0 ? (
@@ -232,7 +228,7 @@ export async function LessonsListing({
                 <Pagination
                   page={current.page}
                   totalPages={totalPages}
-                  hrefFor={(page) => toGrid(lessonsHref(topic, listingQuery(current, { page })))}
+                  hrefFor={(page) => withHash(lessonsHref(topic, listingQuery(current, { page })), GRID_ID)}
                 />
               </div>
             </div>

@@ -40,7 +40,7 @@ export function SegmentedFilter({
       role="group"
       aria-label={label}
       className={cn(
-        columns === 3 ? "grid grid-cols-3" : "grid grid-cols-2",
+        columns === 3 ? "grid grid-cols-[repeat(3,minmax(0,1fr))]" : "grid grid-cols-2",
         "gap-0.5 rounded-[20px] border border-border bg-surface p-1 sm:inline-flex sm:items-center sm:rounded-full",
         className
       )}
@@ -52,7 +52,9 @@ export function SegmentedFilter({
           scroll={false}
           aria-current={option.active ? "true" : undefined}
           className={cn(
-            "inline-flex min-h-11 items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-4 text-sm font-medium transition-colors duration-fast ease-standard motion-reduce:transition-none sm:rounded-full",
+            "inline-flex min-h-11 items-center justify-center gap-2 rounded-2xl text-sm font-medium transition-colors duration-fast ease-standard motion-reduce:transition-none sm:rounded-full sm:whitespace-nowrap sm:px-4",
+            // Three equal columns on a phone are narrow: let a label wrap instead of overflowing.
+            columns === 3 ? "px-2 text-center text-[13px] leading-[1.25] sm:text-sm sm:leading-normal" : "whitespace-nowrap px-4",
             option.active
               ? "bg-primary text-white"
               : "text-text-nav [@media(hover:hover)]:hover:bg-surface-muted"
