@@ -3,6 +3,7 @@ import {
   commentInitial,
   firstInvalidField,
   freshCommentIds,
+  freshDelaySeconds,
   validateComment,
 } from "@/lib/comment-form";
 
@@ -84,5 +85,17 @@ describe("freshCommentIds", () => {
 
   it("is empty when nothing arrived", () => {
     expect(freshCommentIds(new Set(["a"]), ["a"])).toEqual([]);
+  });
+});
+
+describe("freshDelaySeconds", () => {
+  it("starts at 0.05s and steps 0.07s per new comment", () => {
+    expect(freshDelaySeconds(0)).toBeCloseTo(0.05);
+    expect(freshDelaySeconds(2)).toBeCloseTo(0.19);
+  });
+
+  it("stops growing after five, so a long batch never waits seconds at opacity 0", () => {
+    expect(freshDelaySeconds(5)).toBeCloseTo(0.4);
+    expect(freshDelaySeconds(60)).toBeCloseTo(0.4);
   });
 });

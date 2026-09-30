@@ -53,3 +53,8 @@ export function freshCommentIds(
   if (!previous) return [];
   return current.filter((id) => !previous.has(id));
 }
+
+/** Animation delay for the n-th new comment; capped so a big batch is never left invisible. */
+export function freshDelaySeconds(index: number): number {
+  return 0.05 + Math.min(index, 5) * 0.07;
+}

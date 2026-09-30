@@ -1,9 +1,8 @@
 "use client";
 
-import type { CSSProperties } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { Reply } from "lucide-react";
-import { commentInitial } from "@/lib/comment-form";
+import { commentInitial, freshDelaySeconds } from "@/lib/comment-form";
 import type { Comment } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
@@ -34,9 +33,10 @@ export function CommentItem({
       className={cn(
         "flex gap-3",
         isReply && "ml-2 border-l-2 border-border pl-3 sm:ml-6 sm:pl-4",
-        fresh && "motion-safe:animate-comment-in [animation-delay:var(--d)]"
+        fresh && "motion-safe:animate-comment-in"
       )}
-      style={fresh ? ({ "--d": `${0.05 + freshIndex * 0.07}s` } as CSSProperties) : undefined}
+      // Inline: the animation shorthand of `motion-safe:animate-*` would reset a delay class.
+      style={fresh ? { animationDelay: `${freshDelaySeconds(freshIndex)}s` } : undefined}
     >
       <span
         aria-hidden

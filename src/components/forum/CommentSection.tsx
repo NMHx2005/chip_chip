@@ -45,7 +45,10 @@ export function CommentSection({
   maxRoots?: number;
 }) {
   const t = useTranslations("comments");
-  const [replyTo, setReplyTo] = useState<Comment | null>(null);
+  // `n` changes on every click, so choosing the same comment twice still brings the form back.
+  const [reply, setReply] = useState<{ comment: Comment; n: number } | null>(null);
+  const replyCounter = useRef(0);
+  const startReply = (comment: Comment) => setReply({ comment, n: ++replyCounter.current });
   const hasMore = shownRoots < totalRoots && shownRoots < maxRoots;
 
   // Comments that were not on screen at the previous render rise in. `null`
@@ -77,7 +80,12 @@ export function CommentSection({
       </h2>
 
       <div className="mt-6">
-        <CommentForm postId={postId} replyTo={replyTo} onCancelReply={() => setReplyTo(null)} />
+        <CommentForm
+          postId={postId}
+          replyTo={reply?.comment ?? null}
+          replyRequest={reply?.n ?? 0}
+          onCancelReply={() => setReply(null)}
+        />
       </div>
 
       <div className={comments.length === 0 ? "mt-7" : "mt-10"}>
@@ -90,7 +98,7 @@ export function CommentSection({
                 <li key={comment.id} className="flex flex-col gap-5">
                   <CommentItem
                     comment={comment}
-                    onReply={setReplyTo}
+                    onReply={startReply}
                     fresh={freshOrder.has(comment.id)}
                     freshIndex={freshOrder.get(comment.id)}
                   />
@@ -101,7 +109,7 @@ export function CommentSection({
                         <li key={reply.id}>
                           <CommentItem
                             comment={reply}
-                            onReply={setReplyTo}
+                            onReply={startReply}
                             isReply
                             fresh={freshOrder.has(reply.id)}
                             freshIndex={freshOrder.get(reply.id)}

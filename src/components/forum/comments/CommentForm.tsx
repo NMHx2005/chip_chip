@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
+import { flushSync } from "react-dom";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/Button";
@@ -39,10 +40,13 @@ type FieldErrors = Partial<Record<CommentField, string>>;
 export function CommentForm({
   postId,
   replyTo,
+  replyRequest,
   onCancelReply,
 }: {
   postId: string;
   replyTo: Comment | null;
+  /** Changes on every Reply click, including a second click on the same comment. */
+  replyRequest: number;
   onCancelReply: () => void;
 }) {
   const t = useTranslations("comments");
@@ -62,11 +66,15 @@ export function CommentForm({
   // Reply: bring the form into view (at once under reduced motion), then focus
   // the message without a second scroll.
   useEffect(() => {
-    if (!replyTo) return;
+    if (!replyRequest) return;
+    // A notice belongs to the comment just sent; starting a reply moves on.
+    setSuccess(false);
+    setFailure(null);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     formRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
     bodyRef.current?.focus({ preventScroll: true });
-  }, [replyTo]);
+  }, [replyRequest]);
+
 
   const clearError = (field: CommentField) =>
     setFieldErrors((prev) => (prev[field] ? { ...prev, [field]: undefined } : prev));
@@ -88,11 +96,15 @@ export function CommentForm({
     const problems = validateComment({ name, email, body });
     const first = firstInvalidField(problems);
     if (first) {
-      setFieldErrors({
-        name: problems.name && message(problems.name),
-        email: problems.email && message(problems.email),
-        body: problems.body && message(problems.body),
-      });
+      // Committed before focusing, so a screen reader meets the field already
+      // marked invalid and described by its error.
+      flushSync(() =>
+        setFieldErrors({
+          name: problems.name && message(problems.name),
+          email: problems.email && message(problems.email),
+          body: problems.body && message(problems.body),
+        })
+      );
       fieldRef[first].current?.focus();
       return;
     }
@@ -120,7 +132,7 @@ export function CommentForm({
         const text = key ? t(key) : t("errors.generic");
         const field = result.error ? ERROR_FIELDS[result.error] : undefined;
         if (field) {
-          setFieldErrors({ [field]: text });
+          flushSync(() => setFieldErrors({ [field]: text }));
           fieldRef[field].current?.focus();
         } else {
           setFailure(text);
@@ -145,7 +157,7 @@ export function CommentForm({
       className="rounded-3xl border border-border bg-surface p-5 md:p-7"
     >
       <form onSubmit={submit} noValidate className="flex flex-col gap-4">
-        <h3 className="text-lg font-bold leading-[1.3] text-text">
+        <h3 className="text-lg font-bold leading-[1.3] text-text [overflow-wrap:anywhere]">
           {replyTo ? t("replyingTo", { name: replyTo.authorName }) : t("formTitle")}
         </h3>
 
@@ -221,8 +233,12 @@ export function CommentForm({
           {replyTo && (
             <button
               type="button"
-              onClick={onCancelReply}
-              className="min-h-11 cursor-pointer text-sm font-semibold text-text-nav underline underline-offset-[3px] [@media(hover:hover)]:hover:text-accent"
+              onClick={() => {
+                onCancelReply();
+                // The button unmounts; keep the keyboard user in the form.
+                bodyRef.current?.focus({ preventScroll: true });
+              }}
+              className="min-h-11 min-w-11 cursor-pointer text-sm font-semibold text-text-nav underline underline-offset-[3px] [@media(hover:hover)]:hover:text-accent"
             >
               {t("cancelReply")}
             </button>

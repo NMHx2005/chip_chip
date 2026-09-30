@@ -185,7 +185,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **45 file, 431 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **45 file, 433 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
