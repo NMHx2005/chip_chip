@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, type ReactNode } from "react";
+import { forwardRef, useId, type ReactNode } from "react";
 import { CircleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { describedBy } from "@/components/ui/form/describedBy";
@@ -16,21 +16,25 @@ export type FieldControlProps = {
 const CONTROL =
   "block w-full rounded-xl border border-field bg-white px-3.5 text-base text-text transition-[border-color,box-shadow,background-color] duration-fast ease-standard placeholder:text-[#6E6E6E] hover:border-field-hover focus:border-accent focus:shadow-field-focus focus:outline-none md:text-sm aria-[invalid=true]:border-err-border aria-[invalid=true]:shadow-[inset_0_0_0_1px_#D92D20] aria-[invalid=true]:focus:shadow-[inset_0_0_0_1px_#D92D20,0_0_0_2px_#fff,0_0_0_4px_#314344] disabled:cursor-not-allowed disabled:border-border disabled:bg-surface-muted disabled:text-disabled read-only:cursor-not-allowed read-only:border-border read-only:bg-surface-muted read-only:text-disabled";
 
-export function Input({ className, ...props }: React.InputHTMLAttributes<HTMLInputElement>) {
-  return <input {...props} className={cn(CONTROL, "h-11", className)} />;
-}
+// forwardRef so a form can focus the first invalid control.
+export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(
+  function Input({ className, ...props }, ref) {
+    return <input {...props} ref={ref} className={cn(CONTROL, "h-11", className)} />;
+  }
+);
 
-export function Textarea({
-  className,
-  ...props
-}: React.TextareaHTMLAttributes<HTMLTextAreaElement>) {
+export const Textarea = forwardRef<
+  HTMLTextAreaElement,
+  React.TextareaHTMLAttributes<HTMLTextAreaElement>
+>(function Textarea({ className, ...props }, ref) {
   return (
     <textarea
       {...props}
+      ref={ref}
       className={cn(CONTROL, "min-h-[120px] resize-y py-3 leading-[1.55]", className)}
     />
   );
-}
+});
 
 /**
  * Label, control, hint and error as one unit. `children` receives the props that
