@@ -216,7 +216,9 @@ export default async function VideoPage({
           <ArticleBody content={post.content} locale={locale as Locale} />
         </div>
 
-        <ReportMistake postId={post.id} />
+        <div className="mt-12">
+          <ReportMistake postId={post.id} />
+        </div>
 
         <CommentSection
           postId={post.id}

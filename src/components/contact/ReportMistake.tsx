@@ -14,8 +14,8 @@ export async function ReportMistake({ postId }: { postId: string }) {
   const t = await getTranslations("contact.report");
 
   return (
-    <details className="group mt-12 rounded-2xl border border-border bg-surface">
-      <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-text-nav transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
+    <details className="group rounded-2xl border border-border bg-surface">
+      <summary className="flex min-h-[52px] cursor-pointer list-none items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-text-nav transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
         <Flag className="size-4" strokeWidth={2} aria-hidden />
         {t("toggle")}
         <ChevronDown

@@ -20,7 +20,7 @@ export async function ArticleTocRail({ content }: { content: unknown }) {
   const t = await getTranslations("forum");
 
   return (
-    <aside className="sticky top-24 hidden pt-16 lg:block">
+    <aside className="sticky top-24 hidden self-start pt-16 lg:block">
       <p className="mb-2 text-xs font-bold uppercase tracking-[0.08em] text-text-nav">
         {t("tableOfContents")}
       </p>
