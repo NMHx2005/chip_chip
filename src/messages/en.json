@@ -152,7 +152,17 @@
     "emptyTitle": "No lessons yet",
     "emptyBody": "The first lessons are being written. Check back soon, or watch the videos and read the blog in the meantime.",
     "clearDifficulty": "Clear the difficulty filter",
-    "allLessons": "All lessons"
+    "allLessons": "All lessons",
+    "stats": {
+      "lessons": "Lessons",
+      "topics": "Topics",
+      "levels": "Levels"
+    },
+    "hintLead": "New here?",
+    "hintLink": "Start with topic 1, Basic",
+    "result": "Showing {shown} of {total} lessons · {scope}",
+    "allTopicsScope": "All topics",
+    "listHeading": "Lesson list"
   },
   "difficulty": {
     "label": "Difficulty",

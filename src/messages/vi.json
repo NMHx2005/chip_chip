@@ -152,7 +152,17 @@
     "emptyTitle": "Chưa có bài học nào",
     "emptyBody": "Các bài học đầu tiên đang được biên soạn. Quay lại sau nhé, hoặc xem video và blog trong lúc chờ.",
     "clearDifficulty": "Bỏ lọc độ khó",
-    "allLessons": "Tất cả bài học"
+    "allLessons": "Tất cả bài học",
+    "stats": {
+      "lessons": "Bài học",
+      "topics": "Chủ đề",
+      "levels": "Mức độ"
+    },
+    "hintLead": "Mới bắt đầu?",
+    "hintLink": "Chọn chủ đề 1, mức Cơ bản",
+    "result": "Hiển thị {shown} trong {total} bài · {scope}",
+    "allTopicsScope": "Tất cả chủ đề",
+    "listHeading": "Danh sách bài học"
   },
   "difficulty": {
     "label": "Độ khó",
