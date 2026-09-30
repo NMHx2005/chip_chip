@@ -14,7 +14,7 @@ import { listingQuery, parseListingParams, type SearchParams } from "@/lib/listi
 import { countVideos, listVideos } from "@/lib/queries/posts";
 import { VIDEO_BANNER } from "@/lib/constants";
 import { localeAlternates } from "@/lib/seo";
-import { isFiltered, videoHeroStats, withHash } from "@/lib/video-listing";
+import { activeFilterCount, isFiltered, videoHeroStats, withHash } from "@/lib/video-listing";
 
 export const revalidate = 3600;
 
@@ -46,12 +46,15 @@ export default async function VideosPage({
   setRequestLocale(locale);
 
   const current = parseListingParams(searchParams);
-  const [t, tPagination, { posts, total }, allVideos] = await Promise.all([
+  const [t, tPagination, { posts, total }] = await Promise.all([
     getTranslations("videos"),
     getTranslations("pagination"),
     listVideos(locale as Locale, current),
-    countVideos(locale as Locale),
   ]);
+  // Unfiltered, `total` already is every video (sort does not narrow it), so the
+  // extra count is only needed when a filter is on; a failed count cannot then
+  // hide a list that loaded.
+  const allVideos = activeFilterCount(current) === 0 ? total : await countVideos(locale as Locale);
 
   const totalPages = Math.ceil(total / LISTING_PAGE_SIZE);
   // A page past the last one is not a real view of this listing — see the

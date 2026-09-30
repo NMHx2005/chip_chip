@@ -28,8 +28,7 @@ function GroupLabel({ children }: { children: ReactNode }) {
  * segmented filters plus a sort row; below that a disclosure with the same
  * groups (a closed `details` cannot be forced open by CSS, so the two are
  * separate copies). Everything is a link, so it works without JavaScript and
- * every state has a shareable URL. The result line sits outside both, and is
- * the only live region.
+ * every state has a shareable URL. The result line sits outside both.
  */
 export async function VideoFilters({
   current,
@@ -135,7 +134,7 @@ export async function VideoFilters({
         </div>
         <div className="flex flex-col gap-2">
           <GroupLabel>{t("topic")}</GroupLabel>
-          <TopicTrail label={t("topic")} entries={topicEntries} className="-mb-1" />
+          <TopicTrail label={t("topic")} entries={topicEntries} className="-mb-1" inset />
         </div>
         <div className="flex flex-col gap-2">
           <GroupLabel>{tDifficulty("label")}</GroupLabel>

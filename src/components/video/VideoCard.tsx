@@ -70,8 +70,8 @@ export async function VideoCard({ post, compact = false }: { post: PostSummary; 
             fill
             sizes={
               compact
-                ? "(max-width: 640px) 132px, 33vw"
-                : "(max-width: 640px) 132px, (max-width: 1024px) 50vw, 33vw"
+                ? "(max-width: 639px) 132px, 50vw"
+                : "(max-width: 639px) 132px, (max-width: 1024px) 50vw, 33vw"
             }
             className="object-cover transition-transform duration-base ease-standard motion-reduce:transition-none [@media(hover:hover)]:group-hover:scale-[1.03] motion-reduce:[@media(hover:hover)]:group-hover:scale-100"
           />
@@ -94,7 +94,7 @@ export async function VideoCard({ post, compact = false }: { post: PostSummary; 
         </span>
 
         {ref && (
-          <span className="absolute left-1.5 top-1.5 rounded-full bg-black/85 px-2 py-0.5 text-[11px] font-semibold text-white sm:left-2 sm:top-2 sm:px-2.5 sm:py-1 sm:text-xs">
+          <span aria-hidden className="absolute left-1.5 top-1.5 rounded-full bg-black/85 px-2 py-0.5 text-[11px] font-semibold text-white sm:left-2 sm:top-2 sm:px-2.5 sm:py-1 sm:text-xs">
             {PLATFORM_LABEL[ref.platform]}
           </span>
         )}

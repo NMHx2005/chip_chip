@@ -207,7 +207,7 @@
       "topics": "Topics"
     },
     "filtersSummary": "Filters and sort",
-    "result": "Showing {shown} of {total} videos",
+    "result": "Showing {shown} of {total, plural, one {# video} other {# videos}}",
     "resultNone": "No videos found",
     "clearFiltersCount": "Clear filters ({count})",
     "listHeading": "Video list",

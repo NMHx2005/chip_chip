@@ -16,10 +16,13 @@ export function TopicTrail({
   label,
   entries,
   className,
+  inset = false,
 }: {
   label: string;
   entries: TopicNavEntry[];
   className?: string;
+  /** Inside a padded card (16px): bleed to the card edge, not to the 20/32px page gutter. */
+  inset?: boolean;
 }) {
   const rowRef = useRef<HTMLUListElement>(null);
   const activeRef = useRef<HTMLAnchorElement>(null);
@@ -42,7 +45,10 @@ export function TopicTrail({
     <nav aria-label={label} className={cn("lg:hidden", className)}>
       <ul
         ref={rowRef}
-        className="relative -mx-5 flex snap-x snap-proximity gap-2 overflow-x-auto pb-1 pl-5 pr-10 [mask-image:linear-gradient(to_right,#000_calc(100%-32px),transparent)] md:-mx-8 md:pl-8 md:pr-12"
+        className={cn(
+          "relative flex snap-x snap-proximity gap-2 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,#000_calc(100%-32px),transparent)]",
+          inset ? "-mx-4 pl-4 pr-10" : "-mx-5 pl-5 pr-10 md:-mx-8 md:pl-8 md:pr-12"
+        )}
       >
         {entries.map((entry) => (
           <li key={entry.key} className="shrink-0 snap-center">
