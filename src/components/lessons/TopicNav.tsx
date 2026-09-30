@@ -13,7 +13,8 @@ const STORAGE_KEY = "chipchip.lessons.topicsCollapsed";
 export type TopicNavEntry = {
   key: string;
   label: string;
-  count: number;
+  /** Left out where no count is known (the video filters). */
+  count?: number;
   href: ListingHref;
   active: boolean;
   /** `null` is the "all topics" row, drawn with a grid icon instead of a number. */
@@ -157,7 +158,7 @@ export function TopicNav({
         )}
       >
         {entries.map((entry) => {
-          const name = `${entry.label} (${entry.count})`;
+          const name = entry.count === undefined ? entry.label : `${entry.label} (${entry.count})`;
           return (
             <Link
               key={entry.key}
@@ -178,14 +179,16 @@ export function TopicNav({
                   <span className="min-w-0 flex-1 leading-[1.3] motion-safe:animate-notice-in">
                     {entry.label}
                   </span>
-                  <span
-                    className={cn(
-                      "min-w-7 shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums motion-safe:animate-notice-in",
-                      entry.active ? "bg-white/[0.16] text-white" : "bg-surface-muted text-text-muted"
-                    )}
-                  >
-                    {entry.count}
-                  </span>
+                  {entry.count !== undefined && (
+                    <span
+                      className={cn(
+                        "min-w-7 shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums motion-safe:animate-notice-in",
+                        entry.active ? "bg-white/[0.16] text-white" : "bg-surface-muted text-text-muted"
+                      )}
+                    >
+                      {entry.count}
+                    </span>
+                  )}
                 </>
               )}
               {collapsed && (

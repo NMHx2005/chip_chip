@@ -60,14 +60,16 @@ export function TopicTrail({
             >
               <TopicDisc topic={entry.topic} active={entry.active} />
               <span className="whitespace-nowrap">{entry.label}</span>
-              <span
-                className={cn(
-                  "rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums",
-                  entry.active ? "bg-white/[0.16] text-white" : "bg-surface-muted text-text-muted"
-                )}
-              >
-                {entry.count}
-              </span>
+              {entry.count !== undefined && (
+                <span
+                  className={cn(
+                    "rounded-full px-2 py-0.5 text-xs font-semibold tabular-nums",
+                    entry.active ? "bg-white/[0.16] text-white" : "bg-surface-muted text-text-muted"
+                  )}
+                >
+                  {entry.count}
+                </span>
+              )}
             </Link>
           </li>
         ))}
