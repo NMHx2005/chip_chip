@@ -1,6 +1,5 @@
 import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
-import { AutoplayVideo } from "@/components/ui/AutoplayVideo";
 import { cn } from "@/lib/utils";
 
 /**
@@ -23,7 +22,8 @@ export function PageHero({
   stats,
   className,
   backdropImage,
-  backdropVideo,
+  backdrop,
+  below,
 }: {
   eyebrow?: string;
   title: string;
@@ -35,10 +35,12 @@ export function PageHero({
   className?: string;
   /** Path under `public/`; faded into the page background behind the text. */
   backdropImage?: string;
-  /** Muted looping clip used instead of `backdropImage`. */
-  backdropVideo?: string;
+  /** Custom layer (e.g. `HeroBackdropLayer`) used instead of `backdropImage`; it draws its own scrim. */
+  backdrop?: ReactNode;
+  /** A row under the title block, such as a video credit. */
+  below?: ReactNode;
 }) {
-  const hasBackdrop = Boolean(backdropImage || backdropVideo);
+  const hasBackdrop = Boolean(backdropImage || backdrop);
 
   return (
     <section
@@ -50,19 +52,19 @@ export function PageHero({
     >
       {hasBackdrop && (
         <div aria-hidden className="pointer-events-none absolute inset-0">
-          {backdropVideo ? (
-            <AutoplayVideo src={backdropVideo} eager className="opacity-25" />
-          ) : (
-            <Image
-              src={backdropImage!}
-              alt=""
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover opacity-25"
-            />
+          {backdrop ?? (
+            <>
+              <Image
+                src={backdropImage!}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover opacity-25"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg/40 to-bg" />
+            </>
           )}
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg/40 to-bg" />
         </div>
       )}
       <div className="relative mx-auto w-full max-w-content">
@@ -96,6 +98,11 @@ export function PageHero({
           {stats && stats.length > 0 && <HeroStats stats={stats} />}
           {children}
         </div>
+        {below && (
+          <div className="hero-in mt-6" style={{ "--i": 4 } as CSSProperties}>
+            {below}
+          </div>
+        )}
       </div>
     </section>
   );
