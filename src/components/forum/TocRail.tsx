@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { centerScrollLeft } from "@/lib/lesson-listing";
 import { pickActiveHeading } from "@/lib/toc";
 import { cn } from "@/lib/utils";
 
 export type TocEntry = { id: string; text: string; level: number };
 
-// The fixed navbar plus a little air; matches the headings' scroll-margin-top.
+// The fixed navbar plus a little air; headings stop at `html { scroll-padding-top }` (96px).
 const OFFSET = 120;
 
 /**
@@ -17,6 +18,21 @@ const OFFSET = 120;
  */
 export function TocRail({ label, entries }: { label: string; entries: TocEntry[] }) {
   const [activeId, setActiveId] = useState<string | null>(entries[0]?.id ?? null);
+  const navRef = useRef<HTMLElement>(null);
+
+  // A long list is capped to the viewport and scrolls inside its own box; keep
+  // the active row in the middle of it. Only the box moves, never the window.
+  useEffect(() => {
+    const nav = navRef.current;
+    const row = nav?.querySelector<HTMLElement>('[aria-current="location"]');
+    if (!nav || !row) return;
+    nav.scrollTop = centerScrollLeft({
+      chipLeft: row.offsetTop,
+      chipWidth: row.offsetHeight,
+      rowWidth: nav.clientHeight,
+      contentWidth: nav.scrollHeight,
+    });
+  }, [activeId]);
 
   useEffect(() => {
     let frame = 0;
@@ -43,8 +59,9 @@ export function TocRail({ label, entries }: { label: string; entries: TocEntry[]
 
   return (
     <nav
+      ref={navRef}
       aria-label={label}
-      className="flex flex-col gap-0.5 rounded-2xl border border-border bg-surface p-2"
+      className="relative flex max-h-[calc(100vh-13rem)] flex-col gap-0.5 overflow-y-auto rounded-2xl border border-border bg-surface p-2"
     >
       {entries.map((entry) => {
         const active = entry.id === activeId;
