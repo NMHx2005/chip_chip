@@ -28,6 +28,40 @@ const config: Config = {
         border: "#D1D1D1",
         input: "#D1D1D1",
         ring: "#314344",
+
+        // Form field border. #8C8C8C only reaches 3:1 on white, not on the grey
+        // page background, so inputs sitting on `bg` need this darker value.
+        field: "#767676",
+        "field-hover": "#4D4D4D",
+        "primary-hover": "#262626",
+        disabled: "#5F5F5F",
+        "surface-hover": "#F5F5F5",
+        hairline: "#EAEAEA",
+
+        // Error is the only red on the site; success reuses `accent`.
+        err: "#B42318",
+        "err-border": "#D92D20",
+        "err-soft": "#FEF3F2",
+        "err-ink": "#912018",
+        "ok-soft": "#F4F6F6",
+      },
+
+      fontSize: {
+        h1: ["34px", { lineHeight: "1.1", letterSpacing: "-0.03em", fontWeight: "800" }],
+        "h1-lg": ["46px", { lineHeight: "1.1", letterSpacing: "-0.03em", fontWeight: "800" }],
+        h2: ["26px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "800" }],
+        "h2-lg": ["38px", { lineHeight: "1.2", letterSpacing: "-0.02em", fontWeight: "800" }],
+      },
+
+      // Mirrors EASE_STANDARD and DURATION in components/motion/tokens.ts, so
+      // CSS transitions and framer-motion share one curve.
+      transitionTimingFunction: {
+        standard: "cubic-bezier(0.25, 0.1, 0.25, 1)",
+      },
+      transitionDuration: {
+        fast: "250ms",
+        card: "300ms",
+        panel: "450ms",
       },
 
       fontFamily: {
@@ -47,6 +81,7 @@ const config: Config = {
         "card-hover":
           "0 2px 4px rgba(0, 0, 0, 0.05), 0 12px 32px rgba(0, 0, 0, 0.12)",
         float: "0 8px 32px rgba(0, 0, 0, 0.16)",
+        "field-focus": "0 0 0 2px #fff, 0 0 0 4px #314344",
       },
 
       animation: {
