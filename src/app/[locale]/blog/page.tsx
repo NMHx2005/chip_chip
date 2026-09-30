@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PostCard } from "@/components/forum/PostCard";
+import { CardReveal } from "@/components/motion";
 import { HeroStat, PageHero } from "@/components/sections/PageHero";
 import { listForumPosts } from "@/lib/queries/posts";
 import { localeAlternates } from "@/lib/seo";
@@ -83,8 +84,10 @@ export default async function ForumPage({
             <>
               <h2 className="sr-only">{t("postsHeading")}</h2>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {posts.map((post) => (
-                  <PostCard key={post.id} post={post} expand />
+                {posts.map((post, index) => (
+                  <CardReveal key={post.id} index={index} className="h-full">
+                    <PostCard post={post} expand />
+                  </CardReveal>
                 ))}
               </div>
             </>

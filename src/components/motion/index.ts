@@ -11,6 +11,7 @@ export * from "@/components/motion/fillProgress";
 export * from "@/components/motion/holdToReveal";
 
 export { AnimatedSection } from "@/components/motion/AnimatedSection";
+export { CardReveal } from "@/components/motion/CardReveal";
 export { AnimatedButtonLabel } from "@/components/motion/AnimatedButtonLabel";
 export { ScrollReveal3D } from "@/components/motion/ScrollReveal3D";
 export { SceneFillOverlay } from "@/components/motion/SceneFillOverlay";

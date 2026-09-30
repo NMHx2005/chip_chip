@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { PostCard } from "@/components/forum/PostCard";
+import { CardReveal } from "@/components/motion";
 import { FilterPills, type ListingHref } from "@/components/listing/FilterPills";
 import { Pagination } from "@/components/listing/Pagination";
 import { TopicSidebar } from "@/components/lessons/TopicSidebar";
@@ -172,8 +173,10 @@ export async function LessonsListing({
               </div>
             ) : (
               <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-                {posts.map((post) => (
-                  <PostCard key={post.id} post={post} showTopic={topic === null} />
+                {posts.map((post, index) => (
+                  <CardReveal key={post.id} index={index} className="h-full">
+                    <PostCard post={post} showTopic={topic === null} />
+                  </CardReveal>
                 ))}
               </div>
             )}

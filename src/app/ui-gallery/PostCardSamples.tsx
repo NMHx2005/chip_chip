@@ -1,4 +1,5 @@
 import { PostCard } from "@/components/forum/PostCard";
+import { CardReveal } from "@/components/motion";
 import type { PostSummary } from "@/lib/types";
 
 // Sample posts for the gallery only. PostCard is an async Server Component, so
@@ -85,15 +86,15 @@ export async function PostCardSamples() {
         <h2 className="text-h2 text-text md:text-h2-lg">PostCard · thẻ</h2>
         <p className="text-sm text-text-muted">Dưới 640px thẻ tự chuyển sang dạng gọn.</p>
         <div className="grid items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {SAMPLES.map((sample) => (
-            <div key={sample.post.id} className="flex flex-col gap-2">
+          {SAMPLES.map((sample, index) => (
+            <CardReveal key={sample.post.id} index={index} columns={4} className="flex flex-col gap-2">
               <p className="min-h-8 text-xs font-bold uppercase tracking-[0.08em] text-text-muted">
                 {sample.caption}
               </p>
               <div className="flex-1">
                 <PostCard post={sample.post} showTopic={sample.showTopic} />
               </div>
-            </div>
+            </CardReveal>
           ))}
         </div>
       </section>
