@@ -62,6 +62,8 @@ export function PageHero({
                 sizes="100vw"
                 className="object-cover opacity-25"
               />
+              {/* Left-to-right scrim keeps the title readable (flat on phones), then a fade into the page. */}
+              <div className="absolute inset-0 bg-[rgba(229,229,229,.8)] md:bg-[linear-gradient(90deg,rgba(229,229,229,.92)_0%,rgba(229,229,229,.86)_55%,rgba(229,229,229,0)_100%)]" />
               <div className="absolute inset-0 bg-gradient-to-b from-transparent via-bg/40 to-bg" />
             </>
           )}
