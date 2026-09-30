@@ -116,6 +116,21 @@ Chưa xác minh được: nhánh giảm chuyển động của `HeroBackdrop` (t
 được), danh sách có bài thật (chưa có dữ liệu Supabase cục bộ), `npm run build`. Khoá
 i18n `forum.empty` và `forum.postsHeading` không còn dùng.
 
+**Thiết kế lại giao diện — bước 5b (khung bài viết).** Kế hoạch:
+`docs/superpowers/plans/2026-09-30-thiet-ke-lai-buoc-5b-khung-bai-viet.md`. Bài Blog và
+bài Bài học chi tiết dùng chung `ArticleShell`: cột chữ 768px + cột phải 272px từ 1024px
+(cột phải luôn giữ chỗ, kể cả khi bài không có mục lục, để bài không nhảy vị trí), nút
+"Về Blog"/"Về chủ đề" 44px, tiêu đề 46px (34px trên di động), dòng thông tin, `LangPill`
+(liên kết bản dịch), phần đầu bài hiện dần một lần (BL8, tôn trọng giảm chuyển động).
+Mục lục: `TocRail` cố định bên phải, hàng đang đọc tô đen (`aria-current="location"`, logic
+thuần `pickActiveHeading` có test); dưới 1024px là `details` mặc định đóng (bản vẽ vẽ
+mở, lệch có chủ đích). Chữ tiếng Anh theo bản vẽ ("Posted", "In this article"). Ô "Báo
+lỗi" cao 52px. Không có trong bản vẽ nên không làm: thanh tiến độ đọc, chia sẻ, khối tác
+giả, bài trước/sau, breadcrumb. Neo mục lục dùng `scroll-padding-top` của `html` (đặt thêm
+`scroll-margin` sẽ cộng dồn thành 192px). Chưa xác minh: bài thật có ảnh bìa (chưa có dữ
+liệu cục bộ; kiểm bằng trang mẫu tạm, đã xoá), `npm run build`. Bình luận là bước 5c,
+Video chi tiết là bước 5e.
+
 ---
 
 ## 3. Chạy local
@@ -156,7 +171,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **42 file, 409 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **43 file, 415 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
