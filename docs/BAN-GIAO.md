@@ -103,6 +103,19 @@ dòng kết quả `aria-live`, gợi ý "Mới bắt đầu?", phân trang chuy�
 M2 (đổi chủ đề chỉ mờ chữ hero: hiện hero vào lại bằng M1 vì chuyển chủ đề là đổi
 route), gợi ý mức độ khác kèm số đếm (cần truy vấn đếm theo độ khó, đã hoãn).
 
+**Thiết kế lại giao diện — bước 5a (danh sách Blog).** Kế hoạch:
+`docs/superpowers/plans/2026-09-30-thiet-ke-lai-buoc-5a-danh-sach-blog.md`. `/blog` được
+ráp lại: thẻ số liệu một ô ("Bài viết"), video nền của hero có nút tạm dừng/phát 44px
+(`HeroBackdrop`: provider + lớp video + dòng credit; dừng khi ra khỏi màn hình, nhớ
+lựa chọn tạm dừng của người đọc, không tự phát khi bật giảm chuyển động nhưng nút vẫn
+phát được), `PageHero` nhận `backdrop` và `below` (bỏ `backdropVideo`; `backdropImage`
+vẫn dùng cho trang Video), h2 "Tất cả bài viết" kèm dòng kết quả `aria-live`,
+`Pagination` dùng chung (chuyển về `#danh-sach`), `EmptyState` có hai nút (Bài học,
+Video), thẻ bài không ảnh và không chủ đề có khối trung tính với biểu tượng tài liệu.
+Chưa xác minh được: nhánh giảm chuyển động của `HeroBackdrop` (trình duyệt không giả lập
+được), danh sách có bài thật (chưa có dữ liệu Supabase cục bộ), `npm run build`. Khoá
+i18n `forum.empty` và `forum.postsHeading` không còn dùng.
+
 ---
 
 ## 3. Chạy local
@@ -143,7 +156,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **42 file, 405 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **42 file, 409 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
