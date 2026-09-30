@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Đặc tả · Tìm kiếm</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt,ul,li{margin:0;padding:0}
+ul{list-style:none}
+svg.ic{width:16px;height:16px;flex:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.nvl{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--tn)}
+.cta{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;background:linear-gradient(131deg,#333 .8%,#0d0d0d 35%,#262626 99%);color:#fff;font-size:14px;font-weight:600}
+.ibtn{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);color:var(--tn);transition:border-color .25s var(--ease),background .25s var(--ease),color .25s var(--ease)}
+.hsb{border-color:transparent;background:transparent}
+.hsb:hover{border-color:rgba(0,0,0,.2);color:var(--ac)}
+.hsb.on,.hsb.on:hover{background:var(--pr);border-color:var(--pr);color:#fff}
+.dm{display:inline-flex;align-items:flex-end;gap:2px;height:12px}
+.dm i{display:block;width:3px;border-radius:1px;background:currentColor;opacity:.25}
+.dm i:nth-child(1){height:5px}.dm i:nth-child(2){height:8px}.dm i:nth-child(3){height:12px}
+.dm.l1 i:nth-child(1),.dm.l2 i:nth-child(-n+2),.dm.l3 i{opacity:1}
+.t1{--soft:#E6E6E6}.t2{--soft:#EAEAEA}.t3{--soft:#EEEEEE}.t4{--soft:#F2F2F2}
+.stat{display:flex;flex-direction:column-reverse;gap:2px;padding:0 24px}
+.stat+.stat{border-left:1px solid var(--bd)}
+.stat dd{font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat dt{font-size:12px;color:var(--tm)}
+.lab{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+.res{font-size:14px;line-height:1.5;color:var(--tm);font-variant-numeric:tabular-nums}
+.sbar{display:flex;align-items:center;gap:8px;padding:4px 4px 4px 20px;background:var(--sf);border:1px solid #767676;border-radius:999px;transition:border-color .25s var(--ease)}
+.sbar:hover{border-color:var(--tn)}
+.sbar:focus-within,.sbar.is-focus{border-color:var(--pr);outline:2px solid var(--ac);outline-offset:2px}
+.sbar input{flex:1;min-width:0;height:44px;border:0;outline:0;background:transparent;font:inherit;font-size:16px;color:#000;text-overflow:ellipsis}
+.sbar input::placeholder{color:#6B6B6B;opacity:1}
+.sbar input::-webkit-search-cancel-button{display:none}
+.sbtn{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:0;background:var(--pr);color:#fff;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .25s var(--ease),transform .2s var(--ease)}
+.sbtn:hover{background:#262626}
+.sbtn:active{transform:scale(.98)}
+.sbar.dk{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.5)}
+.sbar.dk:hover{border-color:rgba(255,255,255,.75)}
+.sbar.dk:focus-within,.sbar.dk.is-focus{border-color:#fff;outline-color:#fff}
+.sbar.dk input{color:#fff}
+.sbar.dk input::placeholder{color:rgba(255,255,255,.7)}
+.sbar.dk .sbtn{background:#fff;color:var(--pr)}
+.sbar.dk .sbtn:hover{background:#EFEFEF}
+.gh{display:flex;align-items:center;flex-wrap:wrap;gap:8px 14px}
+.gk{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--sf);border:1px solid var(--bd);color:#262626}
+.gh h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.gc{font-size:14px;color:var(--tm);font-variant-numeric:tabular-nums}
+.gn{margin-left:auto;font-size:13px;color:var(--tm)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:20px}
+.grid li{display:flex}
+.row{display:flex;flex-direction:column;gap:8px;width:100%;padding:20px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .2s var(--ease)}
+.row:hover,.row.is-hover{border-color:rgba(0,0,0,.2);box-shadow:0 2px 4px rgba(0,0,0,.05),0 12px 32px rgba(0,0,0,.12)}
+.row:active{transform:scale(.98)}
+.row:focus-visible,.row.is-focus{outline:2px solid var(--ac);outline-offset:2px}
+.meta{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;font-size:13px;color:var(--tm)}
+.kd{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#262626}
+.tchip{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;padding:3px 10px 3px 3px;border-radius:999px;background:var(--soft);border:1px solid rgba(0,0,0,.08);color:#262626;font-size:12px;font-weight:600;line-height:16px}
+.tchip b{flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#fff;font-size:11px;font-weight:800}
+.tchip span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.df{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:#262626}
+.dt{margin-left:auto;font-variant-numeric:tabular-nums}
+.rt{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rx{font-size:14px;line-height:1.55;color:var(--tm);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+mark{background:#FEF6D9;color:inherit;font-weight:600;border-radius:3px;padding:0 2px}
+mark:empty{display:none}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-size:14px;font-weight:600;transition:background .25s var(--ease),border-color .25s var(--ease)}
+.btn.p{background:var(--pr);color:#fff}
+.btn.p:hover{background:#262626}
+.btn.s{background:var(--sf);border-color:var(--bd);color:#000}
+.btn.s:hover{border-color:rgba(0,0,0,.25)}
+.sug{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px;border-radius:999px;background:var(--sf);border:1px solid var(--bd);font-size:14px;font-weight:500;color:var(--tn);transition:border-color .25s var(--ease)}
+.sug:hover{border-color:rgba(0,0,0,.25)}
+.chipn{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 8px;border-radius:999px;border:1px solid var(--bd);background:var(--sf);font-size:14px;font-weight:500;color:var(--tn);transition:border-color .25s var(--ease)}
+.chipn:hover{border-color:rgba(0,0,0,.25)}
+.chipn .tn{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--soft,#fff);border:1px solid rgba(0,0,0,.1);color:#262626;font-size:12px;font-weight:800}
+.cnt{flex:none;min-width:24px;text-align:center;padding:2px 7px;border-radius:999px;background:var(--mf);font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--tm)}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:56px 32px;text-align:center;background:rgba(255,255,255,.5);border:1.5px dashed #A8A8A8;border-radius:24px}
+.empty h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2;text-wrap:balance}
+.empty p{max-width:520px;font-size:16px;line-height:1.6;color:var(--tm);text-wrap:pretty}
+.qq{display:block;max-width:100%;padding:10px 16px;border-radius:12px;background:var(--sf);border:1px solid var(--bd);font-size:14px;line-height:1.5;color:#000;font-weight:600;overflow-wrap:anywhere;text-align:left;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.sl{display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.dv{width:100%;max-width:560px;height:1px;background:var(--bd);margin:4px 0}
+.flink{font-size:14px;font-weight:500;color:var(--tn)}
+.pop{position:absolute;right:0;top:calc(100% + 8px);z-index:10;width:380px;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.16)}
+.cap{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.row:active,.sbtn:active{transform:none}}
+
+.sec{display:flex;flex-direction:column;gap:16px}
+.sec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.sec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:780px}
+.box{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px}
+.tok{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px}
+.tok h3{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);margin-bottom:12px}
+.tok li{font-size:13px;line-height:1.5;color:#262626;padding:6px 0;border-top:1px solid #EAEAEA}
+.tok li:first-of-type{border-top:0}
+code{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;background:#EFEFEF;border-radius:6px;padding:1px 6px;color:#0D0D0D}
+.fx{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.fx .hd{display:flex;align-items:center;gap:12px}
+.fx .id{flex:none;display:grid;place-items:center;min-width:44px;height:28px;padding:0 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:12px;font-weight:700}
+.fx h3{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.fx .wh{font-size:12px;color:var(--tm)}
+.fx dl{display:grid;grid-template-columns:118px 1fr;column-gap:16px}
+.fx dt{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm);padding:9px 0;border-top:1px solid #EAEAEA}
+.fx dd{font-size:13px;line-height:1.55;color:#141414;padding:9px 0;border-top:1px solid #EAEAEA}
+.fx dt:first-of-type,.fx dd:first-of-type{border-top:0}
+.fx dt.rm{color:var(--ac)}
+.tbl{background:#fff;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.tr{display:grid;gap:20px;padding:16px 20px;border-top:1px solid #EAEAEA;font-size:13px;line-height:1.55;color:#141414}
+.tr:first-child{border-top:0}
+.th{background:#EFEFEF;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm)}
+.tr b{font-weight:700;font-size:14px}
+.a{grid-template-columns:150px 1fr 1.4fr 1.1fr}
+.b{grid-template-columns:200px 100px 1.5fr 1fr}
+.c{grid-template-columns:120px 1fr;align-items:start}
+.pass{display:inline-block;padding:2px 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em}
+.note{display:inline-block;padding:2px 10px;border-radius:999px;background:#EFEFEF;border:1px solid var(--bd);color:#262626;font-size:11px;font-weight:700;letter-spacing:.04em}
+</style>
+</helmet>
+<div style="width:1280px;height:9950px;padding:56px 48px;display:flex;flex-direction:column;gap:56px;background:#E5E5E5">
+
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:900px">
+<span class="eyebrow"><i></i>Đặc tả · Tìm kiếm</span>
+<h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em">Trang Tìm kiếm: chuyển động, thay đổi, kiểm tra</h1>
+<p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Trang /vi/tim-kiem, /en/search và ô tìm ở thanh điều hướng. Mọi bài mẫu, từ khoá và số kết quả trong bản vẽ chỉ để thử độ dài, không phải dữ liệu thật. Không có ảnh bìa trong kết quả, nên không có ô ảnh giữ chỗ.</p>
+</header>
+
+<section style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+<div class="tok"><h3>Easing</h3><ul>
+<li><code>EASE_STANDARD</code> <code>cubic-bezier(.25,.1,.25,1)</code>: đường cong duy nhất, dùng cho mọi hiệu ứng ở đây.</li>
+<li>Bỏ <code>.rise-in</code> <code>(.22,1,.36,1)</code> và <code>EASE_SCROLL_REVEAL</code>.</li>
+<li>Cuộn trang giữ Lenis đã có, trang này không thêm cuộn nào.</li></ul></div>
+<div class="tok"><h3>Thời lượng</h3><ul>
+<li><code>fast</code> 0.25s: đổi màu, viền, popover, dòng kết quả.</li>
+<li><code>reveal</code> 0.5s: đổi chữ hero, đầu nhóm.</li>
+<li><code>staggerItem</code> 0.55s và <code>base</code> 0.6s: hàng và khối vào.</li>
+<li>Đã có ở trang chủ: 0.3s (hover hàng), 0.2s (nhấn, ngăn menu).</li></ul></div>
+<div class="tok"><h3>So le</h3><ul>
+<li><code>fastDelay</code> 0.05s, <code>fastStep</code> 0.07s cho hàng kết quả (theo cột).</li>
+<li><code>delay</code> 0.1s, <code>step</code> 0.12s cho hero.</li>
+<li>Vùng kích hoạt cuộn: <code>VIEWPORT_ONCE</code>, chỉ một lần.</li></ul></div>
+<div style="background:#0D0D0D;color:#fff;border-radius:16px;padding:20px"><h3 style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D1D1D1;margin-bottom:12px">Khi giảm chuyển động</h3><ul style="font-size:13px;line-height:1.55;display:flex;flex-direction:column;gap:8px">
+<li>Khối CSS toàn cục giữ nguyên: mọi transition và animation về 0.01ms.</li>
+<li>Mã framer-motion kiểm tra <code style="background:#262626;color:#fff">useReducedMotion</code>: bỏ trạng thái ẩn đầu, render thẳng trạng thái cuối.</li>
+<li>Không dịch chuyển hay phóng to; chỉ còn đổi màu tức thì. Vòng focus luôn hiện.</li></ul></div>
+</section>
+
+<section class="sec"><h2>Thành phần mới ở trang Tìm kiếm</h2>
+<p>Chỉ bốn thành phần mới, đều tái dùng được. Mọi thứ còn lại lấy từ bộ thành phần đã chốt ở trang Bài học.</p>
+<div style="display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:24px;align-items:start">
+<div class="box"><p class="cap">SearchForm · mặc định, hover, focus, đã gõ</p>
+<div style="display:flex;flex-direction:column;gap:22px;margin-top:14px;max-width:560px">
+<div><span class="lab" style="display:block;margin-bottom:8px">Từ khoá</span><div class="sbar"><input id="d1" name="q" type="search" value="" placeholder="Ví dụ: bán dẫn, transistor…" maxlength="100" autocomplete="off" enterkeyhint="search"><button class="sbtn" type="submit"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Tìm</button></div></div>
+<div><span class="lab" style="display:block;margin-bottom:8px">Từ khoá</span><div class="sbar" style="border-color:#4D4D4D"><input value="" placeholder="Ví dụ: bán dẫn, transistor…" aria-label="Từ khoá"><button class="sbtn" type="button"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Tìm</button></div></div>
+<div><span class="lab" style="display:block;margin-bottom:8px">Từ khoá</span><div class="sbar is-focus"><input id="d3" name="q" type="search" value="" placeholder="Ví dụ: bán dẫn, transistor…" maxlength="100" autocomplete="off" enterkeyhint="search"><button class="sbtn" type="submit"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Tìm</button></div></div>
+<div><span class="lab" style="display:block;margin-bottom:8px">Từ khoá</span><div class="sbar"><input id="d4" name="q" type="search" value="ban dan" placeholder="Ví dụ: bán dẫn, transistor…" maxlength="100" autocomplete="off" enterkeyhint="search"><button class="sbtn" type="submit"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Tìm</button></div></div>
+</div></div>
+<div style="display:flex;flex-direction:column;gap:24px">
+<div style="background:#0D0D0D;border-radius:16px;padding:20px"><p class="cap" style="color:#D1D1D1">SearchForm · bản tối (menu di động)</p><div style="margin-top:14px"><span class="lab" style="display:block;margin-bottom:8px;color:#D1D1D1">Từ khoá</span><div class="sbar dk"><input id="d5" name="q" type="search" value="ban dan" placeholder="Ví dụ: bán dẫn, transistor…" maxlength="100" autocomplete="off" enterkeyhint="search"><button class="sbtn" type="submit"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Tìm</button></div></div></div>
+<div class="box"><p class="cap">KindLabel · VI và EN</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px 24px;margin-top:14px"><span class="kd"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Bài học</span><span class="kd"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4z"/></svg>Video</span><span class="kd"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>Blog</span><span class="kd"><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Lesson</span></div>
+<p class="cap" style="margin-top:20px">Mark · khớp không dấu</p>
+<p style="margin-top:10px;font-size:14px;line-height:1.55;color:var(--tm)">Từ khoá “ban dan”: một linh kiện <mark>bán dẫn</mark> ba chân. Chữ đậm 600 trên nền #FEF6D9.</p>
+<p class="cap" style="margin-top:20px">QueryQuote · ngắn và 100 ký tự</p>
+<div style="display:flex;flex-direction:column;gap:8px;align-items:flex-start;margin-top:10px"><span class="qq">quantum computing</span><span class="qq" style="max-width:330px">vì sao một con chip nhỏ hơn móng tay lại chứa được hàng chục tỷ transistor và không bị nóng chảy khi ch</span></div></div>
+</div></div></section>
+
+<section class="sec"><h2>Bảng chuyển động SE1–SE15</h2>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start">
+<sc-for list="{{fx}}" as="e" hint-placeholder-count="15">
+<article class="fx">
+<div class="hd"><span class="id">{{e.id}}</span><div><h3>{{e.name}}</h3><p class="wh">{{e.where}}</p></div></div>
+<dl>
+<dt>Kích hoạt</dt><dd>{{e.trigger}}</dd>
+<dt>Thuộc tính</dt><dd>{{e.props}}</dd>
+<dt>Đầu → cuối</dt><dd>{{e.values}}</dd>
+<dt>Thời lượng</dt><dd>{{e.dur}}</dd>
+<dt>Easing</dt><dd>{{e.ease}}</dd>
+<dt>Trễ, so le</dt><dd>{{e.delay}}</dd>
+<dt class="rm">Giảm chuyển động</dt><dd>{{e.reduced}}</dd>
+</dl>
+</article>
+</sc-for>
+</div></section>
+
+<section class="fx" style="gap:12px">
+<div class="hd"><span class="id">Bỏ</span><h3>Không dùng trên trang Tìm kiếm</h3></div>
+<ul style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 32px;font-size:13px;line-height:1.55;color:#141414">
+<li><strong>Gợi ý khi gõ, dropdown kết quả tức thì:</strong> báo cáo không có; thêm phải có API mới. Form vẫn là GET chạy không cần JS.</li>
+<li><strong>Spinner, khung xương:</strong> trang render ở server, không có <code>loading.tsx</code>, không có trạng thái đang tải.</li>
+<li><strong>Đếm số chạy lên, tô sáng nhấp nháy:</strong> trang trí, không giúp đọc kết quả.</li>
+<li><strong>Cuộn mượt tới kết quả sau khi gửi:</strong> hero ngắn nên kết quả đã nằm gần đầu màn hình; không thêm hiệu ứng cuộn.</li>
+</ul>
+</section>
+
+<section class="sec"><h2>(a) Đổi gì so với hiện tại, và vì sao</h2>
+<div class="tbl">
+<div class="tr th a"><span>Hạng mục</span><span>Hiện tại</span><span>Mới</span><span>Lý do</span></div>
+<sc-for list="{{chg}}" as="r" hint-placeholder-count="14">
+<div class="tr a"><b>{{r.k}}</b><span>{{r.now}}</span><span>{{r.next}}</span><span>{{r.why}}</span></div>
+</sc-for>
+</div></section>
+
+<section class="sec"><h2>(b) Thành phần dùng chung</h2>
+<p>Dùng lại thành phần đã chốt ở trang trước: PageHero v2, PostCard dạng dòng, TopicChip, DifficultyMark, ResultCount, EmptyState, Button, CardReveal và Token. Thêm mới bốn thành phần nhỏ, đều tái dùng được ở trang khác.</p>
+<div class="tbl">
+<div class="tr th b"><span>Thành phần</span><span>Trạng thái</span><span>Nội dung và biến thể ở trang này</span><span>Dùng lại ở</span></div>
+<sc-for list="{{shared}}" as="r" hint-placeholder-count="12">
+<div class="tr b"><b>{{r.k}}</b><span><span class="{{r.cls}}">{{r.st}}</span></span><span>{{r.what}}</span><span>{{r.where}}</span></div>
+</sc-for>
+</div></section>
+
+<section class="sec"><h2>Kiểm tra theo phần 5.1 và phần 8 của báo cáo</h2>
+<div class="tbl">
+<sc-for list="{{check}}" as="r" hint-placeholder-count="14">
+<div class="tr c"><span class="{{r.cls}}" style="justify-self:start">{{r.st}}</span><span><b>{{r.k}}</b> {{r.text}}</span></div>
+</sc-for>
+</div></section>
+
+<section class="sec"><h2>Cần xác nhận trước khi làm thật</h2>
+<div class="tbl">
+<sc-for list="{{ask}}" as="r" hint-placeholder-count="8">
+<div class="tr c"><span class="note" style="justify-self:start">{{r.k}}</span><span>{{r.text}}</span></div>
+</sc-for>
+</div></section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":9950}}'>
+const DATA = {"fx":[{"id":"SE1","name":"Hero vào trang","where":"PageHero, /tim-kiem","trigger":"Vào trang từ nơi khác. Không chạy lại khi gửi từ khoá mới ngay trên trang này.","props":"opacity, translateY của chip, tiêu đề, mô tả (khi chưa có từ khoá) và thẻ số liệu (khi có kết quả).","values":"opacity 0 → 1; translateY 20px → 0.","dur":"0.55s (staggerItem).","ease":"EASE_STANDARD.","delay":"staggerContainer: trễ đầu 0.1s, bước 0.12s. Chip 0.1s, tiêu đề 0.22s, mô tả 0.34s, số liệu 0.46s (dùng lại M1).","reduced":"Không có trạng thái ẩn; hiện thẳng ở vị trí cuối. Thay .rise-in cũ."},{"id":"SE2","name":"Đổi từ khoá: chữ hero","where":"PageHero","trigger":"Gửi từ khoá mới từ ô tìm của chính trang (điều hướng phía client). Khung hero giữ nguyên.","props":"opacity của tiêu đề “Kết quả cho …” và thẻ số liệu (key theo từ khoá).","values":"opacity 0 → 1, không dịch chuyển.","dur":"0.5s (DURATION.reveal).","ease":"EASE_STANDARD.","delay":"Không trễ. Chip “Tìm trong Chíp Chíp” đứng yên.","reduced":"Đổi chữ tức thì."},{"id":"SE3","name":"Ô tìm: hover và focus","where":"SearchForm (trang, popover, menu di động)","trigger":"Rê chuột hoặc focus bàn phím vào thanh tìm.","props":"border-color của thanh; vòng focus (outline) hiện ngay, không hoạt hoạ.","values":"Hover: viền #767676 → #4D4D4D. Focus: viền → #0D0D0D kèm vòng 2px #314344 cách 2px. Bản tối: viền 50% trắng → 75% → trắng.","dur":"0.25s (DURATION.fast) cho đổi viền; vòng focus không có chuyển tiếp.","ease":"EASE_STANDARD.","delay":"Không trễ.","reduced":"Đổi viền tức thì. Vòng focus vẫn hiện vì không phụ thuộc chuyển động."},{"id":"SE4","name":"Nút Tìm, nút chính, nút phụ","where":"SearchForm, EmptyState","trigger":"Hover, focus, nhấn.","props":"background-color (nút chính), border-color (nút phụ), transform scale khi nhấn.","values":"Chính: #0D0D0D → #262626. Phụ: viền #D1D1D1 → rgba(0,0,0,.25). Nhấn: scale 1 → 0.98.","dur":"0.25s cho màu; 0.2s cho nhấn (như PillButton).","ease":"EASE_STANDARD.","delay":"Không trễ.","reduced":"Đổi màu tức thì; bỏ scale."},{"id":"SE5","name":"Đầu nhóm kết quả","where":"Hàng đầu mỗi nhóm Bài học, Video, Blog","trigger":"Đầu nhóm vào vùng nhìn (VIEWPORT_ONCE, một lần).","props":"opacity, translateY của cả hàng đầu nhóm (ô biểu tượng, h2, số kết quả, ghi chú).","values":"opacity 0 → 1; translateY 20px → 0 (fadeUp).","dur":"0.5s (DURATION.reveal).","ease":"EASE_STANDARD.","delay":"Không trễ. Ba nhóm độc lập nên nhóm ở dưới chỉ chạy khi cuộn tới.","reduced":"Hiện ngay ở vị trí cuối."},{"id":"SE6","name":"Hàng kết quả hiện khi cuộn tới","where":"PostCard dạng dòng","trigger":"Hàng vào vùng nhìn (VIEWPORT_ONCE, một lần). Bộ hàng mới sau khi đổi từ khoá cũng chạy lại.","props":"opacity, translateY.","values":"opacity 0 → 1; translateY 20px → 0.","dur":"0.55s (staggerItem).","ease":"EASE_STANDARD.","delay":"0.05s + cột × 0.07s. Desktop hai cột: 0.05s và 0.12s. Mobile một cột: 0.05s. Tính lại từng hàng nên không ai phải chờ cả 10 hàng (dùng lại M3).","reduced":"Hàng hiện ngay ở vị trí cuối, không có trạng thái ẩn."},{"id":"SE7","name":"Hover hàng kết quả","where":"PostCard dạng dòng, chỉ (hover:hover) and (pointer:fine)","trigger":"Rê chuột vào hàng hoặc focus bàn phím vào liên kết. Rời đi thì chạy ngược lại.","props":"border-color, box-shadow của hàng.","values":"Viền #D1D1D1 → rgba(0,0,0,.2). Bóng none → 0 2px 4px .05 + 0 12px 32px .12.","dur":"0.3s (như thẻ bài).","ease":"EASE_STANDARD.","delay":"Không trễ. Không phóng ảnh và không đĩa mũi tên vì dạng dòng không có ảnh.","reduced":"Đổi tức thì. Không thông tin nào chỉ hiện ở hover (dùng lại M4, bỏ phần ảnh)."},{"id":"SE8","name":"Nhấn hàng kết quả","where":"PostCard dạng dòng, cảm ứng và chuột","trigger":"Nhấn giữ (:active).","props":"transform scale.","values":"1 → 0.98; thả thì về 1.","dur":"0.2s (như PillButton).","ease":"EASE_STANDARD.","delay":"Không trễ.","reduced":"Bỏ scale."},{"id":"SE9","name":"Dòng kết quả đổi","where":"ResultCount, vùng aria-live polite","trigger":"Nội dung đổi sau khi gửi từ khoá.","props":"opacity của phần chữ đổi.","values":"0 → 1.","dur":"0.25s (DURATION.fast).","ease":"EASE_STANDARD.","delay":"Không trễ.","reduced":"Đổi chữ tức thì; vùng aria-live vẫn đọc."},{"id":"SE10","name":"Từ khoá được tô","where":"<mark> trong tiêu đề và tóm tắt","trigger":"Có sẵn khi vẽ trang.","props":"background-color #FEF6D9 và font-weight 600.","values":"Tĩnh: không hoạt hoạ vào ra.","dur":"Không có.","ease":"Không có.","delay":"Không có.","reduced":"Không đổi: đây là trạng thái, không phải hiệu ứng. Không dựa vào màu: chữ đậm 600 và thẻ <mark> đọc được bằng trình đọc màn hình."},{"id":"SE11","name":"Khối chưa có từ khoá, không kết quả, lỗi","where":"EmptyState (ba biến thể ở trang này)","trigger":"Khối hiện khi không có từ khoá, không có kết quả, hoặc dịch vụ lỗi.","props":"opacity, translateY của cả khối.","values":"opacity 0 → 1; translateY 24px → 0 (fadeUp).","dur":"0.6s (DURATION.base).","ease":"EASE_STANDARD.","delay":"Không trễ. Hình minh hoạ tĩnh, không lặp (dùng lại M12).","reduced":"Hiện ngay ở vị trí cuối."},{"id":"SE12","name":"Pill gợi ý và chip chủ đề","where":"Trong khối chưa có từ khoá và không kết quả","trigger":"Hover, focus, nhấn.","props":"border-color.","values":"Viền #D1D1D1 → rgba(0,0,0,.25).","dur":"0.25s (DURATION.fast).","ease":"EASE_STANDARD.","delay":"Không trễ.","reduced":"Đổi viền tức thì."},{"id":"SE13","name":"Popover tìm mở và đóng","where":"SearchBox, desktop từ 1024px","trigger":"Bấm nút kính lúp hoặc Enter/Space; đóng bằng Escape, bấm ra ngoài, hoặc rời focus. Hiện tại hiện và ẩn tức thì.","props":"opacity, translateY của khung; gắn hidden sau khi đóng xong.","values":"Mở: opacity 0 → 1, translateY −4px → 0. Đóng: ngược lại.","dur":"0.25s (DURATION.fast).","ease":"EASE_STANDARD (giống LessonsMenu).","delay":"Không trễ. Ô nhập nhận focus ngay khi mở, không đợi hoạt hoạ.","reduced":"Hiện và ẩn tức thì, không dịch. Focus, Escape, bấm ra ngoài giữ nguyên."},{"id":"SE14","name":"Nút kính lúp đổi trạng thái","where":"Nút trong SearchBox","trigger":"Mở hoặc đóng popover.","props":"background-color, color của nút; biểu tượng Search ↔ X chuyển bằng opacity.","values":"Nền trong → #0D0D0D, biểu tượng #4D4D4D → #FFF. Biểu tượng cũ opacity 1 → 0, mới 0 → 1.","dur":"0.25s (DURATION.fast).","ease":"EASE_STANDARD.","delay":"Không trễ.","reduced":"Đổi tức thì. aria-expanded và nhãn “Mở/Đóng ô tìm kiếm” đổi cùng lúc."},{"id":"SE15","name":"Ô tìm trong menu di động","where":"Ngăn menu dưới 1024px","trigger":"Mở menu. Ô tìm không có chuyển động riêng.","props":"opacity của cả ngăn (đã có).","values":"0 → 1.","dur":"0.2s (giá trị hiện có).","ease":"EASE_STANDARD.","delay":"Không trễ. Focus vào nút đóng như hiện tại, không nhảy vào ô tìm để bàn phím ảo không bật lên.","reduced":"Đổi tức thì (0s)."}],"chg":[{"k":"Đầu trang","now":"PageHero với .rise-in (12px, 0.5s, đường cong riêng). Có từ khoá thì tiêu đề thành “Kết quả cho …” và mất mô tả.","next":"PageHero v2 đã chốt. Có từ khoá: h1 “Kết quả cho “…””, kẹp 2 dòng; thẻ số liệu bên phải hiện số kết quả theo nhóm. Vào trang bằng nhịp trang chủ (SE1).","why":"Mục 4.1 và 4.6 (ba kiểu đầu trang, đường cong thứ hai). Từ khoá dài không làm vỡ đầu trang."},{"k":"Căn lề","now":"Form và kết quả nằm trong cột max-w-3xl căn giữa, tiêu đề căn trái: form bắt đầu ở x=256, tiêu đề ở x=32 (ảnh 05).","next":"Form, dòng kết quả và các nhóm cùng căn theo lề trái 32px của hero, khung 1280. Form tối đa 720px; kết quả chia 2 cột.","why":"Cùng lưới với Bài học. 768px hợp bài đọc, không hợp danh sách."},{"k":"Ô tìm","now":"Ô 44px bo 12px viền #D1D1D1 và nút đen “Tìm” tách rời; nhãn chỉ có placeholder; chữ 14px trên desktop.","next":"Một thanh bo tròn 52px: ô nhập 44px chữ 16px và nút Tìm 44px nằm trong. Nhãn “Từ khoá” luôn hiện. Viền #767676. Có bản tối cho menu di động.","why":"Mục 4.4 và 4.10. Placeholder không thay được nhãn. Viền #767676 đạt 3.6:1 trên nền #E5E5E5 (WCAG 1.4.11); #D1D1D1 chỉ 1.3:1."},{"k":"Hàng kết quả","now":"Chỉ tiêu đề và 2 dòng tóm tắt, padding 20px, hover chỉ đổi viền; không cho biết đó là bài học, video hay blog.","next":"PostCard dạng dòng: nhãn loại (biểu tượng và chữ), chip chủ đề, độ khó, ngày; tiêu đề 18/700 tối đa 3 dòng; tóm tắt 2 dòng. Hover như thẻ bài (viền và bóng).","why":"Mục 4.2 và 4.7. RPC search_posts đã trả topic, difficulty, published_at nên không đổi dữ liệu."},{"k":"Tô từ khoá","now":"Không tô.","next":"Thẻ <mark> nền #FEF6D9, chữ đậm 600, ở tiêu đề và tóm tắt. Ưu tiên khớp nguyên cụm; nếu không có thì tô từng từ khi trường đó chứa đủ mọi từ; ngược lại không tô. Không dấu vẫn khớp: “ban dan” tô “bán dẫn”.","why":"Người đọc thấy vì sao bài khớp. Quy tắc “đủ mọi từ” tránh tô nhầm “bằng”, “dành” chỉ vì trùng phần đầu “ban”, “dan”. Bài chỉ khớp ở phần thân bài thì không có mark, vẫn đúng."},{"k":"Nhóm kết quả","now":"h2 18px, số đếm mờ, ghi chú “Đang hiện 10 kết quả đầu tiên.” cùng dòng.","next":"h2 26/800 với ô biểu tượng, số đếm “12 kết quả” và ghi chú cùng dòng (xuống dòng ở mobile). Thứ tự giữ Bài học, Video, Blog; nhóm rỗng ẩn.","why":"Mục 4.1 và 16 (một thang chữ). Không thêm bộ lọc loại vì báo cáo không có; nhóm đã là cách phân loại."},{"k":"Dòng kết quả","now":"Không có.","next":"“Hiển thị 16 trong 18 kết quả cho “ban dan”” trong vùng aria-live polite; khi trống: “Không có kết quả cho …”; khi lỗi: “Không lấy được kết quả cho …”.","why":"Trình đọc màn hình được báo khi trang đổi. Nói rõ giới hạn 10 mục mỗi nhóm."},{"k":"Chưa có từ khoá","now":"Ô nét đứt và một dòng chữ.","next":"EmptyState đã chốt: hình chip có kính lúp, giải thích cách khớp, 5 từ khoá gợi ý và 4 chip chủ đề dẫn vào thư viện.","why":"Mục 6 và 4.2: có việc để làm thay vì ngõ cụt. Gợi ý là chữ cố định trong messages, không cần dữ liệu mới."},{"k":"Không có kết quả","now":"Một dòng “Không tìm thấy kết quả nào cho “…”. Thử một từ khoá ngắn hơn nhé.” trong ô nét đứt.","next":"EmptyState: tiêu đề “Không tìm thấy kết quả nào”, khung trích nguyên từ khoá (kẹp 4 dòng, ngắt ở ký tự bất kỳ), mô tả quy tắc “đủ mọi từ, khớp phần đầu từ”, từ khoá gợi ý, nút “Xoá từ khoá” và “Xem tất cả bài học”.","why":"Tách từ khoá dài khỏi tiêu đề. Giải thích vì sao “ít từ hơn” có tác dụng."},{"k":"Lỗi dịch vụ","now":"Lỗi gọi RPC trả [] nên hiện y như “không có kết quả”; chỉ ghi log.","next":"Khối lỗi riêng (role=\"alert\"): “Tìm kiếm đang gặp sự cố”, nút “Thử lại” và “Xem bài học”. Không đổ lỗi cho từ khoá.","why":"Mục 8 phần 3 (đủ trạng thái lỗi). Cần đổi searchPosts để trả trạng thái lỗi: xem câu hỏi mở 2."},{"k":"Popover thanh điều hướng","now":"380px, p-2, bo 16, chỉ ô và nút; hiện và ẩn tức thì bằng thuộc tính hidden; nút 44px tròn.","next":"Giữ 380px, bo 16, shadow-float, Escape, bấm ra ngoài. Thêm nhãn hiển thị và dòng “Có dấu hay không dấu đều được.”, padding 16. Mở và đóng bằng fade và trượt 4px, 0.25s. Nút chuyển đen khi mở.","why":"Cùng cách mở với menu “Bài học” (opacity, y −4 → 0, fast, EASE_STANDARD). Nhãn hiển thị thay cho chỉ dùng placeholder."},{"k":"Menu di động","now":"Ô tìm bản tối trong ngăn menu; nút đóng 40px.","next":"Giữ bản tối; nhãn hiện; thanh 52px; nút đóng 44px; nút chuyển ngôn ngữ 44px; viền ô tối 5.3:1.","why":"Mục 4.10 (mục tiêu bấm). Ngăn menu là khung chung, bản vẽ này chỉ chỉnh phần tìm kiếm."},{"k":"Chuyển động","now":"Không có gì ngoài đổi viền hàng; popover không hoạt hoạ.","next":"15 hiệu ứng SE1–SE15, tất cả EASE_STANDARD, thời lượng từ tokens.ts, không lặp vô hạn, không trạng thái tải.","why":"Mục 4.6 và mục 8 phần 3 (giảm chuyển động cho mọi hiệu ứng)."},{"k":"Phân trang","now":"Không có: giới hạn cứng 10 mục mỗi nhóm.","next":"Giữ nguyên, kèm ghi chú “Đang hiện 10 kết quả đầu tiên.” Không vẽ Pagination vì chưa có phân trang phía máy chủ.","why":"Báo cáo mục 8 ghi rõ đây là giới hạn cứng. Nếu muốn đổi, xem câu hỏi mở 1."}],"shared":[{"k":"PageHero v2","st":"Dùng lại","cls":"pass","what":"Chip, h1 34/46, mô tả, thẻ số liệu. Ở đây: h1 “Kết quả cho …” kẹp 2 dòng; thẻ số liệu 3 ô (Bài học, Video, Blog) khi có kết quả, không có thẻ ở các trạng thái khác.","where":"Không đổi so với Bài học."},{"k":"PostCard dạng dòng","st":"Dùng lại","cls":"pass","what":"Dạng “row” của Components: chip chủ đề, độ khó, ngày, tiêu đề, tóm tắt 2 dòng, hover như thẻ. Thêm thuộc tính kind (nhãn loại) và highlight; Blog ẩn chip và độ khó.","where":"Tìm kiếm; có thể dùng cho bài liên quan trộn loại."},{"k":"TopicChip, DifficultyMark","st":"Dùng lại","cls":"pass","what":"Chip có số và nhãn, cắt bằng dấu … khi dài; ba thanh và nhãn chữ.","where":"Không đổi."},{"k":"ResultCount","st":"Dùng lại","cls":"pass","what":"Một dòng aria-live polite. Ba câu: có kết quả, không có, lỗi.","where":"Không đổi."},{"k":"EmptyState","st":"Dùng lại","cls":"pass","what":"Khung nét đứt 24px, hình chip. Thêm ba hình biểu tượng bên trong chip (kính lúp, kính lúp gạch chéo, dấu chấm than) và ba biến thể: chưa có từ khoá, không có kết quả, lỗi (role alert).","where":"Các trang sau chọn hình phù hợp."},{"k":"Button, pill gợi ý, chip chủ đề","st":"Dùng lại","cls":"pass","what":"Nút chính và phụ 44px; pill gợi ý (.sug) không số đếm; chip chủ đề dạng chip của hàng cuộn mobile, ở đây là liên kết vào /bai-hoc/[chủ đề].","where":"Không đổi."},{"k":"CardReveal, Token","st":"Dùng lại","cls":"pass","what":"Vào vùng nhìn, trễ theo cột; thang chữ, bo góc, padding, khung 1280 và lề 20/32px như Bài học.","where":"Không đổi."},{"k":"Pagination, SegmentedFilter, TopicNav","st":"Không dùng","cls":"note","what":"Báo cáo không có phân trang hay bộ lọc ở trang này (giới hạn cứng 10 mục mỗi nhóm; nhóm đã là cách phân loại).","where":"Xem câu hỏi mở 1."},{"k":"SearchForm","st":"Mới","cls":"note","what":"Thanh bo tròn 52px gồm ô nhập 44px (chữ 16px) và nút Tìm 44px; nhãn hiển thị phía trên; viền #767676; bản tối cho menu di động. Trạng thái: mặc định, hover, focus, có chữ. Là GET form role=search, chạy không cần JS.","where":"Trang tìm, popover thanh điều hướng, ngăn menu di động. Kiểu nhãn và viền có thể làm chuẩn cho các form khác."},{"k":"KindLabel","st":"Mới","cls":"note","what":"Biểu tượng 16px và chữ in hoa 12px/700: Bài học (sách), Video (nút phát), Blog (trang giấy). Chỉ là nhãn, không bấm được.","where":"Bài liên quan trộn loại, LatestPosts ở trang chủ nếu muốn."},{"k":"Mark (từ khoá được tô)","st":"Mới","cls":"note","what":"<mark> nền #FEF6D9, chữ đậm 600, bo 3px. Quy tắc tô ở mục (a).","where":"Bất kỳ danh sách nào có từ khoá."},{"k":"QueryQuote","st":"Mới","cls":"note","what":"Khung trắng bo 12px chứa nguyên văn từ khoá, kẹp 4 dòng, ngắt ở ký tự bất kỳ.","where":"Trang 404 để trích đường dẫn không tìm thấy."}],"check":[{"st":"Đạt","k":"Song ngữ.","text":"Mọi chuỗi có VI và EN. Nhãn EN “Search Project Chíp Chíp” và nút “Search” dài hơn bản VI; thanh vẫn vừa popover 380px. Chip chủ đề EN cắt một dòng bằng dấu …. Ví dụ “ban dan” chỉ có ý nghĩa ở VI nên bản EN dùng “transis” và “transistor”.","cls":"pass"},{"st":"Đạt","k":"Bên thứ ba.","text":"Không script, iframe hay ảnh ngoài. Kết quả không hiện ảnh bìa nên không thêm host ảnh. Phông trong canvas chỉ để xem trước.","cls":"pass"},{"st":"Đạt","k":"Video sau khi bấm.","text":"Trang không nhúng video; hàng Video chỉ là liên kết tới trang chi tiết.","cls":"pass"},{"st":"Đạt","k":"Giảm chuyển động.","text":"Mỗi hiệu ứng SE1–SE15 có dòng riêng ở bảng chuyển động.","cls":"pass"},{"st":"Đạt","k":"Không chỉ dựa vào hover.","text":"Hover chỉ trang trí; loại nội dung, chủ đề, độ khó, ngày luôn hiện. Popover mở bằng bấm hoặc phím, không mở khi hover.","cls":"pass"},{"st":"Không áp dụng","k":"Ô bẫy website.","text":"Form tìm là GET, không ghi dữ liệu, không giới hạn tốc độ; ô bẫy chỉ thuộc bình luận và liên hệ. Không thêm vào đây.","cls":"note"},{"st":"Đạt","k":"Tương phản.","text":"Chữ #3E424D trên #E5E5E5 7.97:1, trên trắng 10.0:1, trên nền mark #FEF6D9 9.3:1; tiêu đề #000 trên #FEF6D9 19.4:1; nhãn loại #262626 trên trắng 15.1:1; placeholder #6B6B6B trên trắng 5.3:1; viền ô #767676 trên #E5E5E5 3.6:1 và trên trắng 4.5:1 (WCAG 1.4.11 cần 3:1); vòng focus #314344 trên #E5E5E5 8.3:1. Bản tối: chữ trắng trên ô #252525 15.3:1, placeholder 70% trắng 7.6:1, viền 50% trắng trên #0D0D0D 5.3:1, nút trắng chữ #0D0D0D 19.4:1. Chữ nhỏ nhất 12px.","cls":"pass"},{"st":"Đạt","k":"Mục bấm ≥ 44px.","text":"Ô nhập 44 (thanh 52), nút Tìm 44, pill gợi ý 44, chip chủ đề 44, nút kính lúp 44, nút mở và đóng menu 44, chuyển ngôn ngữ trong menu 44, hàng nav menu ≥ 44. Chip chủ đề bên trong hàng kết quả không bấm riêng: cả hàng là một liên kết.","cls":"pass"},{"st":"Đạt","k":"Đủ trạng thái.","text":"Chưa có từ khoá; có kết quả nhiều loại; nhóm bị cắt ở 10 mục; không có kết quả; từ khoá 100 ký tự; lỗi dịch vụ; popover mở và đã gõ; menu di động. Không có trạng thái đang tải (render ở server). “Trang vượt quá trang cuối” không áp dụng vì không có phân trang.","cls":"pass"},{"st":"Đạt","k":"390px không cuộn ngang.","text":"Mọi khối co theo 350px; h1 kẹp 2 dòng và ngắt ở ký tự bất kỳ; từ khoá dài nằm trong khung trích kẹp 4 dòng; chip chủ đề cắt bằng dấu …. Không có hàng cuộn ngang ở trang này.","cls":"pass"},{"st":"Đạt","k":"Nội dung thật.","text":"Tiêu đề rất dài (bài thứ 8 nhóm Bài học, bài Blog EN đầu tiên) kẹp 3 dòng; tóm tắt trống (bài thứ 10, bài Blog EN cuối) làm hàng co lại nhưng hàng đôi vẫn cao bằng nhau; không cần ảnh bìa; bài chỉ khớp ở phần thân bài không có mark.","cls":"pass"},{"st":"Đạt","k":"Một thang chữ, một họ thẻ, một easing.","text":"Hàng kết quả là PostCard, đầu trang là PageHero, h2 26, trạng thái rỗng là EmptyState, một easing. Form: SearchForm mới, chờ các trang form khác dùng chung nhãn và viền (câu hỏi mở 4).","cls":"pass"},{"st":"Lưu ý","k":"Mã mới cần viết.","text":"Ba việc, không đổi schema và không thêm thư viện: (1) hàm tô từ khoá theo cùng quy tắc chuẩn hoá của RPC (bỏ dấu, đ thành d, khớp phần đầu từ), chạy phía máy chủ; (2) searchPosts trả trạng thái lỗi; (3) thêm chuỗi vào messages với cùng bộ khoá VI/EN.","cls":"note"},{"st":"Đạt","k":"Khả năng làm.","text":"Tailwind và framer-motion hiện có; popover dùng AnimatePresence như LessonsMenu; các lớp bố cục dùng lại của Bài học.","cls":"pass"}],"ask":[{"k":"1 · Giới hạn 10 mục","text":"Giữ giới hạn cứng, hay thêm phân trang dùng chung cho từng nhóm? Muốn phân trang thì searchPosts phải nhận offset và URL cần tham số theo nhóm. Bản vẽ không làm vì báo cáo ghi rõ là giới hạn cứng."},{"k":"2 · Lỗi khác không kết quả","text":"Có muốn searchPosts trả trạng thái lỗi để hiện khối lỗi riêng? Nếu không, bỏ bản vẽ lỗi và giữ hành vi cũ."},{"k":"3 · Từ khoá gợi ý","text":"Năm từ khoá gợi ý là chữ cố định trong messages, do người biên tập chọn (VI và EN khác nhau). Hay lấy từ dữ liệu, ví dụ từ tiêu đề bài mới? Bản vẽ giả định chữ cố định."},{"k":"4 · Viền ô nhập","text":"#767676 (3.6:1) là màu viền ô mới. Các form Liên hệ và Bình luận nên dùng chung khi vẽ lại. Nếu trang đó đã chốt viền khác, đổi ở một biến."},{"k":"5 · Video có chủ đề và độ khó","text":"Bản vẽ giả định video luôn có topic và difficulty (điều kiện đăng bài đòi độ khó). Cần xác nhận topic của video không bao giờ trống, nếu không chip sẽ ẩn."},{"k":"6 · Hình dạng nút kính lúp","text":"Bản vẽ giữ .ibtn bo 12px như thanh điều hướng đã chốt (nền đen khi mở). Báo cáo nói round-full; chọn một."},{"k":"7 · Focus khi mở menu di động","text":"Bản vẽ không tự đưa focus vào ô tìm khi mở menu (tránh bàn phím ảo bật lên); focus vẫn ở nút đóng như hiện tại."},{"k":"8 · h1 kẹp 2 dòng","text":"Với từ khoá 100 ký tự, h1 chỉ thấy 2 dòng đầu; phần còn lại nằm trong ô nhập, khung trích và thuộc tính title. Chấp nhận, hay muốn h1 cố định “Kết quả tìm kiếm”?"}]};
+class Component extends DCLogic {
+  renderVals() { return DATA; }
+}
+</script>
+</body>
+</html>

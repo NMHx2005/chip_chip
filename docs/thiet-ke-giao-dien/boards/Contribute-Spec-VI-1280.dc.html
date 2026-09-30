@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Đặc tả · Đóng góp và Bảo mật</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt,ul,li{margin:0}
+ul{padding:0}
+svg.ic{width:16px;height:16px;flex:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;max-width:100%;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.eyebrow span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.t1{--soft:#E6E6E6}.t2{--soft:#EAEAEA}.t3{--soft:#EEEEEE}.t4{--soft:#F2F2F2}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-size:14px;font-weight:600;text-align:center;transition:background .25s var(--ease),border-color .25s var(--ease),transform .2s var(--ease)}
+.btn.p{background:var(--pr);color:#fff}
+.btn.p:hover{background:#262626}
+.btn.s{background:var(--sf);border-color:var(--bd);color:#000}
+.btn.s:hover{border-color:rgba(0,0,0,.25)}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible,.trow:focus-visible,.chipn:focus-visible,.flink:focus-visible,.note a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.flink{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:500;color:var(--tn)}
+.flink.on{color:#000;font-weight:600}
+.card{display:flex;flex-direction:column;gap:12px;height:100%;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:16px}
+.card.link{transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .2s var(--ease)}
+.card.link:hover,.card.link.is-hover{border-color:rgba(0,0,0,.2);box-shadow:0 2px 4px rgba(0,0,0,.05),0 12px 32px rgba(0,0,0,.12)}
+.card.link:active{transform:scale(.98)}
+.card.link:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.plate{position:relative;flex:none;height:112px;border-radius:12px;overflow:hidden;background:var(--soft)}
+.ptile{position:absolute;left:16px;top:16px;display:grid;place-items:center;width:48px;height:48px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.1);color:var(--ac)}
+.ptile svg{width:22px;height:22px}
+.wmi{position:absolute;right:-8px;bottom:-26px;width:136px;height:136px;color:rgba(0,0,0,.09)}
+.ttl{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em;text-wrap:balance;overflow-wrap:anywhere}
+.ex{font-size:14px;line-height:1.55;color:var(--tm);overflow-wrap:anywhere}
+.ft{margin-top:auto;padding-top:12px;border-top:1px solid #EAEAEA;display:flex;align-items:center;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
+.grid li:last-child:nth-child(odd){grid-column:1/-1}
+.grid li:last-child:nth-child(odd) .ex{max-width:720px}
+.note{display:flex;align-items:flex-start;gap:20px;padding:28px 32px;background:rgba(255,255,255,.5);border:1px solid var(--bd);border-radius:24px}
+.ntile{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.1);color:var(--ac)}
+.note p{font-size:16px;line-height:1.6;color:var(--tm);max-width:720px;text-wrap:pretty}
+.note a{color:var(--ac);font-weight:600;text-decoration:underline;text-underline-offset:3px;transition:color .25s var(--ease)}
+.note a:hover{color:#000}
+.lab{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+.k{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:.85em;background:var(--mf);border:1px solid #DDD;border-radius:6px;padding:1px 6px;color:#0D0D0D;overflow-wrap:anywhere}
+.meta{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--tm);font-variant-numeric:tabular-nums}
+.sec{scroll-margin-top:96px}
+.hrow{display:flex;align-items:flex-start;gap:14px}
+.h2{min-width:0;font-size:26px;font-weight:800;line-height:1.2;letter-spacing:-.02em;text-wrap:balance;overflow-wrap:anywhere}
+.h2:focus{outline:none}
+.hn{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);border:1px solid rgba(0,0,0,.1);color:#262626;font-size:13px;font-weight:800}
+.h3{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em;margin-top:28px;text-wrap:balance;overflow-wrap:anywhere}
+.p{font-size:16px;line-height:1.7;color:#262626;margin-top:16px;text-wrap:pretty;overflow-wrap:anywhere}
+.ul{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
+.h3+.ul{margin-top:12px}
+.ul li{position:relative;padding-left:22px;font-size:16px;line-height:1.7;color:#262626;overflow-wrap:anywhere;text-wrap:pretty}
+.ul li::before{content:"";position:absolute;left:4px;top:.66em;width:6px;height:6px;border-radius:50%;background:#8C8C8C}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.btn:active,.card.link:active{transform:none}}
+.tok{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px}
+.tok h3{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);margin-bottom:12px}
+.tok li{list-style:none;font-size:13px;line-height:1.5;color:#262626;padding:6px 0;border-top:1px solid #EAEAEA}
+.tok li:first-of-type{border-top:0}
+code{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;background:#EFEFEF;border-radius:6px;padding:1px 6px;color:#0D0D0D}
+.fx{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.fx .hd{display:flex;align-items:center;gap:12px}
+.fx .id{flex:none;display:grid;place-items:center;min-width:40px;height:28px;padding:0 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:12px;font-weight:700}
+.fx h3{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.fx .wh{font-size:12px;color:var(--tm)}
+.fx dl{display:grid;grid-template-columns:118px 1fr;column-gap:16px;row-gap:0}
+.fx dt{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm);padding:9px 0;border-top:1px solid #EAEAEA}
+.fx dd{font-size:13px;line-height:1.55;color:#141414;padding:9px 0;border-top:1px solid #EAEAEA}
+.fx dt:first-of-type,.fx dd:first-of-type{border-top:0}
+.fx dt.rm{color:var(--ac)}
+.blk{display:flex;flex-direction:column;gap:16px}
+.blk>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.blk>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:780px}
+.tbl{background:#fff;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.tr{display:grid;gap:20px;padding:16px 20px;border-top:1px solid #EAEAEA;font-size:13px;line-height:1.55;color:#141414}
+.tr:first-child{border-top:0}
+.th{background:#EFEFEF;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm)}
+.tr b{font-weight:700;font-size:14px}
+.ra{grid-template-columns:170px 1fr 1.25fr 1fr}
+.rb{grid-template-columns:230px 1.4fr 1fr}
+.rc{grid-template-columns:120px 1fr;align-items:start}
+.pass{display:inline-block;padding:2px 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em}
+.nt{display:inline-block;padding:2px 10px;border-radius:999px;background:#EFEFEF;border:1px solid var(--bd);color:#262626;font-size:11px;font-weight:700;letter-spacing:.04em}
+.cap{font-size:12px;color:var(--tm);margin-top:10px}
+.spec{width:100%}
+</style>
+</helmet>
+<div style="width:1280px;height:7680px;padding:56px 48px;display:flex;flex-direction:column;gap:56px;background:#E5E5E5">
+
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:900px">
+<span class="eyebrow"><i></i><span>Đặc tả · Đóng góp và Bảo mật</span></span>
+<h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em;text-wrap:balance">Đóng góp và Chính sách bảo mật: chuyển động, thay đổi, kiểm tra</h1>
+<p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Hai trang tĩnh dùng đúng khung, thẻ, nút, mục lục và chuyển động đã chốt ở trang Bài học. Nội dung chữ lấy từ messages/{vi,en}.json. Thẻ thứ 5 và văn bản “Stress” chỉ để thử độ dài, không phải nội dung thật. Bản vẽ: Đóng góp VI 1280, EN 1280, VI 390, EN 390, Stress EN 1280; Bảo mật VI 1280, EN 1280, VI 390, EN 390, Stress EN 390.</p>
+</header>
+
+<section style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+<div class="tok"><h3>Easing</h3><ul>
+<li><code>EASE_STANDARD</code> <code>cubic-bezier(.25,.1,.25,1)</code>: đường cong duy nhất, dùng cho mọi hiệu ứng ở hai trang.</li>
+<li>Bỏ <code>.rise-in</code> <code>(.22,1,.36,1)</code> và <code>EASE_SCROLL_REVEAL</code>.</li>
+<li>Cuộn tới mục giữ easing của Lenis: <code>1−(1−t)³</code>.</li></ul></div>
+<div class="tok"><h3>Thời lượng</h3><ul>
+<li><code>fast</code> 0.25s: đổi màu, viền, mục đang đọc.</li>
+<li><code>staggerItem</code> 0.55s: hero, thẻ, khung tài liệu.</li>
+<li><code>base</code> 0.6s: khối ghi chú.</li>
+<li>Đã có: 0.2s (nhấn); 0.9s (Lenis).</li></ul></div>
+<div class="tok"><h3>So le</h3><ul>
+<li>Hero: <code>delay</code> 0.1s, <code>step</code> 0.12s.</li>
+<li>Lưới thẻ: <code>fastDelay</code> 0.05s, <code>fastStep</code> 0.07s theo cột.</li>
+<li>Kích hoạt cuộn: <code>VIEWPORT_ONCE</code>, chỉ một lần.</li></ul></div>
+<div style="background:#0D0D0D;color:#fff;border-radius:16px;padding:20px"><h3 style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D1D1D1;margin-bottom:12px">Khi giảm chuyển động</h3><ul style="font-size:13px;line-height:1.55;display:flex;flex-direction:column;gap:8px;list-style:none;margin:0;padding:0">
+<li>Khối CSS toàn cục giữ nguyên: transition và animation về 0.01ms.</li>
+<li>framer-motion kiểm tra <code style="background:#262626;color:#fff">useReducedMotion</code>: render thẳng trạng thái cuối.</li>
+<li>Không dịch chuyển hay scale; chỉ đổi màu tức thì. Không có vòng lặp vô hạn nào ở hai trang.</li></ul></div>
+</section>
+
+<section style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start">
+<sc-for list="{{fx}}" as="e" hint-placeholder-count="8">
+<article class="fx">
+<div class="hd"><span class="id">{{e.id}}</span><div><h3>{{e.name}}</h3><p class="wh">{{e.where}}</p></div></div>
+<dl>
+<dt>Kích hoạt</dt><dd>{{e.trigger}}</dd>
+<dt>Thuộc tính</dt><dd>{{e.props}}</dd>
+<dt>Đầu → cuối</dt><dd>{{e.values}}</dd>
+<dt>Thời lượng</dt><dd>{{e.dur}}</dd>
+<dt>Easing</dt><dd>{{e.ease}}</dd>
+<dt>Trễ, so le</dt><dd>{{e.delay}}</dd>
+<dt class="rm">Giảm chuyển động</dt><dd>{{e.reduced}}</dd>
+</dl>
+</article>
+</sc-for>
+</section>
+
+<section class="fx" style="gap:12px">
+<div class="hd"><span class="id">Bỏ</span><h3>Không dùng trên hai trang này</h3></div>
+<ul style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 32px;list-style:none;margin:0;padding:0;font-size:13px;line-height:1.55;color:#141414">
+<sc-for list="{{none}}" as="n" hint-placeholder-count="5">
+<li><strong>{{n.k}}:</strong> {{n.text}}</li>
+</sc-for>
+</ul>
+</section>
+
+<section class="blk">
+<h2>(a) Đổi gì so với hiện tại, và vì sao</h2>
+<div class="tbl">
+<div class="tr th ra"><span>Hạng mục</span><span>Hiện tại</span><span>Mới</span><span>Lý do</span></div>
+<sc-for list="{{chg}}" as="r" hint-placeholder-count="15">
+<div class="tr ra"><b>{{r.k}}</b><span>{{r.now}}</span><span>{{r.next}}</span><span>{{r.why}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="blk">
+<h2>(b) Thành phần dùng chung</h2>
+<p>Các dòng “dùng lại” là thành phần đã chốt ở trang Bài học, không vẽ lại. Bốn dòng “NEW” là phần bổ sung tối thiểu, đều dùng được ở trang khác.</p>
+<div class="tbl">
+<div class="tr th rb"><span>Thành phần</span><span>Nội dung và biến thể</span><span>Dùng lại ở</span></div>
+<sc-for list="{{shared}}" as="r" hint-placeholder-count="12">
+<div class="tr rb"><b>{{r.k}}</b><span>{{r.what}}</span><span>{{r.where}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="blk">
+<h2>Thành phần mới: InfoCard và thang chữ tài liệu</h2>
+<p>Hai biến thể của InfoCard cạnh nhau (thẻ liên kết đang ở trạng thái hover), và thang chữ dùng trong khung tài liệu ở cỡ thật.</p>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start">
+<div>
+<article class="card t1" style="height:auto">
+<div class="plate"><span class="ptile"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg></span><svg class="wmi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke-width:1.5"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg></div>
+<h3 class="ttl">Viết bài</h3>
+<p class="ex">Thẻ tĩnh: không hover, không scale khi nhấn. Chỉ nút bên trong bấm được.</p>
+<div class="ft"><a class="btn s" href="#">Nhắn cho tác giả<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+</article>
+<p class="cap">InfoCard tĩnh (mặc định). Dùng ở trang Đóng góp.</p>
+</div>
+<div>
+<a class="card link is-hover t2" href="#" style="height:auto">
+<div class="plate"><span class="ptile"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span><svg class="wmi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="stroke-width:1.5"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></div>
+<h3 class="ttl">Dịch</h3>
+<p class="ex">Thẻ liên kết: cả thẻ là một liên kết, có viền và bóng khi hover, scale .98 khi nhấn.</p>
+<div class="ft"><span style="font-size:14px;font-weight:600">Đọc tiếp</span><span style="margin-left:auto;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#0D0D0D;color:#fff"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div>
+</a>
+<p class="cap">InfoCard liên kết (.card.link, đang hover). Chưa dùng ở hai trang này.</p>
+</div>
+<div class="tok" style="padding:24px">
+<h3>Thang chữ khung tài liệu</h3>
+<p style="font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2;margin-bottom:6px">h2 26/800 (mobile 22)</p>
+<p style="font-size:18px;font-weight:700;letter-spacing:-.01em;line-height:1.3;margin-bottom:8px">h3 18/700</p>
+<p style="font-size:16px;line-height:1.7;color:#262626;margin-bottom:8px">Thân 16/1.7, màu #262626, tối đa 768px, khoảng 85 ký tự mỗi dòng.</p>
+<p style="font-size:14px;color:var(--tm);margin-bottom:8px">Phụ 14, #3E424D: dòng cập nhật, chân thẻ.</p>
+<p style="font-size:13px;color:#262626">Mã nội dòng <span class="k">NEXT_LOCALE</span> mono 0.85em.</p>
+</div>
+</div>
+</section>
+
+<section class="blk">
+<h2>Kiểm tra theo phần 5.1 và phần 8 của báo cáo</h2>
+<div class="tbl">
+<sc-for list="{{check}}" as="r" hint-placeholder-count="14">
+<div class="tr rc"><span class="{{r.cls}}" style="justify-self:start">{{r.st}}</span><span><b>{{r.k}}</b> {{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="blk">
+<h2>Cần xác nhận trước khi làm thật</h2>
+<div class="tbl">
+<sc-for list="{{ask}}" as="r" hint-placeholder-count="6">
+<div class="tr rc"><span class="nt" style="justify-self:start">{{r.k}}</span><span>{{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":7680}}'>
+const FX = [["CB1", "Hero vào trang", "PageHero, cả hai trang", "Tải trang, một lần khi vào từ trang khác.", "opacity, translateY của chip, tiêu đề, mô tả và (chỉ Đóng góp) thẻ số liệu.", "opacity 0 → 1; translateY 20px → 0.", "0.55s (staggerItem).", "EASE_STANDARD.", "staggerContainer: trễ đầu 0.1s, bước 0.12s. Chip 0.1s, tiêu đề 0.22s, mô tả 0.34s, thẻ số liệu 0.46s. Bảo mật chỉ có ba phần tử đầu.", "Không có trạng thái ẩn; hiện thẳng ở vị trí cuối. Thay .rise-in cũ (giống M1 ở trang Bài học)."], ["CB2", "Thẻ cách đóng góp hiện khi cuộn tới", "InfoCard trong lưới hai cột (Đóng góp)", "Thẻ vào vùng nhìn, vào 100px trong màn hình, chỉ một lần (VIEWPORT_ONCE).", "opacity, translateY của cả thẻ.", "opacity 0 → 1; translateY 20px → 0.", "0.55s (staggerItem).", "EASE_STANDARD.", "0.05s + cột × 0.07s: cột 1 là 0.05s, cột 2 là 0.12s. Mobile một cột: 0.05s. Thẻ lẻ chiếm cả hàng tính là cột 1.", "Thẻ hiện ngay ở vị trí cuối (CardReveal đã có)."], ["CB3", "Khối ghi chú cuối trang vào", "Panel 24px “không thù lao, không thu phí” (Đóng góp)", "Vào vùng nhìn, chỉ một lần.", "opacity, translateY của cả khối.", "opacity 0 → 1; translateY 24px → 0 (fadeUp).", "0.6s (DURATION.base).", "EASE_STANDARD.", "Không trễ. Giống M12 ở trang Bài học.", "Hiện ngay ở vị trí cuối."], ["CB4", "Khung tài liệu bảo mật vào", "DocPanel: khung trắng 24px bao văn bản (Bảo mật, từ 768px)", "Vào vùng nhìn, chỉ một lần. Lúc tải trang khung thường đã trong tầm nhìn nên chạy ngay sau hero.", "opacity, translateY của khung; chữ bên trong không có chuyển động riêng.", "opacity 0 → 1; translateY 20px → 0.", "0.55s (staggerItem).", "EASE_STANDARD.", "Không trễ. Không hiện dần từng mục: người đọc đang tìm một mục cụ thể, hiện chậm là cản trở. Dưới 768px không có khung nên không có hiệu ứng này.", "Hiện ngay ở vị trí cuối."], ["CB5", "Nút và liên kết: hover, nhấn", "Button phụ (thẻ), Button chính (CTA cuối), liên kết trong ghi chú, liên kết chân trang", "Hover, focus bàn phím, nhấn giữ (:active).", "Nút phụ: border-color. Nút chính: background-color. Liên kết ghi chú: color. Nút: transform scale khi nhấn.", "Nút phụ: viền #D1D1D1 → rgba(0,0,0,.25). Nút chính: #0D0D0D → #262626. Liên kết ghi chú: #314344 → #000. Nhấn: scale 1 → 0.98.", "0.25s (DURATION.fast) cho màu và viền; 0.2s cho nhấn (như PillButton).", "EASE_STANDARD.", "Không trễ.", "Đổi màu tức thì, bỏ scale. Viền focus 2px #314344 vẫn hiện."], ["CB6", "Hàng mục lục: hover và mục đang đọc", "TocNav (dùng lại TopicNav), chỉ từ 1024px", "Hover, focus; hoặc mục đang đọc đổi khi cuộn (IntersectionObserver, mục có đỉnh vượt vạch 96px + 35% chiều cao màn hình).", "background-color, color; vòng tròn số đổi nền.", "Hover: nền trong → #EFEFEF. Đang đọc: nền #0D0D0D, chữ #FFF, vòng số rgba(255,255,255,.14). aria-current=\"location\" đổi cùng lúc.", "0.25s (DURATION.fast).", "EASE_STANDARD.", "Không trễ. Chỉ một hàng đang đọc tại một thời điểm; hàng cũ tắt và hàng mới bật cùng nhịp 0.25s.", "Đổi màu tức thì. Không mất thông tin: aria-current là nguồn thật, màu chỉ là biểu hiện."], ["CB7", "Nhảy tới một mục", "Hàng mục lục (desktop) và chip (mobile)", "Bấm hoặc Enter. Sau khi cuộn xong, focus chuyển vào h2 của mục (tabindex −1) để trình đọc màn hình đọc tiêu đề.", "scrollTop của cửa sổ, tới #privacy-{id} với scroll-margin-top 6rem.", "Vị trí hiện tại → đầu mục.", "0.9s (Lenis đã có).", "Lenis 1−(1−t)³, không thêm đường cong mới.", "Không trễ.", "Nhảy tức thì (Lenis tắt khi giảm chuyển động; cảm ứng cũng nhảy tức thì). Mở thẳng link có #mục vẫn hoạt động."], ["CB8", "Hàng chip mục lục trên mobile", "TopicTrail (dùng lại), dưới 1024px", "Tải trang. Không có mục “đang đọc” nên chip không tự cuộn theo.", "Không hoạt hoạ.", "Không có.", "0.", "Không có.", "Không có.", "Không cần xử lý thêm. Mép mờ bên phải là mask tĩnh cho biết còn chip; chip dài cắt bằng … ở 280px."]];
+const NONE = [["Hover, nghiêng, phóng ảnh trên thân thẻ tĩnh", "Thẻ đóng góp không phải liên kết nên không giả vờ bấm được. Chỉ nút bên trong phản hồi. Biến thể .card.link (viền, bóng, phóng ảnh 1.03) chỉ dành cho thẻ thật sự là một liên kết."], ["Hiện dần từng mục của văn bản bảo mật", "Tài liệu để tra cứu, không để xem. Một khung vào trang là đủ (CB4)."], ["Thanh tiến độ đọc, tô sáng tiêu đề khi cuộn", "Mục đang đọc ở mục lục đã báo vị trí. Thêm nữa là trang trí."], ["Thu gọn mục chính sách bằng details", "Một details đóng ẩn nội dung mà CSS không mở ép được, và bản in hoặc tìm chữ trên trang sẽ thiếu. Văn bản pháp lý mở sẵn."], ["Động cho tấm màu và icon lớn mờ", "Tĩnh hoàn toàn: không parallax, không lặp vô hạn (trang trong)."]];
+const CHG = [["Đầu trang", "PageHero cũ: chỉ chữ, cả hàng vào bằng .rise-in (12px, 0.5s, đường cong riêng).", "PageHero v2 như Bài học: chip, h1 34/46, mô tả. Đóng góp thêm thẻ số liệu (4 cách · 1 tin nhắn · 0 phí); Bảo mật không có thẻ. Bốn phần tử vào lần lượt (CB1).", "Cùng ngôn ngữ đầu trang và chuyển động với trang chủ (mục 4.1, 4.6). Số trong thẻ lấy từ chính nội dung trang, không phải số liệu mới."], ["Họ thẻ", "Thẻ thông tin trắng, padding 24–28px, không có ảnh, chỉ ô icon xám nhạt.", "InfoCard: bo 16, padding 16, tấm màu bo 12 bên trong, tiêu đề 18/700, chân thẻ có đường kẻ, giống PostCard.", "Một họ thẻ thay cho bốn (mục 4.2 và mục 16, “Cards”)."], ["Thẻ tĩnh và thẻ liên kết", "Không hover; đường dẫn là dòng chữ trần ở đáy thẻ.", "Thẻ đóng góp tĩnh: không hover, không scale khi nhấn; chỉ nút phụ bên trong bấm được. Biến thể .card.link (viền, bóng khi hover) chỉ cho thẻ là liên kết.", "Yêu cầu của lượt này: thẻ tĩnh không giả vờ bấm được, thẻ liên kết có hover chuẩn. Bao cả thẻ bằng bốn liên kết giống hệt cũng thừa và gây lặp với trình đọc màn hình."], ["Nút trong thẻ", "Bốn liên kết cùng chữ “Nhắn cho tác giả →”, chiều cao ~20px.", "Nút phụ 44px cùng chữ, có aria-label ghép tên cách góp: “Nhắn cho tác giả: Viết bài”.", "Mục tiêu chạm 44px (mục 4.10). Người dùng trình đọc màn hình phân biệt được bốn nút."], ["Icon", "Ô 44px xám nhạt, icon nhỏ, cả bốn giống nhau.", "Tấm màu theo bậc xám t1–t4 như bốn chủ đề, ô icon trắng 48px, icon lớn mờ 9% ở góc.", "Cùng ngôn ngữ với ảnh bìa PostCard và tấm chủ đề; vẫn không dùng ảnh thật."], ["Ghi chú cuối Đóng góp", "Đoạn chữ trần trên nền xám; “Những người đã đồng hành” là chữ thường.", "Panel 24px: ô icon và đoạn chữ; tên mục là liên kết tới trang Giới thiệu.", "Điều kiện (không thù lao, được ghi tên) là thứ người muốn giúp cần thấy; liên kết giúp đi tiếp. Cần xác nhận đích liên kết (câu hỏi 3)."], ["Bố cục Bảo mật", "Cột max-w-3xl đặt giữa trong khi hero lệch trái: văn bản bắt đầu ở x=256, hero ở x=32.", "Mục lục 260px và khung tài liệu, cùng căn trái lề 32px; độ rộng dòng chữ tối đa 768px.", "Thẳng hàng với đầu trang (mục 4.1). Khoảng 85 ký tự mỗi dòng ở cỡ 16px, đúng khoảng đọc thoải mái."], ["Thang chữ", "h2 20px, mục 15px màu #4D4D4D, không có h3.", "h2 26/800 (dưới 768px: 22/800) kèm số thứ tự 32px, h3 18/700, thân 16/1.7 màu #262626.", "Một thang chữ (mục 4.1 và 16): h2 khớp 26, thân khớp token 16. Tương phản ~12:1 thay ~6.7:1. Thêm bậc h3 để trang có chỗ cho mục con, dù bản chính sách hiện chưa cần."], ["Danh sách", "Chấm mặc định, khoảng cách gap-3.", "Chấm 6px tự vẽ (#8C8C8C), role=\"list\" giữ ngữ nghĩa, khoảng cách 14px, thụt 22px.", "Safari và VoiceOver bỏ ngữ nghĩa list khi list-style là none nếu thiếu role."], ["Mục lục", "Không có; id privacy-{id} chỉ tồn tại trong mã.", "TocNav dính (top 96px) từ 1024px; TopicTrail dưới 1024px. Sáu mục, đánh số 1–6.", "Trang dài khoảng 2.000px cuộn; người đọc thường tìm đúng “Giữ trong bao lâu” hoặc “Quyền của bạn”. Sửa mục 4.12 (không có mục lục dính, không đánh dấu mục đang đọc). Không thêm gì ngoài mục lục."], ["Dòng cập nhật", "Dòng chữ nổi ngay dưới hero, thụt theo cột.", "Dòng có icon lịch nằm đầu khung tài liệu, thẻ time có datetime, đường kẻ dưới; bỏ dòng nếu thiếu ngày.", "Gắn với văn bản thay vì trôi trên nền."], ["CTA cuối", "Nút đen rounded-xl, min-h-11.", "Button chính (pill, 44px, mũi tên), hover #262626; mobile rộng hết khung.", "Một loại nút (mục 16, “Buttons”)."], ["Mã trong chữ", "NEXT_LOCALE, youtube-nocookie là chữ thường.", "Ô mã nội dòng (mono, nền #EFEFEF, bo 6px).", "Dễ nhận ra là tên kỹ thuật; chuỗi dài được bẻ bằng overflow-wrap:anywhere."], ["Chân trang", "Liên kết 14px chỉ chữ (~20px cao), không đánh dấu trang hiện tại.", "Cao tối thiểu 44px; trang hiện tại đậm #000 và aria-current=\"page\".", "Mục tiêu chạm (mục 4.10) và định vị. Đổi chân trang dùng chung: xem câu hỏi 5."], ["Chuyển động", "Chỉ .rise-in.", "8 hiệu ứng CB1–CB8, tất cả EASE_STANDARD, thời lượng lấy từ tokens.ts.", "Một bộ easing (mục 4.6), giảm chuyển động ở từng hiệu ứng."]];
+const SHARED = [["PageHero v2 (dùng lại thành phần đã chốt ở trang trước)", "Chip, h1 34/46, mô tả, ô phụ tuỳ chọn. Đóng góp dùng thẻ số liệu, Bảo mật để trống. Chip nhận thêm max-width:100% và cắt bằng … để eyebrow dài không đẩy khung.", "Đã chốt ở Bài học."], ["Thẻ số liệu (dùng lại)", "Ba ô trong một thẻ; mobile ba cột đều nhau.", "Đã chốt ở Bài học."], ["Button chính, phụ (dùng lại)", "Pill 44px, mũi tên tuỳ chọn. Bổ sung hover của nút chính (#0D0D0D → #262626) và nhấn scale .98: trang trước chưa vẽ trạng thái này.", "Đã chốt ở Bài học; thêm hover chính."], ["Panel lớn 24px (dùng lại)", "Khung bo 24: ghi chú (nền trắng 50%) và khung tài liệu (trắng, viền #D1D1D1).", "Đã chốt (EmptyState); hai nền mới là biến thể."], ["Thẻ 16, ảnh trong thẻ 12, chân thẻ, tấm .plate t1–t4 (dùng lại)", "Lấy nguyên từ PostCard; tấm .plate giờ chứa icon thay số chủ đề.", "Đã chốt ở Bài học."], ["TopicNav (dùng lại)", "Hàng .trow, vòng số .tn, nền đen khi hiện tại. Dùng làm mục lục: bỏ số đếm, thêm aria-current=\"location\". Dính từ 1024px.", "Đã chốt ở Bài học (cột chủ đề)."], ["TopicTrail (dùng lại)", "Hàng chip cuộn ngang, mask mép phải, chip cắt bằng … ở 280px. Dùng làm mục lục mobile, không có chip đang chọn.", "Đã chốt ở Bài học."], ["CardReveal, token, khung trang (dùng lại)", "Trễ theo cột 0.05s + 0.07s; h2 26, thân 16; lề 32/20; header và footer.", "Đã chốt ở Bài học."], ["NEW · InfoCard", "Thẻ thông tin theo họ PostCard: tấm màu (ô icon 48 và icon lớn mờ; mobile ô vuông 64), tiêu đề, nội dung, chân thẻ chứa nút. Hai biến thể: tĩnh (mặc định, không hover) và liên kết (.card.link, hover và nhấn như M4, M5). Không cắt chữ. Lưới lẻ: thẻ cuối chiếm cả hàng.", "Đóng góp; Giới thiệu (khối “chúng tôi làm gì”); Liên hệ (các kênh liên lạc); bất kỳ nơi nào có thẻ thông tin."], ["NEW · DocLayout và ProseSection", "Khung tài liệu với độ rộng chữ 768px: dòng cập nhật, mục có số, h2, h3, đoạn, danh sách chấm, ô mã nội dòng, hàng CTA cuối. Dưới 768px không có khung, chữ đặt thẳng lên nền để đủ độ rộng dòng.", "Bảo mật; điều khoản, giấy phép hình ảnh và các văn bản dài sau này; phần chữ dài của Giới thiệu."], ["NEW · InlineCode", "Mono (JetBrains Mono đã có trên site), nền #EFEFEF, viền #DDD, bo 6px, cỡ 0.85em.", "Bảo mật; bài học (đã có kiểu code riêng trong .chip-prose, nên gộp về một)."], ["NEW · FooterLink trang hiện tại", "Cao tối thiểu 44px; trang hiện tại #000 đậm, aria-current=\"page\".", "Chân trang của mọi trang."]];
+const CHECK = [["Đạt", "Song ngữ.", "Mọi chuỗi chính lấy từ messages/{vi,en}.json. Nhãn mới có cả hai: “Trên trang này / On this page”, ba nhãn thẻ số liệu, tên vùng ẩn “Bốn cách đóng góp / Four ways to contribute”. Bản EN dài hơn ~10% (“Message the author: Translate”); nút phụ tự co, thẻ hai cột vẫn cao bằng nhau. Kiểm ở EN 1280 và EN 390.", "pass"], ["Đạt", "Bên thứ ba.", "Không script, iframe hay ảnh ngoài. Tấm màu là màu xám và icon SVG nội tuyến, không ảnh, không nhãn nào tự nhận là ảnh thật. Phông trong canvas chỉ để xem trước.", "pass"], ["Đạt", "Video.", "Hai trang không có video. Mục “Cookie” chỉ nhắc video khi bấm phát, văn bản không đổi.", "pass"], ["Đạt", "Giảm chuyển động.", "Mỗi hiệu ứng CB1–CB8 có dòng riêng ở bảng chuyển động.", "pass"], ["Đạt", "Không chỉ dựa vào hover.", "Thẻ tĩnh không có hover; hover ở nút và hàng mục lục chỉ trang trí; mục đang đọc có aria-current thật.", "pass"], ["Đạt", "Tương phản (tính bằng công thức WCAG, chưa đo bằng công cụ).", "Thân #262626 trên #FFF ~15:1, trên #E5E5E5 ~12:1. #3E424D trên #FFF ~10:1, trên #E5E5E5 ~8:1. Liên kết #314344 trên #FFF ~10.4:1, trên nền ghi chú (~#F2F2F2) ~9:1. #4D4D4D trên #FFF (mục lục, chip) ~8.4:1. Chữ trắng trên #0D0D0D ~19:1, trên #262626 (hover nút chính) ~15:1. Chữ nhỏ nhất 12px. Icon lớn 9% và chấm danh sách #8C8C8C là trang trí, aria-hidden hoặc không mang thông tin.", "pass"], ["Đạt", "Mục bấm ≥ 44px.", "Nút 44, hàng mục lục 48, chip mục lục 44, liên kết chân trang tối thiểu 44 (thay ~20 hiện tại), liên kết inline trong ghi chú nằm trong đoạn chữ 16px (ngoại lệ đoạn văn theo WCAG). Nút menu và ô tìm kiếm ở header giữ như trang trước.", "pass"], ["Đạt", "Ngữ nghĩa và bàn phím.", "h1 → h2 → h3 không nhảy cấp; ul/li có role=\"list\"; article và section có aria-labelledby; time có datetime; hai nav có nhãn; nút có aria-label riêng; h2 nhận focus sau khi nhảy (CB7).", "pass"], ["Đạt", "Honeypot.", "Hai trang không có form. Trường ẩn website vẫn ở form Liên hệ, không đổi.", "pass"], ["Đạt", "390px không cuộn ngang.", "Chỉ hàng chip mục lục cuộn trong vùng của nó. Chuỗi 45 ký tự liền (bản Stress) bẻ bằng overflow-wrap:anywhere.", "pass"], ["Đạt", "Nội dung khắc nghiệt.", "Bản Stress Đóng góp: tiêu đề thẻ ~100 ký tự, nội dung 6 dòng, thẻ không nội dung (nút vẫn ở đáy), thẻ thứ 5 làm lưới lẻ. Bản Stress Bảo mật: h2 ~130 ký tự, đoạn dẫn, hai h3, chín mục, chip mục lục dài cắt bằng …. Thẻ thứ 5 và văn bản Stress là mẫu thử, không phải nội dung thật.", "pass"], ["Lưu ý", "Trạng thái.", "Cả hai là trang tĩnh do server render, không có loading, lỗi hay rỗng riêng (404 và lỗi thuộc lượt khác). Nếu thiếu ngày cập nhật thì bỏ dòng meta.", "note"], ["Lưu ý", "Chiều cao khung vẽ.", "Ước tính từ số ký tự, chưa đo bằng trình duyệt theo yêu cầu; có thể thừa vài phần trăm ở đáy trước chân trang, không thiếu.", "note"], ["Đạt", "Khả năng làm.", "Tailwind, framer-motion và Lenis hiện có; sticky bằng CSS; scroll-spy dùng IntersectionObserver của trình duyệt, không thêm thư viện. Không đổi schema. Cần thêm khoá messages: contribute.waysHead, contribute.stats.*, privacy.toc.", "pass"]];
+const ASK = [["1 · Thẻ số liệu", "Bộ “4 · 1 · 0” lấy từ nội dung. Nếu ban biên tập thấy “0 phí, thù lao” là lời hứa quá cứng, bỏ thẻ và để hero chỉ chữ như Bảo mật."], ["2 · Nút trong thẻ", "Cả bốn nút đi tới Liên hệ. Nên thêm tham số loại (ví dụ ?chu-de=viet-bai) để form chọn sẵn? Cần một trường loại ở form Liên hệ, thuộc lượt thiết kế Liên hệ."], ["3 · Liên kết ghi chú", "Trỏ tới trang Giới thiệu, mục “Những người đã đồng hành”. Mục đó ẩn khi danh sách trống, nên liên kết nên trỏ về trang, không dùng neo; cần xác nhận."], ["4 · Mục lục mobile", "Không dính vì chưa rõ thanh điều hướng mobile có cố định hay không. Nếu cố định, có thể cho hàng chip dính ngay dưới thanh và thêm chip đang chọn (CB6 áp dụng lại)."], ["5 · Chân trang", "Trạng thái trang hiện tại và chiều cao tối thiểu 44px áp cho footer chung, tức đổi mọi trang."], ["6 · Nhãn mới", "Cần bản dịch duyệt cho “Trên trang này / On this page”, “Cách góp sức / Ways to help”, “Tin nhắn để bắt đầu / Message to start”, “Phí, thù lao / Fees or pay”."]];
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      fx: FX.map((r) => ({ id: r[0], name: r[1], where: r[2], trigger: r[3], props: r[4], values: r[5], dur: r[6], ease: r[7], delay: r[8], reduced: r[9] })),
+      none: NONE.map((r) => ({ k: r[0], text: r[1] })),
+      chg: CHG.map((r) => ({ k: r[0], now: r[1], next: r[2], why: r[3] })),
+      shared: SHARED.map((r) => ({ k: r[0], what: r[1], where: r[2] })),
+      check: CHECK.map((r) => ({ st: r[0], k: r[1], text: r[2], cls: r[3] })),
+      ask: ASK.map((r) => ({ k: r[0], text: r[1] }))
+    };
+  }
+}
+</script>
+</body>
+</html>

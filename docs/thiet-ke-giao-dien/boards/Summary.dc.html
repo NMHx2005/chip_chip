@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Tổng kết · Bài học</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bd:#D1D1D1;--tm:#3E424D;--ac:#314344}
+*{box-sizing:border-box}
+body{margin:0;background:#E5E5E5;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,li{margin:0;padding:0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:#EFEFEF;border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.sec{display:flex;flex-direction:column;gap:16px}
+.sec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.sec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:780px}
+.tbl{background:#fff;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.tr{display:grid;gap:20px;padding:16px 20px;border-top:1px solid #EAEAEA;font-size:13px;line-height:1.55;color:#141414}
+.tr:first-child{border-top:0}
+.th{background:#EFEFEF;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm)}
+.tr b{font-weight:700;font-size:14px}
+.a{grid-template-columns:170px 1fr 1.25fr 1fr}
+.b{grid-template-columns:200px 1fr 1fr}
+.pass{display:inline-block;padding:2px 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em}
+.note{display:inline-block;padding:2px 10px;border-radius:999px;background:#EFEFEF;border:1px solid var(--bd);color:#262626;font-size:11px;font-weight:700;letter-spacing:.04em}
+.c{grid-template-columns:120px 1fr;align-items:start}
+code{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;background:#EFEFEF;border-radius:6px;padding:1px 6px;color:#0D0D0D}
+</style>
+</helmet>
+<div style="width:1280px;height:5100px;padding:56px 48px;display:flex;flex-direction:column;gap:56px">
+
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:860px">
+<span class="eyebrow"><i></i>Tổng kết · Trang Bài học</span>
+<h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em">Thay đổi, tái sử dụng, kiểm tra</h1>
+<p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Mọi số liệu trong bản vẽ (47 bài, 12/13/11/11 theo chủ đề) và mọi bài mẫu là chữ minh hoạ để thử độ dài, không phải dữ liệu thật. Ảnh bìa là ô tối giữ chỗ.</p>
+</header>
+
+<section class="sec">
+<h2>(a) Đổi gì so với hiện tại, và vì sao</h2>
+<div class="tbl">
+<div class="tr th a"><span>Hạng mục</span><span>Hiện tại</span><span>Mới</span><span>Lý do</span></div>
+<sc-for list="{{chg}}" as="r" hint-placeholder-count="13">
+<div class="tr a"><b>{{r.k}}</b><span>{{r.now}}</span><span>{{r.next}}</span><span>{{r.why}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>(b) Thành phần dùng chung để tái sử dụng</h2>
+<p>Các trang sau lặp lại đúng khung này và dùng lại những thành phần đã chốt ở đây, không vẽ lại từng trang.</p>
+<div class="tbl">
+<div class="tr th b"><span>Thành phần</span><span>Nội dung và biến thể</span><span>Dùng lại ở</span></div>
+<sc-for list="{{shared}}" as="r" hint-placeholder-count="12">
+<div class="tr b"><b>{{r.k}}</b><span>{{r.what}}</span><span>{{r.where}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Kiểm tra theo phần 5.1 và phần 8 của báo cáo</h2>
+<div class="tbl">
+<sc-for list="{{check}}" as="r" hint-placeholder-count="14">
+<div class="tr c"><span class="{{r.cls}}" style="justify-self:start">{{r.st}}</span><span><b>{{r.k}}</b> {{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Cần xác nhận trước khi làm thật</h2>
+<div class="tbl">
+<sc-for list="{{ask}}" as="r" hint-placeholder-count="5">
+<div class="tr c"><span class="note" style="justify-self:start">{{r.k}}</span><span>{{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":5100}}'>
+const CHG = [
+['Đầu trang','Ba kiểu đầu trang khác nhau; PageHero hiện cả hàng bằng .rise-in (12px, 0.5s, đường cong riêng).','Một PageHero cho mọi trang: chip, h1 34/46, mô tả, thẻ số liệu. Vào trang bằng nhịp của trang chủ: 4 phần tử lần lượt, 20px, 0.55s, so le 0.12s.','Cùng ngôn ngữ chuyển động với trang chủ; bỏ đường cong thứ hai (mục 4.1 và 4.6).'],
+['Thẻ số liệu','Một ô “0 Bài học”.','Ba ô trong một thẻ: bài học, chủ đề, mức độ. Trang chủ đề chỉ hai ô.','Cho biết quy mô thư viện, lấp chỗ trống bên phải tiêu đề.'],
+['Cột chủ đề','Năm pill viền rời, chữ và số đếm; bốn chủ đề gần như không phân biệt được.','Một thẻ trắng bo 16px, hàng 48px. Mỗi chủ đề có vòng tròn số 1–4 (giữ tông xám) và số đếm.','Phân biệt bằng số và nhãn, không chỉ bằng độ đậm xám (mục 4.7). Số là thứ tự học, khớp phần “Bốn chủ đề” trên trang chủ.'],
+['Thu gọn cột','260px → 44px, danh sách ẩn tức thì, chỉ còn một nút.','260px → 48px, còn lại rail với vòng tròn số và tooltip. Nhãn mờ dần trước, nhãn hiện lại sau.','Thu gọn không nên làm mất điều hướng. Bỏ hiện tượng ẩn tức thì.'],
+['Lọc độ khó','Bốn pill rời, cùng một kiểu nhãn xám.','Nhóm phân đoạn, mỗi mức có ba thanh tăng dần cộng nhãn. Mobile: lưới 2×2 nên không phải cuộn ngang.','Độ khó phân biệt được ngay cả khi không đọc chữ (mục 4.7) và không dựa vào màu.'],
+['Dòng kết quả','Không có.','“Hiển thị 12 trong 47 bài · tên chủ đề”, vùng aria-live.','Cột thu gọn ẩn nhãn nên cần một chỗ nói rõ đang xem gì; cũng báo bộ lọc đã áp.'],
+['PostCard','Padding 24px, chip xám, độ khó là một chip viền, “Đọc tiếp →” là chữ, không ảnh thì ô xám trống. Mobile: thẻ dọc rất cao.','Padding 16px (bằng VideoCard). Chip có số. Độ khó xuống chân thẻ. Đĩa mũi tên. Không ảnh thì tấm chủ đề. Mobile: dạng gọn ngang.','Một họ thẻ thay cho ba (mục 4.2). Mobile: 12 thẻ cao ước tính khoảng 2.9k px thay vì khoảng 5k px.'],
+['Hover thẻ','Viền và bóng 300ms; mũi tên nhích 2px.','Giữ viền, bóng, mũi tên; thêm phóng ảnh 1.03. Hover chỉ dành cho con trỏ chuột, chỉ để trang trí.','Đúng bộ giá trị trang chủ. Không thông tin nào chỉ hiện ở hover.'],
+['Phân trang','Đã dùng chung 44px cho Bài học và Video; Blog dùng bản riêng 36px.','Một Pagination duy nhất, thêm dòng “Trang 1 trong 4”. Blog chuyển sang cùng thành phần.','Sửa mục 4.3 và mục 4.10. Kích thước trang là tham số: Bài học 12 (3×4), Blog giữ 9 (3×3).'],
+['Trạng thái rỗng','Hộp nét đứt và một dòng chữ.','Khung nét đứt bo 24px, hình chip, hai lối đi (Video, Blog). Lọc ra rỗng có gợi ý mức khác kèm số đếm và nút bỏ lọc.','Có việc để làm thay vì ngõ cụt (mục 6). Phần số đếm cần thêm một truy vấn đếm theo độ khó; có thể bỏ.'],
+['Gợi ý người mới','Không có.','Dòng “Mới bắt đầu? Chọn chủ đề 1, mức Cơ bản” dưới cột chủ đề.','Trang chủ nói “không cần kiến thức nền, cứ bắt đầu từ chủ đề đầu tiên”; thư viện cần nối tiếp lời hứa đó.'],
+['Chuyển động','Chỉ .rise-in, hover màu 150ms, thu gọn cột 450ms.','13 hiệu ứng M1–M13, tất cả EASE_STANDARD, thời lượng lấy từ tokens.ts. Hover màu 0.25s thay 150ms.','Một bộ easing (mục 4.6), có chỗ cho giảm chuyển động ở từng hiệu ứng.'],
+['Phông trong bản vẽ','Be Vietnam Pro tự host qua next/font.','Không đổi. Canvas nạp Be Vietnam Pro từ Google Fonts chỉ để xem trước; không đưa vào mã.','Ràng buộc CSP: site không nạp phông bên thứ ba, không thêm phông mới.']
+];
+const SHARED = [
+['PageHero','Chip, h1 34/46, mô tả, ô phụ (số liệu hoặc rỗng), nền tuỳ chọn.','Mọi trang. Giới thiệu và Liên hệ bỏ bản tự viết. Blog và Video thêm nền.'],
+['TopicChip','Số trong vòng tròn và nhãn, có tông; cắt bằng dấu … khi quá dài.','PostCard, dòng tìm kiếm, header bài học chi tiết, video liên quan.'],
+['DifficultyMark','Ba thanh và nhãn chữ; cỡ 12 và 14.','PostCard, bộ lọc Video nếu có độ khó, header bài học chi tiết.'],
+['SegmentedFilter','Nhóm liên kết, aria-current, 44px; mobile lưới 2×2.','Video (bốn nhóm lọc), Tìm kiếm (lọc loại nội dung nếu thêm).'],
+['TopicNav và TopicRail','Cột 260px, thu gọn còn rail 48px; hàng chủ đề, số đếm.','Chỉ Bài học. Có thể dùng cho Video nếu sau này chia chủ đề.'],
+['TopicTrail','Hàng chip cuộn ngang, chip đang chọn ở giữa; mask mép phải.','Mọi danh sách cần lọc nhanh trên mobile.'],
+['PostCard','Ba dạng: thẻ, gọn, dòng. Thuộc tính: showTopic, showDifficulty, cover, highlight, expand.','Bài học, Blog (expand), Tìm kiếm (dòng), bài liên quan, LatestPosts ở trang chủ.'],
+['ResultCount','Một dòng aria-live polite, số tabular.','Bài học, Video, Tìm kiếm.'],
+['Pagination','Ô 44px, mũi tên, tối đa 7 mục và “…”, dòng “Trang x trong y”, rel prev/next.','Bài học, Blog, Video, Tìm kiếm.'],
+['EmptyState','Khung nét đứt, hình, tiêu đề, mô tả, hành động; ba biến thể: rỗng, chủ đề chưa có bài, lọc ra rỗng.','Blog, Video, Tìm kiếm (không có kết quả), bình luận (bản nhỏ), nền cho 404.'],
+['CardReveal','Bọc phần tử, whileInView, trễ theo cột, tôn trọng giảm chuyển động.','Mọi lưới thẻ: Blog, Video, Tìm kiếm.'],
+['Button','Chính (đen), phụ (trắng, viền), bo tròn, cao 44px, mũi tên tuỳ chọn.','EmptyState, 404, Liên hệ, Đóng góp.'],
+['Token','h1 34/46, h2 26/38, thân 16 và 18; thẻ bo 16px, ảnh trong thẻ bo 12px, khung lớn bo 24px; padding thẻ 16px; khung 1280px, lề 20/32px.','Mọi trang trong.']
+];
+const CHECK = [
+['Đạt','Song ngữ.','Mọi chuỗi có VI và EN. Chip chủ đề dài (“What is a semiconductor”) cắt một dòng bằng dấu …; hàng chủ đề cho xuống hai dòng; bộ lọc mobile là lưới 2×2.','pass'],
+['Đạt','Bên thứ ba.','Không script, iframe hay ảnh ngoài. Phông trong canvas chỉ để xem trước, mã dùng next/font tự host.','pass'],
+['Đạt','Video sau khi bấm.','Trang này không có video nhúng.','pass'],
+['Đạt','Giảm chuyển động.','Mỗi hiệu ứng M1–M13 có dòng riêng ở bảng chuyển động.','pass'],
+['Đạt','Không chỉ dựa vào hover.','Hover chỉ trang trí. Tooltip của rail trùng aria-label, title và dòng kết quả.','pass'],
+['Đạt','Tương phản.','Chữ #3E424D trên #E5E5E5 khoảng 8:1, trên trắng khoảng 10:1; #4D4D4D trên #E5E5E5 khoảng 6.7:1; chữ trắng trên #0D0D0D khoảng 19:1; #262626 trên chip khoảng 12:1. Chữ nhỏ nhất là 12px.','pass'],
+['Đạt','Mục bấm ≥ 44px.','Hàng chủ đề 48, phân đoạn 44, chip 44, phân trang 44, nút 44, nút thu gọn 44. Cả thẻ bài là một liên kết. Thanh điều hướng desktop giữ 40px như hiện tại, ngoài phạm vi trang này.','pass'],
+['Đạt','Đủ trạng thái.','Có dữ liệu, rỗng, lọc ra rỗng, thu gọn. “Trang này không có nội dung” dùng lại EmptyState với nút “Về trang đầu”. Trang vượt quá trang cuối là 404, thuộc lượt thiết kế 404.','pass'],
+['Đạt','390px không cuộn ngang.','Chỉ hàng chủ đề cuộn ngang trong vùng của nó, có mép mờ báo còn nội dung.','pass'],
+['Đạt','Nội dung thật.','Tiêu đề rất dài (thẻ 10) cắt ba dòng; không ảnh có tấm chủ đề; tóm tắt trống làm thẻ co lại nhưng cả hàng vẫn cao bằng nhau.','pass'],
+['Đạt','Một thang chữ, một họ thẻ, một phân trang, một easing.','Đã gộp theo mục (a). Form và 404 thuộc các lượt sau.','pass'],
+['Đạt','Khả năng làm.','Tailwind và framer-motion hiện có, không thêm thư viện. Không đổi schema hay luồng đăng bài.','pass'],
+['Lưu ý','Truy vấn mới.','Số đếm theo độ khó ở trạng thái lọc ra rỗng cần một truy vấn đếm; nếu bỏ thì chỉ còn nút bỏ lọc.','note']
+];
+const ASK = [
+['Ảnh bìa','Bài học chưa có ảnh bìa nào. Nếu không có ảnh cho phần lớn bài, tấm chủ đề sẽ là hình mặc định của cả thư viện; cần xác nhận hướng đó.'],
+['Số cột khi thu gọn','Bản vẽ giữ 3 cột và để thẻ rộng ra. Nếu muốn 4 cột khi thu gọn thì phải đổi số cột theo trạng thái, và lưới sẽ nhảy cột lúc cột đang co.'],
+['Kích thước trang Blog','Blog giữ 9 mục (3×3) khi chuyển sang Pagination chung. Nếu muốn thống nhất 12 thì đổi ở một hằng số.'],
+['Số đếm theo độ khó','Cần truy vấn đếm nhóm theo độ khó cho từng chủ đề; có thể tính cùng lượt gọi countLessonsByTopic.']
+];
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      chg: CHG.map((r) => ({ k: r[0], now: r[1], next: r[2], why: r[3] })),
+      shared: SHARED.map((r) => ({ k: r[0], what: r[1], where: r[2] })),
+      check: CHECK.map((r) => ({ st: r[0], k: r[1], text: r[2], cls: r[3] })),
+      ask: ASK.map((r) => ({ k: r[0], text: r[1] }))
+    };
+  }
+}
+</script>
+</body>
+</html>

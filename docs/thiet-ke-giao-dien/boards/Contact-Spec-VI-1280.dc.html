@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Đặc tả · Liên hệ</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--fb:#8C8C8C;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt,ul,li{margin:0;padding:0}
+ul{list-style:none}
+svg.ic{width:16px;height:16px;flex:none}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.nvl{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--tn)}
+.cta{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;background:linear-gradient(131deg,#333 .8%,#0d0d0d 35%,#262626 99%);color:#fff;font-size:14px;font-weight:600}
+.ibtn{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);color:var(--tn)}
+.flink{font-size:14px;font-weight:500;color:var(--tn)}
+.mob .flink{display:inline-flex;align-items:center;min-height:44px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease),transform .2s var(--ease)}
+.btn:active{transform:scale(.98)}
+.btn.p{background:var(--pr);color:#fff}
+.btn.p:hover,.btn.p.is-hover{background:#262626}
+.btn.s{background:var(--sf);border-color:var(--bd);color:#000}
+.btn.s:hover,.btn.s.is-hover{border-color:rgba(0,0,0,.25)}
+.btn:focus-visible,.btn.is-focus{outline:2px solid var(--ac);outline-offset:2px}
+.btn[aria-disabled=true]{background:#5F5F5F;color:#fff;cursor:progress;transform:none}
+.fm{position:relative;display:flex;flex-direction:column;gap:20px}
+.fg{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fl{font-size:14px;font-weight:600;line-height:1.4;color:#0D0D0D}
+.fl small{font-size:14px;font-weight:400;color:var(--tm)}
+.in{display:block;width:100%;height:44px;padding:0 14px;border:1px solid var(--fb);border-radius:12px;background:#fff;font-family:inherit;font-size:14px;color:#000;transition:border-color .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease)}
+.mob .in{font-size:16px}
+textarea.in{height:156px;padding:12px 14px;line-height:1.55;resize:vertical}
+.mob textarea.in{height:152px}
+textarea.in.s{height:120px}
+.in::placeholder{color:#6E6E6E;opacity:1}
+.in:hover,.in.is-hover{border-color:var(--tn)}
+.in:focus,.in.is-focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--ac)}
+.in[aria-invalid=true]{border-color:#D92D20;box-shadow:inset 0 0 0 1px #D92D20}
+.in[aria-invalid=true]:focus,.in[aria-invalid=true].is-focus{box-shadow:inset 0 0 0 1px #D92D20,0 0 0 2px #fff,0 0 0 4px var(--ac)}
+.in:disabled,.in[readonly]{background:var(--mf);color:#5F5F5F;border-color:var(--bd);cursor:not-allowed}
+.hn{font-size:13px;line-height:1.45;color:var(--tm)}
+.er{display:flex;align-items:flex-start;gap:6px;font-size:13px;line-height:1.45;font-weight:500;color:#B42318}
+.er svg{margin-top:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.live:empty{display:none}
+.bn{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;border:1px solid;font-size:14px;line-height:1.5;animation:fin .25s var(--ease) both}
+.bn>svg{width:20px;height:20px;margin-top:1px;flex:none}
+.bn b{font-weight:700}
+.bb{min-width:0}
+.bb p{margin-top:2px}
+.bb b+p{margin-top:2px}
+.bn.err{background:#FEF3F2;border-color:#D92D20;color:#912018}
+.bn.err>svg{color:#D92D20}
+.bn.ok{background:#ECFDF3;border-color:#067647;color:#054F31}
+.bn.ok>svg{color:#067647}
+.bn.nt{background:var(--mf);border-color:var(--bd);color:#262626}
+.bl{margin-top:6px}
+.bl a{display:flex;align-items:center;min-height:44px;font-weight:500;text-decoration:underline;text-underline-offset:3px}
+.tick .tk{stroke-dasharray:7;animation:draw .5s var(--ease) .1s both}
+@keyframes fin{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:7}to{stroke-dashoffset:0}}
+.sub{display:flex}
+.mob .sub .btn{width:100%}
+.kf{border:0;padding:0;margin:0;min-width:0}
+.kf legend{padding:0;margin-bottom:8px}
+.kseg{display:inline-flex;gap:2px;padding:4px;background:var(--sf);border:1px solid var(--bd);border-radius:999px}
+.kseg.m,.mob .kseg{display:grid;grid-template-columns:1fr 1fr;width:100%;border-radius:20px}
+.ko{position:relative;display:block}
+.ko span{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:999px;font-size:14px;font-weight:500;color:var(--tn);cursor:pointer;white-space:nowrap;transition:background .25s var(--ease),color .25s var(--ease)}
+.kseg.m .ko span,.mob .ko span{border-radius:16px;padding:0 12px}
+.ko span svg{display:none}
+.ko input:checked+span svg{display:block}
+.ko:hover input:not(:checked):not(:disabled)+span,.ko.is-hover input:not(:checked)+span{background:var(--mf)}
+.ko input:checked+span{background:var(--pr);color:#fff}
+.ko input:focus-visible+span,.ko.is-focus span{outline:2px solid var(--ac);outline-offset:2px}
+.ko input:disabled+span{cursor:not-allowed;opacity:.6}
+.fcard{background:#fff;border:1px solid var(--bd);border-radius:24px;padding:32px}
+.fcard.sm{padding:24px}
+.mob .fcard{padding:20px}
+.aside{display:flex;flex-direction:column;gap:16px}
+.ib{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px}
+.ib h2{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;line-height:1.3}
+.ib p{font-size:14px;line-height:1.55;color:var(--tm)}
+.ib p b{font-weight:700;color:#0D0D0D}
+.ico{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);color:#262626}
+.rw{display:flex;align-items:flex-start;gap:12px}
+.rw+.rw{border-top:1px solid #EAEAEA;padding-top:12px}
+.rn{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);font-size:16px;font-weight:800;color:#262626}
+.ul{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:600;color:var(--ac);text-decoration:underline;text-underline-offset:3px;transition:color .25s var(--ease)}
+.ul:hover{color:#0D0D0D}
+.mail{display:inline-flex;align-items:center;min-height:44px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:14px;font-weight:600;color:var(--ac);text-decoration:underline;text-underline-offset:3px;word-break:break-all;transition:color .25s var(--ease)}
+.mail:hover{color:#0D0D0D}
+.soc{display:flex;flex-wrap:wrap;gap:8px}
+.phk{display:inline-block;padding:0 8px;border:1px dashed var(--fb);border-radius:6px;background:var(--mf);color:#262626;font-weight:600}
+.rmd{background:#fff;border:1px solid var(--bd);border-radius:16px}
+.rmd summary{display:flex;align-items:center;gap:12px;min-height:52px;padding:4px 20px;border-radius:16px;font-size:14px;font-weight:600;color:var(--tn);cursor:pointer;list-style:none;transition:background .25s var(--ease),color .25s var(--ease)}
+.rmd summary::-webkit-details-marker{display:none}
+.rmd summary:hover{background:var(--mf);color:var(--ac)}
+.rmd summary:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.rmd .chev{margin-left:auto;transition:transform .3s var(--ease)}
+.rmd[open] .chev{transform:rotate(180deg)}
+.rmd[open] summary{border-bottom-left-radius:0;border-bottom-right-radius:0}
+.rmb{border-top:1px solid #EAEAEA;padding:20px 20px 24px;display:flex;flex-direction:column;gap:16px;animation:fin .25s var(--ease) both}
+.rmb .intro{font-size:14px;line-height:1.55;color:var(--tm)}
+.tile{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tth{display:flex;align-items:flex-start;gap:12px}
+.tth h3{font-size:16px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.tth p{font-size:13px;line-height:1.5;color:var(--tm);margin-top:2px}
+.id{flex:none;display:grid;place-items:center;min-width:40px;height:28px;padding:0 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:12px;font-weight:700}
+.sp{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+code{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;background:#EFEFEF;border-radius:6px;padding:1px 6px;color:#0D0D0D}
+.sec{display:flex;flex-direction:column;gap:16px}
+.sec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.sec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:780px}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.btn:active{transform:none}}
+.tok{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px}
+.tok h3{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);margin-bottom:12px}
+.tok li{font-size:13px;line-height:1.5;color:#262626;padding:6px 0;border-top:1px solid #EAEAEA}
+.tok li:first-of-type{border-top:0}
+.fx{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.fx .hd{display:flex;align-items:center;gap:12px}
+.fx h3{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.fx .wh{font-size:12px;color:var(--tm)}
+.fx dl{display:grid;grid-template-columns:118px 1fr;column-gap:16px;row-gap:0}
+.fx dt{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm);padding:9px 0;border-top:1px solid #EAEAEA}
+.fx dd{font-size:13px;line-height:1.55;color:#141414;padding:9px 0;border-top:1px solid #EAEAEA}
+.fx dt:first-of-type,.fx dd:first-of-type{border-top:0}
+.fx dt.rm{color:var(--ac)}
+.tbl{background:#fff;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.tr{display:grid;gap:20px;padding:16px 20px;border-top:1px solid #EAEAEA;font-size:13px;line-height:1.55;color:#141414}
+.tr:first-child{border-top:0}
+.th{background:#EFEFEF;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm)}
+.tr b{font-weight:700;font-size:14px}
+.a{grid-template-columns:170px 1fr 1.25fr 1fr}
+.b{grid-template-columns:200px 1fr 1fr}
+.pass{display:inline-block;padding:2px 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em}
+.note{display:inline-block;padding:2px 10px;border-radius:999px;background:#EFEFEF;border:1px solid var(--bd);color:#262626;font-size:11px;font-weight:700;letter-spacing:.04em}
+.c{grid-template-columns:120px 1fr;align-items:start}
+.sub2{font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm);margin-top:8px}
+</style>
+</helmet>
+<div class="" style="width:1280px;height:9800px;display:flex;flex-direction:column;background:#E5E5E5">
+<div style="padding:56px 48px;display:flex;flex-direction:column;gap:56px;flex:none">
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:900px"><span class="eyebrow"><i></i>Đặc tả · Liên hệ và form</span><h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em">Chuyển động, thay đổi, tái sử dụng, kiểm tra</h1><p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Một bảng cho trang Liên hệ, mẫu form dùng chung và mục Báo lỗi bài. Email, tên, tin nhắn và thời gian phản hồi trong bản vẽ là chữ mẫu để thử độ dài, không phải dữ liệu thật. Ô bẫy website có mặt ở mọi form và luôn ẩn.</p></header>
+
+<section style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+<div class="tok"><h3>Easing</h3><ul>
+<li><code>EASE_STANDARD</code> <code>cubic-bezier(.25,.1,.25,1)</code>: đường cong duy nhất cho mọi hiệu ứng ở đây.</li>
+<li>Bỏ <code>.rise-in</code> <code>(.22,1,.36,1)</code>. Cuộn trang giữ easing của Lenis.</li></ul></div>
+<div class="tok"><h3>Thời lượng</h3><ul>
+<li><code>fast</code> 0.25s: màu, viền, bóng, thông báo.</li>
+<li><code>reveal</code> 0.5s: dấu tick thành công.</li>
+<li><code>staggerItem</code> 0.55s: vào trang.</li>
+<li>Đã có: 0.3s (mũi tên details), 0.2s (nhấn).</li></ul></div>
+<div class="tok"><h3>So le</h3><ul>
+<li><code>delay</code> 0.1s, <code>step</code> 0.12s cho hero và thẻ form.</li>
+<li><code>fastStep</code> 0.07s cho các khối bên cạnh.</li>
+<li>Vùng kích hoạt cuộn (mobile): <code>VIEWPORT_ONCE</code>, một lần.</li></ul></div>
+<div style="background:#0D0D0D;color:#fff;border-radius:16px;padding:20px"><h3 style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D1D1D1;margin-bottom:12px">Khi giảm chuyển động</h3><ul style="font-size:13px;line-height:1.55;display:flex;flex-direction:column;gap:8px"><li>CSS toàn cục đưa mọi transition và animation về 0.01ms.</li><li>Mã framer-motion kiểm tra <code style="background:#262626;color:#fff">useReducedMotion</code> và render thẳng trạng thái cuối.</li><li>Chỉ còn đổi màu tức thì; dấu tick, thông báo, vòng focus vẫn đủ.</li></ul></div>
+</section>
+
+<section class="sec"><h2>Chuyển động (CT1 đến CT10)</h2><p>Mỗi hiệu ứng hoặc báo cho người dùng biết điều vừa xảy ra, hoặc phản hồi đúng cái họ vừa làm. Chỉ dùng đường cong và thời lượng đã chốt ở trang Bài học.</p>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start"><article class="fx"><div class="hd"><span class="id">CT1</span><div><h3>Hero vào trang</h3><p class="wh">PageHero (dùng lại M1), trang Liên hệ</p></div></div><dl><dt>Kích hoạt</dt><dd>Tải trang, một lần. Không chạy lại khi gửi form hay đổi loại tin.</dd><dt>Thuộc tính</dt><dd>opacity, translateY của 3 phần tử: chip, tiêu đề, mô tả. Không có thẻ số liệu.</dd><dt>Đầu → cuối</dt><dd>opacity 0 → 1; translateY 20px → 0.</dd><dt>Thời lượng</dt><dd>0.55s (staggerItem).</dd><dt>Easing</dt><dd>EASE_STANDARD.</dd><dt>Trễ, so le</dt><dd>staggerContainer: trễ đầu 0.1s, bước 0.12s. Chip 0.1s, tiêu đề 0.22s, mô tả 0.34s.</dd><dt class="rm">Giảm chuyển động</dt><dd>Không có trạng thái ẩn; hiện thẳng ở vị trí cuối. Thay .rise-in cũ, vốn chỉ áp cho chip.</dd></dl></article><article class="fx"><div class="hd"><span class="id">CT2</span><div><h3>Thẻ form và khối bên cạnh vào</h3><p class="wh">Thẻ form, InfoBlock</p></div></div><dl><dt>Kích hoạt</dt><dd>Desktop: cùng lúc tải trang, ngay dưới hero. Mobile: các khối bên cạnh nằm dưới màn hình đầu nên hiện khi cuộn tới (VIEWPORT_ONCE, một lần).</dd><dt>Thuộc tính</dt><dd>opacity, translateY.</dd><dt>Đầu → cuối</dt><dd>opacity 0 → 1; translateY 20px → 0.</dd><dt>Thời lượng</dt><dd>0.55s (staggerItem).</dd><dt>Easing</dt><dd>EASE_STANDARD.</dd><dt>Trễ, so le</dt><dd>Thẻ form 0.46s (bước kế tiếp sau mô tả). Khối bên cạnh 0.46s + thứ tự × 0.07s (fastStep): 0.46s, 0.53s, 0.60s. Mobile: mỗi khối trễ 0.05s (fastDelay) từ lúc vào vùng nhìn.</dd><dt class="rm">Giảm chuyển động</dt><dd>Hiện ngay ở vị trí cuối.</dd></dl></article><article class="fx"><div class="hd"><span class="id">CT3</span><div><h3>Đổi loại tin: Liên hệ hoặc Góp ý</h3><p class="wh">RadioSegment</p></div></div><dl><dt>Kích hoạt</dt><dd>Bấm, hoặc phím mũi tên trên nhóm radio. Hover và focus cũng dùng nhịp này.</dd><dt>Thuộc tính</dt><dd>background-color, color của mục; opacity của dấu tick; opacity của dòng mô tả bên dưới.</dd><dt>Đầu → cuối</dt><dd>Mục chọn: nền trong → #0D0D0D, chữ #4D4D4D → #FFF. Hover: nền → #EFEFEF. Tick 0 → 1. Dòng mô tả mới opacity 0 → 1 (đổi key), không dịch chuyển.</dd><dt>Thời lượng</dt><dd>0.25s (DURATION.fast).</dd><dt>Easing</dt><dd>EASE_STANDARD.</dd><dt>Trễ, so le</dt><dd>Không trễ. Chiều cao khung có thể đổi một dòng khi câu mô tả dài khác nhau; không animate chiều cao.</dd><dt class="rm">Giảm chuyển động</dt><dd>Đổi tức thì. Dấu tick vẫn hiện nên không chỉ dựa vào màu.</dd></dl></article><article class="fx"><div class="hd"><span class="id">CT4</span><div><h3>Hover, focus, lỗi của ô nhập</h3><p class="wh">FormField (input, textarea)</p></div></div><dl><dt>Kích hoạt</dt><dd>Rê chuột, focus bàn phím hoặc chuột, hoặc ô chuyển sang aria-invalid.</dd><dt>Thuộc tính</dt><dd>border-color, box-shadow.</dd><dt>Đầu → cuối</dt><dd>Hover: viền #8C8C8C → #4D4D4D. Focus: viền → #314344 và vòng 0 → 2px trắng + 2px #314344. Lỗi: viền → #D92D20 và viền trong 1px cùng màu.</dd><dt>Thời lượng</dt><dd>0.25s (DURATION.fast).</dd><dt>Easing</dt><dd>EASE_STANDARD.</dd><dt>Trễ, so le</dt><dd>Không trễ.</dd><dt class="rm">Giảm chuyển động</dt><dd>Đổi tức thì. Vòng focus vẫn hiện đầy đủ.</dd></dl></article><article class="fx"><div class="hd"><span class="id">CT5</span><div><h3>Thông báo và dòng lỗi hiện ra</h3><p class="wh">FormStatus, lỗi từng ô</p></div></div><dl><dt>Kích hoạt</dt><dd>Bấm Gửi mà có lỗi, hoặc máy chủ trả kết quả (thành công, giới hạn, mất kết nối).</dd><dt>Thuộc tính</dt><dd>opacity của khối thông báo và của dòng lỗi dưới ô.</dd><dt>Đầu → cuối</dt><dd>opacity 0 → 1. Không dịch chuyển, không animate chiều cao.</dd><dt>Thời lượng</dt><dd>0.25s (DURATION.fast).</dd><dt>Easing</dt><dd>EASE_STANDARD.</dd><dt>Trễ, so le</dt><dd>Không trễ. Vùng aria-live có sẵn trong DOM nên trình đọc màn hình đọc ngay, không chờ animation.</dd><dt class="rm">Giảm chuyển động</dt><dd>Hiện tức thì.</dd></dl></article><article class="fx"><div class="hd"><span class="id">CT6</span><div><h3>Chuyển focus tới ô lỗi đầu tiên</h3><p class="wh">MessageForm và mọi form dùng chung</p></div></div><dl><dt>Kích hoạt</dt><dd>Bấm Gửi và xác thực thất bại.</dd><dt>Thuộc tính</dt><dd>focus() và vị trí cuộn của cửa sổ.</dd><dt>Đầu → cuối</dt><dd>Focus nhảy tới ô đầu tiên có aria-invalid. Nếu ô nằm ngoài màn hình thì cuộn vào giữa, scroll-margin-top 6rem.</dd><dt>Thời lượng</dt><dd>0 (tức thì).</dd><dt>Easing</dt><dd>Không có. Lenis: scrollTo với immediate: true, không thêm đường cong.</dd><dt>Trễ, so le</dt><dd>Không trễ.</dd><dt class="rm">Giảm chuyển động</dt><dd>Như nhau: không có chuyển động nào để tắt.</dd></dl></article><article class="fx"><div class="hd"><span class="id">CT7</span><div><h3>Nút gửi</h3><p class="wh">Button chính</p></div></div><dl><dt>Kích hoạt</dt><dd>Hover, nhấn giữ, và khi đang gửi.</dd><dt>Thuộc tính</dt><dd>background-color, transform scale.</dd><dt>Đầu → cuối</dt><dd>Hover: #0D0D0D → #262626. Nhấn: scale 1 → 0.98. Đang gửi: nền → #5F5F5F, nhãn đổi thành “Đang gửi…”, aria-disabled.</dd><dt>Thời lượng</dt><dd>0.25s cho nền, 0.2s cho nhấn (như PillButton).</dd><dt>Easing</dt><dd>EASE_STANDARD.</dd><dt>Trễ, so le</dt><dd>Không trễ. Không vòng xoay vì không có hiệu ứng lặp vô hạn ở trang trong. Nút vẫn focus được nên không mất vị trí bàn phím.</dd><dt class="rm">Giảm chuyển động</dt><dd>Đổi nền tức thì, bỏ scale.</dd></dl></article><article class="fx"><div class="hd"><span class="id">CT8</span><div><h3>Gửi thành công</h3><p class="wh">FormStatus (xanh)</p></div></div><dl><dt>Kích hoạt</dt><dd>Máy chủ trả thành công.</dd><dt>Thuộc tính</dt><dd>opacity của thông báo; stroke-dashoffset của dấu tick; giá trị các ô về rỗng.</dd><dt>Đầu → cuối</dt><dd>Thông báo opacity 0 → 1. Dấu tick vẽ stroke-dashoffset 7 → 0. Ô xoá tức thì.</dd><dt>Thời lượng</dt><dd>0.25s cho thông báo; 0.5s (DURATION.reveal) cho dấu tick.</dd><dt>Easing</dt><dd>EASE_STANDARD.</dd><dt>Trễ, so le</dt><dd>Tick trễ 0.1s sau thông báo. Chạy một lần, không lặp, không tự biến mất.</dd><dt class="rm">Giảm chuyển động</dt><dd>Tick vẽ sẵn, thông báo hiện tức thì.</dd></dl></article><article class="fx"><div class="hd"><span class="id">CT9</span><div><h3>Liên kết và nút trong khối bên cạnh</h3><p class="wh">InfoBlock: email, mạng xã hội, chính sách bảo mật</p></div></div><dl><dt>Kích hoạt</dt><dd>Hover hoặc focus.</dd><dt>Thuộc tính</dt><dd>color, border-color.</dd><dt>Đầu → cuối</dt><dd>Liên kết #314344 → #0D0D0D. Nút mạng xã hội: viền #D1D1D1 → rgba(0,0,0,.25).</dd><dt>Thời lượng</dt><dd>0.25s (DURATION.fast).</dd><dt>Easing</dt><dd>EASE_STANDARD.</dd><dt>Trễ, so le</dt><dd>Không trễ.</dd><dt class="rm">Giảm chuyển động</dt><dd>Đổi tức thì.</dd></dl></article><article class="fx"><div class="hd"><span class="id">CT10</span><div><h3>Báo lỗi bài: mở và đóng</h3><p class="wh">Disclosure (ReportMistake)</p></div></div><dl><dt>Kích hoạt</dt><dd>Bấm hàng tiêu đề, hoặc Enter/Space (details native).</dd><dt>Thuộc tính</dt><dd>transform rotate của mũi tên; opacity của phần nội dung; background của hàng.</dd><dt>Đầu → cuối</dt><dd>Mũi tên 0° → 180°. Nội dung opacity 0 → 1. Hàng: nền trắng → #EFEFEF khi hover.</dd><dt>Thời lượng</dt><dd>0.3s cho mũi tên (như hiện tại), 0.25s cho nội dung và nền.</dd><dt>Easing</dt><dd>EASE_STANDARD.</dd><dt>Trễ, so le</dt><dd>Không trễ. Không animate chiều cao vì details native mở tức thì.</dd><dt class="rm">Giảm chuyển động</dt><dd>Mũi tên xoay tức thì, nội dung hiện tức thì.</dd></dl></article></div>
+<div class="fx" style="gap:12px"><div class="hd"><span class="id">Bỏ</span><h3>Không dùng trên trang Liên hệ</h3></div><ul style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 32px;font-size:13px;line-height:1.55;color:#141414"><li><strong>Vòng xoay khi đang gửi:</strong> là hiệu ứng lặp vô hạn; dùng nhãn “Đang gửi…” và nút xám.</li><li><strong>Rung ô khi lỗi:</strong> khó chịu và có hại với người nhạy chuyển động; đã có viền, icon, chữ.</li><li><strong>Tự ẩn thông báo thành công sau vài giây:</strong> người dùng trình đọc màn hình có thể chưa kịp nghe.</li><li><strong>Pháo giấy hay hiệu ứng ăn mừng:</strong> không hợp giọng của trang.</li><li><strong>.rise-in và đường cong thứ hai.</strong></li><li><strong>Animate chiều cao:</strong> khi đổi dòng mô tả hay mở details, tránh giật bố cục.</li></ul></div>
+</section>
+
+<section class="sec"><h2>(a) Đổi gì so với hiện tại, và vì sao</h2>
+<div class="tbl"><div class="tr th a"><span>Hạng mục</span><span>Hiện tại</span><span>Mới</span><span>Lý do</span></div><div class="tr a"><b>Đầu trang</b><span>Tự viết lại: chip, h1 32/44, mô tả. .rise-in chỉ áp cho chip.</span><span>PageHero v2 dùng chung: chip, h1 34/46, mô tả, ô phụ để trống. Vào trang bằng nhịp CT1.</span><span>Mục 4.1 và 16: bỏ bản sao thứ ba của đầu trang, bỏ đường cong .rise-in (4.6).</span></div><div class="tr a"><b>Bố cục</b><span>Hero nằm trong cột trái; cột phải đẩy xuống pt-24 nên trông lạc khỏi form.</span><span>Hero rộng hết khung. Bên dưới: form 1.5fr bên trái, cột thông tin 1fr bên phải, cùng đỉnh với thẻ form. Mobile: form trước, thông tin sau.</span><span>Đọc theo thứ tự hiểu trang, gửi tin, xem thông tin. Cột phải không còn trôi lơ lửng.</span></div><div class="tr a"><b>Cột thông tin</b><span>Chữ trần, không khung, tiêu đề 14px.</span><span>InfoBlock: thẻ trắng bo 16px, icon tròn. Bốn khối: email (ẩn khi rỗng), mạng xã hội (ẩn khi rỗng), phản hồi, “Trước khi gửi” (giới hạn 3 tin, quyền riêng tư).</span><span>Khớp họ thẻ chung (mục 4.2). Tách giới hạn spam và quyền riêng tư khỏi câu phản hồi để dễ quét.</span></div><div class="tr a"><b>Chọn loại tin</b><span>Hai radio dạng khung bo 12px, đổi viền khi chọn.</span><span>RadioSegment: nhóm phân đoạn bo tròn 44px, mục chọn nền đen kèm dấu tick, có dòng mô tả từng loại. Mobile: 2 cột.</span><span>Cùng kiểu lọc đã chốt. Dấu tick để không chỉ dựa vào màu; dòng mô tả giúp người mới chọn đúng.</span></div><div class="tr a"><b>Kiểu ô nhập (một form duy nhất)</b><span>Liên hệ: ô 44px, nhãn 14px đậm, lỗi gộp. Bình luận: ô 40px, nhãn 12px, lỗi từng ô, thành công xanh.</span><span>Một FormField: ô 44px, nhãn 14px/600, gợi ý 13px, lỗi từng ô, thành công xanh.</span><span>Mục 4.4 và 4.10: gộp hai form, bỏ ô 40px. Viền đổi từ #D1D1D1 sang #8C8C8C vì #D1D1D1 trên trắng chỉ khoảng 1.5:1, dưới ngưỡng 3:1 của thành phần giao diện.</span></div><div class="tr a"><b>Báo lỗi trong form</b><span>Một vùng aria-live chung, chữ đỏ, không gắn với ô nào.</span><span>Hai lớp: lỗi ngay dưới từng ô (icon, chữ, aria-describedby) và một thông báo role=alert liệt kê các lỗi thành liên kết tới ô. Focus vẫn nhảy tới ô đầu tiên.</span><span>Người dùng thấy ngay chỗ sai; trình đọc màn hình nghe một lần. Cần bước xác thực trả đủ mọi lỗi (xem câu hỏi mở).</span></div><div class="tr a"><b>Thành công</b><span>Chữ thường, không đổi màu, dễ bỏ sót.</span><span>Thông báo xanh có viền, dấu tick vẽ một lần, chữ #054F31; form xoá sạch và ở lại tại chỗ; không tự biến mất.</span><span>Rõ là đã gửi, không bị hiểu nhầm là chưa gửi. Cùng màu xanh với form bình luận cũ nên không lạ với người quen.</span></div><div class="tr a"><b>Giới hạn 3 tin mỗi giờ</b><span>Chỉ lộ ra khi bị chặn.</span><span>Nêu sẵn trong khối “Trước khi gửi” (tính chung liên hệ, góp ý, báo lỗi); thêm dòng nhắc dưới nút ở Báo lỗi bài. Khi bị chặn: thông báo đỏ có icon đồng hồ, nội dung ô được giữ.</span><span>Đổi giới hạn phải đổi cả chữ (5.1 mục 8). Nhắc trước khi bị chặn, không làm mất bài người viết.</span></div><div class="tr a"><b>Đang gửi</b><span>Nút mờ 60%, ô vẫn gõ được.</span><span>Ô chuyển chỉ đọc, nút xám #5F5F5F “Đang gửi…”, dòng trạng thái aria-live, không vòng xoay.</span><span>Tránh sửa nội dung giữa lúc gửi; trạng thái được đọc ra; không tạo chuyển động lặp.</span></div><div class="tr a"><b>Khối rỗng và chữ giữ chỗ</b><span>Email và mạng xã hội rỗng thì ẩn (giữ). Dấu ngoặc “[Thời gian phản hồi]” hiện thẳng ra người đọc.</span><span>Giữ ẩn khi rỗng. Đề xuất: khối phản hồi cũng ẩn cho tới khi có nội dung. Nếu vẫn phải hiện bản nháp, dấu ngoặc vẽ thành thẻ nét đứt để dễ thấy.</span><span>Mục 6: chữ giữ chỗ không nên tới tay học sinh; nếu tới thì phải rõ là chưa điền.</span></div><div class="tr a"><b>Nút gửi</b><span>Nút đen bo 12px, rộng hết dòng trên mobile.</span><span>Button chính dạng viên thuốc 44px kèm icon gửi. Mobile: rộng hết dòng; desktop: vừa nội dung.</span><span>Một kiểu nút trên toàn site (mục 16, phần Buttons).</span></div><div class="tr a"><b>Báo lỗi bài</b><span>details trơn; form giống Liên hệ nhưng không nhắc giới hạn.</span><span>Disclosure: hàng 52px, mũi tên xoay, nội dung mờ dần. Form dùng đúng FormField và FormStatus; thêm dòng nhắc giới hạn dưới nút.</span><span>Mục 13 và 14: cùng một form, người dùng không phải đổi cách dùng giữa hai nơi.</span></div><div class="tr a"><b>Cỡ chữ trong ô</b><span>16px mobile, 14px từ md.</span><span>Giữ nguyên.</span><span>Chống iOS tự phóng to khi focus.</span></div><div class="tr a"><b>Ô bẫy website</b><span>Có, ẩn ngoài màn hình.</span><span>Giữ nguyên: aria-hidden, tabindex -1, autocomplete off, cắt còn 1px.</span><span>Ràng buộc 5.1 mục 8.</span></div><div class="tr a"><b>Chuyển động</b><span>Chỉ .rise-in ở chip; màu 150ms.</span><span>10 hiệu ứng CT1 đến CT10, tất cả EASE_STANDARD, thời lượng lấy từ tokens.ts.</span><span>Một bộ easing (mục 4.6); mỗi hiệu ứng có nhánh giảm chuyển động.</span></div></div>
+</section>
+
+<section class="sec"><h2>(b) Thành phần dùng chung</h2><p>Trang Liên hệ dùng lại các thành phần đã chốt ở trang Bài học và chỉ thêm năm thành phần mới, tối thiểu, đều dùng lại được ở trang khác.</p>
+<p class="sub2">Dùng lại thành phần đã chốt ở trang trước</p>
+<div class="tbl"><div class="tr th b"><span>Thành phần</span><span>Nội dung và biến thể</span><span>Ghi chú</span></div><div class="tr b"><b>PageHero</b><span>Chip, h1 34/46, mô tả, ô phụ để trống (Liên hệ không có thẻ số liệu).</span><span>Dùng lại thành phần đã chốt ở trang trước. Không vẽ lại đầu trang.</span></div><div class="tr b"><b>Eyebrow chip</b><span>Chip 11px, chữ hoa, chấm tròn.</span><span>Dùng lại thành phần đã chốt ở trang trước.</span></div><div class="tr b"><b>Button</b><span>Chính đen, phụ trắng viền, viên thuốc 44px. Thêm trạng thái đang gửi (aria-disabled, nền #5F5F5F) để dùng cho mọi form.</span><span>Dùng lại thành phần đã chốt ở trang trước; chỉ thêm một biến thể trạng thái.</span></div><div class="tr b"><b>SegmentedFilter (kiểu vẽ)</b><span>Nhóm viên thuốc 44px, mục chọn đen. RadioSegment mượn nguyên kiểu vẽ này.</span><span>Dùng lại kiểu đã chốt ở trang trước.</span></div><div class="tr b"><b>Token</b><span>h1 34/46, h2 26, thân 16 và 18, thẻ bo 16px, khung lớn bo 24px, container 1280 lề 32/20px.</span><span>Dùng lại thành phần đã chốt ở trang trước.</span></div><div class="tr b"><b>Nhịp vào trang</b><span>staggerItem 0.55s, trễ 0.1s, bước 0.12s, fastStep 0.07s.</span><span>Dùng lại thành phần đã chốt ở trang trước (CardReveal cho khối bên cạnh).</span></div><div class="tr b"><b>Vùng aria-live polite</b><span>Kiểu ResultCount: vùng có sẵn trong DOM, nội dung đổi khi có kết quả.</span><span>Dùng lại cách làm đã chốt ở trang trước cho FormStatus.</span></div><div class="tr b"><b>Khung trang</b><span>Header, footer, menu mobile, nền #E5E5E5.</span><span>Dùng lại thành phần đã chốt ở trang trước.</span></div></div>
+<p class="sub2">Thành phần mới (mở rộng bộ đã chốt)</p>
+<div class="tbl"><div class="tr th b"><span>Thành phần</span><span>Nội dung và biến thể</span><span>Dùng lại ở</span></div><div class="tr b"><b>FormField</b><span>Nhãn, ô 44px (input hoặc textarea), gợi ý, lỗi từng ô. Trạng thái: mặc định, hover, focus, đã nhập, lỗi, chỉ đọc. Chữ 14px, mobile 16px.</span><span>Liên hệ, Báo lỗi bài, Bình luận Blog, ô Tìm kiếm (cùng chiều cao và vòng focus), Đăng nhập quản trị nếu làm lại.</span></div><div class="tr b"><b>FormStatus</b><span>Bốn loại: lỗi tổng hợp và lỗi máy chủ (đỏ, role=alert), thành công (xanh, role=status), đang gửi (xám, role=status). Bo 12px, icon 20px, tiêu đề đậm, danh sách liên kết tới ô lỗi tuỳ chọn.</span><span>Liên hệ, Báo lỗi bài, Bình luận Blog, mọi form sau này.</span></div><div class="tr b"><b>RadioSegment</b><span>Nhóm radio thật vẽ theo SegmentedFilter, mục chọn có dấu tick; desktop viên thuốc, mobile lưới 2 cột. Là trường form, không điều hướng.</span><span>Liên hệ; có thể dùng cho chọn loại đóng góp ở trang Đóng góp.</span></div><div class="tr b"><b>InfoBlock</b><span>Thẻ trắng bo 16px, padding 20px, tiêu đề 14px kèm icon tròn 32px, nội dung 14px. Ẩn cả khối khi không có dữ liệu.</span><span>Liên hệ; thẻ thông tin ở Đóng góp và Giới thiệu.</span></div><div class="tr b"><b>Disclosure</b><span>details native: hàng 52px, icon, chữ, mũi tên xoay, viền trên ngăn nội dung, nội dung mờ dần.</span><span>Báo lỗi bài; FAQ ở Đóng góp và Giới thiệu; bộ lọc mobile của Video.</span></div></div>
+</section>
+
+<section class="sec"><h2>Kiểm tra theo phần 5.1 và phần 8 của báo cáo</h2>
+<div class="tbl"><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Song ngữ.</b> Mọi chuỗi có VI và EN (bản vẽ 1280 và 390 đủ hai ngôn ngữ). Chuỗi EN dài hơn ở câu hỏi “What would you like to send?”, lỗi email và câu giới hạn: nhãn, phân đoạn (2 cột trên mobile), thông báo đều xuống dòng, không vỡ khung.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Bên thứ ba.</b> Không script, iframe hay ảnh ngoài. Phông trong canvas chỉ để xem trước. Email dùng chồng phông monospace; mã thật dùng JetBrains Mono đã tự host theo báo cáo.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Video sau khi bấm.</b> Trang Liên hệ và Báo lỗi bài không có video nhúng.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Giảm chuyển động.</b> Mỗi hiệu ứng CT1 đến CT10 có dòng riêng ở bảng chuyển động. Không có chuyển động lặp vô hạn (không vòng xoay).</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Không chỉ dựa vào hover.</b> Hover chỉ trang trí. Lỗi báo bằng icon, chữ và viền, không chỉ màu đỏ. Mục radio đang chọn có dấu tick, không chỉ nền đen. Nhãn mạng xã hội nói rõ “mở tab mới” cho trình đọc màn hình.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Ô bẫy website.</b> Có trong mọi form (Liên hệ, Báo lỗi bài, mẫu form): aria-hidden, tabindex -1, autocomplete off, cắt còn 1px. Người và trình đọc màn hình không tới được.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Tương phản.</b> Tính tay theo công thức WCAG: #3E424D trên trắng khoảng 10:1 và trên #E5E5E5 khoảng 8:1; nhãn #0D0D0D trên trắng khoảng 19.4:1; placeholder #6E6E6E trên trắng 5.1:1; chữ lỗi #B42318 trên trắng 6.6:1; #912018 trên #FEF3F2 8.0:1; #054F31 trên #ECFDF3 9.2:1; chữ trắng trên nút đang gửi #5F5F5F 6.4:1; liên kết #314344 trên trắng 10.4:1. Chữ nhỏ nhất 12px (chip).</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Thành phần giao diện ≥ 3:1.</b> Viền ô #8C8C8C trên trắng 3.4:1; viền lỗi #D92D20 trên trắng 4.8:1; vòng focus #314344 trên trắng 10.4:1. Viền cũ #D1D1D1 chỉ khoảng 1.5:1 nên đã đổi.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Mục bấm ≥ 44px.</b> Ô 44, mục phân đoạn 44, nút 44, hàng disclosure 52, liên kết email, chính sách bảo mật và từng lỗi trong danh sách 44. Header desktop giữ 40px như đã chốt ở trang trước; ngoài phạm vi.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Đủ trạng thái.</b> Mặc định, hover, focus, đã nhập, lỗi từng ô, lỗi tổng hợp, đang gửi, thành công, giới hạn tốc độ, mất kết nối và lỗi chung, nội dung dài, khối bên cạnh hiện hoặc ẩn, chữ giữ chỗ. Trang này không có trạng thái rỗng hay 404 riêng.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>390px không cuộn ngang.</b> Ô rộng 100%; email và tin nhắn dài cuộn trong chính ô; nút mạng xã hội xuống dòng; địa chỉ email dài được bẻ dòng.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Nội dung thật.</b> Tên 80 ký tự, email khoảng 90 ký tự, tin nhắn nhiều đoạn (S6 ở 1280, S5 ở 390); email trống; khối rỗng ẩn; dấu ngoặc giữ chỗ.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Một kiểu form.</b> FormField, FormStatus và Button dùng chung giữa Liên hệ và Báo lỗi bài, có bảng mẫu riêng; form Bình luận (lượt Blog) sẽ dùng lại.</span></div><div class="tr c"><span class="pass" style="justify-self:start">Đạt</span><span><b>Khả năng làm.</b> Tailwind và framer-motion sẵn có; dấu tick vẽ bằng CSS stroke-dashoffset, không thêm thư viện.</span></div><div class="tr c"><span class="note" style="justify-self:start">Lưu ý</span><span><b>Lỗi tổng hợp cần đủ mọi lỗi.</b> Thông báo liệt kê mọi lỗi cần bước xác thực trả về mảng lỗi kèm ô liên quan, thay vì dừng ở lỗi đầu tiên. Thay đổi nhỏ trong sendMessage, không đổi schema hay API.</span></div><div class="tr c"><span class="note" style="justify-self:start">Lưu ý</span><span><b>Chưa đo trên bản dựng.</b> Số tương phản chỉ tính từ mã màu. Chưa nghe thử bằng trình đọc màn hình thật; các vai trò aria (alert, status, describedby) là đặc tả, cần thử khi làm.</span></div></div>
+</section>
+
+<section class="sec"><h2>Cần xác nhận trước khi làm thật</h2>
+<div class="tbl"><div class="tr c"><span class="note" style="justify-self:start">Email, mạng xã hội thật</span><span>Bản vẽ dùng hello@example.org làm mẫu. Cần địa chỉ email thật và link Facebook, TikTok. Để trống thì hai khối vẫn ẩn như hiện nay.</span></div><div class="tr c"><span class="note" style="justify-self:start">Thời gian phản hồi</span><span>Cần con số thật từ tác giả. Đề xuất ẩn khối “Khi nào có phản hồi” cho tới khi điền; nếu muốn giữ khối, cần một câu không hứa quá.</span></div><div class="tr c"><span class="note" style="justify-self:start">Viền ô nhập #8C8C8C</span><span>Tối hơn #D1D1D1 hiện tại để đạt 3:1, nên form sẽ đậm mắt hơn một chút và đổi cả form Bình luận. Nếu muốn giữ viền nhạt thì phải chấp nhận không đạt 3:1 cho ranh giới ô (không khuyến nghị).</span></div><div class="tr c"><span class="note" style="justify-self:start">Thời điểm kiểm tra ô</span><span>Bản vẽ giả định như hiện nay: kiểm tra khi bấm Gửi, rồi kiểm tra lại khi gõ vào ô đang lỗi. Nếu muốn kiểm tra khi rời ô (onBlur) thì đổi ở FormField.</span></div><div class="tr c"><span class="note" style="justify-self:start">Lỗi tổng hợp đủ mọi lỗi</span><span>Cần đổi sendMessage trả mảng lỗi kèm ô. Nếu không muốn đổi thì thông báo chỉ hiện lỗi đầu tiên như hiện nay, vẫn kèm lỗi dưới ô đó.</span></div><div class="tr c"><span class="note" style="justify-self:start">Thành công: ở lại hay thay form</span><span>Bản vẽ giữ form ở lại và xoá sạch, đúng hành vi hiện tại. Nếu muốn thay cả form bằng màn “Cảm ơn” thì cần thêm một trạng thái.</span></div><div class="tr c"><span class="note" style="justify-self:start">Số tin còn lại</span><span>Không hiện “còn 2 tin” vì máy chủ chưa trả số này. Muốn có thì cần API trả thêm.</span></div><div class="tr c"><span class="note" style="justify-self:start">Chuỗi mới cho i18n</span><span>Cần thêm khoá vào cả messages/vi.json và messages/en.json: mô tả hai loại tin, tiêu đề các thông báo (giới hạn, mất kết nối, lỗi chung), tiêu đề khối “Trước khi gửi”, dòng nhắc giới hạn ở Báo lỗi bài, câu thành công phụ.</span></div></div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":9800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

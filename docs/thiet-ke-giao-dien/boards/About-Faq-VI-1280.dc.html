@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>FAQ · Trạng thái · VI · 1280</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt,ul,li,figure{margin:0;padding:0}
+ul{list-style:none}
+svg.ic{width:16px;height:16px;flex:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.nvl{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--tn)}
+.nvl.on{background:var(--pr);color:#fff}
+.cta{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;background:linear-gradient(131deg,#333 .8%,#0d0d0d 35%,#262626 99%);color:#fff;font-size:14px;font-weight:600}
+.ibtn{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);color:var(--tn)}
+.lab{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+.h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2;text-wrap:balance}
+.sp{font-size:16px;line-height:1.6;color:var(--tm);text-wrap:pretty}
+.sh{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-size:14px;font-weight:600;transition:background .25s var(--ease),border-color .25s var(--ease),transform .2s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn.inv{background:#fff;color:#0D0D0D}
+.btn.inv:hover,.btn.inv.is-hover{background:#E5E5E5}
+.btn.ol{border-color:rgba(255,255,255,.5);color:#fff}
+.btn.ol:hover,.btn.ol.is-hover{background:rgba(255,255,255,.1)}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.media{position:relative;aspect-ratio:3/2;border-radius:24px;overflow:hidden;background:#1f1f1f}
+.media .img{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,radial-gradient(120% 100% at 25% 15%,#6b6b6b,#1f1f1f)}
+.credit{position:absolute;left:12px;bottom:12px;max-width:calc(100% - 24px);padding:6px 12px;border-radius:999px;background:rgba(13,13,13,.72);color:#fff;font-size:12px;font-weight:500;line-height:1.4}
+.av{position:relative;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--mf);border:1px solid var(--bd);color:var(--tn);font-weight:800;letter-spacing:-.02em;overflow:hidden}
+.av.photo{background:radial-gradient(120% 100% at 25% 15%,#6b6b6b,#1f1f1f);border-color:transparent}
+.icard{display:flex;flex-direction:column;gap:10px;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:16px}
+.icard.row{flex-direction:row;align-items:flex-start;gap:14px}
+.icard h3{font-size:16px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.icard p{font-size:14px;line-height:1.55;color:var(--tm)}
+.icon{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--mf);border:1px solid rgba(0,0,0,.08);color:var(--ac)}
+.icon svg{width:20px;height:20px}
+.plink{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:14px;font-weight:600;color:var(--ac);text-decoration:underline;text-underline-offset:3px;transition:color .25s var(--ease)}
+.plink:hover{color:#000}
+.plink svg{transition:transform .3s var(--ease)}
+.plink:hover svg{transform:translateX(2px)}
+.plink:focus-visible,.fq summary:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.hint{font-size:14px;line-height:1.55;color:var(--tm)}
+.faq{display:flex;flex-direction:column;gap:1px;background:#EAEAEA;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.fq{background:#fff}
+.fq summary{list-style:none;display:flex;align-items:center;gap:16px;min-height:60px;padding:12px 16px 12px 20px;cursor:pointer;font-size:16px;font-weight:600;line-height:1.4;color:#000;transition:color .25s var(--ease),background .25s var(--ease)}
+.fq summary::-webkit-details-marker{display:none}
+.fq .q{flex:1;min-width:0;text-wrap:pretty}
+.fq summary:hover,.fq.is-hover summary{background:#F5F5F5;color:var(--ac)}
+.fq summary:focus-visible,.fq.is-focus summary{outline:2px solid var(--ac);outline-offset:-2px}
+.pm{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);border:1px solid var(--bd);color:#000;transition:transform .25s var(--ease),background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease)}
+.fq summary:hover .pm,.fq.is-hover .pm{border-color:rgba(0,0,0,.2)}
+.fq[open] .pm{transform:rotate(45deg);background:var(--pr);border-color:var(--pr);color:#fff}
+.fq .ans{padding:0 68px 20px 20px;font-size:16px;line-height:1.65;color:var(--tm);animation:fqIn .25s var(--ease) both}
+.fq .ans p+p{margin-top:10px}
+@keyframes fqIn{from{opacity:0}to{opacity:1}}
+.pgrid{display:grid;gap:16px}
+.pcard{display:flex;align-items:flex-start;gap:14px;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;min-width:0}
+.pcard .pt{flex:1;min-width:0}
+.pcard h3{font-size:16px;font-weight:700;line-height:1.3;letter-spacing:-.01em;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard p{margin-top:4px;font-size:14px;line-height:1.5;color:var(--tm);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ctap{position:relative;overflow:hidden;border-radius:24px;color:#fff;background:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(131deg,#333 .8%,#0d0d0d 35%,#262626 99%)}
+.ctap p{font-size:16px;line-height:1.6;color:#E5E5E5;text-wrap:pretty}
+.flink{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:500;color:var(--tn)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.btn:active,.plink:hover svg{transform:none}}
+.cap{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);margin-bottom:6px}
+.gn{font-size:14px;line-height:1.55;color:var(--tm);margin-bottom:14px;text-wrap:pretty}
+.stg{background:rgba(255,255,255,.5);border:1.5px dashed #A8A8A8;border-radius:24px;padding:24px;min-width:0}
+.stgm{min-width:0}
+.bsec{display:flex;flex-direction:column;gap:20px}
+.bsec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.bsec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:780px}
+.bar{display:flex;align-items:center;min-height:48px;padding:0 16px;border-radius:12px;background:#fff;border:1px solid var(--bd);font-size:13px;font-weight:600;color:var(--tm)}
+.bar.dk{background:#0D0D0D;border-color:#0D0D0D;color:#fff}
+.gapm{display:flex;align-items:center;justify-content:center;height:72px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--tm);background:repeating-linear-gradient(135deg,rgba(0,0,0,.05) 0 6px,transparent 6px 12px);border-radius:8px}
+</style>
+</helmet>
+<div style="width:1280px;height:2500px;padding:56px 48px;display:flex;flex-direction:column;gap:32px">
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:860px"><span class="eyebrow"><i></i>Trạng thái · Giới thiệu</span><h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em;text-wrap:balance">Câu hỏi thường gặp: đóng và mở</h1><p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">FAQ dùng &lt;details&gt; gốc của trình duyệt: mở tức thì, nhiều mục mở cùng lúc, bàn phím và trình đọc màn hình chạy sẵn. Bản mới chỉ đổi cách vẽ: hàng cao hơn, đĩa cho dấu cộng, thời lượng lấy từ token.</p></header>
+<section style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start">
+<sc-for list="{{groups}}" as="g" hint-placeholder-count="6">
+<article class="stg"><div class="cap">{{g.k}}</div><p class="gn">{{g.note}}</p>
+<div class="faq">
+<sc-for list="{{g.items}}" as="it" hint-placeholder-count="6">
+<sc-if value="{{it.opened}}" hint-placeholder-val="{{false}}"><details class="fq {{it.cls}}" open><summary><span class="q">{{it.q}}</span><span class="pm" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span></summary><div class="ans"><p>{{it.a}}</p></div></details></sc-if>
+<sc-if value="{{it.closed}}" hint-placeholder-val="{{true}}"><details class="fq {{it.cls}}"><summary><span class="q">{{it.q}}</span><span class="pm" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="M5 12h14"/></svg></span></summary><div class="ans"><p>{{it.a}}</p></div></details></sc-if>
+</sc-for>
+</div></article>
+</sc-for>
+</section>
+<section style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px"><div class="stg"><div class="cap">Giảm chuyển động</div><p class="gn" style="margin:0">Khối CSS toàn cục ép transition và animation về 0.01ms: đĩa đổi màu và xoay tức thì, câu trả lời hiện không qua mờ dần. Không có trạng thái ẩn ban đầu nào để hỏng.</p></div><div class="stg"><div class="cap">Vì sao không ép mở bằng CSS</div><p class="gn" style="margin:0">&lt;details&gt; đóng thì trình duyệt ẩn nội dung, CSS không mở được. Bản vẽ này vẽ trạng thái mở bằng thuộc tính open thật. Đừng thay bằng nút tự dựng: mất tìm-trong-trang, mất bàn phím và trình đọc màn hình miễn phí.</p></div></section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"locale":{"editor":"enum","options":["vi","en"],"default":"vi"},"$preview":{"width":1280,"height":2500}}'>
+const FAQ = { vi: [["Chíp Chíp có miễn phí không?", "Có. Mọi nội dung đều miễn phí và không cần đăng ký tài khoản. Dự án không bán gì và không có phần nội dung trả phí."], ["Ai viết các bài trên Chíp Chíp?", "Phần lớn bài do tác giả của dự án viết. Bài có người đóng góp hoặc góp ý thì ghi tên họ ở cuối bài."], ["Thấy bài sai thì báo ở đâu?", "Bấm nút \"Báo lỗi bài này\" ở cuối bài, hoặc viết qua trang Liên hệ. Tác giả đọc mọi báo lỗi và sửa bài khi cần."], ["Giáo viên có dùng bài cho lớp học được không?", "Được. Bạn cứ dùng bài cho việc dạy học không thu phí, chỉ cần ghi nguồn Project Chíp Chíp và dẫn link tới bài gốc."], ["Trang có quảng cáo không?", "Không. Trang không có quảng cáo, không dùng cookie quảng cáo và không bán dữ liệu người đọc."], ["Có bản tiếng Anh không?", "Có. Bài chỉ được đăng khi đã có đủ bản tiếng Việt và tiếng Anh. Nút chuyển ngôn ngữ nằm trên thanh điều hướng."]], en: [["Is Chíp Chíp free?", "Yes. Everything is free and needs no account. The project sells nothing and has no paid content."], ["Who writes the articles?", "Most articles are written by the project's author. When someone contributes or reviews an article, their name is credited at the end."], ["Where do I report a mistake?", "Press \"Report a mistake\" at the end of the article, or write through the Contact page. The author reads every report and corrects the article when needed."], ["Can teachers use the articles in class?", "Yes. Use them freely for non-commercial teaching; just credit Project Chíp Chíp and link to the original article."], ["Does the site show ads?", "No. There are no ads, no advertising cookies, and reader data is never sold."], ["Is there an English version?", "Yes. An article is only published once both the Vietnamese and the English versions exist. The language switch is in the navigation bar."]] };
+const LONG = { vi: [
+  ['Nếu bài học có công thức hoặc số liệu mà mình nghĩ là sai, mình nên báo cho tác giả bằng cách nào và tác giả sẽ trả lời trong bao lâu?', 'Bấm nút "Báo lỗi bài này" ở cuối bài, ghi rõ đoạn nào và bạn nghĩ đúng phải là gì. Tác giả đọc mọi báo lỗi và sửa bài khi cần. Đây là dự án một người làm nên chưa hứa được thời gian trả lời cụ thể; các lỗi về công thức và số liệu luôn được xem trước.\n\nNếu bạn là giáo viên và muốn trao đổi kỹ hơn, hãy viết qua trang Liên hệ và ghi rõ tên bài.'],
+  ['Trang có quảng cáo không?', 'Không. Trang không có quảng cáo, không dùng cookie quảng cáo và không bán dữ liệu người đọc.'],
+  ['Có bản tiếng Anh không?', 'Có. Bài chỉ được đăng khi đã có đủ bản tiếng Việt và tiếng Anh.']
+] };
+class Component extends DCLogic {
+  renderVals() {
+    const en = (this.props.locale ?? 'vi') === 'en';
+    const L = en ? 'en' : 'vi';
+    const src = FAQ[L];
+    const mk = (list, spec) => list.map((f, i) => ({ q: f[0], a: f[1], opened: !!(spec[i] && spec[i].indexOf('o') >= 0), closed: !(spec[i] && spec[i].indexOf('o') >= 0), cls: (spec[i] && spec[i].indexOf('h') >= 0 ? 'is-hover ' : '') + (spec[i] && spec[i].indexOf('f') >= 0 ? 'is-focus' : '') }));
+    const longEn = [
+      ['If a lesson has a formula or a number that I think is wrong, how should I tell the author and how long will a reply take?', 'Press "Report a mistake" at the end of the article and say which passage and what you think is correct. The author reads every report and corrects the article when needed. This is a one-person project, so no specific reply time is promised; mistakes in formulas and numbers are always looked at first.\n\nIf you are a teacher and want to discuss it further, write through the Contact page and name the article.'],
+      FAQ.en[4], FAQ.en[5]
+    ];
+    const LG = en ? longEn : LONG.vi;
+    return {
+      groups: [
+        { k: '1 · Mặc định: tất cả đóng', note: 'Như bản đang chạy: mọi mục đóng khi tải trang. Cả hàng là vùng bấm, cao tối thiểu 60px.', items: mk(src, []) },
+        { k: '2 · Một mục mở', note: 'Đĩa đổi sang đen và dấu + xoay 45°; câu trả lời hiện ngay, mờ vào 0.25s. Chiều cao không hoạt hoạ vì <details> mở tức thì.', items: mk(src, ['', '', 'o']) },
+        { k: '3 · Rê chuột (chỉ con trỏ chuột)', note: 'Nền hàng #F5F5F5, chữ #314344, viền đĩa đậm lên; 0.25s. Chỉ trang trí, trạng thái đóng hay mở vẫn đọc được không cần hover.', items: mk(src.slice(0, 3), ['', 'h', '']) },
+        { k: '4 · Focus bàn phím (đang mở)', note: 'Viền 2px #314344 vẽ vào trong hàng (offset -2px) vì bảng cắt tràn. Enter hoặc Space mở đóng.', items: mk(src.slice(0, 3), ['', '', 'of']) },
+        { k: '5 · Nhiều mục mở cùng lúc', note: 'Không đóng mục khác khi mở một mục: hành vi mặc định của <details>, giữ nguyên, không cần JavaScript.', items: mk(src.slice(0, 3), ['o', '', 'o']) },
+        { k: '6 · Câu hỏi và trả lời dài', note: 'Câu hỏi xuống nhiều dòng, đĩa vẫn thẳng hàng giữa. Trả lời nhiều đoạn; đoạn cách nhau 10px.', items: mk(LG.map((f) => [f[0], f[1].split('\n\n')[0]]).map((f, i) => [f[0], i === 0 ? f[1] + ' ' + (LG[0][1].split('\n\n')[1] || '') : f[1]]), ['o', '', '']) }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

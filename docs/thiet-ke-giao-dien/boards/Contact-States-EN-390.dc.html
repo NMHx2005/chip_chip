@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contact states · 390</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--fb:#8C8C8C;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt,ul,li{margin:0;padding:0}
+ul{list-style:none}
+svg.ic{width:16px;height:16px;flex:none}
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.nvl{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--tn)}
+.cta{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;background:linear-gradient(131deg,#333 .8%,#0d0d0d 35%,#262626 99%);color:#fff;font-size:14px;font-weight:600}
+.ibtn{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);color:var(--tn)}
+.flink{font-size:14px;font-weight:500;color:var(--tn)}
+.mob .flink{display:inline-flex;align-items:center;min-height:44px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease),transform .2s var(--ease)}
+.btn:active{transform:scale(.98)}
+.btn.p{background:var(--pr);color:#fff}
+.btn.p:hover,.btn.p.is-hover{background:#262626}
+.btn.s{background:var(--sf);border-color:var(--bd);color:#000}
+.btn.s:hover,.btn.s.is-hover{border-color:rgba(0,0,0,.25)}
+.btn:focus-visible,.btn.is-focus{outline:2px solid var(--ac);outline-offset:2px}
+.btn[aria-disabled=true]{background:#5F5F5F;color:#fff;cursor:progress;transform:none}
+.fm{position:relative;display:flex;flex-direction:column;gap:20px}
+.fg{display:flex;flex-direction:column;gap:6px;min-width:0}
+.fl{font-size:14px;font-weight:600;line-height:1.4;color:#0D0D0D}
+.fl small{font-size:14px;font-weight:400;color:var(--tm)}
+.in{display:block;width:100%;height:44px;padding:0 14px;border:1px solid var(--fb);border-radius:12px;background:#fff;font-family:inherit;font-size:14px;color:#000;transition:border-color .25s var(--ease),box-shadow .25s var(--ease),background .25s var(--ease)}
+.mob .in{font-size:16px}
+textarea.in{height:156px;padding:12px 14px;line-height:1.55;resize:vertical}
+.mob textarea.in{height:152px}
+textarea.in.s{height:120px}
+.in::placeholder{color:#6E6E6E;opacity:1}
+.in:hover,.in.is-hover{border-color:var(--tn)}
+.in:focus,.in.is-focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 2px #fff,0 0 0 4px var(--ac)}
+.in[aria-invalid=true]{border-color:#D92D20;box-shadow:inset 0 0 0 1px #D92D20}
+.in[aria-invalid=true]:focus,.in[aria-invalid=true].is-focus{box-shadow:inset 0 0 0 1px #D92D20,0 0 0 2px #fff,0 0 0 4px var(--ac)}
+.in:disabled,.in[readonly]{background:var(--mf);color:#5F5F5F;border-color:var(--bd);cursor:not-allowed}
+.hn{font-size:13px;line-height:1.45;color:var(--tm)}
+.er{display:flex;align-items:flex-start;gap:6px;font-size:13px;line-height:1.45;font-weight:500;color:#B42318}
+.er svg{margin-top:2px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.live:empty{display:none}
+.bn{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:12px;border:1px solid;font-size:14px;line-height:1.5;animation:fin .25s var(--ease) both}
+.bn>svg{width:20px;height:20px;margin-top:1px;flex:none}
+.bn b{font-weight:700}
+.bb{min-width:0}
+.bb p{margin-top:2px}
+.bb b+p{margin-top:2px}
+.bn.err{background:#FEF3F2;border-color:#D92D20;color:#912018}
+.bn.err>svg{color:#D92D20}
+.bn.ok{background:#ECFDF3;border-color:#067647;color:#054F31}
+.bn.ok>svg{color:#067647}
+.bn.nt{background:var(--mf);border-color:var(--bd);color:#262626}
+.bl{margin-top:6px}
+.bl a{display:flex;align-items:center;min-height:44px;font-weight:500;text-decoration:underline;text-underline-offset:3px}
+.tick .tk{stroke-dasharray:7;animation:draw .5s var(--ease) .1s both}
+@keyframes fin{from{opacity:0}to{opacity:1}}
+@keyframes draw{from{stroke-dashoffset:7}to{stroke-dashoffset:0}}
+.sub{display:flex}
+.mob .sub .btn{width:100%}
+.kf{border:0;padding:0;margin:0;min-width:0}
+.kf legend{padding:0;margin-bottom:8px}
+.kseg{display:inline-flex;gap:2px;padding:4px;background:var(--sf);border:1px solid var(--bd);border-radius:999px}
+.kseg.m,.mob .kseg{display:grid;grid-template-columns:1fr 1fr;width:100%;border-radius:20px}
+.ko{position:relative;display:block}
+.ko span{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 20px;border-radius:999px;font-size:14px;font-weight:500;color:var(--tn);cursor:pointer;white-space:nowrap;transition:background .25s var(--ease),color .25s var(--ease)}
+.kseg.m .ko span,.mob .ko span{border-radius:16px;padding:0 12px}
+.ko span svg{display:none}
+.ko input:checked+span svg{display:block}
+.ko:hover input:not(:checked):not(:disabled)+span,.ko.is-hover input:not(:checked)+span{background:var(--mf)}
+.ko input:checked+span{background:var(--pr);color:#fff}
+.ko input:focus-visible+span,.ko.is-focus span{outline:2px solid var(--ac);outline-offset:2px}
+.ko input:disabled+span{cursor:not-allowed;opacity:.6}
+.fcard{background:#fff;border:1px solid var(--bd);border-radius:24px;padding:32px}
+.fcard.sm{padding:24px}
+.mob .fcard{padding:20px}
+.aside{display:flex;flex-direction:column;gap:16px}
+.ib{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px}
+.ib h2{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;line-height:1.3}
+.ib p{font-size:14px;line-height:1.55;color:var(--tm)}
+.ib p b{font-weight:700;color:#0D0D0D}
+.ico{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);color:#262626}
+.rw{display:flex;align-items:flex-start;gap:12px}
+.rw+.rw{border-top:1px solid #EAEAEA;padding-top:12px}
+.rn{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);font-size:16px;font-weight:800;color:#262626}
+.ul{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:600;color:var(--ac);text-decoration:underline;text-underline-offset:3px;transition:color .25s var(--ease)}
+.ul:hover{color:#0D0D0D}
+.mail{display:inline-flex;align-items:center;min-height:44px;font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:14px;font-weight:600;color:var(--ac);text-decoration:underline;text-underline-offset:3px;word-break:break-all;transition:color .25s var(--ease)}
+.mail:hover{color:#0D0D0D}
+.soc{display:flex;flex-wrap:wrap;gap:8px}
+.phk{display:inline-block;padding:0 8px;border:1px dashed var(--fb);border-radius:6px;background:var(--mf);color:#262626;font-weight:600}
+.rmd{background:#fff;border:1px solid var(--bd);border-radius:16px}
+.rmd summary{display:flex;align-items:center;gap:12px;min-height:52px;padding:4px 20px;border-radius:16px;font-size:14px;font-weight:600;color:var(--tn);cursor:pointer;list-style:none;transition:background .25s var(--ease),color .25s var(--ease)}
+.rmd summary::-webkit-details-marker{display:none}
+.rmd summary:hover{background:var(--mf);color:var(--ac)}
+.rmd summary:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.rmd .chev{margin-left:auto;transition:transform .3s var(--ease)}
+.rmd[open] .chev{transform:rotate(180deg)}
+.rmd[open] summary{border-bottom-left-radius:0;border-bottom-right-radius:0}
+.rmb{border-top:1px solid #EAEAEA;padding:20px 20px 24px;display:flex;flex-direction:column;gap:16px;animation:fin .25s var(--ease) both}
+.rmb .intro{font-size:14px;line-height:1.55;color:var(--tm)}
+.tile{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tth{display:flex;align-items:flex-start;gap:12px}
+.tth h3{font-size:16px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.tth p{font-size:13px;line-height:1.5;color:var(--tm);margin-top:2px}
+.id{flex:none;display:grid;place-items:center;min-width:40px;height:28px;padding:0 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:12px;font-weight:700}
+.sp{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;min-width:0}
+code{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;background:#EFEFEF;border-radius:6px;padding:1px 6px;color:#0D0D0D}
+.sec{display:flex;flex-direction:column;gap:16px}
+.sec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.sec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:780px}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.btn:active{transform:none}}
+</style>
+</helmet>
+<div class="mob" style="width:390px;height:6800px;display:flex;flex-direction:column;background:#E5E5E5">
+<div style="padding:40px 20px 56px;display:flex;flex-direction:column;gap:36px;flex:none">
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px"><span class="eyebrow"><i></i>States · Contact</span><h1 style="font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-.03em">Contact form states</h1><p style="font-size:16px;line-height:1.6;color:#3E424D;text-wrap:pretty">Five form states and two states of the side blocks at phone width. Names, emails and messages are sample text for testing length. The hidden website honeypot is in every form.</p></header>
+<div class="tile"><div class="tth"><span class="id">S1</span><div><h3>Validation errors</h3><p>Errors show under each field and are gathered in one alert. Focus moves to the first invalid field.</p></div></div><div class="fcard"><form class="fm" novalidate aria-labelledby="s1-h">
+<h2 class="sr" id="s1-h">Send a message</h2>
+<fieldset class="kf" aria-describedby="s1-kd"><legend class="fl">What would you like to send?</legend><div class="kseg m"><label class="ko"><input class="sr" type="radio" name="s1-kind" value="contact" checked><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Contact</span></label><label class="ko"><input class="sr" type="radio" name="s1-kind" value="suggestion"><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Feedback</span></label></div><p class="hn" id="s1-kd" style="margin-top:8px">A question, a collaboration offer, or anything you would like to ask the author.</p></fieldset>
+<div class="two" style="grid-template-columns:1fr">
+<div class="fg"><label class="fl" for="s1-name">Your name</label><input id="s1-name" name="name" class="in is-focus" aria-invalid="true" aria-describedby="s1-name-e" aria-required="true" type="text" value="" placeholder="" autocomplete="name" maxlength="80"><p class="er" id="s1-name-e"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><span>Please enter your name (up to 80 characters).</span></p></div>
+<div class="fg"><label class="fl" for="s1-email">Email <small>(optional)</small></label><input id="s1-email" name="email" class="in" aria-invalid="true" aria-describedby="s1-email-h s1-email-e" type="email" value="priya.raman@" placeholder="name@example.com" autocomplete="email"><p class="hn" id="s1-email-h">Only used to reply to you and never shown anywhere. Leave it empty and we cannot reply.</p><p class="er" id="s1-email-e"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><span>That email address does not look right. You can leave this field empty.</span></p></div>
+</div>
+<div class="fg"><label class="fl" for="s1-body">Message</label><textarea id="s1-body" name="message" class="in" aria-invalid="true" aria-describedby="s1-body-h s1-body-e" aria-required="true" placeholder="What would you like to ask or share?"></textarea><p class="hn" id="s1-body-h">Up to 4,000 characters.</p><p class="er" id="s1-body-e"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><span>Please enter a message (up to 4,000 characters).</span></p></div>
+<div aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"><label>website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+<div class="live" aria-live="polite"><div class="bn err" role="alert"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><div class="bb"><b>Please fix 3 things before sending</b><ul class="bl"><li><a href="#s1-name">Please enter your name (up to 80 characters).</a></li><li><a href="#s1-email">That email address does not look right. You can leave this field empty.</a></li><li><a href="#s1-body">Please enter a message (up to 4,000 characters).</a></li></ul></div></div></div>
+<div class="sub"><button class="btn p" type="submit">Send message<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></div>
+</form></div></div><div class="tile"><div class="tth"><span class="id">S2</span><div><h3>Sending</h3><p>Fields become read-only, the button turns grey and changes label. No spinner.</p></div></div><div class="fcard"><form class="fm" novalidate aria-busy="true" aria-labelledby="s2-h">
+<h2 class="sr" id="s2-h">Send a message</h2>
+<fieldset class="kf" aria-describedby="s2-kd"><legend class="fl">What would you like to send?</legend><div class="kseg m"><label class="ko"><input class="sr" type="radio" name="s2-kind" value="contact" checked disabled><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Contact</span></label><label class="ko"><input class="sr" type="radio" name="s2-kind" value="suggestion" disabled><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Feedback</span></label></div><p class="hn" id="s2-kd" style="margin-top:8px">A question, a collaboration offer, or anything you would like to ask the author.</p></fieldset>
+<div class="two" style="grid-template-columns:1fr">
+<div class="fg"><label class="fl" for="s2-name">Your name</label><input id="s2-name" name="name" class="in" readonly aria-readonly="true" aria-required="true" type="text" value="Priya Raman" placeholder="" autocomplete="name" maxlength="80"></div>
+<div class="fg"><label class="fl" for="s2-email">Email <small>(optional)</small></label><input id="s2-email" name="email" class="in" aria-describedby="s2-email-h" readonly aria-readonly="true" type="email" value="priya.raman@example.com" placeholder="name@example.com" autocomplete="email"><p class="hn" id="s2-email-h">Only used to reply to you and never shown anywhere. Leave it empty and we cannot reply.</p></div>
+</div>
+<div class="fg"><label class="fl" for="s2-body">Message</label><textarea id="s2-body" name="message" class="in" aria-describedby="s2-body-h" readonly aria-readonly="true" aria-required="true" placeholder="What would you like to ask or share?">I teach physics at a high school and would like to use your lesson on doping in class. Is it fine to print it, and could you add a short list of sources at the end?</textarea><p class="hn" id="s2-body-h">Up to 4,000 characters.</p></div>
+<div aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"><label>website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+<div class="live" aria-live="polite"><div class="bn nt" role="status"><svg class="ic" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg><div class="bb"><p>Sending your message…</p></div></div></div>
+<div class="sub"><button class="btn p" type="submit" aria-disabled="true">Sending…</button></div>
+</form></div></div><div class="tile"><div class="tth"><span class="id">S3</span><div><h3>Sent</h3><p>The form is cleared and stays in place. Green notice with a tick drawn once; it does not disappear on its own.</p></div></div><div class="fcard"><form class="fm" novalidate aria-labelledby="s3-h">
+<h2 class="sr" id="s3-h">Send a message</h2>
+<fieldset class="kf" aria-describedby="s3-kd"><legend class="fl">What would you like to send?</legend><div class="kseg m"><label class="ko"><input class="sr" type="radio" name="s3-kind" value="contact" checked><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Contact</span></label><label class="ko"><input class="sr" type="radio" name="s3-kind" value="suggestion"><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Feedback</span></label></div><p class="hn" id="s3-kd" style="margin-top:8px">A question, a collaboration offer, or anything you would like to ask the author.</p></fieldset>
+<div class="two" style="grid-template-columns:1fr">
+<div class="fg"><label class="fl" for="s3-name">Your name</label><input id="s3-name" name="name" class="in" aria-required="true" type="text" value="" placeholder="" autocomplete="name" maxlength="80"></div>
+<div class="fg"><label class="fl" for="s3-email">Email <small>(optional)</small></label><input id="s3-email" name="email" class="in" aria-describedby="s3-email-h" type="email" value="" placeholder="name@example.com" autocomplete="email"><p class="hn" id="s3-email-h">Only used to reply to you and never shown anywhere. Leave it empty and we cannot reply.</p></div>
+</div>
+<div class="fg"><label class="fl" for="s3-body">Message</label><textarea id="s3-body" name="message" class="in" aria-describedby="s3-body-h" aria-required="true" placeholder="What would you like to ask or share?"></textarea><p class="hn" id="s3-body-h">Up to 4,000 characters.</p></div>
+<div aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"><label>website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+<div class="live" aria-live="polite"><div class="bn ok" role="status"><svg class="ic tick" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path class="tk" d="m9 12 2 2 4-4"/></svg><div class="bb"><b>Sent. Thank you for writing to Chíp Chíp!</b><p>Your message has reached the author. Send another one if you need to.</p></div></div></div>
+<div class="sub"><button class="btn p" type="submit">Send message<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></div>
+</form></div></div><div class="tile"><div class="tth"><span class="id">S4</span><div><h3>Rate limited (3 per hour)</h3><p>What the person wrote is kept so nothing is lost.</p></div></div><div class="fcard"><form class="fm" novalidate aria-labelledby="s4-h">
+<h2 class="sr" id="s4-h">Send a message</h2>
+<fieldset class="kf" aria-describedby="s4-kd"><legend class="fl">What would you like to send?</legend><div class="kseg m"><label class="ko"><input class="sr" type="radio" name="s4-kind" value="contact" checked><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Contact</span></label><label class="ko"><input class="sr" type="radio" name="s4-kind" value="suggestion"><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Feedback</span></label></div><p class="hn" id="s4-kd" style="margin-top:8px">A question, a collaboration offer, or anything you would like to ask the author.</p></fieldset>
+<div class="two" style="grid-template-columns:1fr">
+<div class="fg"><label class="fl" for="s4-name">Your name</label><input id="s4-name" name="name" class="in" aria-required="true" type="text" value="Priya Raman" placeholder="" autocomplete="name" maxlength="80"></div>
+<div class="fg"><label class="fl" for="s4-email">Email <small>(optional)</small></label><input id="s4-email" name="email" class="in" aria-describedby="s4-email-h" type="email" value="priya.raman@example.com" placeholder="name@example.com" autocomplete="email"><p class="hn" id="s4-email-h">Only used to reply to you and never shown anywhere. Leave it empty and we cannot reply.</p></div>
+</div>
+<div class="fg"><label class="fl" for="s4-body">Message</label><textarea id="s4-body" name="message" class="in" aria-describedby="s4-body-h" aria-required="true" placeholder="What would you like to ask or share?">I teach physics at a high school and would like to use your lesson on doping in class. Is it fine to print it, and could you add a short list of sources at the end?</textarea><p class="hn" id="s4-body-h">Up to 4,000 characters.</p></div>
+<div aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"><label>website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+<div class="live" aria-live="polite"><div class="bn err" role="alert"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg><div class="bb"><b>Sending limit reached</b><p>You can send up to 3 messages per hour, counted across contact, feedback and article reports. Please try again later.</p><p>What you wrote is still in the fields above.</p></div></div></div>
+<div class="sub"><button class="btn p" type="submit">Send message<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></div>
+</form></div></div><div class="tile"><div class="tth"><span class="id">S5</span><div><h3>Long content</h3><p>An 80-character name, a very long email and a multi-paragraph message: fields scroll inside themselves.</p></div></div><div class="fcard"><form class="fm" novalidate aria-labelledby="s5-h">
+<h2 class="sr" id="s5-h">Send a message</h2>
+<fieldset class="kf" aria-describedby="s5-kd"><legend class="fl">What would you like to send?</legend><div class="kseg m"><label class="ko"><input class="sr" type="radio" name="s5-kind" value="contact"><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Contact</span></label><label class="ko"><input class="sr" type="radio" name="s5-kind" value="suggestion" checked><span><svg class="ic" style="width:16px;height:16px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>Feedback</span></label></div><p class="hn" id="s5-kd" style="margin-top:8px">Thoughts on the content, the way it is presented, or what you would like to see on the site.</p></fieldset>
+<div class="two" style="grid-template-columns:1fr">
+<div class="fg"><label class="fl" for="s5-name">Your name</label><input id="s5-name" name="name" class="in" aria-required="true" type="text" value="Alexandria Maria Fernandez-Castellanos de la Vega y Montgomery-Whitfield" placeholder="" autocomplete="name" maxlength="80"></div>
+<div class="fg"><label class="fl" for="s5-email">Email <small>(optional)</small></label><input id="s5-email" name="email" class="in" aria-describedby="s5-email-h" type="email" value="alexandria.fernandez-castellanos.montgomery@a-very-long-school-district-name.example.edu" placeholder="name@example.com" autocomplete="email"><p class="hn" id="s5-email-h">Only used to reply to you and never shown anywhere. Leave it empty and we cannot reply.</p></div>
+</div>
+<div class="fg"><label class="fl" for="s5-body">Message</label><textarea id="s5-body" name="message" class="in" aria-describedby="s5-body-h" aria-required="true" placeholder="What would you like to ask or share?">Hello. I am building a science-club project on the shift from silicon to other semiconductor materials such as gallium nitride and silicon carbide, and I have three questions.
+
+First, why do electric cars prefer silicon carbide in the inverter instead of ordinary silicon. Second, your lithography lesson says circuit lines are thousands of times thinner than a hair, so how is quality checked after printing. Third, if I wanted to write a guest post for the blog, which template should I send it in?
+
+Thank you very much for taking the time to read this long message.</textarea><p class="hn" id="s5-body-h">Up to 4,000 characters.</p></div>
+<div aria-hidden="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap"><label>website<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+<div class="live" aria-live="polite"></div>
+<div class="sub"><button class="btn p" type="submit">Send message<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg></button></div>
+</form></div></div>
+<section class="sec"><h2 style="font-size:22px">Side blocks</h2><div class="tile"><div class="tth"><span class="id">G1</span><div><h3>Current data</h3><p>Email and social hidden because they are empty. Reply time still has bracket placeholders.</p></div></div><aside class="aside" aria-label="Contact information"><section class="ib"><h2><span class="ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>When to expect a reply</h2><p><span class="phk">[Reply time]</span> The author usually replies within <span class="phk">[number]</span> days.</p><p>Messages without an email are still read, but cannot be answered.</p></section><section class="ib"><h2><span class="ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>Before you send</h2><div class="rw"><span class="rn" aria-hidden="true">3</span><div><p><b>To block spam, each person can send up to 3 messages per hour.</b></p><p class="hn" style="margin-top:2px">The limit is shared across contact, feedback and article reports.</p></div></div><div class="rw"><span class="ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span><div><p>What you send is only used to reply to you.</p><a class="ul" href="#">Read the privacy policy</a></div></div></section></aside></div><div class="tile"><div class="tth"><span class="id">G2</span><div><h3>All blocks shown (sample)</h3><p>Sample data only. Social links open in a new tab.</p></div></div><aside class="aside" aria-label="Contact information"><section class="ib"><h2><span class="ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg></span>Email</h2><a class="mail" href="mailto:hello@example.org">hello@example.org</a></section><section class="ib"><h2><span class="ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span>Social media</h2><div class="soc"><a class="btn s" href="#" target="_blank" rel="noopener noreferrer">Facebook<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg><span class="sr">(opens in a new tab)</span></a><a class="btn s" href="#" target="_blank" rel="noopener noreferrer">TikTok<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg><span class="sr">(opens in a new tab)</span></a></div></section><section class="ib"><h2><span class="ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>When to expect a reply</h2><p>The author usually replies within 3 days.</p><p>Messages without an email are still read, but cannot be answered.</p></section><section class="ib"><h2><span class="ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg></span>Before you send</h2><div class="rw"><span class="rn" aria-hidden="true">3</span><div><p><b>To block spam, each person can send up to 3 messages per hour.</b></p><p class="hn" style="margin-top:2px">The limit is shared across contact, feedback and article reports.</p></div></div><div class="rw"><span class="ico"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/></svg></span><div><p>What you send is only used to reply to you.</p><a class="ul" href="#">Read the privacy policy</a></div></div></section></aside></div></section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":6800}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Đặc tả · Blog</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bd:#D1D1D1;--tm:#3E424D;--ac:#314344}
+*{box-sizing:border-box}
+body{margin:0;background:#E5E5E5;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,li,dl,dd,dt{margin:0;padding:0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:#EFEFEF;border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.tok{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px}
+.tok h3{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);margin-bottom:12px}
+.tok li{list-style:none;font-size:13px;line-height:1.5;color:#262626;padding:6px 0;border-top:1px solid #EAEAEA}
+.tok li:first-of-type{border-top:0}
+code{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;background:#EFEFEF;border-radius:6px;padding:1px 6px;color:#0D0D0D}
+.sec{display:flex;flex-direction:column;gap:16px}
+.sec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.sec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:780px}
+.tbl{background:#fff;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.tr{display:grid;gap:20px;padding:16px 20px;border-top:1px solid #EAEAEA;font-size:12.5px;line-height:1.55;color:#141414}
+.tr:first-child{border-top:0}
+.th{background:#EFEFEF;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm)}
+.tr b{font-weight:700;font-size:13.5px}
+.m{grid-template-columns:170px 1fr 1.4fr 110px 1fr 1fr}
+.m .id{display:inline-grid;place-items:center;min-width:40px;height:24px;padding:0 10px;margin-bottom:6px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:12px;font-weight:700}
+.m small{display:block;margin-top:2px;font-size:12px;color:var(--tm);line-height:1.4}
+.m .rm{color:#141414}
+.a{grid-template-columns:170px 1fr 1.25fr 1fr}
+.b{grid-template-columns:200px 1fr 1fr}
+.c{grid-template-columns:120px 1fr;align-items:start}
+.pass{display:inline-block;padding:2px 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em}
+.note{display:inline-block;padding:2px 10px;border-radius:999px;background:#EFEFEF;border:1px solid var(--bd);color:#262626;font-size:11px;font-weight:700;letter-spacing:.04em}
+.fr{position:relative;height:150px;background:#E5E5E5;border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.fr .cd{position:absolute;background:#fff;border:1px solid var(--bd);border-radius:16px;box-shadow:0 2px 4px rgba(0,0,0,.05),0 12px 32px rgba(0,0,0,.12)}
+.fr .bar{position:absolute;height:8px;border-radius:4px;background:#D1D1D1}
+.fr .sm{position:absolute;left:0;right:0;bottom:0;padding:6px 10px;background:rgba(255,255,255,.75);font-size:12px;font-weight:700;color:#262626;letter-spacing:.02em}
+</style>
+</helmet>
+<div style="width:1280px;height:8800px;padding:56px 48px;display:flex;flex-direction:column;gap:56px">
+
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:900px">
+<span class="eyebrow"><i></i>Đặc tả · Blog</span>
+<h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em">Blog: chuyển động, thay đổi, thành phần</h1>
+<p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Bản vẽ gồm danh sách Blog (1280, 390; có dữ liệu và rỗng) và bài Blog (1280, 390; bài đầy đủ, bài stress, các trạng thái bình luận). Mọi số liệu, tiêu đề, bình luận và tên trong bản vẽ là chữ minh hoạ để thử độ dài, không phải dữ liệu thật. Ảnh bìa và video nền là ô tối giữ chỗ. Cùng khung, cùng thành phần và cùng bộ chuyển động với trang Bài học; chỉ thêm những gì Blog thực sự cần.</p>
+</header>
+
+<section style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+<div class="tok"><h3>Easing</h3><ul>
+<li><code>EASE_STANDARD</code> <code>cubic-bezier(.25,.1,.25,1)</code>: đường cong duy nhất cho mọi hiệu ứng BL1–BL20.</li>
+<li>Bỏ <code>.rise-in</code> và đường cong thứ ba chưa dùng.</li>
+<li>Cuộn trang giữ easing Lenis: <code>1−(1−t)³</code>.</li></ul></div>
+<div class="tok"><h3>Thời lượng</h3><ul>
+<li><code>fast</code> 0.25s: đổi màu, ô nhập, thông báo.</li>
+<li><code>reveal</code> 0.5s, <code>staggerItem</code> 0.55s, <code>base</code> 0.6s: hiện khi vào.</li>
+<li>Đã có ở trang chủ: 0.3s (hover thẻ), 0.2s (nhấn), 0.4s (EXPAND_MS của thẻ Blog).</li></ul></div>
+<div class="tok"><h3>So le</h3><ul>
+<li><code>fastDelay</code> 0.05s, <code>fastStep</code> 0.07s cho lưới thẻ và bình luận.</li>
+<li><code>delay</code> 0.1s, <code>step</code> 0.12s cho hero.</li>
+<li>Kích hoạt cuộn: <code>VIEWPORT_ONCE</code>, chỉ một lần.</li></ul></div>
+<div style="background:#0D0D0D;color:#fff;border-radius:16px;padding:20px"><h3 style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D1D1D1;margin-bottom:12px">Khi giảm chuyển động</h3><ul style="font-size:13px;line-height:1.55;display:flex;flex-direction:column;gap:8px;list-style:none">
+<li>Khối CSS toàn cục giữ nguyên: mọi transition và animation về 0.01ms.</li>
+<li>Mã framer-motion kiểm tra <code style="background:#262626;color:#fff">useReducedMotion</code>: bỏ trạng thái ẩn ban đầu.</li>
+<li>Không có vòng lặp giao diện trên trang trong. Video nền là media, không tự phát khi giảm chuyển động.</li></ul></div>
+</section>
+
+<section class="sec">
+<h2>(i) Bảng chuyển động BL1–BL20</h2>
+<p>Trang Blog chỉ có hai hiệu ứng nặng: thẻ mở toàn màn hình (đã có, giữ nguyên) và video nền (đã có, thêm nút dừng). Trang đọc bài gần như tĩnh để không làm xao nhãng.</p>
+<div class="tbl">
+<div class="tr th m"><span>Mã, hiệu ứng</span><span>Kích hoạt</span><span>Thuộc tính, đầu → cuối</span><span>Thời lượng, easing</span><span>Trễ, so le</span><span>Giảm chuyển động</span></div>
+<sc-for list="{{fx}}" as="e" hint-placeholder-count="20">
+<div class="tr m"><span><span class="id">{{e.id}}</span><br><b>{{e.name}}</b><small>{{e.where}}</small></span><span>{{e.trigger}}</span><span>{{e.props}}</span><span>{{e.dur}}</span><span>{{e.delay}}</span><span class="rm">{{e.reduced}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec" style="gap:20px">
+<h2>Thẻ mở toàn màn hình (BL7) qua bốn khung</h2>
+<p>Giữ đúng hành vi hiện có. Cả bốn khung là khung nhìn trình duyệt; thẻ và panel vẽ theo tỷ lệ minh hoạ.</p>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+<div class="tok" style="padding:16px"><div class="fr"><div class="cd" style="left:26px;top:34px;width:70px;height:86px"></div><div class="bar" style="left:112px;top:44px;width:54px"></div><div class="bar" style="left:112px;top:62px;width:40px"></div><span class="sm">0 ms</span></div><p style="margin-top:12px;font-size:13px;line-height:1.55">Bấm trái thường. preventDefault, đo getBoundingClientRect, gắn panel trắng vào body đúng khung thẻ, router.prefetch.</p></div>
+<div class="tok" style="padding:16px"><div class="fr"><div class="cd" style="left:14px;top:20px;width:150px;height:110px"></div><span class="sm">khung kế tiếp → 0.4s</span></div><p style="margin-top:12px;font-size:13px;line-height:1.55">Panel chuyển sang top 0, left 0, 100vw, 100dvh bằng layout animation. Thẻ bên dưới chỉ bị che, không co giãn.</p></div>
+<div class="tok" style="padding:16px"><div class="fr"><div class="cd" style="left:0;top:0;right:0;bottom:0;border-radius:0;border:0;box-shadow:none"></div><span class="sm">400 ms · router.push</span></div><p style="margin-top:12px;font-size:13px;line-height:1.55">Sau 0.4s điều hướng tới bài. Bài hiện ra dưới panel; khối đầu bài chạy BL8.</p></div>
+<div class="tok" style="padding:16px"><div class="fr"><div class="cd" style="left:0;top:0;right:0;bottom:0;border-radius:0;border:0;box-shadow:none;opacity:.35"></div><span class="sm">1000 ms dự phòng</span></div><p style="margin-top:12px;font-size:13px;line-height:1.55">Nếu bài chưa tải xong, panel mờ 1 → 0 trong 0.3s rồi gỡ để không kẹt màn hình trắng. Giảm chuyển động: bỏ toàn bộ chuỗi này.</p></div>
+</div>
+</section>
+
+<section class="fx" style="background:#fff;border:1px solid var(--bd);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px">
+<h3 style="font-size:18px;font-weight:700"><span style="display:inline-grid;place-items:center;min-width:40px;height:28px;padding:0 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:12px;font-weight:700;margin-right:12px;vertical-align:middle">Bỏ</span>Không dùng trên trang Blog</h3>
+<ul style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 32px;list-style:none;font-size:13px;line-height:1.55;color:#141414">
+<li><strong>Nghiêng 3D (TiltCard):</strong> chỉ ở trang chủ.</li>
+<li><strong>Vệt sáng chạy viền, vòng chữ xoay:</strong> hiệu ứng lặp vô hạn, không phù hợp trang trong.</li>
+<li><strong>Hiện từng đoạn, thanh tiến độ đọc, parallax trong thân bài:</strong> trang đọc phải tĩnh.</li>
+<li><strong>Khung xương, spinner:</strong> trang render ở server, không có loading.tsx (bỏ có chủ đích để 404 trả đúng mã).</li>
+</ul>
+</section>
+
+<section class="sec">
+<h2>(a) Đổi gì so với hiện tại, và vì sao</h2>
+<div class="tbl">
+<div class="tr th a"><span>Hạng mục</span><span>Hiện tại</span><span>Mới</span><span>Lý do</span></div>
+<sc-for list="{{chg}}" as="r" hint-placeholder-count="19">
+<div class="tr a"><b>{{r.k}}</b><span>{{r.now}}</span><span>{{r.next}}</span><span>{{r.why}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>(b) Thành phần dùng chung</h2>
+<p>Trước hết là những gì dùng lại nguyên xi từ trang Bài học; sau đó là thành phần mới, đã giữ ở mức tối thiểu và viết để trang sau dùng lại được.</p>
+<h3 style="font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#3E424D">Dùng lại thành phần đã chốt ở trang trước</h3>
+<div class="tbl">
+<div class="tr th b"><span>Thành phần</span><span>Cách dùng ở Blog</span><span>Trạng thái</span></div>
+<sc-for list="{{reused}}" as="r" hint-placeholder-count="6">
+<div class="tr b"><b>{{r.k}}</b><span>{{r.what}}</span><span>{{r.where}}</span></div>
+</sc-for>
+</div>
+<h3 style="margin-top:20px;font-size:14px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:#3E424D">Thành phần mới (tối thiểu, dùng lại được)</h3>
+<div class="tbl">
+<div class="tr th b"><span>Thành phần</span><span>Nội dung và biến thể</span><span>Dùng lại ở</span></div>
+<sc-for list="{{newc}}" as="r" hint-placeholder-count="6">
+<div class="tr b"><b>{{r.k}}</b><span>{{r.what}}</span><span>{{r.where}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Kiểm tra theo phần 5.1 và phần 8 của báo cáo</h2>
+<div class="tbl">
+<sc-for list="{{check}}" as="r" hint-placeholder-count="16">
+<div class="tr c"><span class="{{r.cls}}" style="justify-self:start">{{r.st}}</span><span><b>{{r.k}}</b> {{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Cần xác nhận trước khi làm thật</h2>
+<div class="tbl">
+<sc-for list="{{ask}}" as="r" hint-placeholder-count="7">
+<div class="tr c"><span class="note" style="justify-self:start">{{r.k}}</span><span>{{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":8800}}'>
+const D = {"fx":[{"id":"BL1","name":"Hero vào trang","where":"PageHero, trang danh sách Blog","trigger":"Tải trang hoặc vào từ trang khác, một lần. Không chạy lại khi đổi số trang.","props":"opacity 0 → 1 và translateY 20px → 0 của chip, h1, mô tả, thẻ số liệu và hàng credit.","dur":"0.55s (staggerItem), EASE_STANDARD","delay":"staggerContainer: đầu 0.1s, bước 0.12s. Chip 0.1s, h1 0.22s, mô tả 0.34s, số liệu và credit 0.46s.","reduced":"Không có trạng thái ẩn, hiện thẳng ở vị trí cuối. Thay .rise-in."},{"id":"BL2","name":"Video nền hero","where":"HeroBackdrop","trigger":"Tải trang. Clip tự host (tối đa 5 MB), eager, muted, không tiếng. Tạm dừng khi cuộn ra ngoài màn hình.","props":"opacity của clip 0 → 0.25 khi có khung đầu. Khung poster luôn ở 0.25 nên không nháy. Vòng lặp là của video, không phải hiệu ứng giao diện.","dur":"0.6s (base), EASE_STANDARD","delay":"Không trễ.","reduced":"Không tự phát: chỉ hiện khung poster ở 0.25, nút ở trạng thái Phát. Người dùng vẫn bấm phát được."},{"id":"BL3","name":"Nút tạm dừng nền","where":"HeroBackdrop, nút tròn 44px","trigger":"Bấm, Enter hoặc Space. Hover, focus.","props":"Video phát ↔ dừng. Biểu tượng và aria-label đổi tức thì. Hover: viền #D1D1D1 → rgba(0,0,0,.25), màu #4D4D4D → #000.","dur":"0.25s (fast), EASE_STANDARD","delay":"Không trễ.","reduced":"Đổi màu tức thì. Hành vi phát và dừng không đổi."},{"id":"BL4","name":"Thẻ bài hiện khi cuộn tới","where":"Lưới PostCard 3 × 3","trigger":"Thẻ vào vùng nhìn (VIEWPORT_ONCE, một lần). Cũng chạy với bộ thẻ của trang phân trang mới.","props":"opacity 0 → 1; translateY 20px → 0.","dur":"0.55s (staggerItem), EASE_STANDARD","delay":"0.05s + cột × 0.07s, tức 0.05, 0.12, 0.19s. Mobile một cột: 0.05s.","reduced":"Thẻ hiện thẳng ở vị trí cuối."},{"id":"BL5","name":"Hover thẻ bài","where":"PostCard, (hover:hover) and (pointer:fine)","trigger":"Rê chuột hoặc focus bàn phím vào thẻ. Rời đi thì chạy ngược lại.","props":"Giống M4: viền #D1D1D1 → rgba(0,0,0,.2); bóng none → 0 2px 4px .05 + 0 12px 32px .12; ảnh scale 1 → 1.03; đĩa #EFEFEF → #0D0D0D, mũi tên x 0 → 2px.","dur":"0.3s cho viền, bóng, đĩa, mũi tên; 0.6s (base) cho ảnh. EASE_STANDARD","delay":"Không trễ.","reduced":"Viền và bóng đổi tức thì; bỏ phóng ảnh và dịch mũi tên. Không có thông tin nào chỉ hiện ở hover."},{"id":"BL6","name":"Nhấn thẻ","where":"PostCard","trigger":"Nhấn giữ (:active).","props":"scale 1 → 0.98; thả thì về 1.","dur":"0.2s, EASE_STANDARD","delay":"Không trễ.","reduced":"Bỏ scale."},{"id":"BL7","name":"Thẻ mở toàn màn hình","where":"ExpandingCardLink, giữ nguyên hành vi (Blog và trang chủ)","trigger":"Bấm trái thường, không phím bổ trợ. Ctrl, Cmd, Shift, Alt-click và bấm giữa để trình duyệt xử lý. Bấm lần hai khi đang chạy bị bỏ qua.","props":"Panel trắng (nền bề mặt, viền, bóng thẻ hover, bo 16px) gắn vào body, position fixed, z-index 1500, đặt đúng khung thẻ. Khung kế tiếp: top 0, left 0, width 100vw, height 100dvh (framer-motion layout). Nội dung thẻ không di chuyển, chỉ bị che. router.prefetch ngay khi bấm, router.push sau 0.4s.","dur":"0.4s (EXPAND_MS), EASE_STANDARD","delay":"Không trễ. Dự phòng: sau 0.4 + 0.6 = 1.0s nếu panel còn thì opacity 1 → 0 trong 0.3s rồi gỡ.","reduced":"Thẻ là liên kết thường, không có panel, mở ngay (classifyCardClick)."},{"id":"BL8","name":"Bài viết vào trang","where":"Khối đầu bài: nút quay lại, h1, meta","trigger":"Vào trang, kể cả sau BL7. Một lần. Thân bài không có hiệu ứng vì là trang đọc.","props":"opacity 0 → 1; translateY 20px → 0 cho cả khối đầu bài.","dur":"0.55s (staggerItem), EASE_STANDARD","delay":"Trễ 0.1s (delay).","reduced":"Hiện thẳng."},{"id":"BL9","name":"Mục lục: hover, mục đang đọc","where":"TocRail, từ 1024px, sticky top 96px","trigger":"Hover, focus, hoặc cuộn khiến heading khác vào vùng đọc (IntersectionObserver, cập nhật aria-current=\"location\").","props":"Hover: nền trong → #EFEFEF. Đang đọc: nền #0D0D0D, chữ #FFF. Không có thanh trượt nối các mục.","dur":"0.25s (fast), EASE_STANDARD","delay":"Không trễ.","reduced":"Đổi màu tức thì."},{"id":"BL10","name":"Nhảy tới mục","where":"Mục lục (rail và details)","trigger":"Bấm liên kết #sec-n. Vẫn là liên kết thật, hoạt động khi tắt JavaScript.","props":"scrollTop tới heading, scroll-margin-top 6rem.","dur":"0.9s (Lenis đã có)","delay":"Lenis 1−(1−t)³, không thêm đường cong mới.","reduced":"Nhảy tức thì. Cảm ứng cũng nhảy tức thì (Lenis chỉ chạy với chuột)."},{"id":"BL11","name":"Mục lục di động và Báo lỗi","where":"Disclosure, details native, tóm tắt 52px","trigger":"Bấm tóm tắt hoặc Enter, Space.","props":"Chevron rotate 0 → 180deg. Nội dung hiện tức thì (details không hoạt hoạ chiều cao; CSS không ép mở được khi đóng).","dur":"0.25s (fast) cho chevron, EASE_STANDARD","delay":"Không trễ.","reduced":"Chevron đổi tức thì."},{"id":"BL12","name":"Ô nhập: hover, focus","where":"Field","trigger":"Rê chuột, focus.","props":"Hover: viền #8C8C8C → #4D4D4D. Focus: viền → #314344 kèm bóng 0 0 0 3px rgba(49,67,68,.3).","dur":"0.25s (fast), EASE_STANDARD","delay":"Không trễ.","reduced":"Đổi tức thì. Vòng focus vẫn hiện."},{"id":"BL13","name":"Lỗi từng ô","where":"Field, dòng lỗi","trigger":"Bấm gửi khi có ô không hợp lệ. Sửa ô nào thì lỗi ô đó biến mất.","props":"opacity 0 → 1 của dòng lỗi, không dịch chuyển để khỏi đẩy chữ đang đọc. Viền → #B3261E. Tiêu điểm chuyển tới ô sai đầu tiên.","dur":"0.25s (fast), EASE_STANDARD","delay":"Không trễ.","reduced":"Hiện tức thì. Tiêu điểm vẫn chuyển."},{"id":"BL14","name":"Nút gửi","where":"Button chính","trigger":"Nhấn giữ; đang gửi.","props":":active scale 1 → 0.98. Đang gửi: opacity 1 → 0.6, aria-disabled, nhãn đổi thành \"Đang gửi...\". Không dùng spinner.","dur":"0.2s (nhấn), 0.25s (mờ). EASE_STANDARD","delay":"Không trễ.","reduced":"Bỏ scale; đổi tức thì."},{"id":"BL15","name":"Thông báo kết quả gửi","where":"FormNotice (thành công, lỗi máy chủ)","trigger":"Server Action trả về giá trị (không tự chuyển trang).","props":"opacity 0 → 1. Thành công: form reset ngay, role=\"status\". Lỗi: role=\"alert\". Không lấy tiêu điểm.","dur":"0.25s (fast), EASE_STANDARD","delay":"Không trễ.","reduced":"Hiện tức thì."},{"id":"BL16","name":"Bình luận mới sau khi gửi","where":"CommentThread","trigger":"Sau router.refresh có bình luận mới trong danh sách.","props":"opacity 0 → 1 của mục mới, không dịch chuyển.","dur":"0.5s (reveal), EASE_STANDARD","delay":"Không trễ.","reduced":"Hiện tức thì."},{"id":"BL17","name":"Bấm Trả lời","where":"CommentThread và form","trigger":"Bấm nút 44px ở một bình luận gốc.","props":"Tiêu đề form đổi tức thì. Cuộn tới form (scroll-margin-top 6rem) rồi focus ô nội dung với preventScroll. Đề xuất mới: hiện tại trang không cuộn.","dur":"0.9s (Lenis đã có)","delay":"Lenis 1−(1−t)³. Focus sau khi cuộn xong.","reduced":"Nhảy tức thì rồi focus."},{"id":"BL18","name":"Xem thêm bình luận","where":"CommentThread","trigger":"Bấm \"Xem thêm bình luận\" (?comments=n, scroll=false, vị trí cuộn giữ nguyên).","props":"Mục mới: opacity 0 → 1, translateY 20px → 0. Dòng \"Đang hiện x/y\" đổi bằng opacity 0 → 1 (như M10).","dur":"0.55s (staggerItem); dòng đếm 0.25s. EASE_STANDARD","delay":"fastDelay 0.05s + i × fastStep 0.07s, i là thứ tự trong lô mới.","reduced":"Hiện thẳng."},{"id":"BL19","name":"Trạng thái rỗng vào","where":"EmptyState (trang), EmptyState nhỏ (bình luận)","trigger":"Trang hết bài; bài chưa có bình luận.","props":"Trang: opacity 0 → 1, translateY 24px → 0 (fadeUp, như M12). Bình luận: chỉ opacity 0 → 1.","dur":"Trang 0.6s (base); bình luận 0.25s (fast). EASE_STANDARD","delay":"Không trễ. Hình minh hoạ tĩnh, không lặp.","reduced":"Hiện ngay ở vị trí cuối."},{"id":"BL20","name":"Phân trang, số kết quả","where":"Pagination, ResultCount","trigger":"Dùng lại M6, M10, M11: đổi trang bằng Link phía client, không tải lại toàn trang như bản cũ.","props":"Ô: viền #D1D1D1 → rgba(0,0,0,.2). Dòng đếm: opacity 0 → 1. Cuộn tới #danh-sach.","dur":"0.25s (fast); cuộn 0.9s (Lenis). EASE_STANDARD","delay":"Không trễ.","reduced":"Đổi tức thì; cuộn nhảy tức thì."}],"chg":[{"k":"Đầu trang","now":"PageHero cũ với ô \"0 Blog\"; nền video 25% và chữ credit 12px.","next":"PageHero v2 (chip, h1 46/34, mô tả, thẻ số liệu một ô) cộng HeroBackdrop: khe video 25%, lớp scrim bên trái, credit 13px trong hàng 44px.","why":"Mục 4.1 (một kiểu đầu trang). Scrim giữ chữ mô tả trên video ở mức ≥ 5.7:1."},{"k":"Video nền tự chạy","now":"Không có nút nào để tạm dừng.","next":"Nút tròn 44px phát và tạm dừng cạnh dòng credit.","why":"WCAG 2.2.2: nội dung tự chạy quá 5 giây phải dừng được. Mục 5.3 đã nêu nguyên tắc cho video tự chạy nhưng nền Blog thiếu."},{"k":"Thẻ bài","now":"Padding 24px, chip ngày, \"Đọc tiếp →\" là chữ; không ảnh thì ô xám trống.","next":"PostCard đã chốt: padding 16px, ảnh bo 12px, tiêu đề clamp 3, tóm tắt clamp 3, chân thẻ gồm ngày và đĩa mũi tên. Không ảnh thì tấm trung tính có biểu tượng bài viết. Không chip chủ đề, không độ khó.","why":"Mục 4.2 (một họ thẻ). Blog không có chủ đề hay độ khó nên hai phần đó tắt bằng thuộc tính."},{"k":"Mở rộng thẻ","now":"ExpandingCardLink 0.4s, chưa có tài liệu ngoài mã.","next":"Giữ nguyên hành vi. Ghi rõ ở BL7 và bảng bốn khung ở trên.","why":"Báo cáo ghi \"giữ nguyên\"; đặc tả để lượt code không làm mất."},{"k":"Phân trang","now":"Bản riêng: ô 36px, liệt kê mọi trang, không mũi tên, tải lại toàn trang.","next":"Pagination chung: ô 44px, mũi tên, tối đa 7 mục và \"…\", \"Trang x trong y\", Link phía client. Giữ 9 bài mỗi trang.","why":"Mục 4.3 và 4.10. Không còn tràn khi nhiều trang."},{"k":"Tiêu đề danh sách","now":"h2 chỉ dành cho trình đọc màn hình; không có số đếm.","next":"h2 hiển thị 26px \"Tất cả bài viết\" cùng ResultCount (aria-live) \"Hiển thị 9 trong 21 bài viết\".","why":"Cùng cấu trúc trang Bài học; người đọc biết quy mô và thứ tự (mới nhất trước)."},{"k":"Trạng thái rỗng","now":"Hộp nét đứt và một dòng chữ.","next":"EmptyState: hình, tiêu đề, mô tả, hai lối đi (bài học, video).","why":"Mục 6: Blog chưa có bài thật, trạng thái rỗng là phần có nhiều khả năng khách thấy đầu tiên."},{"k":"Nút quay lại","now":"Chỉ chữ, cao khoảng 20px.","next":"Button phụ 44px với mũi tên.","why":"Mục 4.10, 5.1 (mục tiêu bấm)."},{"k":"Nhãn đổi ngôn ngữ","now":"Chuỗi cứng trong mã, pill cao khoảng 28px.","next":"LangPill 44px; nhãn lấy từ messages/{vi,en}.json. Chỉ hiện khi có bản dịch.","why":"Mục 4.9 (chuỗi cứng), 4.10 (44px), 5.1 mục 1 (cùng bộ khoá)."},{"k":"Tiêu đề bài","now":"h1 30/42px.","next":"h1 46/34px của thang chung; text-wrap balance, tiêu đề rất dài xuống nhiều dòng.","why":"Mục 4.1 (một thang chữ)."},{"k":"Mục lục","now":"Khối tĩnh phía trên thân bài, không đánh dấu mục đang đọc.","next":"Desktop: cột phải dính, mục đang đọc nền đen. Mobile: details mở được, hàng 44px. Chỉ có khi ≥ 2 tiêu đề; nếu không, cột phải để trống và bài không bị dịch vị trí.","why":"Mục 4.12."},{"k":"Thân bài .chip-prose","now":"17px, h2 24px 700.","next":"Giữ đường ống, 17/1.75 và mọi node. h2 đổi 26px 800 để khớp thang trang; nhãn \"Hình N.\", callout, \"Nguồn tham khảo\" vẫn do CSS vẽ theo ngôn ngữ.","why":"Mục 5.1 số 6 (không đụng schema hay sanitize). Chỉ đổi số đo."},{"k":"Form bình luận","now":"Ô 40px, nhãn 12px, ô nội dung không có nhãn thấy được, lỗi đúng từng ô.","next":"Field dùng chung: ô 44px, nhãn 14px 600 cho cả ba ô, viền #8C8C8C, lỗi từng ô có biểu tượng. Giữ honeypot, aria-invalid, focus vào ô sai đầu tiên.","why":"Mục 4.4 (hai form khác nhau) và 4.10."},{"k":"Thông báo gửi","now":"Thành công là chữ xanh lục; liên hệ thì không đổi màu.","next":"FormNotice dùng chung: thành công viền và chữ màu nhấn kèm dấu tick; lỗi đỏ #B3261E kèm biểu tượng.","why":"Một kiểu thành công cho mọi form; không chỉ dựa vào màu."},{"k":"Danh sách bình luận","now":"Tên, giờ, nút \"↩ Trả lời\" chữ nhỏ.","next":"Avatar chữ cái, tên, huy hiệu Tác giả, giờ, nút Trả lời 44px; trả lời có vạch trái; \"Xem thêm\" là nút phụ.","why":"Mục 4.10 (mục tiêu bấm) và dễ quét hơn."},{"k":"Bấm Trả lời","now":"Chỉ đổi tiêu đề form; trang không cuộn, không focus.","next":"Cuộn tới form rồi focus ô nội dung (BL17).","why":"Báo cáo ghi mục này là \"unclear\"; đề xuất, cần xác nhận."},{"k":"Báo lỗi bài","now":"details, form 44px, thông báo chung.","next":"Giữ cấu trúc; dùng Field và FormNotice; thêm dòng giới hạn 3 tin mỗi giờ.","why":"Mục 4.4; 5.1 số 8 (chữ giới hạn phải hiển thị)."},{"k":"Chuyển động","now":".rise-in 12px, hover màu 150ms, thẻ mở rộng 400ms.","next":"20 hiệu ứng BL1–BL20, tất cả EASE_STANDARD, thời lượng lấy từ tokens.ts hoặc giá trị đã có.","why":"Mục 4.6 (một easing); có xử lý giảm chuyển động ở từng dòng."}],"reused":[{"k":"PageHero v2","what":"Chip \"Góc phân tích\", h1 46/34, mô tả, thẻ số liệu một ô (\"Bài viết\"). Thêm tuỳ chọn backdrop (xem HeroBackdrop).","where":"Dùng lại thành phần đã chốt ở trang trước."},{"k":"PostCard (thẻ, gọn)","what":"showTopic, showDifficulty đều tắt; chân thẻ chỉ có ngày và đĩa mũi tên; không ảnh thì tấm trung tính; expand bật. Tóm tắt trống thì bỏ đoạn, chân thẻ vẫn ghim đáy.","where":"Dùng lại thành phần đã chốt ở trang trước."},{"k":"Pagination","what":"Ô 44px, mũi tên, cửa sổ tối đa 7 mục, \"…\", \"Trang x trong y\", rel prev và next. Page size 9 là tham số.","where":"Dùng lại thành phần đã chốt ở trang trước."},{"k":"ResultCount, EmptyState, CardReveal, Button, Eyebrow","what":"Đúng như trang Bài học. EmptyState dùng bản lớn (hai nút); bản nhỏ cho bình luận là một biến thể kích thước, cùng vai trò.","where":"Dùng lại thành phần đã chốt ở trang trước."},{"k":"Khung chung, Token","what":"Thanh điều hướng, chân trang, hamburger 68px, bố cục 1280/390, thang chữ, bo góc, hover thẻ.","where":"Dùng lại thành phần đã chốt ở trang trước."},{"k":"Hàng chủ đề (TopicNav .trow)","what":"Kiểu hàng 48px, nền đen khi đang chọn, dùng lại làm hàng của mục lục (không có vòng tròn số).","where":"Dùng lại kiểu đã chốt."}],"newc":[{"k":"HeroBackdrop","what":"Khe video 25% + scrim (trái → phải và trên → dưới) + hàng credit cao 44px + nút phát/dừng. Tham số: src, poster, credit. Ở canvas là dải gradient tối vì không có video thật.","where":"Video index; bất kỳ PageHero nào muốn có nền động."},{"k":"Field và FormNotice","what":"Nhãn 14px 600, ô 44px (textarea tối thiểu 132px), gợi ý, lỗi từng ô có biểu tượng, viền #8C8C8C. FormNotice có hai trạng thái ok và er. Thêm token --fb và --err.","where":"Liên hệ, Báo lỗi, Đóng góp; thay cả hai form hiện có (mục 4.4)."},{"k":"ArticleShell","what":"Gói: BackLink (Button phụ), MetaRow, LangPill, cover, TocRail hoặc TocDetails, .prose, ReportCard. Cột bài 768px cố định, cột phải 272px chừa sẵn.","where":"Bài học chi tiết và Video chi tiết (bỏ cột phải hoặc thay bằng nội dung khác)."},{"k":"TocRail và TocDetails","what":"Rail sticky desktop; details mobile. Tự ẩn khi dưới 2 tiêu đề.","where":"Mọi bài dài."},{"k":"Disclosure","what":"details native, tóm tắt 52px, chevron xoay 0.25s, nội dung hiện tức thì.","where":"Báo lỗi, mục lục di động, FAQ, bộ lọc di động của Video."},{"k":"CommentThread","what":"CommentItem (Avatar chữ cái, tên, huy hiệu Tác giả, giờ, nội dung, nút Trả lời), một cấp trả lời, \"Xem thêm\", CommentEmpty (EmptyState nhỏ). Lưu ý bản canvas vẽ danh sách phẳng; mã thật giữ ul lồng nhau.","where":"Chỉ Blog; nếu sau này bật bình luận cho Video thì dùng lại."}],"check":[{"st":"Đạt","k":"Song ngữ.","text":"Mọi chuỗi có VI và EN, kể cả nhãn đổi ngôn ngữ (trước là chuỗi cứng). Câu lỗi EN dài hơn (tới 46 ký tự) xuống hai dòng trong form; tiêu đề thẻ rất dài cắt ba dòng; nút 44px co giãn theo chữ. Khoá mới cần thêm ở cả hai file messages.","cls":"pass"},{"st":"Đạt","k":"Bên thứ ba.","text":"Không script, iframe, ảnh ngoài. Video nền thật là clip tự host ≤ 5 MB; link credit mở YouTube ở tab mới, không nhúng. Phông trong canvas chỉ để xem trước.","cls":"pass"},{"st":"Đạt","k":"Video sau khi bấm.","text":"Video nền là tệp tự host, không phải iframe. Bài mẫu không có video nhúng; nếu có thì dùng facade sẵn có của .chip-prose (iframe chỉ tạo sau khi bấm).","cls":"pass"},{"st":"Đạt","k":"Giảm chuyển động.","text":"BL1–BL20 đều có dòng giảm chuyển động; video nền không tự phát và có nút Phát; thẻ mở rộng thành liên kết thường.","cls":"pass"},{"st":"Đạt","k":"Không chỉ dựa vào hover.","text":"Hover chỉ trang trí. Lỗi form luôn có biểu tượng và chữ; huy hiệu Tác giả có chữ; nút tạm dừng có aria-label.","cls":"pass"},{"st":"Đạt","k":"Honeypot.","text":"Ô website có trong form bình luận và form báo lỗi: aria-hidden, tabindex -1, đặt ngoài màn hình, nhãn có sẵn nên trình đọc không thấy.","cls":"pass"},{"st":"Đạt","k":"Tương phản chữ.","text":"#3E424D trên #E5E5E5 khoảng 8.0:1, trên trắng 10.0:1. Nội dung bình luận #4D4D4D: 6.7:1 trên nền, 8.4:1 trên trắng. Lỗi #B3261E: 6.5:1 trên trắng, 5.9:1 trên #FCF1F0. Thành công #314344 trên #F4F6F6 khoảng 9.6:1. Placeholder #6B6B6B trên trắng 5.3:1. Huy hiệu #314344 trên #EFEFEF khoảng 9:1. Chữ trên video nền: tính với màu tối nhất của khe và scrim thì ≥ 5.7:1. Thân bài đen trên #E5E5E5 khoảng 16:1 (≥ 7:1).","cls":"pass"},{"st":"Đạt","k":"Tương phản thành phần (3:1).","text":"Viền ô nhập đổi từ #D1D1D1 (1.4:1, không đạt) sang #8C8C8C (3.4:1). Vòng focus #314344 8:1. Lưu ý: viền #D1D1D1 của phân trang và thẻ là kế thừa từ trang Bài học; các thành phần đó có chữ hoặc nền tương phản nên vẫn nhận ra, nhưng cần xét chung ở lượt rà cuối.","cls":"pass"},{"st":"Đạt","k":"Mục bấm ≥ 44px.","text":"Quay lại 44, LangPill 44, nút dừng 44, link credit 44, ô nhập 44, nút 44, Trả lời 44, Huỷ 44, phân trang 44, hàng mục lục 48, tóm tắt details 52, link chân trang mobile 44. Thanh điều hướng desktop giữ 40px như trang Bài học, ngoài phạm vi.","cls":"pass"},{"st":"Đạt","k":"Đủ trạng thái.","text":"Danh sách: có dữ liệu, rỗng (VI 390, EN 1280). Bài: đóng và mở Báo lỗi, không có bình luận, bài stress. Bình luận: lỗi từng ô, quá dài, đang gửi, thành công, lỗi máy chủ, đang trả lời, rỗng. Trang vượt quá trang cuối và slug lạ là 404, thuộc lượt thiết kế 404. Không có trạng thái đang tải vì không có loading.tsx.","cls":"pass"},{"st":"Đạt","k":"390px không cuộn ngang.","text":"Khung cố định 390; phân trang 7 mục rộng khoảng 328px; URL dài và tên dài bọc bằng overflow-wrap; công thức dài cuộn ngang trong chính khối công thức, không cuộn cả trang.","cls":"pass"},{"st":"Đạt","k":"Nội dung thật.","text":"Tiêu đề thẻ 3 dòng bị cắt; tiêu đề bài 5 dòng; thẻ không ảnh; tóm tắt trống; bài không mục lục (chỉ một h2), không ngày cập nhật, không bản dịch; tên người bình luận dài và link dài.","cls":"pass"},{"st":"Đạt","k":"Một thang chữ, một họ thẻ, một phân trang, một form, một easing.","text":"Đã gộp theo mục (a). 404 thuộc lượt sau.","cls":"pass"},{"st":"Đạt","k":"Khả năng làm.","text":"Tailwind, framer-motion, details native; thêm IntersectionObserver nhỏ cho mục lục. Không thêm thư viện, không đổi schema hay luồng đăng bài.","cls":"pass"},{"st":"Lưu ý","k":"Chữ nhỏ nhất.","text":"Bản trước có nhãn 10px (huy hiệu Tác giả); bản mới nâng lên 11px, bằng chip eyebrow. Nhãn chú thích \"Video nền · khe giữ chỗ\" chỉ có trên canvas, bỏ khi làm thật.","cls":"note"},{"st":"Lưu ý","k":"Khoá messages mới.","text":"Cần: blog.readOther, blog.toc, blog.pauseVideo, blog.playVideo, blog.listHead, blog.resultCount, comments.label.name, comments.label.email, comments.label.body, comments.error.tooLong, comments.reply, comments.replyingTo, comments.cancel, comments.showMore, comments.shown, comments.authorBadge.","cls":"note"}],"ask":[{"k":"Video nền hero","text":"Giữ clip lặp tại chỗ (thêm nút dừng) hay thay bằng ảnh tĩnh? Khuyến nghị giữ và có nút dừng: đã có clip TSMC tự host, chỉ thiếu điều khiển. Nếu bỏ thì HeroBackdrop chỉ còn poster."},{"k":"Thời lượng mở rộng thẻ","text":"Thẻ Blog dùng 0.4s (EXPAND_MS), panel Bài học 0.45s. Có thể gộp thành 0.45s (thay đổi 50ms) để chỉ còn một giá trị, hoặc giữ nguyên như hiện nay."},{"k":"Chuyển từ panel sang bài","text":"Panel trắng nằm ngoài cây React của trang nên có thể biến mất tức thì khi đổi route: người đọc thấy trắng rồi xám. Muốn mờ panel 0.25s khi bài đã sẵn sàng thì phải giữ panel qua điều hướng (ở mức layout)."},{"k":"Cột phải khi không có mục lục","text":"Bản vẽ giữ chừa cột phải để bài luôn ở cùng một vị trí giữa các bài. Nếu muốn bài tự căn giữa khi không có mục lục thì vị trí sẽ nhảy giữa các bài."},{"k":"Cuộn tới form khi Trả lời","text":"Hiện chưa cuộn nên người dùng có thể không thấy form đã đổi. Bản này đề xuất cuộn và focus (BL17); cần xác nhận vì là thay đổi hành vi."},{"k":"Kích thước trang Blog","text":"Giữ 9 bài (3 × 3). Nếu muốn 12 để bằng Bài học thì đổi một hằng số."},{"k":"Thẻ số liệu","text":"Blog chỉ có một số liệu hợp lý (số bài). Nếu muốn thêm ô thứ hai như \"Cập nhật gần nhất\" thì cần thêm truy vấn."}]};
+class Component extends DCLogic {
+  renderVals() {
+    return D;
+  }
+}
+</script>
+</body>
+</html>

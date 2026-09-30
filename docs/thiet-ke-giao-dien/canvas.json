@@ -1,0 +1,764 @@
+{
+ "v": 3,
+ "attachments": {},
+ "boards": {
+  "Collapsed-VI-1280.dc.html": {
+   "h": 2700,
+   "title": "VI · Cột chủ đề thu gọn · 1280",
+   "w": 1280,
+   "x": 0,
+   "y": 4340
+  },
+  "Components.dc.html": {
+   "h": 3060,
+   "title": "Thành phần dùng chung",
+   "w": 1280,
+   "x": 1360,
+   "y": 7380
+  },
+  "Data-EN-1280.dc.html": {
+   "h": 2640,
+   "title": "EN · Có dữ liệu · 1280",
+   "w": 1280,
+   "x": 1360,
+   "y": 0
+  },
+  "Data-EN-390.dc.html": {
+   "h": 4000,
+   "title": "EN · Có dữ liệu · 390",
+   "w": 390,
+   "x": 3190,
+   "y": 0
+  },
+  "Data-VI-390.dc.html": {
+   "h": 4000,
+   "title": "VI · Có dữ liệu · 390",
+   "w": 390,
+   "x": 2720,
+   "y": 0
+  },
+  "Empty-EN-390.dc.html": {
+   "h": 1360,
+   "title": "EN · Rỗng · 390",
+   "w": 390,
+   "x": 2720,
+   "y": 4340
+  },
+  "Empty-VI-1280.dc.html": {
+   "h": 1080,
+   "title": "VI · Rỗng · 1280",
+   "w": 1280,
+   "x": 1360,
+   "y": 4340
+  },
+  "Filtered-EN-1280.dc.html": {
+   "h": 1240,
+   "title": "EN · Lọc ra rỗng · 1280",
+   "w": 1280,
+   "x": 1360,
+   "y": 5540
+  },
+  "Filtered-VI-390.dc.html": {
+   "h": 1600,
+   "title": "VI · Lọc ra rỗng · 390",
+   "w": 390,
+   "x": 3190,
+   "y": 4340
+  },
+  "Main.dc.html": {
+   "h": 2640,
+   "title": "VI · Có dữ liệu · 1280",
+   "w": 1280,
+   "x": 0,
+   "y": 0
+  },
+  "Motion.dc.html": {
+   "h": 4800,
+   "title": "Đặc tả chuyển động",
+   "w": 1280,
+   "x": 0,
+   "y": 7380
+  },
+  "Summary.dc.html": {
+   "h": 5100,
+   "title": "Thay đổi, tái sử dụng, kiểm tra",
+   "w": 1280,
+   "x": 2720,
+   "y": 7380
+  },
+  "Blog-Index-VI-1280.dc.html": {
+   "x": 0,
+   "y": 12820,
+   "w": 1280,
+   "h": 2260,
+   "title": "Blog · Index · VI · 1280"
+  },
+  "Blog-Index-EN-390.dc.html": {
+   "x": 1360,
+   "y": 12820,
+   "w": 390,
+   "h": 3080,
+   "title": "Blog · Index · EN · 390"
+  },
+  "Blog-Empty-EN-1280.dc.html": {
+   "x": 1830,
+   "y": 12820,
+   "w": 1280,
+   "h": 1120,
+   "title": "Blog · Empty · EN · 1280"
+  },
+  "Blog-Empty-VI-390.dc.html": {
+   "x": 3190,
+   "y": 12820,
+   "w": 390,
+   "h": 1340,
+   "title": "Blog · Empty · VI · 390"
+  },
+  "Blog-Post-VI-1280.dc.html": {
+   "x": 3660,
+   "y": 12820,
+   "w": 1280,
+   "h": 5400,
+   "title": "Blog · Post · VI · 1280"
+  },
+  "Blog-Post-EN-390.dc.html": {
+   "x": 5020,
+   "y": 12820,
+   "w": 390,
+   "h": 5500,
+   "title": "Blog · Post · EN · 390"
+  },
+  "Blog-Post-Stress-EN-1280.dc.html": {
+   "x": 5490,
+   "y": 12820,
+   "w": 1280,
+   "h": 2400,
+   "title": "Blog · Post · Stress · EN · 1280"
+  },
+  "Blog-Comments-States.dc.html": {
+   "x": 0,
+   "y": 18440,
+   "w": 1280,
+   "h": 3900,
+   "title": "Blog · Comments · States"
+  },
+  "Blog-Spec.dc.html": {
+   "x": 1360,
+   "y": 18440,
+   "w": 1280,
+   "h": 8800,
+   "title": "Blog · Spec"
+  },
+  "Video-Index-VI-1280.dc.html": {
+   "x": 0,
+   "y": 27580,
+   "w": 1280,
+   "h": 2900,
+   "title": "Video · Index · VI · 1280"
+  },
+  "Video-Index-EN-390-Closed.dc.html": {
+   "x": 1360,
+   "y": 27580,
+   "w": 390,
+   "h": 3500,
+   "title": "Video · Index · EN · 390 · Closed"
+  },
+  "Video-Index-EN-390-Open.dc.html": {
+   "x": 1830,
+   "y": 27580,
+   "w": 390,
+   "h": 2400,
+   "title": "Video · Index · EN · 390 · Open"
+  },
+  "Video-Empty-VI-1280.dc.html": {
+   "x": 2300,
+   "y": 27580,
+   "w": 1280,
+   "h": 1080,
+   "title": "Video · Empty · VI · 1280"
+  },
+  "Video-Empty-EN-390.dc.html": {
+   "x": 3660,
+   "y": 27580,
+   "w": 390,
+   "h": 1150,
+   "title": "Video · Empty · EN · 390"
+  },
+  "Video-Filtered-EN-1280.dc.html": {
+   "x": 4130,
+   "y": 27580,
+   "w": 1280,
+   "h": 1420,
+   "title": "Video · Filtered · EN · 1280"
+  },
+  "Video-Filtered-VI-390.dc.html": {
+   "x": 5490,
+   "y": 27580,
+   "w": 390,
+   "h": 1500,
+   "title": "Video · Filtered · VI · 390"
+  },
+  "Video-Detail-VI-1280.dc.html": {
+   "x": 0,
+   "y": 31200,
+   "w": 1280,
+   "h": 3000,
+   "title": "Video · Detail · VI · 1280"
+  },
+  "Video-Detail-EN-390-Long.dc.html": {
+   "x": 1360,
+   "y": 31200,
+   "w": 390,
+   "h": 3200,
+   "title": "Video · Detail · EN · 390 · Long"
+  },
+  "Video-Detail-EN-390-NoLesson.dc.html": {
+   "x": 1830,
+   "y": 31200,
+   "w": 390,
+   "h": 2600,
+   "title": "Video · Detail · EN · 390 · NoLesson"
+  },
+  "Video-Spec.dc.html": {
+   "x": 2300,
+   "y": 31200,
+   "w": 1280,
+   "h": 9800,
+   "title": "Video · Spec"
+  },
+  "Search-Results-VI-1280.dc.html": {
+   "x": 0,
+   "y": 41340,
+   "w": 1280,
+   "h": 2480,
+   "title": "Search · Results · VI · 1280"
+  },
+  "Search-Results-EN-390.dc.html": {
+   "x": 1360,
+   "y": 41340,
+   "w": 390,
+   "h": 2500,
+   "title": "Search · Results · EN · 390"
+  },
+  "Search-Initial-VI-1280.dc.html": {
+   "x": 1830,
+   "y": 41340,
+   "w": 1280,
+   "h": 1300,
+   "title": "Search · Initial · VI · 1280"
+  },
+  "Search-Initial-EN-390.dc.html": {
+   "x": 3190,
+   "y": 41340,
+   "w": 390,
+   "h": 1580,
+   "title": "Search · Initial · EN · 390"
+  },
+  "Search-NoResults-EN-1280.dc.html": {
+   "x": 3660,
+   "y": 41340,
+   "w": 1280,
+   "h": 1300,
+   "title": "Search · NoResults · EN · 1280"
+  },
+  "Search-NoResults-VI-390.dc.html": {
+   "x": 5020,
+   "y": 41340,
+   "w": 390,
+   "h": 1580,
+   "title": "Search · NoResults · VI · 390"
+  },
+  "Search-Error-VI-1280.dc.html": {
+   "x": 5490,
+   "y": 41340,
+   "w": 1280,
+   "h": 1080,
+   "title": "Search · Error · VI · 1280"
+  },
+  "Search-Popover-VI-1280.dc.html": {
+   "x": 0,
+   "y": 43960,
+   "w": 1280,
+   "h": 660,
+   "title": "Search · Popover · VI · 1280"
+  },
+  "Search-Menu-EN-390.dc.html": {
+   "x": 1360,
+   "y": 43960,
+   "w": 390,
+   "h": 844,
+   "title": "Search · Menu · EN · 390"
+  },
+  "Search-Spec-VI-1280.dc.html": {
+   "x": 1830,
+   "y": 43960,
+   "w": 1280,
+   "h": 9950,
+   "title": "Search · Spec · VI · 1280"
+  },
+  "About-Placeholder-VI-1280.dc.html": {
+   "x": 0,
+   "y": 54250,
+   "w": 1280,
+   "h": 3000,
+   "title": "About · Placeholder · VI · 1280"
+  },
+  "About-Placeholder-EN-390.dc.html": {
+   "x": 1360,
+   "y": 54250,
+   "w": 390,
+   "h": 3900,
+   "title": "About · Placeholder · EN · 390"
+  },
+  "About-Filled-EN-1280.dc.html": {
+   "x": 1830,
+   "y": 54250,
+   "w": 1280,
+   "h": 3500,
+   "title": "About · Filled · EN · 1280"
+  },
+  "About-Filled-VI-390.dc.html": {
+   "x": 3190,
+   "y": 54250,
+   "w": 390,
+   "h": 4900,
+   "title": "About · Filled · VI · 390"
+  },
+  "About-States-VI-1280.dc.html": {
+   "x": 3660,
+   "y": 54250,
+   "w": 1280,
+   "h": 3600,
+   "title": "About · States · VI · 1280"
+  },
+  "About-Faq-VI-1280.dc.html": {
+   "x": 5020,
+   "y": 54250,
+   "w": 1280,
+   "h": 2500,
+   "title": "About · Faq · VI · 1280"
+  },
+  "About-Faq-EN-390.dc.html": {
+   "x": 6380,
+   "y": 54250,
+   "w": 390,
+   "h": 2200,
+   "title": "About · Faq · EN · 390"
+  },
+  "About-Spec.dc.html": {
+   "x": 0,
+   "y": 59270,
+   "w": 1280,
+   "h": 7200,
+   "title": "About · Spec"
+  },
+  "Contact-VI-1280.dc.html": {
+   "x": 0,
+   "y": 66810,
+   "w": 1280,
+   "h": 1260,
+   "title": "Contact · VI · 1280"
+  },
+  "Contact-EN-1280.dc.html": {
+   "x": 1360,
+   "y": 66810,
+   "w": 1280,
+   "h": 1420,
+   "title": "Contact · EN · 1280"
+  },
+  "Contact-EN-390.dc.html": {
+   "x": 2720,
+   "y": 66810,
+   "w": 390,
+   "h": 1920,
+   "title": "Contact · EN · 390"
+  },
+  "Contact-VI-390.dc.html": {
+   "x": 3190,
+   "y": 66810,
+   "w": 390,
+   "h": 2280,
+   "title": "Contact · VI · 390"
+  },
+  "Contact-States-VI-1280.dc.html": {
+   "x": 3660,
+   "y": 66810,
+   "w": 1280,
+   "h": 4300,
+   "title": "Contact · States · VI · 1280"
+  },
+  "Contact-States-EN-390.dc.html": {
+   "x": 5020,
+   "y": 66810,
+   "w": 390,
+   "h": 6800,
+   "title": "Contact · States · EN · 390"
+  },
+  "Contact-FormSpecimen-VI-1280.dc.html": {
+   "x": 5490,
+   "y": 66810,
+   "w": 1280,
+   "h": 4600,
+   "title": "Contact · FormSpecimen · VI · 1280"
+  },
+  "Contact-ReportMistake-VI-1280.dc.html": {
+   "x": 0,
+   "y": 73730,
+   "w": 1280,
+   "h": 2600,
+   "title": "Contact · ReportMistake · VI · 1280"
+  },
+  "Contact-ReportMistake-EN-390.dc.html": {
+   "x": 1360,
+   "y": 73730,
+   "w": 390,
+   "h": 2450,
+   "title": "Contact · ReportMistake · EN · 390"
+  },
+  "Contact-Spec-VI-1280.dc.html": {
+   "x": 1830,
+   "y": 73730,
+   "w": 1280,
+   "h": 9800,
+   "title": "Contact · Spec · VI · 1280"
+  },
+  "Contribute-VI-1280.dc.html": {
+   "x": 0,
+   "y": 83870,
+   "w": 1280,
+   "h": 1530,
+   "title": "Contribute · VI · 1280"
+  },
+  "Contribute-EN-1280.dc.html": {
+   "x": 1360,
+   "y": 83870,
+   "w": 1280,
+   "h": 1530,
+   "title": "Contribute · EN · 1280"
+  },
+  "Contribute-VI-390.dc.html": {
+   "x": 2720,
+   "y": 83870,
+   "w": 390,
+   "h": 2060,
+   "title": "Contribute · VI · 390"
+  },
+  "Contribute-EN-390.dc.html": {
+   "x": 3190,
+   "y": 83870,
+   "w": 390,
+   "h": 2060,
+   "title": "Contribute · EN · 390"
+  },
+  "Contribute-Stress-EN-1280.dc.html": {
+   "x": 3660,
+   "y": 83870,
+   "w": 1280,
+   "h": 1930,
+   "title": "Contribute · Stress · EN · 1280"
+  },
+  "Privacy-VI-1280.dc.html": {
+   "x": 5020,
+   "y": 83870,
+   "w": 1280,
+   "h": 2620,
+   "title": "Privacy · VI · 1280"
+  },
+  "Privacy-EN-1280.dc.html": {
+   "x": 0,
+   "y": 86610,
+   "w": 1280,
+   "h": 2620,
+   "title": "Privacy · EN · 1280"
+  },
+  "Privacy-VI-390.dc.html": {
+   "x": 1360,
+   "y": 86610,
+   "w": 390,
+   "h": 3380,
+   "title": "Privacy · VI · 390"
+  },
+  "Privacy-EN-390.dc.html": {
+   "x": 1830,
+   "y": 86610,
+   "w": 390,
+   "h": 3380,
+   "title": "Privacy · EN · 390"
+  },
+  "Privacy-Stress-EN-390.dc.html": {
+   "x": 2300,
+   "y": 86610,
+   "w": 390,
+   "h": 2630,
+   "title": "Privacy · Stress · EN · 390"
+  },
+  "Contribute-Spec-VI-1280.dc.html": {
+   "x": 2770,
+   "y": 86610,
+   "w": 1280,
+   "h": 7680,
+   "title": "Contribute · Spec · VI · 1280"
+  },
+  "Error-404-VI-1280.dc.html": {
+   "x": 0,
+   "y": 94630,
+   "w": 1280,
+   "h": 1220,
+   "title": "Error · 404 · VI · 1280"
+  },
+  "Error-404-EN-1280.dc.html": {
+   "x": 1360,
+   "y": 94630,
+   "w": 1280,
+   "h": 1220,
+   "title": "Error · 404 · EN · 1280"
+  },
+  "Error-404-EN-390.dc.html": {
+   "x": 2720,
+   "y": 94630,
+   "w": 390,
+   "h": 1320,
+   "title": "Error · 404 · EN · 390"
+  },
+  "Error-Article-Lesson-VI-1280.dc.html": {
+   "x": 3190,
+   "y": 94630,
+   "w": 1280,
+   "h": 960,
+   "title": "Error · Article · Lesson · VI · 1280"
+  },
+  "Error-Article-Blog-EN-390.dc.html": {
+   "x": 4550,
+   "y": 94630,
+   "w": 390,
+   "h": 1020,
+   "title": "Error · Article · Blog · EN · 390"
+  },
+  "Error-Article-Video-VI-390.dc.html": {
+   "x": 5020,
+   "y": 94630,
+   "w": 390,
+   "h": 1020,
+   "title": "Error · Article · Video · VI · 390"
+  },
+  "Error-Runtime-VI-1280.dc.html": {
+   "x": 5490,
+   "y": 94630,
+   "w": 1280,
+   "h": 1100,
+   "title": "Error · Runtime · VI · 1280"
+  },
+  "Error-Runtime-EN-390.dc.html": {
+   "x": 0,
+   "y": 96070,
+   "w": 390,
+   "h": 1300,
+   "title": "Error · Runtime · EN · 390"
+  },
+  "Error-Runtime-EN-390-NoDigest.dc.html": {
+   "x": 470,
+   "y": 96070,
+   "w": 390,
+   "h": 1160,
+   "title": "Error · Runtime · EN · 390 · NoDigest"
+  },
+  "Error-Runtime-VI-390-Retrying.dc.html": {
+   "x": 940,
+   "y": 96070,
+   "w": 390,
+   "h": 1300,
+   "title": "Error · Runtime · VI · 390 · Retrying"
+  },
+  "Error-Spec.dc.html": {
+   "x": 1410,
+   "y": 96070,
+   "w": 1280,
+   "h": 8600,
+   "title": "Error · Spec"
+  },
+  "Global-Shared.dc.html": {
+   "x": 0,
+   "y": 105010,
+   "w": 1280,
+   "h": 3900,
+   "title": "Global · Shared"
+  }
+ },
+ "createdOnFiles": {
+  "at": "2026-09-30T09:00:00Z",
+  "v": 1
+ },
+ "designSystems": [],
+ "launch": {
+  "view": "canvas"
+ },
+ "notes": {
+  "row1": {
+   "kind": "title1",
+   "maxW": 3580,
+   "text": "01 · Có dữ liệu, 12 thẻ: VI và EN, khung 1280 và 390",
+   "w": 240,
+   "x": 0,
+   "y": -300
+  },
+  "row2": {
+   "kind": "title1",
+   "maxW": 3580,
+   "text": "02 · Trạng thái: cột thu gọn, rỗng, lọc ra rỗng",
+   "w": 240,
+   "x": 0,
+   "y": 4040
+  },
+  "row3": {
+   "kind": "title1",
+   "maxW": 4280,
+   "text": "03 · Đặc tả: chuyển động, thành phần dùng chung, thay đổi và kiểm tra",
+   "w": 240,
+   "x": 0,
+   "y": 7080
+  },
+  "g0": {
+   "x": 0,
+   "y": 12560,
+   "text": "04 · Blog và bài Blog",
+   "kind": "title1",
+   "maxW": 6800
+  },
+  "g1": {
+   "x": 0,
+   "y": 27320,
+   "text": "05 · Video và Video chi tiết",
+   "kind": "title1",
+   "maxW": 6800
+  },
+  "g2": {
+   "x": 0,
+   "y": 41080,
+   "text": "06 · Tìm kiếm",
+   "kind": "title1",
+   "maxW": 6800
+  },
+  "g3": {
+   "x": 0,
+   "y": 53990,
+   "text": "07 · Giới thiệu",
+   "kind": "title1",
+   "maxW": 6800
+  },
+  "g4": {
+   "x": 0,
+   "y": 66550,
+   "text": "08 · Liên hệ và mẫu form",
+   "kind": "title1",
+   "maxW": 6800
+  },
+  "g5": {
+   "x": 0,
+   "y": 83610,
+   "text": "09 · Đóng góp và Chính sách bảo mật",
+   "kind": "title1",
+   "maxW": 6800
+  },
+  "g6": {
+   "x": 0,
+   "y": 94370,
+   "text": "10 · 404 và trang lỗi",
+   "kind": "title1",
+   "maxW": 6800
+  },
+  "g7": {
+   "x": 0,
+   "y": 104750,
+   "text": "11 · Toàn site",
+   "kind": "title1",
+   "maxW": 6800
+  }
+ },
+ "order": [
+  "Main.dc.html",
+  "Data-EN-1280.dc.html",
+  "Data-VI-390.dc.html",
+  "Data-EN-390.dc.html",
+  "Collapsed-VI-1280.dc.html",
+  "Empty-VI-1280.dc.html",
+  "Filtered-EN-1280.dc.html",
+  "Empty-EN-390.dc.html",
+  "Filtered-VI-390.dc.html",
+  "Motion.dc.html",
+  "Components.dc.html",
+  "Summary.dc.html",
+  "Blog-Index-VI-1280.dc.html",
+  "Blog-Index-EN-390.dc.html",
+  "Blog-Empty-EN-1280.dc.html",
+  "Blog-Empty-VI-390.dc.html",
+  "Blog-Post-VI-1280.dc.html",
+  "Blog-Post-EN-390.dc.html",
+  "Blog-Post-Stress-EN-1280.dc.html",
+  "Blog-Comments-States.dc.html",
+  "Blog-Spec.dc.html",
+  "Video-Index-VI-1280.dc.html",
+  "Video-Index-EN-390-Closed.dc.html",
+  "Video-Index-EN-390-Open.dc.html",
+  "Video-Empty-VI-1280.dc.html",
+  "Video-Empty-EN-390.dc.html",
+  "Video-Filtered-EN-1280.dc.html",
+  "Video-Filtered-VI-390.dc.html",
+  "Video-Detail-VI-1280.dc.html",
+  "Video-Detail-EN-390-Long.dc.html",
+  "Video-Detail-EN-390-NoLesson.dc.html",
+  "Video-Spec.dc.html",
+  "Search-Results-VI-1280.dc.html",
+  "Search-Results-EN-390.dc.html",
+  "Search-Initial-VI-1280.dc.html",
+  "Search-Initial-EN-390.dc.html",
+  "Search-NoResults-EN-1280.dc.html",
+  "Search-NoResults-VI-390.dc.html",
+  "Search-Error-VI-1280.dc.html",
+  "Search-Popover-VI-1280.dc.html",
+  "Search-Menu-EN-390.dc.html",
+  "Search-Spec-VI-1280.dc.html",
+  "About-Placeholder-VI-1280.dc.html",
+  "About-Placeholder-EN-390.dc.html",
+  "About-Filled-EN-1280.dc.html",
+  "About-Filled-VI-390.dc.html",
+  "About-States-VI-1280.dc.html",
+  "About-Faq-VI-1280.dc.html",
+  "About-Faq-EN-390.dc.html",
+  "About-Spec.dc.html",
+  "Contact-VI-1280.dc.html",
+  "Contact-EN-1280.dc.html",
+  "Contact-EN-390.dc.html",
+  "Contact-VI-390.dc.html",
+  "Contact-States-VI-1280.dc.html",
+  "Contact-States-EN-390.dc.html",
+  "Contact-FormSpecimen-VI-1280.dc.html",
+  "Contact-ReportMistake-VI-1280.dc.html",
+  "Contact-ReportMistake-EN-390.dc.html",
+  "Contact-Spec-VI-1280.dc.html",
+  "Contribute-VI-1280.dc.html",
+  "Contribute-EN-1280.dc.html",
+  "Contribute-VI-390.dc.html",
+  "Contribute-EN-390.dc.html",
+  "Contribute-Stress-EN-1280.dc.html",
+  "Privacy-VI-1280.dc.html",
+  "Privacy-EN-1280.dc.html",
+  "Privacy-VI-390.dc.html",
+  "Privacy-EN-390.dc.html",
+  "Privacy-Stress-EN-390.dc.html",
+  "Contribute-Spec-VI-1280.dc.html",
+  "Error-404-VI-1280.dc.html",
+  "Error-404-EN-1280.dc.html",
+  "Error-404-EN-390.dc.html",
+  "Error-Article-Lesson-VI-1280.dc.html",
+  "Error-Article-Blog-EN-390.dc.html",
+  "Error-Article-Video-VI-390.dc.html",
+  "Error-Runtime-VI-1280.dc.html",
+  "Error-Runtime-EN-390.dc.html",
+  "Error-Runtime-EN-390-NoDigest.dc.html",
+  "Error-Runtime-VI-390-Retrying.dc.html",
+  "Error-Spec.dc.html",
+  "Global-Shared.dc.html"
+ ],
+ "pages": [],
+ "title": "Thiết kế trang Bài học"
+}

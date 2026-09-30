@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Đặc tả · 404 và lỗi</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bd:#D1D1D1;--tm:#3E424D;--ac:#314344}
+*{box-sizing:border-box}
+body{margin:0;background:#E5E5E5;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,dl,dd,dt,ul,li{margin:0;padding:0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:#EFEFEF;border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.tok{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:20px}
+.tok h3{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);margin-bottom:12px}
+.tok li{list-style:none;font-size:13px;line-height:1.5;color:#262626;padding:6px 0;border-top:1px solid #EAEAEA}
+.tok li:first-of-type{border-top:0}
+code{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;background:#EFEFEF;border-radius:6px;padding:1px 6px;color:#0D0D0D}
+.fx{background:#fff;border:1px solid var(--bd);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:16px}
+.fx .hd{display:flex;align-items:center;gap:12px}
+.fx .id{flex:none;display:grid;place-items:center;min-width:40px;height:28px;padding:0 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:12px;font-weight:700}
+.fx h3{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.fx .wh{font-size:12px;color:var(--tm)}
+.fx dl{display:grid;grid-template-columns:118px 1fr;column-gap:16px;row-gap:0}
+.fx dt{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm);padding:9px 0;border-top:1px solid #EAEAEA}
+.fx dd{font-size:13px;line-height:1.55;color:#141414;padding:9px 0;border-top:1px solid #EAEAEA}
+.fx dt:first-of-type,.fx dd:first-of-type{border-top:0}
+.fx dt.rm{color:var(--ac)}
+.sec{display:flex;flex-direction:column;gap:16px}
+.sec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.sec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:780px}
+.tbl{background:#fff;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.tr{display:grid;gap:20px;padding:16px 20px;border-top:1px solid #EAEAEA;font-size:13px;line-height:1.55;color:#141414}
+.tr:first-child{border-top:0}
+.th{background:#EFEFEF;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm)}
+.tr b{font-weight:700;font-size:14px}
+.v{grid-template-columns:150px 1fr 1.2fr 1fr}
+.a{grid-template-columns:170px 1fr 1.25fr 1fr}
+.b{grid-template-columns:200px 1fr 1fr}
+.c{grid-template-columns:120px 1fr;align-items:start}
+.pass{display:inline-block;padding:2px 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:11px;font-weight:700;letter-spacing:.04em}
+.note{display:inline-block;padding:2px 10px;border-radius:999px;background:#EFEFEF;border:1px solid var(--bd);color:#262626;font-size:11px;font-weight:700;letter-spacing:.04em}
+.new{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:#EFEFEF;border:1px solid var(--bd);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ac);vertical-align:2px}
+</style>
+</helmet>
+<div style="width:1280px;height:8600px;padding:56px 48px;display:flex;flex-direction:column;gap:48px">
+
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:900px">
+<span class="eyebrow"><i></i>Đặc tả · 404 và trang lỗi</span>
+<h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em">Một khung ErrorState cho mọi trang lỗi</h1>
+<p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Hiện có ba bố cục 404 và một trang lỗi, mỗi nơi một kiểu nút, một cỡ chữ. Bản mới gom thành một khung nằm trong vỏ chung (thanh điều hướng và chân trang giữ nguyên), dựng bằng EmptyState, Button và chip PageHero đã chốt ở trang Bài học. Chỉ khác nội dung và lối thoát. Mã lỗi mẫu “3412960217” chỉ là chữ minh hoạ, không phải mã thật.</p>
+</header>
+
+<section style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px">
+<div class="tok"><h3>Easing</h3><ul>
+<li><code>EASE_STANDARD</code> <code>cubic-bezier(.25,.1,.25,1)</code>: đường cong duy nhất.</li>
+<li>Không có <code>.rise-in</code>, không có đường cong thứ hai.</li>
+<li>Lenis giữ easing riêng, trang lỗi không đụng tới.</li></ul></div>
+<div class="tok"><h3>Thời lượng</h3><ul>
+<li><code>fast</code> 0.25s: đổi màu, viền, nhãn, dòng trạng thái.</li>
+<li><code>base</code> 0.6s: khối ErrorState vào trang (như EmptyState M12).</li>
+<li>Đã có ở trang chủ: 0.2s cho nhấn nút.</li></ul></div>
+<div class="tok"><h3>So le</h3><ul>
+<li>Không dùng. Cả khối vào một lượt (giống EmptyState), vì nội dung ngắn và người dùng đang cần lối thoát, không cần dẫn mắt.</li>
+<li>Không có vùng kích hoạt cuộn: khối luôn nằm trong màn hình đầu.</li></ul></div>
+<div style="background:#0D0D0D;color:#fff;border-radius:16px;padding:20px"><h3 style="font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#D1D1D1;margin-bottom:12px">Khi giảm chuyển động</h3><ul style="font-size:13px;line-height:1.55;display:flex;flex-direction:column;gap:8px;list-style:none">
+<li>Khối CSS toàn cục giữ nguyên: transition về 0.01ms.</li>
+<li>Mã framer-motion dùng <code style="background:#262626;color:#fff">useReducedMotion</code>: bỏ trạng thái ẩn ban đầu.</li>
+<li>Không có hiệu ứng lặp nào để tắt. Chỉ còn đổi màu tức thì.</li></ul></div>
+</section>
+
+<section class="sec">
+<h2>Ba biến thể nội dung, một khung</h2>
+<p>Khung gồm: hình chip, chip nhãn, h1, mô tả, hành động, rồi các phần tuỳ chọn (ô tìm kiếm, lối đi nhanh, mã lỗi, dòng gợi ý). Biến thể chỉ đổi chữ, hình trong chip (“404” hoặc “!”) và phần tuỳ chọn nào được bật. Bố cục desktop căn giữa trong khung nét đứt bo 24px; mobile giữ nguyên thứ tự, nút xếp dọc rộng hết khung.</p>
+<div class="tbl">
+<div class="tr th v"><span>Biến thể</span><span>Khi nào hiện</span><span>Nội dung</span><span>Hành động và lưu ý</span></div>
+<sc-for list="{{vars}}" as="r" hint-placeholder-count="4">
+<div class="tr v"><b>{{r.k}}</b><span>{{r.when}}</span><span>{{r.what}}</span><span>{{r.act}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Chuyển động: ER1 đến ER7</h2>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start">
+<sc-for list="{{fx}}" as="e" hint-placeholder-count="7">
+<article class="fx">
+<div class="hd"><span class="id">{{e.id}}</span><div><h3>{{e.name}}</h3><p class="wh">{{e.where}}</p></div></div>
+<dl>
+<dt>Kích hoạt</dt><dd>{{e.trigger}}</dd>
+<dt>Thuộc tính</dt><dd>{{e.props}}</dd>
+<dt>Đầu → cuối</dt><dd>{{e.values}}</dd>
+<dt>Thời lượng</dt><dd>{{e.dur}}</dd>
+<dt>Easing</dt><dd>{{e.ease}}</dd>
+<dt>Trễ, so le</dt><dd>{{e.delay}}</dd>
+<dt class="rm">Giảm chuyển động</dt><dd>{{e.reduced}}</dd>
+</dl>
+</article>
+</sc-for>
+<article class="fx" style="gap:12px">
+<div class="hd"><span class="id">Bỏ</span><h3>Không dùng trên trang lỗi</h3></div>
+<ul style="display:flex;flex-direction:column;gap:10px;list-style:none;font-size:13px;line-height:1.55;color:#141414">
+<sc-for list="{{drop}}" as="d" hint-placeholder-count="5">
+<li><strong>{{d.k}}</strong> {{d.text}}</li>
+</sc-for>
+</ul>
+</article>
+</div>
+</section>
+
+<section class="sec">
+<h2>(a) Đổi gì so với hiện tại, và vì sao</h2>
+<div class="tbl">
+<div class="tr th a"><span>Hạng mục</span><span>Hiện tại</span><span>Mới</span><span>Lý do</span></div>
+<sc-for list="{{chg}}" as="r" hint-placeholder-count="12">
+<div class="tr a"><b>{{r.k}}</b><span>{{r.now}}</span><span>{{r.next}}</span><span>{{r.why}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>(b) Thành phần dùng chung</h2>
+<p>Dùng lại thành phần đã chốt ở trang trước là mặc định; thành phần mới chỉ thêm khi thật sự thiếu, và đều viết để trang khác dùng lại được.</p>
+<div class="tbl">
+<div class="tr th b"><span>Thành phần</span><span>Nội dung và biến thể</span><span>Dùng lại ở</span></div>
+<sc-for list="{{shared}}" as="r" hint-placeholder-count="12">
+<div class="tr b"><b>{{r.k}}<span class="new" style="display:{{r.newShow}}">Mới</span></b><span>{{r.what}}</span><span>{{r.where}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Kiểm tra theo phần 5.1 và phần 8 của báo cáo</h2>
+<div class="tbl">
+<sc-for list="{{check}}" as="r" hint-placeholder-count="16">
+<div class="tr c"><span class="{{r.cls}}" style="justify-self:start">{{r.st}}</span><span><b>{{r.k}}</b> {{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Cần xác nhận trước khi làm thật</h2>
+<div class="tbl">
+<sc-for list="{{ask}}" as="r" hint-placeholder-count="6">
+<div class="tr c"><span class="note" style="justify-self:start">{{r.k}}</span><span>{{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":8600}}'>
+const VARS = [
+["404 toàn cục","Địa chỉ không khớp route nào (not-found.tsx, [...rest]), chủ đề sai, trang vượt quá trang cuối. Cũng là nội dung hiển thị khi 404 của bài viết rơi về vỏ chung (xem dòng dưới).","Chip “Lỗi 404”. H1 “Không tìm thấy trang này”. Mô tả một câu vì sao và làm gì tiếp. Hình chip có chữ 404 và một chân bị đứt.","Chính: Về trang chủ. Phụ: Xem bài học. Thêm ô tìm kiếm, ba pill Blog, Video, Giới thiệu, dòng “Chắc chắn đường dẫn này đúng? Báo cho chúng tôi” trỏ tới trang Liên hệ. Thanh điều hướng không đánh dấu mục nào."],
+["404 bài viết","Bài học, blog hoặc video: slug không có hoặc chưa đăng (not-found.tsx trong từng thư mục).","Cùng chip “Lỗi 404”. H1 gọi đúng loại: “Không tìm thấy bài học này”, “… bài viết này”, “… video này”. Mô tả nêu ba lý do có thể (đổi tên, chưa đăng, đã gỡ).","Chính: Về trang Bài học, Blog hoặc Video (một nút thật 44px, không còn liên kết chữ). Phụ: Tìm kiếm. Không có ô tìm và pill để khung gọn. Thanh điều hướng đánh dấu mục cha nếu biết được (Video giả định nằm trong mục Bài học)."],
+["Rơi về 404 toàn cục","Next 14 trả đúng mã 404 cho trang chi tiết nhưng dựng bằng vỏ chung, nên không phải lúc nào cũng thấy được not-found.tsx riêng của bài (ghi chú trong CLAUDE.md và mục 16).","Không có bản thứ tư. Bản “404 toàn cục” đã đủ dùng: có Xem bài học, ba pill Blog, Video, Giới thiệu và ô tìm kiếm, nên người đọc lạc từ một bài blog hay video vẫn đi đúng chỗ.","Không cần mã thêm. Thiết kế 404 toàn cục phải đứng vững một mình (không nhắc “bài” hay loại nội dung cụ thể), đó là lý do h1 của nó chỉ nói “trang”."],
+["Lỗi runtime","error.tsx (client) khi một route ném lỗi lúc render hoặc lấy dữ liệu. Không đổi mã trạng thái.","Chip “Lỗi hệ thống”. H1 “Đã có lỗi xảy ra”. Nói rõ lỗi ở phía chúng tôi. Hình chip có dấu “!”. Mã lỗi (digest) hiện bằng chữ mono khi Next cung cấp; không có thì bỏ khối này.","Chính: nút Thử lại (button, gọi reset). Phụ: Về trang chủ. Dòng gợi ý dẫn tới Liên hệ; khi có mã lỗi thì nhắc gửi kèm mã. Chỉ hiển thị digest, không bao giờ hiện thông báo lỗi hay stack."]
+];
+const FX = [
+["ER1","ErrorState vào trang","Cả khối khung nét đứt (404 toàn cục, 404 bài viết, lỗi)","Tải trang, một lần khi mount. Không chạy lại khi bấm Thử lại rồi lỗi lại (khối đã ở trên trang).","opacity, translateY của cả khối.","opacity 0 → 1; translateY 24px → 0 (fadeUp).","0.6s (DURATION.base).","EASE_STANDARD.","Không trễ, không so le. Hình chip tĩnh, không lặp. Dùng cùng wrapper với EmptyState M12.","Hiện thẳng ở vị trí cuối, không có trạng thái ẩn ban đầu."],
+["ER2","Hover và focus nút","Button chính và phụ, nút gửi của ô tìm","Rê chuột (chỉ hover:hover) hoặc focus bàn phím.","background-color (chính, nút gửi), border-color (phụ).","Chính #0D0D0D → #262626. Phụ: viền #D1D1D1 → rgba(0,0,0,.25). Focus: viền ngoài 2px #314344, cách 2px, không animate.","0.25s (DURATION.fast).","EASE_STANDARD.","Không trễ.","Đổi màu tức thì. Không thông tin nào chỉ có ở hover."],
+["ER3","Nhấn nút","Button chính và phụ","Nhấn giữ (:active), chuột và cảm ứng.","transform scale.","1 → 0.98; thả thì về 1.","0.2s (như PillButton và thẻ M5).","EASE_STANDARD.","Không trễ.","Bỏ scale."],
+["ER4","Focus ô tìm kiếm","SearchField","Ô nhập hoặc nút gửi nhận focus (:focus-within).","border-color và box-shadow của cả khung ô.","Viền #8C8C8C → #314344; bóng none → 0 0 0 2px rgba(49,67,68,.3).","0.25s (DURATION.fast).","EASE_STANDARD.","Không trễ.","Đổi tức thì. Vòng focus vẫn hiện nên không mất phản hồi."],
+["ER5","Hover pill lối đi nhanh","SuggestionPill (Blog, Video, Giới thiệu)","Hover hoặc focus.","border-color.","#D1D1D1 → rgba(0,0,0,.25).","0.25s (DURATION.fast).","EASE_STANDARD.","Không trễ.","Đổi tức thì."],
+["ER6","Đang thử lại","Nút Thử lại của lỗi runtime","Bấm Thử lại: gọi reset() và chờ (useTransition).","background-color của nút; nhãn đổi thành “Đang thử lại…”; nút disabled, aria-busy=true; dòng trạng thái role=status xuất hiện bên dưới.","Nền #0D0D0D → #4D4D4D. Không có spinner, không xoay, không thanh chạy.","0.25s (DURATION.fast) cho màu. Chữ và dòng trạng thái đổi ngay.","EASE_STANDARD.","Không trễ.","Đổi nhãn và màu tức thì. Vì không có chuyển động nên không cần phương án thay thế khác."],
+["ER7","Thử lại vẫn lỗi","Dòng thông báo dưới nút, role=alert","reset() xong mà khối lỗi vẫn hiện. Nút về trạng thái rảnh.","opacity của dòng “Vẫn chưa tải được. Đợi ít phút rồi thử lại.”.","opacity 0 → 1, không dịch chuyển.","0.25s (DURATION.fast).","EASE_STANDARD.","Không trễ.","Hiện ngay. Trạng thái này không vẽ board riêng vì chỉ là một dòng chữ."]
+];
+const DROP = [
+["Vệt sáng chạy viền của PillButton (star border).","Hiện nút 404 toàn cục có glow chạy vô hạn (5 giây, 2 giây khi hover, linear). Bỏ vì lặp vô hạn trái quy tắc trang trong, người đang gặp sự cố cần một hành động rõ chứ không cần thứ thu hút, và làm nút này khác mọi nút còn lại. Nếu chủ dự án vẫn muốn giữ: chỉ ở nút chính của 404 toàn cục, đúng 5s và 2s, tắt hoàn toàn khi giảm chuyển động (như PillButton hiện nay)."],
+["Spinner, vòng xoay hoặc thanh chạy khi thử lại.","Là hiệu ứng lặp vô hạn; nhãn “Đang thử lại…” và aria-busy đủ báo cho mọi người."],
+["Tự chuyển về trang chủ sau vài giây.","Mất quyền kiểm soát của người dùng và làm người đọc màn hình bị bỏ giữa chừng (WCAG 2.2.1)."],
+["Chữ 404 khổng lồ nhảy, nhiễu hoặc lắc.","Trang trí thuần tuý. “404” chỉ là chữ tĩnh trong hình chip."],
+["Khung xương và loading.tsx.","Không thêm: loading.tsx đã bị bỏ có chủ đích để trang không tồn tại trả đúng mã 404."]
+];
+const CHG = [
+["Số bố cục","Ba bố cục 404 khác nhau cộng một trang lỗi (mục 4.5).","Một ErrorState với ba biến thể nội dung: 404 toàn cục, 404 bài viết, lỗi runtime.","Giải quyết mục 4.5 và mục 16 (một kiểu 404). Sửa một chỗ là sửa cả bốn."],
+["Nút chính ở 404 toàn cục","PillButton hoạt hình: nền gradient, bo rounded-3xl, cao 52px, vệt sáng chạy viền lặp 5s, 2s khi hover.","Button chính đen 44px bo tròn, tĩnh. Hover chỉ đổi nền #0D0D0D → #262626 (ER2).","Cùng nút với EmptyState và mọi trang trong. Bỏ hiệu ứng lặp vô hạn (mục 3.3, mục 16)."],
+["404 bài viết","Chỉ chữ: “404”, h1 26/34, liên kết chữ màu nhấn “← Về trang …”, không mô tả, py-24 không min-height.","Cùng khung với 404 toàn cục: chip, h1, mô tả ba lý do, nút chính “Về trang Bài học/Blog/Video”, nút phụ Tìm kiếm.","Nút thật đạt 44px và cùng kiểu với phần còn lại (mục 4.10, mục 16 về liên kết quay lại). Có mô tả để người đọc biết vì sao."],
+["Trang lỗi runtime","Nút đen rounded-xl “↻ Thử lại”, không dòng “404”, không có đường về trang chủ, h1 26/34.","Nút chính pill có biểu tượng làm mới, thêm nút phụ “Về trang chủ”, chip “Lỗi hệ thống”, hình chip có dấu “!”, mã lỗi tuỳ chọn.","Người bị kẹt lỗi cần một lối thoát ngoài “thử lại”. Cùng kiểu nút với 404 (mục 4.5)."],
+["Thang chữ","28/38 ở 404 toàn cục, 26/34 ở 404 bài viết và lỗi (mục 4.1).","H1 46 desktop / 34 mobile như PageHero; mô tả 18/16; chip 11px.","Một thang chữ cho mọi trang; trang lỗi là tiêu đề trang nên dùng cỡ tiêu đề trang."],
+["Khung và hình","Khối căn giữa trơn min-h-[60vh], không hình, không khung.","Khung nét đứt bo 24px của EmptyState, hình chip có thể đọc được là 404 hoặc “!”, cùng họ hình với trạng thái rỗng.","Trạng thái rỗng, 404 và lỗi cùng một ngôn ngữ hình ảnh (mục 6: trạng thái rỗng chưa có minh hoạ)."],
+["Lối đi tiếp ở 404 toàn cục","Một nút “Về Trang chủ”.","Ô tìm kiếm, Về trang chủ, Xem bài học, pill Blog, Video, Giới thiệu, dòng báo cho chúng tôi.","Đủ đường cho người đọc lạc từ mọi nơi, kể cả khi 404 bài viết rơi về vỏ chung (mục 16, ghi chú 404 của Next 14)."],
+["Chuyển động","Không có gì; nút 404 có glow lặp.","ER1 đến ER7, tất cả EASE_STANDARD, thời lượng từ tokens.ts, không lặp vô hạn.","Một bộ easing (mục 4.6); có phương án giảm chuyển động cho từng hiệu ứng."],
+["Mã lỗi (digest)","Không hiện.","Hiện dạng chữ mono trong ô nhỏ có nhãn khi Next có digest; chọn cả chuỗi bằng một chạm. Chỉ digest, không message hay stack.","Người báo lỗi có thứ để gửi kèm mà không lộ chi tiết nội bộ."],
+["Thử lại","Bấm là gọi reset(), không phản hồi gì trong lúc chờ.","Nút đổi nhãn, disabled, aria-busy, dòng trạng thái role=status (ER6). Lỗi lại thì có dòng role=alert (ER7).","Phản hồi đúng cái người dùng vừa làm, không dùng vòng xoay."],
+["Khoá i18n mới","Đã có chuỗi cho 404 và lỗi; chưa có chip, ô tìm, mã lỗi.","Nhóm errors.* dùng chung cho cả vi và en: eyebrow404, eyebrowRuntime, titleGlobal, titleLesson, titlePost, titleVideo, descGlobal, descLesson, descPost, descVideo, descRuntime, home, lessons, backLessons, backBlog, backVideo, search, retry, retrying, retryStatus, retryFailed, goTo, digestLabel, reportHint, reportLink.","Mục 5.1.1: cùng bộ khoá ở messages/vi.json và messages/en.json; không chuỗi cứng."],
+["Phông","Be Vietnam Pro và JetBrains Mono tự host.","Không đổi. Canvas nạp Be Vietnam Pro từ Google Fonts chỉ để xem trước.","Ràng buộc CSP: không phông bên thứ ba."]
+];
+const SHARED = [
+["PageHero (chip, h1, mô tả)","Dùng lại thành phần đã chốt ở trang trước: chip nhãn 11px, h1 46/34 -0.03em, mô tả 18/16. ErrorState không dùng nguyên PageHero mà lấy đúng token của nó, vì nội dung căn giữa trong khung.","Mọi trang."],
+["EmptyState","Dùng lại thành phần đã chốt ở trang trước: khung nét đứt bo 24px, nền trắng 50%, hình chip, tiêu đề, mô tả, hành động. ErrorState là EmptyState có thêm chip nhãn và các phần tuỳ chọn.","Blog, Video, Tìm kiếm, bình luận."],
+["Button","Dùng lại thành phần đã chốt ở trang trước: chính (đen) và phụ (trắng, viền), pill 44px, mũi tên tuỳ chọn. Thêm trạng thái đang chạy (nền #4D4D4D, disabled, aria-busy, không spinner) để tái dùng cho nút gửi form.","Liên hệ, Đóng góp, Tìm kiếm, mọi form gửi."],
+["SuggestionPill","Dùng lại thành phần đã chốt ở trang trước (pill gợi ý của trạng thái lọc ra rỗng). Ở đây có nhãn và mũi tên thay cho số đếm.","Lọc ra rỗng, lối đi nhanh."],
+["ResultCount (dòng trạng thái)","Dùng lại thành phần đã chốt ở trang trước: một dòng aria-live polite. Ở đây dùng cho “Đang tải lại nội dung, vui lòng chờ.”.","Bài học, Video, Tìm kiếm."],
+["CardReveal / fadeUp","Dùng lại thành phần đã chốt ở trang trước: whileInView không cần, chỉ dùng biến thể fadeUp 0.6s của EmptyState (M12).","Mọi khối vào trang."],
+["Vỏ chung","Dùng lại thanh điều hướng 76px / 68px và chân trang. Không có chỗ nào riêng cho trang lỗi.","Mọi trang."],
+["ErrorState","Khung nét đứt gồm hình chip, chip nhãn, h1, mô tả, hành động, chỗ chứa: SearchField, lối đi nhanh, mã lỗi, dòng gợi ý. Thuộc tính: variant (404 toàn cục, 404 bài viết, lỗi), section (lessons, blog, video), digest, onRetry.","404 toàn cục, 404 ba loại bài, error.tsx. Có thể dùng cho error.tsx của Blog/Video nếu sau này cần lỗi theo khu vực."],
+["SearchField","Khung pill 52px, biểu tượng kính lúp, nhãn ẩn cho trình đọc màn hình (label thật), nút gửi tròn 44px. Viền #8C8C8C để đạt 3:1. Gửi bằng GET tới trang Tìm kiếm đã địa phương hoá, không cần JS.","Ô nhập chính trang Tìm kiếm, popover tìm kiếm ở thanh điều hướng."],
+["DigestCode","Ô nhỏ trắng có nhãn và chuỗi mono chọn cả chuỗi bằng một chạm; ngắt dòng ở bất kỳ ký tự nào.","Mã tham chiếu tin nhắn ở form Liên hệ nếu sau này cần."],
+["Họ hình chip","Ba hình cùng khung, chân và lõi: rỗng (lõi trống), 404 (lõi ghi 404, một chân đứt), lỗi (lõi có dấu “!”). Tất cả SVG inline, decorative aria-hidden.","Rỗng ở mọi danh sách; 404; lỗi."],
+["Token","Không thêm token mới. Riêng viền ô nhập #8C8C8C là giá trị mới, chỉ cho ô nhập (xem kiểm tra tương phản).","Mọi ô nhập, nếu chọn thống nhất."]
+];
+const CHECK = [
+["Đạt","Song ngữ.","Mọi chuỗi có VI và EN, cùng bộ khoá errors.*. Đã thử độ dài: EN “We can’t find that lesson” và “Something went wrong” xuống hai dòng ở 390 mà không vỡ; mô tả VI dài nhất khoảng 5 dòng ở 390; nút “Về trang Bài học” và “Back to Lessons” vừa nút rộng hết khung.","pass"],
+["Đạt","Bên thứ ba.","Chỉ SVG inline. Không script, iframe hay ảnh ngoài. Phông Google chỉ để xem trước trong canvas; JetBrains Mono đã tự host ở site.","pass"],
+["Đạt","Video sau khi bấm.","Các trang này không có video nhúng.","pass"],
+["Đạt","Giảm chuyển động.","ER1 đến ER7 đều có dòng riêng. Không có hiệu ứng lặp vô hạn; star border bị bỏ và có lý do ghi ở mục “Không dùng”.","pass"],
+["Đạt","Không chỉ dựa vào hover.","Hover chỉ đổi màu viền và nền nút. Mọi lối đi và mã lỗi đều hiện sẵn.","pass"],
+["Đạt","Ô bẫy website.","Không áp dụng: ô tìm kiếm là form GET và không có ô bẫy. Liên kết “Báo cho chúng tôi” dẫn tới form Liên hệ, nơi ô bẫy vẫn còn và vẫn ẩn.","pass"],
+["Đạt","Tương phản (đã tính).","#3E424D trên nền khung khoảng #F2F2F2: khoảng 9.0:1; trên #E5E5E5: khoảng 8.0:1; chữ chip và liên kết #314344 trên #EFEFEF: khoảng 9.1:1; chữ trắng trên #0D0D0D: khoảng 19:1; trên nút đang chạy #4D4D4D: khoảng 8.4:1; mã lỗi #0D0D0D trên #EFEFEF: khoảng 17:1; chữ gợi ý ô nhập #6B6B6B trên trắng: khoảng 5.3:1. Chữ nhỏ nhất là 11px (chip, chữ hoa) và 12px.","pass"],
+["Lưu ý","Viền ô nhập.","Viền #D1D1D1 chuẩn của thẻ chỉ đạt khoảng 1.6:1 trên trắng, chưa đủ 3:1 cho ranh giới điều khiển. Ô tìm dùng #8C8C8C (khoảng 3.4:1). Nếu thống nhất toàn site thì form Liên hệ và bình luận cũng nên đổi.","note"],
+["Đạt","Mục bấm ≥ 44px.","Nút 44, pill 44, ô tìm cao 52 với nút gửi 44, liên kết “Báo cho chúng tôi” cao tối thiểu 44, liên kết chân trang mobile 44. Thanh điều hướng desktop giữ 40px như trang trước.","pass"],
+["Đạt","Đủ trạng thái.","404 toàn cục, 404 bài học, blog, video, lỗi có mã, lỗi không mã, đang thử lại, thử lại vẫn lỗi (ER7, không vẽ riêng). Trang vượt quá trang cuối là 404 toàn cục.","pass"],
+["Đạt","390px không cuộn ngang.","Nút xếp dọc rộng hết khung; pill xuống dòng; mã lỗi ngắt dòng ở bất kỳ ký tự nào; không có phần tử nào rộng cố định lớn hơn 390.","pass"],
+["Đạt","Nội dung thật.","Không có tiêu đề bài, ảnh bìa hay tóm tắt để vỡ (trang không hiển thị dữ liệu bài). Mã lỗi dài hơn 10 ký tự vẫn ngắt dòng. Slug người dùng gõ không được in ra trang (tránh chuỗi dài và chèn nội dung).","pass"],
+["Đạt","Một kiểu 404, một easing, một thang chữ.","Đã gộp theo mục (a).","pass"],
+["Đạt","Trợ năng của trang lỗi.","H1 có tabindex=-1 và nhận focus khi error.tsx hiện ra; form tìm kiếm có role=search và label thật; nút chạy có aria-busy; dòng trạng thái role=status, dòng thất bại role=alert; hình chip aria-hidden.","pass"],
+["Đạt","Bảo mật.","Chỉ hiện error.digest (chuỗi băm), không hiện message hay stack. Ô tìm gửi GET nên không chứa dữ liệu nhạy cảm. Không đổi mã trạng thái: 404 vẫn 404, error.tsx không tự trả 200.","pass"],
+["Đạt","Khả năng làm.","Tailwind và framer-motion hiện có. not-found.tsx là server component nên ô tìm và các liên kết dùng đường dẫn đã địa phương hoá, không cần useRouter. Không thêm thư viện, không đổi schema hay luồng đăng bài.","pass"]
+];
+const ASK = [
+["Ô tìm kiếm","Giữ ô tìm ở 404 toàn cục hay chỉ để liên kết “Tìm kiếm” như 404 bài viết? Ô tìm cần trang Tìm kiếm nhận tham số q; nếu chưa chắc thì bỏ ô, giữ pill."],
+["Star border","Bản vẽ bỏ hẳn. Nếu muốn giữ cho 404 toàn cục thì phải ghi lại như mục “Không dùng”: 5s và 2s, chỉ nút chính, tắt khi giảm chuyển động."],
+["Thanh điều hướng","Ở 404 bài viết, bản vẽ đánh dấu mục cha (Bài học hoặc Blog). Nếu 404 rơi về vỏ chung thì không biết ngữ cảnh nên sẽ không đánh dấu; chấp nhận được. Cần xác nhận Video nằm trong mục nào của menu."],
+["Mã lỗi","Hiện digest ở cả production? An toàn về dữ liệu nhưng cần chủ dự án đồng ý. Có cần nút sao chép không (thêm một chút JS); bản vẽ chỉ dùng chọn cả chuỗi."],
+["Báo lỗi kèm mã","Liên kết “Báo lỗi cho chúng tôi” chỉ mở trang Liên hệ. Có muốn điền sẵn mã lỗi vào ô nội dung không? Cần sửa form."],
+["Đếm lần thử lại","Sau bao nhiêu lần Thử lại thất bại thì hiện dòng ER7? Bản vẽ giả định hiện ngay sau lần đầu."]
+];
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      vars: VARS.map((r) => ({ k: r[0], when: r[1], what: r[2], act: r[3] })),
+      fx: FX.map((r) => ({ id: r[0], name: r[1], where: r[2], trigger: r[3], props: r[4], values: r[5], dur: r[6], ease: r[7], delay: r[8], reduced: r[9] })),
+      drop: DROP.map((r) => ({ k: r[0], text: r[1] })),
+      chg: CHG.map((r) => ({ k: r[0], now: r[1], next: r[2], why: r[3] })),
+      shared: SHARED.map((r) => ({ k: r[0], what: r[1], where: r[2], newShow: (r[0] === 'ErrorState' || r[0] === 'SearchField' || r[0] === 'DigestCode' || r[0] === 'Họ hình chip') ? 'inline-block' : 'none' })),
+      check: CHECK.map((r) => ({ st: r[0], k: r[1], text: r[2], cls: r[3] })),
+      ask: ASK.map((r) => ({ k: r[0], text: r[1] }))
+    };
+  }
+}
+</script>
+</body>
+</html>

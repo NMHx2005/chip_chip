@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Bình luận · Trạng thái</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--fb:#8C8C8C;--err:#B3261E;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt,ul,ol,figure,blockquote{margin:0}
+svg.ic{width:16px;height:16px;flex:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.nvl{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--tn)}
+.nvl.on{background:var(--pr);color:#fff}
+.cta{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;background:linear-gradient(131deg,#333 .8%,#0d0d0d 35%,#262626 99%);color:#fff;font-size:14px;font-weight:600}
+.ibtn{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);color:var(--tn)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1px solid transparent;font:inherit;font-size:14px;font-weight:600;cursor:pointer;transition:background .25s var(--ease),border-color .25s var(--ease),transform .2s var(--ease)}
+.btn.p{background:var(--pr);color:#fff}
+.btn.s{background:var(--sf);border-color:var(--bd);color:#000}
+.btn.s:hover{border-color:rgba(0,0,0,.25)}
+.btn:active{transform:scale(.98)}
+.btn.off{opacity:.6}
+.btn:focus-visible,.card:focus-visible,.lpill:focus-visible,.rp:focus-visible,.pbtn:focus-visible,.trow:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.res{font-size:14px;color:var(--tm);font-variant-numeric:tabular-nums}
+.lab{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+.stat{display:flex;flex-direction:column-reverse;gap:2px;padding:0 24px}
+.stat dd{font-size:24px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat dt{font-size:12px;color:var(--tm)}
+.flink{font-size:14px;font-weight:500;color:var(--tn)}
+.t1{--soft:#E6E6E6}.t2{--soft:#EAEAEA}.t3{--soft:#EEEEEE}.t4{--soft:#F2F2F2}
+.card{--soft:#E9E9E9;display:flex;flex-direction:column;gap:12px;height:100%;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .2s var(--ease)}
+.card:hover{border-color:rgba(0,0,0,.2);box-shadow:0 2px 4px rgba(0,0,0,.05),0 12px 32px rgba(0,0,0,.12)}
+.card:active{transform:scale(.98)}
+.cover{position:relative;flex:none;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--soft)}
+.img{position:absolute;inset:0;transition:transform .6s var(--ease)}
+.card:hover .img{transform:scale(1.03)}
+.img.ph{background:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,radial-gradient(120% 100% at 25% 15%,#6b6b6b,#1f1f1f)}
+.img.plate{background:var(--soft)}
+.glyph{position:absolute;inset:0;display:grid;place-items:center;color:rgba(0,0,0,.3)}
+.ttl{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em;text-wrap:balance;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:47px}
+.ex{font-size:14px;line-height:1.55;color:var(--tm);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:65px}
+.ft{margin-top:auto;padding-top:12px;border-top:1px solid #EAEAEA;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tm)}
+.go{margin-left:auto;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);color:#000;transition:background .3s var(--ease),color .3s var(--ease)}
+.go svg{transition:transform .3s var(--ease)}
+.card:hover .go{background:var(--pr);color:#fff}
+.card:hover .go svg{transform:translateX(2px)}
+.pg{display:flex;justify-content:center;align-items:center;gap:8px}
+.pg a{display:grid;place-items:center;min-width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);font-size:14px;font-weight:600;color:var(--tn);font-variant-numeric:tabular-nums;transition:border-color .25s var(--ease),background .25s var(--ease)}
+.pg a:hover{border-color:rgba(0,0,0,.2)}
+.pg a.on{background:var(--pr);border-color:var(--pr);color:#fff}
+.pg a.off{opacity:.4;pointer-events:none}
+.pg .el{display:grid;place-items:center;min-width:28px;height:44px;font-weight:600;color:var(--tm)}
+.pgc{margin-top:12px;text-align:center;font-size:13px;color:var(--tm)}
+.bd{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.bd .clip{position:absolute;inset:0;opacity:.25;background:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px) 0 0/24px 24px,radial-gradient(120% 100% at 70% 20%,#6b6b6b,#1a1a1a)}
+.bd .scrim{position:absolute;inset:0;background:linear-gradient(90deg,rgba(229,229,229,.78) 0%,rgba(229,229,229,.5) 45%,rgba(229,229,229,0) 75%),linear-gradient(180deg,rgba(229,229,229,0) 0%,rgba(229,229,229,.4) 55%,#E5E5E5 100%)}
+.bd .tag{position:absolute;padding:4px 10px;border-radius:999px;border:1px dashed var(--fb);background:rgba(255,255,255,.7);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--tn)}
+.credit{display:flex;align-items:center;gap:12px;font-size:13px;line-height:1.45;color:var(--tm)}
+.credit a{display:inline-flex;align-items:center;gap:6px;min-height:44px;text-decoration:underline;text-underline-offset:3px}
+.pbtn{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1px solid var(--bd);background:var(--sf);color:var(--tn);cursor:pointer;transition:border-color .25s var(--ease),color .25s var(--ease)}
+.pbtn:hover{border-color:rgba(0,0,0,.25);color:#000}
+.empty{display:flex;flex-direction:column;align-items:center;gap:16px;justify-content:center;padding:56px 32px;text-align:center;background:rgba(255,255,255,.5);border:1.5px dashed #A8A8A8;border-radius:24px}
+.empty h2{max-width:560px;font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2;text-wrap:balance}
+.empty p{max-width:460px;font-size:16px;line-height:1.6;color:var(--tm);text-wrap:pretty}
+.fld{display:flex;flex-direction:column;gap:8px;min-width:0}
+.fld label,.fld .lb{font-size:14px;font-weight:600;color:#141414}
+.fld .opt{margin-left:6px;font-weight:500;color:var(--tm)}
+.inp{width:100%;height:44px;padding:0 14px;border-radius:12px;border:1px solid var(--fb);background:#fff;font:inherit;font-size:14px;color:#000;transition:border-color .25s var(--ease),box-shadow .25s var(--ease)}
+textarea.inp{height:auto;min-height:132px;padding:12px 14px;line-height:1.6;resize:vertical;display:block}
+.inp::placeholder{color:#6B6B6B}
+.inp:hover{border-color:var(--tn)}
+.inp:focus,.inp.is-focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px rgba(49,67,68,.3)}
+.inp.bad{border-color:var(--err)}
+.fh{font-size:13px;line-height:1.45;color:var(--tm)}
+.fe{display:flex;align-items:flex-start;gap:6px;font-size:13px;line-height:1.45;font-weight:500;color:var(--err)}
+.fe svg{margin-top:2px}
+.nt{display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:12px;font-size:14px;line-height:1.5;font-weight:500}
+.nt svg{margin-top:2px}
+.nt.ok{background:#F4F6F6;border:1px solid var(--ac);color:var(--ac)}
+.nt.er{background:#FCF1F0;border:1px solid var(--err);color:var(--err)}
+.panel{position:relative;background:#fff;border:1px solid var(--bd);border-radius:24px;padding:28px}
+.link{display:inline-flex;align-items:center;min-height:44px;padding:0 6px;font-size:14px;font-weight:600;color:var(--tn);text-decoration:underline;text-underline-offset:3px;background:none;border:0;font-family:inherit;cursor:pointer}
+.av{--soft:#E9E9E9;flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--soft);border:1px solid rgba(0,0,0,.1);font-size:13px;font-weight:800;color:#262626}
+.cmi{display:flex;gap:12px}
+.cmi.reply{margin-left:24px;padding-left:16px;border-left:2px solid var(--bd);margin-top:-12px}
+.cmb{flex:1;min-width:0}
+.cmh{display:flex;align-items:center;flex-wrap:wrap;gap:2px 10px;min-height:36px}
+.cmn{font-size:14px;font-weight:600;overflow-wrap:anywhere}
+.badge{padding:2px 8px;border-radius:999px;background:var(--mf);border:1px solid var(--bd);font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ac)}
+.cmt{font-size:12px;color:var(--tm)}
+.cmx{margin-top:2px;font-size:15px;line-height:1.6;color:var(--tn);white-space:pre-wrap;overflow-wrap:anywhere}
+.rp{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 14px 0 0;background:none;border:0;font-family:inherit;font-size:13px;font-weight:600;color:var(--tn);cursor:pointer;transition:color .25s var(--ease)}
+.rp:hover{color:var(--ac)}
+.cme{display:flex;align-items:center;gap:14px;padding:20px 24px;background:rgba(255,255,255,.5);border:1.5px dashed #A8A8A8;border-radius:16px;font-size:15px;line-height:1.5;color:var(--tm)}
+.cme .ei{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#fff;border:1px solid var(--bd);color:var(--tn)}
+.back{align-self:flex-start}
+.lpill{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;border:1px solid var(--bd);background:var(--sf);font-size:13px;font-weight:600;color:var(--ac);transition:border-color .25s var(--ease)}
+.lpill:hover{border-color:rgba(0,0,0,.25)}
+.meta{display:flex;flex-wrap:wrap;align-items:center;gap:4px 16px;font-size:14px;color:var(--tm)}
+.tcard{display:flex;flex-direction:column;gap:2px;padding:8px;background:var(--sf);border:1px solid var(--bd);border-radius:16px}
+.trow{display:flex;align-items:center;gap:12px;min-height:48px;padding:6px 12px;border-radius:12px;font-size:14px;font-weight:500;line-height:1.35;color:var(--tn);transition:background .25s var(--ease),color .25s var(--ease)}
+.trow:hover{background:var(--mf)}
+.trow.on,.trow.on:hover{background:var(--pr);color:#fff}
+.trow.sub{padding-left:28px;font-size:13px}
+.rep{background:#fff;border:1px solid var(--bd);border-radius:16px}
+.rep summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:52px;padding:0 20px;cursor:pointer;font-size:14px;font-weight:600;color:var(--tn)}
+.rep summary::-webkit-details-marker{display:none}
+.rep summary:focus-visible{outline:2px solid var(--ac);outline-offset:-2px;border-radius:16px}
+.rep summary .chev{margin-left:auto;transition:transform .25s var(--ease)}
+.rep[open] summary .chev{transform:rotate(180deg)}
+.rep .rb{border-top:1px solid #EAEAEA;padding:20px}
+.prose{font-size:17px;line-height:1.75;color:#000;text-wrap:pretty;counter-reset:figure}
+.prose>*+*{margin-top:1.25em}
+.prose h2{font-size:26px;font-weight:800;line-height:1.25;letter-spacing:-.02em;color:#0D0D0D;margin-top:2em;text-wrap:balance;scroll-margin-top:96px}
+.prose h3{font-size:20px;font-weight:700;line-height:1.3;letter-spacing:-.01em;color:#0D0D0D;margin-top:1.75em;text-wrap:balance;scroll-margin-top:96px}
+.prose a{color:var(--ac);font-weight:500;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+.prose strong{font-weight:600}
+.prose ul,.prose ol{padding-left:1.5rem}
+.prose li+li{margin-top:.4em}
+.prose li::marker{color:var(--ac)}
+.prose blockquote{border-left:3px solid var(--ac);padding:.25rem 0 .25rem 1.25rem;color:var(--tm);font-style:italic}
+.prose .math-block{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;gap:0 .4em;margin:1.5em 0;padding:.9em 1em;overflow-x:auto;font-family:'KaTeX_Main','Times New Roman',Georgia,serif;font-size:1.35em;line-height:1.4;color:#000}
+.prose .mi{font-style:italic}
+.prose .mi sup{font-size:.7em;line-height:0;vertical-align:.55em;font-style:normal}
+.prose figure{margin:2em 0;counter-increment:figure}
+.prose figure .fig{display:block;width:100%;height:auto;border-radius:12px;background:#fff;border:1px solid var(--bd)}
+.prose figcaption{margin-top:.625rem;text-align:center;font-size:15px;line-height:1.5;color:var(--tm)}
+.prose figcaption::before{font-weight:600;color:#0D0D0D}
+.prose .callout{background:#F5F5F5;border:1px solid var(--bd);border-left:4px solid var(--ac);border-radius:12px;padding:1rem 1.25rem}
+.prose .callout::before{display:block;margin-bottom:.4em;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+.prose .callout-warning{border-left:6px solid #0D0D0D}
+.prose .callout-example{border-left-style:dashed}
+.prose .references{margin-top:3em;padding-top:1.5em;border-top:1px solid var(--bd);font-size:15px;line-height:1.75}
+.prose .references::before{display:block;margin-bottom:.5em;font-size:20px;font-weight:700;color:#0D0D0D}
+.prose .references .rv{margin-top:1em;color:var(--tm)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.card:hover .img,.card:hover .go svg,.card:active,.btn:active{transform:none}}
+</style>
+</helmet>
+<div style="width:1280px;height:3900px;padding:56px 48px;display:flex;flex-direction:column;gap:40px">
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:860px">
+<span class="eyebrow"><i></i>Blog · Bình luận</span>
+<h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em">Form và danh sách bình luận: các trạng thái</h1>
+<p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Mỗi hàng là một trạng thái ở đúng bề rộng cột bài viết (768px). Nhãn VI hoặc EN cho biết ngôn ngữ của phần minh hoạ. Cùng một form dùng cho bình luận, trả lời và (với nhãn khác) báo lỗi. Honeypot <code style="font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:14px;background:#EFEFEF;border-radius:6px;padding:1px 6px">website</code> có trong mọi form và ẩn với cả người dùng lẫn trình đọc màn hình.</p>
+</header>
+<div style="display:flex;flex-direction:column;gap:32px">
+<sc-for list="{{rows}}" as="p" hint-placeholder-count="6">
+<section style="display:grid;grid-template-columns:320px 768px;column-gap:40px;align-items:start" aria-label="{{p.name}}">
+<div style="display:flex;flex-direction:column;gap:12px;padding-top:4px">
+<div style="display:flex;align-items:center;gap:10px"><span style="display:grid;place-items:center;min-width:40px;height:28px;padding:0 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:12px;font-weight:700">{{p.id}}</span><span style="display:inline-flex;padding:2px 10px;border-radius:999px;background:#EFEFEF;border:1px solid var(--bd);font-size:11px;font-weight:700;letter-spacing:.06em;color:#262626">{{p.lang}}</span></div>
+<h2 style="font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.25">{{p.name}}</h2>
+<p style="font-size:14px;line-height:1.6;color:#3E424D">{{p.why0}}</p>
+<sc-if value="{{p.has1}}" hint-placeholder-val="{{true}}"><p style="font-size:14px;line-height:1.6;color:#3E424D">{{p.why1}}</p></sc-if>
+<sc-if value="{{p.has2}}" hint-placeholder-val="{{false}}"><p style="font-size:14px;line-height:1.6;color:#3E424D">{{p.why2}}</p></sc-if>
+</div>
+<form class="panel" novalidate style="">
+<h3 style="font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em">{{p.h3}}</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;align-items:start">
+<div class="fld"><label for="st{{p.id}}-n">{{p.lName}}</label><input class="inp {{p.nCls}}" id="st{{p.id}}-n" type="text" name="name" maxlength="80" autocomplete="name" required aria-required="true" aria-invalid="{{p.nInv}}" aria-describedby="st{{p.id}}-ne" placeholder="{{p.phN}}" value="{{p.nVal}}"><sc-if value="{{p.nErr}}" hint-placeholder-val="{{false}}"><p class="fe" id="st{{p.id}}-ne"><svg class="ic" style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><span>{{p.nErrT}}</span></p></sc-if></div>
+<div class="fld"><label for="st{{p.id}}-e">{{p.lEmail}}<span class="opt">{{p.lOpt}}</span></label><input class="inp {{p.eCls}}" id="st{{p.id}}-e" type="email" name="email" autocomplete="email" aria-invalid="{{p.eInv}}" aria-describedby="st{{p.id}}-eh st{{p.id}}-ee" placeholder="{{p.phE}}" value="{{p.eVal}}"><p class="fh" id="st{{p.id}}-eh">{{p.hint}}</p><sc-if value="{{p.eErr}}" hint-placeholder-val="{{false}}"><p class="fe" id="st{{p.id}}-ee"><svg class="ic" style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><span>{{p.eErrT}}</span></p></sc-if></div>
+</div>
+<div class="fld" style="margin-top:16px"><label for="st{{p.id}}-m">{{p.lMsg}}</label><textarea class="inp {{p.mCls}}" id="st{{p.id}}-m" name="body" rows="5" maxlength="2000" required aria-required="true" aria-invalid="{{p.mInv}}" aria-describedby="st{{p.id}}-me" placeholder="{{p.phM}}">{{p.mVal}}</textarea><sc-if value="{{p.mErr}}" hint-placeholder-val="{{false}}"><p class="fe" id="st{{p.id}}-me"><svg class="ic" style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg><span>{{p.mErrT}}</span></p></sc-if></div>
+<div aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden"><label for="st{{p.id}}-w">Trang web</label><input id="st{{p.id}}-w" type="text" name="website" tabindex="-1" autocomplete="off"></div>
+<div style="margin-top:16px"><sc-if value="{{p.hasNote}}" hint-placeholder-val="{{false}}"><div class="nt {{p.noteCls}}" role="{{p.noteRole}}"><sc-if value="{{p.noteOk}}" hint-placeholder-val="{{false}}"><svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></sc-if><sc-if value="{{p.noteBad}}" hint-placeholder-val="{{false}}"><svg class="ic" style="width:18px;height:18px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg></sc-if><span>{{p.noteT}}</span></div></sc-if></div>
+<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px">
+<button type="submit" class="btn p {{p.btnCls}}" aria-disabled="{{p.btnAria}}" style="">{{p.btnT}}</button><sc-if value="{{p.showCancel}}" hint-placeholder-val="{{false}}"><button class="link" type="button">{{p.cancelT}}</button></sc-if>
+</div>
+</form>
+</section>
+</sc-for>
+<section style="display:grid;grid-template-columns:320px 768px;column-gap:40px;align-items:start" aria-label="Không có bình luận">
+<div style="display:flex;flex-direction:column;gap:12px;padding-top:4px">
+<div style="display:flex;align-items:center;gap:10px"><span style="display:grid;place-items:center;min-width:40px;height:28px;padding:0 10px;border-radius:999px;background:#0D0D0D;color:#fff;font-size:12px;font-weight:700">C7</span><span style="display:inline-flex;padding:2px 10px;border-radius:999px;background:#EFEFEF;border:1px solid var(--bd);font-size:11px;font-weight:700;letter-spacing:.06em;color:#262626">VI · EN</span></div>
+<h2 style="font-size:20px;font-weight:800;letter-spacing:-.01em;line-height:1.25">Chưa có bình luận</h2>
+<p style="font-size:14px;line-height:1.6;color:#3E424D">Bản EmptyState thu nhỏ: khung nét đứt bo 16px (khung lớn dùng 24px), biểu tượng trong vòng tròn 44px, một dòng chữ. Vùng role="status". Form bình luận luôn nằm phía trên nên câu "Hãy là người đầu tiên" có chỗ để làm theo ngay.</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px"><div class="cme" role="status"><span class="ei" aria-hidden="true"><svg class="ic" style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><p>Chưa có bình luận nào. Hãy là người đầu tiên!</p></div><div class="cme" role="status"><span class="ei" aria-hidden="true"><svg class="ic" style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><p>No comments yet. Be the first!</p></div></div>
+</section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3900}}'>
+const D = {"rows":[{"lang":"VI","h3":"Để lại bình luận","lName":"Tên của bạn","phN":"Nguyễn Văn A","lEmail":"Email","lOpt":"(không bắt buộc)","phE":"ban@example.com","hint":"Không hiển thị công khai. Chỉ ban biên tập thấy, để liên hệ lại khi cần.","lMsg":"Nội dung","phM":"Chia sẻ suy nghĩ của bạn về bài viết này...","nVal":"","nCls":"bad is-focus","nInv":"true","nErr":true,"nErrT":"Vui lòng nhập tên.","eVal":"ban@example","eCls":"bad","eInv":"true","eErr":true,"eErrT":"Email không hợp lệ.","mVal":"","mCls":"bad","mInv":"true","mErr":true,"mErrT":"Vui lòng nhập nội dung bình luận.","hasNote":false,"noteCls":"","noteRole":"status","noteOk":false,"noteBad":false,"noteT":"","btnT":"Gửi bình luận","btnCls":"","btnAria":"false","showCancel":false,"cancelT":"Huỷ","id":"C1","name":"Lỗi từng ô khi gửi","why0":"Kiểm tra ở client khi bấm gửi, noValidate. Ô sai có viền đỏ, biểu tượng và câu lỗi ngay dưới ô, liên kết bằng aria-describedby, aria-invalid = true.","why1":"Tiêu điểm chuyển tới ô sai đầu tiên (ở đây là Tên, đang hiện vòng focus). Sửa ô nào thì lỗi ô đó biến mất.","why2":"Lỗi không chỉ dựa vào màu: luôn có biểu tượng và chữ.","has1":true,"has2":true},{"lang":"EN","h3":"Leave a comment","lName":"Your name","phN":"Jane Doe","lEmail":"Email","lOpt":"(optional)","phE":"you@example.com","hint":"Not shown publicly. Only the editors can see it, so they can get back to you if needed.","lMsg":"Message","phM":"Share your thoughts on this post...","nVal":"Linh","nCls":"","nInv":"false","nErr":false,"nErrT":"","eVal":"","eCls":"","eInv":"false","eErr":false,"eErrT":"","mVal":"I read this twice and I still have one question about leakage current in very small transistors. Does it depend on the temperature of the chip as well, or only on how thin the insulating layer is? (the rest of a very long message continues here)","mCls":"bad","mInv":"true","mErr":true,"mErrT":"Comments are limited to 2000 characters.","hasNote":false,"noteCls":"","noteRole":"status","noteOk":false,"noteBad":false,"noteT":"","btnT":"Post comment","btnCls":"","btnAria":"false","showCancel":false,"cancelT":"Cancel","id":"C2","name":"Nội dung quá dài","why0":"Chỉ ô nội dung sai; hai ô còn lại giữ nguyên. Câu lỗi nêu đúng giới hạn 2000 ký tự.","why1":"Không thêm bộ đếm ký tự (báo cáo ghi hiện chưa có); nếu muốn có, đặt cạnh nhãn \"Message\".","why2":"","has1":true,"has2":false},{"lang":"EN","h3":"Leave a comment","lName":"Your name","phN":"Jane Doe","lEmail":"Email","lOpt":"(optional)","phE":"you@example.com","hint":"Not shown publicly. Only the editors can see it, so they can get back to you if needed.","lMsg":"Message","phM":"Share your thoughts on this post...","nVal":"Linh","nCls":"","nInv":"false","nErr":false,"nErrT":"","eVal":"linh@example.com","eCls":"","eInv":"false","eErr":false,"eErrT":"","mVal":"Thanks, the 1.2 V to 0.9 V example makes the square term easy to see.","mCls":"","mInv":"false","mErr":false,"mErrT":"","hasNote":false,"noteCls":"","noteRole":"status","noteOk":false,"noteBad":false,"noteT":"","btnT":"Sending...","btnCls":"off","btnAria":"true","showCancel":false,"cancelT":"Cancel","id":"C3","name":"Đang gửi","why0":"Nút giữ nguyên kích thước, opacity 0.6, aria-disabled = true, nhãn đổi thành \"Sending...\". Không dùng spinner (không có chuyển động lặp).","why1":"Các ô giữ nguyên giá trị đã nhập.","why2":"","has1":true,"has2":false},{"lang":"VI","h3":"Để lại bình luận","lName":"Tên của bạn","phN":"Nguyễn Văn A","lEmail":"Email","lOpt":"(không bắt buộc)","phE":"ban@example.com","hint":"Không hiển thị công khai. Chỉ ban biên tập thấy, để liên hệ lại khi cần.","lMsg":"Nội dung","phM":"Chia sẻ suy nghĩ của bạn về bài viết này...","nVal":"","nCls":"","nInv":"false","nErr":false,"nErrT":"","eVal":"","eCls":"","eInv":"false","eErr":false,"eErrT":"","mVal":"","mCls":"","mInv":"false","mErr":false,"mErrT":"","hasNote":true,"noteCls":"ok","noteRole":"status","noteOk":true,"noteBad":false,"noteT":"Đã gửi bình luận. Cảm ơn bạn!","btnT":"Gửi bình luận","btnCls":"","btnAria":"false","showCancel":false,"cancelT":"Huỷ","id":"C4","name":"Gửi thành công","why0":"Form được reset. Thông báo role=\"status\", viền và chữ màu nhấn kèm biểu tượng dấu tick (thay cho chữ xanh lục hiện tại).","why1":"Bình luận mới hiện trong danh sách sau khi làm mới dữ liệu. Không có bước duyệt trước.","why2":"","has1":true,"has2":false},{"lang":"EN","h3":"Leave a comment","lName":"Your name","phN":"Jane Doe","lEmail":"Email","lOpt":"(optional)","phE":"you@example.com","hint":"Not shown publicly. Only the editors can see it, so they can get back to you if needed.","lMsg":"Message","phM":"Share your thoughts on this post...","nVal":"Linh","nCls":"","nInv":"false","nErr":false,"nErrT":"","eVal":"linh@example.com","eCls":"","eInv":"false","eErr":false,"eErrT":"","mVal":"Thanks, the 1.2 V to 0.9 V example makes the square term easy to see.","mCls":"","mInv":"false","mErr":false,"mErrT":"","hasNote":true,"noteCls":"er","noteRole":"alert","noteOk":false,"noteBad":true,"noteT":"You are commenting too fast. Please try again in a few minutes.","btnT":"Post comment","btnCls":"","btnAria":"false","showCancel":false,"cancelT":"Cancel","id":"C5","name":"Lỗi từ máy chủ","why0":"429 (quá 3 bình luận trong 10 phút) hiện thông báo role=\"alert\" viền đỏ kèm biểu tượng cảnh báo; các ô giữ nguyên nội dung để người dùng không phải gõ lại.","why1":"Lỗi khác dùng cùng khung với câu: \"We could not send your comment. Please try again.\"","why2":"","has1":true,"has2":false},{"lang":"VI","h3":"Đang trả lời Minh Anh","lName":"Tên của bạn","phN":"Nguyễn Văn A","lEmail":"Email","lOpt":"(không bắt buộc)","phE":"ban@example.com","hint":"Không hiển thị công khai. Chỉ ban biên tập thấy, để liên hệ lại khi cần.","lMsg":"Nội dung","phM":"Chia sẻ suy nghĩ của bạn về bài viết này...","nVal":"","nCls":"","nInv":"false","nErr":false,"nErrT":"","eVal":"","eCls":"","eInv":"false","eErr":false,"eErrT":"","mVal":"","mCls":"","mInv":"false","mErr":false,"mErrT":"","hasNote":false,"noteCls":"","noteRole":"status","noteOk":false,"noteBad":false,"noteT":"","btnT":"Gửi bình luận","btnCls":"","btnAria":"false","showCancel":true,"cancelT":"Huỷ","id":"C6","name":"Đang trả lời một bình luận","why0":"Tiêu đề form đổi thành \"Đang trả lời {tên}\" và xuất hiện nút \"Huỷ\" (44px, dạng liên kết gạch chân).","why1":"Đề xuất mới: bấm \"Trả lời\" cuộn mượt tới form rồi đưa tiêu điểm vào ô nội dung; hiện tại chỉ đổi tiêu đề và trang không cuộn.","why2":"","has1":true,"has2":false}]};
+class Component extends DCLogic {
+  renderVals() {
+    return D;
+  }
+}
+</script>
+</body>
+</html>

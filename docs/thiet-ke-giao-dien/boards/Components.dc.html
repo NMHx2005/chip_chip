@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Thành phần dùng chung</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt,ul{margin:0;padding:0}
+svg.ic{width:16px;height:16px;flex:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.sec{display:flex;flex-direction:column;gap:20px}
+.sec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.sec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:760px}
+.cap{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);margin-bottom:10px}
+.dm{display:inline-flex;align-items:flex-end;gap:2px;height:12px}
+.dm i{display:block;width:3px;border-radius:1px;background:currentColor;opacity:.25}
+.dm i:nth-child(1){height:5px}.dm i:nth-child(2){height:8px}.dm i:nth-child(3){height:12px}
+.dm.l1 i:nth-child(1),.dm.l2 i:nth-child(-n+2),.dm.l3 i{opacity:1}
+.t1{--soft:#E6E6E6}.t2{--soft:#EAEAEA}.t3{--soft:#EEEEEE}.t4{--soft:#F2F2F2}
+.card{display:flex;flex-direction:column;gap:12px;height:100%;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .2s var(--ease)}
+.card:hover,.card.is-hover{border-color:rgba(0,0,0,.2);box-shadow:0 2px 4px rgba(0,0,0,.05),0 12px 32px rgba(0,0,0,.12)}
+.card.is-focus{outline:2px solid var(--ac);outline-offset:2px}
+.cover{position:relative;flex:none;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--soft)}
+.img{position:absolute;inset:0;transition:transform .6s var(--ease)}
+.card.is-hover .img{transform:scale(1.03)}
+.img.ph{background:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,radial-gradient(120% 100% at 25% 15%,#6b6b6b,#1f1f1f)}
+.img.plate{background:var(--soft)}
+.img.mute{background:#EFEFEF}
+.wm{display:none;position:absolute;right:14px;bottom:-14px;font-size:96px;font-weight:800;line-height:1;letter-spacing:-.04em;color:rgba(0,0,0,.09)}
+.img.plate~.wm{display:block}
+.tchip{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;padding:3px 10px 3px 3px;border-radius:999px;background:var(--soft);border:1px solid rgba(0,0,0,.08);color:#262626;font-size:12px;font-weight:600;line-height:16px}
+.tchip b{flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#fff;font-size:11px;font-weight:800}
+.tchip span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ttl{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em;text-wrap:balance;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:47px}
+.ex{font-size:14px;line-height:1.55;color:var(--tm);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:65px}
+.ft{margin-top:auto;padding-top:12px;border-top:1px solid #EAEAEA;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tm)}
+.df{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:#262626}
+.dt.sep::before{content:"·";margin-right:8px}
+.go{margin-left:auto;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);color:#000;transition:background .3s var(--ease),color .3s var(--ease)}
+.go svg{transition:transform .3s var(--ease)}
+.card.is-hover .go{background:var(--pr);color:#fff}
+.card.is-hover .go svg{transform:translateX(2px)}
+.cardc{display:flex;flex-direction:column;gap:10px;padding:12px;background:var(--sf);border:1px solid var(--bd);border-radius:16px}
+.top{display:flex;align-items:flex-start;gap:12px}
+.cv{position:relative;flex:none;width:96px;height:96px;border-radius:12px;overflow:hidden;background:var(--soft)}
+.cv .wm{font-size:64px;right:6px;bottom:-8px}
+.tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.cardc .ttl{font-size:16px;min-height:0}
+.cardc .ex{-webkit-line-clamp:2;min-height:0}
+.rrow{display:flex;flex-direction:column;gap:8px;padding:20px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
+.rrow.is-hover{border-color:rgba(0,0,0,.2);box-shadow:0 2px 4px rgba(0,0,0,.05),0 12px 32px rgba(0,0,0,.12)}
+.rrow .meta{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-size:13px;color:var(--tm)}
+.rrow h3{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.rrow p{font-size:14px;line-height:1.55;color:var(--tm);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+mark{background:#FEF6D9;color:inherit;border-radius:3px;padding:0 2px}
+.box{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:20px}
+.seg{display:inline-flex;align-items:center;gap:2px;padding:4px;background:var(--sf);border:1px solid var(--bd);border-radius:999px}
+.seg a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--tn);white-space:nowrap}
+.seg a.h{background:var(--mf)}
+.seg a.f{outline:2px solid var(--ac);outline-offset:2px}
+.seg a.on{background:var(--pr);color:#fff}
+.trow{display:flex;align-items:center;gap:12px;min-height:48px;padding:6px 12px 6px 10px;border-radius:12px;font-size:14px;font-weight:500;color:var(--tn);width:260px}
+.trow.h{background:var(--mf)}
+.trow.f{outline:2px solid var(--ac);outline-offset:2px}
+.trow.on{background:var(--pr);color:#fff}
+.tn{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--soft,#fff);border:1px solid rgba(0,0,0,.1);color:#262626;font-size:12px;font-weight:800}
+.trow.on .tn{background:rgba(255,255,255,.14);border-color:transparent;color:#fff}
+.trow .lb{flex:1;min-width:0;line-height:1.3}
+.cnt{flex:none;min-width:28px;text-align:center;padding:2px 8px;border-radius:999px;background:var(--mf);font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--tm)}
+.trow.on .cnt{background:rgba(255,255,255,.16);color:#fff}
+.pg{display:flex;align-items:center;gap:8px}
+.pg a,.pg .gap{display:grid;place-items:center;min-width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);font-size:14px;font-weight:600;color:var(--tn);font-variant-numeric:tabular-nums}
+.pg .gap{border:0;background:none}
+.pg a.on{background:var(--pr);border-color:var(--pr);color:#fff}
+.pg a.off{opacity:.4}
+.pg a.h{border-color:rgba(0,0,0,.2)}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-size:14px;font-weight:600}
+.btn.p{background:var(--pr);color:#fff}
+.btn.s{background:var(--sf);border-color:var(--bd);color:#000}
+.sug{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 8px 0 16px;border-radius:999px;background:var(--sf);border:1px solid var(--bd);font-size:14px;font-weight:500;color:var(--tn)}
+</style>
+</helmet>
+<div style="width:1280px;height:3060px;padding:56px 48px;display:flex;flex-direction:column;gap:56px">
+
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:820px">
+<span class="eyebrow"><i></i>Thành phần · Dùng chung</span>
+<h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em">Bộ thành phần của thư viện</h1>
+<p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Một thẻ bài (PostCard) với ba dạng: thẻ, gọn, dòng. Cùng một họ chip, một kiểu lọc, một kiểu phân trang, một kiểu trạng thái rỗng. Trang Blog và Tìm kiếm dùng lại đúng các mảnh này.</p>
+</header>
+
+<section class="sec">
+<h2>PostCard · dạng thẻ</h2>
+<p>Ảnh 16:9, chip chủ đề, tiêu đề tối đa 3 dòng, tóm tắt tối đa 3 dòng, chân thẻ có độ khó, ngày và đĩa mũi tên. Không có ảnh bìa thì dùng tấm chủ đề (số chủ đề làm hình chìm) thay cho ô xám trống.</p>
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;align-items:stretch">
+<sc-for list="{{cards}}" as="c" hint-placeholder-count="4">
+<div><p class="cap">{{c.cap}}</p>
+<div class="card {{c.state}}">
+<div class="cover t{{c.t}}"><div class="img {{c.img}}"></div><span class="wm" aria-hidden="true">{{c.t}}</span></div>
+<span class="tchip t{{c.t}}"><b>{{c.t}}</b><span>{{c.topic}}</span></span>
+<h3 class="ttl">{{c.title}}</h3>
+<p class="ex">{{c.ex}}</p>
+<div class="ft"><span class="df"><span class="dm l{{c.lv}}"><i></i><i></i><i></i></span>{{c.diff}}</span><span class="dt sep">{{c.date}}</span><span class="go"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div>
+</div></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>PostCard · gọn và Blog</h2>
+<p>Dưới 640px thẻ chuyển sang dạng gọn: ảnh vuông 96px bên trái, tóm tắt 2 dòng. Ở Blog thẻ không có chip chủ đề và độ khó, chân thẻ chỉ còn ngày; thẻ Blog vẫn mở rộng toàn màn hình khi bấm, như hiện nay.</p>
+<div style="display:grid;grid-template-columns:350px 350px 1fr;gap:24px;align-items:start">
+<div><p class="cap">compact · có ảnh bìa</p>
+<div class="cardc" style="width:350px"><div class="top"><div class="cv t2"><div class="img ph"></div></div><div class="tx"><span class="tchip t2"><b>2</b><span>Nguyên lý</span></span><h3 class="ttl">Transistor: công tắc nhỏ nhất thế giới</h3></div></div><p class="ex">Một tín hiệu nhỏ ở cực cổng quyết định dòng điện lớn có chạy qua hay không.</p><div class="ft"><span class="df"><span class="dm l2"><i></i><i></i><i></i></span>Trung bình</span><span class="dt sep">26 thg 8, 2026</span><span class="go"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div></div></div>
+<div><p class="cap">compact · tấm chủ đề, EN dài</p>
+<div class="cardc" style="width:350px"><div class="top"><div class="cv t1"><div class="img plate"></div><span class="wm">1</span></div><div class="tx"><span class="tchip t1"><b>1</b><span>What is a semiconductor</span></span><h3 class="ttl">Conductor, insulator, semiconductor: what sets them apart</h3></div></div><p class="ex">Follow how electrons move to tell the three kinds of material apart with a single diagram.</p><div class="ft"><span class="df"><span class="dm l1"><i></i><i></i><i></i></span>Basic</span><span class="dt sep">Sep 9, 2026</span><span class="go"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div></div></div>
+<div style="max-width:300px"><p class="cap">card · Blog (không chủ đề, không độ khó)</p>
+<div class="card"><div class="cover"><div class="img mute"></div></div><h3 class="ttl">TSMC đã thống trị ngành bán dẫn toàn cầu như thế nào</h3><p class="ex">Một hãng không tự thiết kế chip nhưng làm ra phần lớn chip tiên tiến nhất thế giới.</p><div class="ft"><span class="dt">14 thg 9, 2026</span><span class="go"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div></div></div>
+</div>
+</section>
+
+<section class="sec">
+<h2>PostCard · dạng dòng (kết quả tìm kiếm)</h2>
+<p>Không ảnh. Loại nội dung và chip chủ đề ở dòng trên, tiêu đề, tóm tắt 2 dòng. Từ khoá được tô bằng <code style="font-family:ui-monospace,Menlo,monospace;font-size:13px">&lt;mark&gt;</code> nền #FEF6D9 như hiện tại. Cùng hover với thẻ.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+<div><p class="cap">row · mặc định</p>
+<div class="rrow"><div class="meta"><span class="tchip t2"><b>2</b><span>Nguyên lý</span></span><span class="df"><span class="dm l2"><i></i><i></i><i></i></span>Trung bình</span><span>· 26 thg 8, 2026</span></div><h3>Transistor: công tắc nhỏ nhất thế giới</h3><p>Một tín hiệu nhỏ ở cực cổng quyết định dòng điện lớn có chạy qua hay không. Khi có <mark>transistor</mark>, mạch mới biết tính toán.</p></div></div>
+<div><p class="cap">row · hover, từ khoá “diode”</p>
+<div class="rrow is-hover"><div class="meta"><span class="tchip t2"><b>2</b><span>Nguyên lý</span></span><span class="df"><span class="dm l1"><i></i><i></i><i></i></span>Cơ bản</span><span>· 30 thg 8, 2026</span></div><h3><mark>Diode</mark> hoạt động thế nào: van một chiều của dòng điện</h3><p>Hiểu mối nối p–n bằng hình ảnh dòng nước chảy qua một cái van. Một <mark>diode</mark> chỉ cho dòng đi một hướng.</p></div></div>
+</div>
+</section>
+
+<section class="sec">
+<h2>Chip và điều khiển lọc</h2>
+<p>Chủ đề nhận biết bằng số và nhãn, không bằng sắc xám. Độ khó nhận biết bằng ba thanh tăng dần cộng nhãn chữ. Mọi mục bấm được cao tối thiểu 44px.</p>
+<div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px">
+<div class="box"><p class="cap">Chip chủ đề · VI và EN</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px"><span class="tchip t1"><b>1</b><span>Định nghĩa</span></span><span class="tchip t2"><b>2</b><span>Nguyên lý</span></span><span class="tchip t3"><b>3</b><span>Ứng dụng</span></span><span class="tchip t4"><b>4</b><span>Lịch sử và Phát triển</span></span></div>
+<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px"><span class="tchip t1"><b>1</b><span>What is a semiconductor</span></span><span class="tchip t2"><b>2</b><span>How they work</span></span><span class="tchip t3"><b>3</b><span>Applications</span></span><span class="tchip t4"><b>4</b><span>History &amp; development</span></span></div>
+<p class="cap" style="margin-top:20px">Độ khó · VI và EN</p>
+<div style="display:flex;flex-wrap:wrap;gap:20px;font-size:13px"><span class="df"><span class="dm l1"><i></i><i></i><i></i></span>Cơ bản</span><span class="df"><span class="dm l2"><i></i><i></i><i></i></span>Trung bình</span><span class="df"><span class="dm l3"><i></i><i></i><i></i></span>Nâng cao</span><span class="df"><span class="dm l1"><i></i><i></i><i></i></span>Basic</span><span class="df"><span class="dm l2"><i></i><i></i><i></i></span>Intermediate</span><span class="df"><span class="dm l3"><i></i><i></i><i></i></span>Advanced</span></div></div>
+<div class="box"><p class="cap">Lọc độ khó · mặc định, hover, focus, đang chọn</p>
+<div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start">
+<div class="seg"><a class="on" href="#">Tất cả</a><a href="#"><span class="dm l1"><i></i><i></i><i></i></span>Cơ bản</a><a class="h" href="#"><span class="dm l2"><i></i><i></i><i></i></span>Trung bình</a><a class="f" href="#"><span class="dm l3"><i></i><i></i><i></i></span>Nâng cao</a></div>
+<div class="seg"><a href="#">All</a><a class="on" href="#"><span class="dm l1"><i></i><i></i><i></i></span>Basic</a><a href="#"><span class="dm l2"><i></i><i></i><i></i></span>Intermediate</a><a href="#"><span class="dm l3"><i></i><i></i><i></i></span>Advanced</a></div></div>
+<p class="cap" style="margin-top:20px">Hàng chủ đề · mặc định, hover, focus, đang chọn</p>
+<div style="display:grid;grid-template-columns:260px 260px;gap:4px 16px">
+<a class="trow t1" href="#"><span class="tn">1</span><span class="lb">Định nghĩa</span><span class="cnt">12</span></a>
+<a class="trow t2 h" href="#"><span class="tn">2</span><span class="lb">Nguyên lý</span><span class="cnt">13</span></a>
+<a class="trow t3 f" href="#"><span class="tn">3</span><span class="lb">What is a semiconductor</span><span class="cnt">11</span></a>
+<a class="trow t4 on" href="#"><span class="tn">4</span><span class="lb">History &amp; development</span><span class="cnt">11</span></a></div></div>
+</div>
+</section>
+
+<section class="sec">
+<h2>Phân trang và trạng thái rỗng</h2>
+<p>Một kiểu phân trang cho Bài học, Blog, Video, Tìm kiếm: ô 44px, mũi tên, tối đa 7 mục kèm dấu “…”, là liên kết thật. Trạng thái rỗng có ba biến thể dùng chung một khung.</p>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+<div class="box"><p class="cap">Trang đầu</p><div class="pg"><a class="off" href="#">‹</a><a class="on" href="#">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a><a href="#">›</a></div></div>
+<div class="box"><p class="cap">Giữa, nhiều trang · hover</p><div class="pg"><a href="#">‹</a><a href="#">1</a><span class="gap">…</span><a href="#">5</a><a class="on" href="#">6</a><a class="h" href="#">7</a><span class="gap">…</span><a href="#">20</a></div></div>
+<div class="box"><p class="cap">Trang cuối</p><div class="pg"><a href="#">‹</a><a href="#">1</a><a href="#">2</a><a href="#">3</a><a class="on" href="#">4</a><a class="off" href="#">›</a></div></div>
+</div>
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px">
+<div class="box" style="border:1.5px dashed #A8A8A8;background:rgba(255,255,255,.5);text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px"><p class="cap" style="margin:0">Rỗng toàn thư viện</p><h3 style="font-size:18px;font-weight:800">Chưa có bài học nào</h3><p style="font-size:14px;line-height:1.55;color:var(--tm)">Các bài học đầu tiên đang được biên soạn.</p><a class="btn p" href="#">Xem video</a></div>
+<div class="box" style="border:1.5px dashed #A8A8A8;background:rgba(255,255,255,.5);text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px"><p class="cap" style="margin:0">Chủ đề chưa có bài</p><h3 style="font-size:18px;font-weight:800">Chủ đề này chưa có bài học</h3><p style="font-size:14px;line-height:1.55;color:var(--tm)">Xem các chủ đề khác trong lúc chờ.</p><a class="btn s" href="#">Tất cả bài học</a></div>
+<div class="box" style="border:1.5px dashed #A8A8A8;background:rgba(255,255,255,.5);text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px"><p class="cap" style="margin:0">Lọc ra rỗng</p><h3 style="font-size:18px;font-weight:800">Chưa có bài Nâng cao ở chủ đề này</h3><div style="display:flex;gap:8px"><a class="sug" href="#"><span class="dm l1"><i></i><i></i><i></i></span>Cơ bản<span class="cnt">7</span></a><a class="sug" href="#"><span class="dm l2"><i></i><i></i><i></i></span>Trung bình<span class="cnt">4</span></a></div><a class="btn p" href="#">Bỏ lọc độ khó</a></div>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3060}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      cards: [
+        { cap: 'card · có ảnh bìa', t: 1, lv: 1, img: 'ph', state: '', topic: 'Định nghĩa', diff: 'Cơ bản', date: '12 thg 9, 2026', title: 'Bán dẫn là gì? Từ hạt cát đến con chip', ex: 'Vì sao silicon vừa không dẫn điện tốt vừa không cách điện hoàn toàn, và điều đó mở ra cả một ngành công nghiệp.' },
+        { cap: 'card · tấm chủ đề (không ảnh)', t: 2, lv: 3, img: 'plate', state: '', topic: 'Nguyên lý', diff: 'Nâng cao', date: '21 thg 8, 2026', title: 'Từ cổng logic đến bộ vi xử lý trong sáu bước', ex: 'Ghép các công tắc thành phép tính, rồi ghép phép tính thành một con chip biết làm toán.' },
+        { cap: 'card · hover', t: 3, lv: 2, img: 'ph', state: 'is-hover', topic: 'Ứng dụng', diff: 'Trung bình', date: '8 thg 8, 2026', title: 'Vì sao xe điện cần nhiều chip đến vậy', ex: 'Từ quản lý pin đến điều khiển động cơ, một chiếc xe điện chứa hàng nghìn linh kiện bán dẫn.' },
+        { cap: 'card · focus, EN dài', t: 4, lv: 3, img: 'plate', state: 'is-focus', topic: 'History & development', diff: 'Advanced', date: 'Jul 24, 2026', title: 'Moore’s law and the limits of shrinking: why the doubling is slowing down', ex: 'Why transistor counts doubled steadily for decades, and why that pace is now slowing.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

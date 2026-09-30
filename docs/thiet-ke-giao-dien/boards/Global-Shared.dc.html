@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Tổng hợp toàn site</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bd:#D1D1D1;--tm:#3E424D;--ac:#314344}
+*{box-sizing:border-box}
+body{margin:0;background:#E5E5E5;font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+h1,h2,h3,p,ul,li{margin:0;padding:0}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:#EFEFEF;border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.sec{display:flex;flex-direction:column;gap:16px}
+.sec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.sec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:800px}
+.tbl{background:#fff;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.tr{display:grid;gap:20px;padding:14px 20px;border-top:1px solid #EAEAEA;font-size:13px;line-height:1.55;color:#141414}
+.tr:first-child{border-top:0}
+.th{background:#EFEFEF;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--tm)}
+.tr b{font-weight:700;font-size:14px}
+.a{grid-template-columns:190px 1.1fr 1.2fr 1.4fr}
+.b{grid-template-columns:230px 1.3fr 1.3fr 1.2fr}
+.c{grid-template-columns:44px 1fr}
+.n{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#0D0D0D;color:#fff;font-size:12px;font-weight:800}
+code{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:12px;background:#EFEFEF;border-radius:6px;padding:1px 6px;color:#0D0D0D}
+</style>
+</helmet>
+<div style="width:1280px;height:3900px;padding:56px 48px;display:flex;flex-direction:column;gap:56px">
+
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:900px">
+<span class="eyebrow"><i></i>Toàn site · Sau 8 nhóm trang</span>
+<h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em">Thành phần chung và những chỗ cần chốt</h1>
+<p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Mỗi nhóm trang do một lượt thiết kế riêng, cùng dùng bộ thành phần của trang Bài học. Bảng này gom lại: cái gì đã dùng chung, cái gì bị định nghĩa trùng, và những chỗ các trang đang khác nhau cần bạn chọn một lần.</p>
+</header>
+
+<section class="sec">
+<h2>Bản đồ thành phần</h2>
+<div class="tbl">
+<div class="tr th a"><span>Thành phần</span><span>Định nghĩa ở</span><span>Dùng ở</span><span>Ghi chú</span></div>
+<sc-for list="{{map}}" as="r" hint-placeholder-count="16">
+<div class="tr a"><b>{{r.k}}</b><span>{{r.def}}</span><span>{{r.use}}</span><span>{{r.note}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Chỗ các trang đang lệch nhau</h2>
+<p>Do các lượt thiết kế chạy song song nên một số quyết định bị đưa ra hai lần. Cột đề xuất là hướng mình chọn nếu bạn không có ý khác.</p>
+<div class="tbl">
+<div class="tr th b"><span>Vấn đề</span><span>Hiện trên các bản vẽ</span><span>Đề xuất chốt</span><span>Ảnh hưởng</span></div>
+<sc-for list="{{clash}}" as="r" hint-placeholder-count="10">
+<div class="tr b"><b>{{r.k}}</b><span>{{r.now}}</span><span>{{r.pick}}</span><span>{{r.impact}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Việc phía dữ liệu và chuỗi mới</h2>
+<div class="tbl">
+<sc-for list="{{data}}" as="r" hint-placeholder-count="9">
+<div class="tr c"><span class="n">{{r.n}}</span><span>{{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+
+<section class="sec">
+<h2>Thứ tự làm gợi ý khi đem về mã</h2>
+<div class="tbl">
+<sc-for list="{{order}}" as="r" hint-placeholder-count="8">
+<div class="tr c"><span class="n">{{r.n}}</span><span>{{r.text}}</span></div>
+</sc-for>
+</div>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":3900}}'>
+const MAP = [
+['PageHero v2','Bài học','Mọi trang. Giới thiệu đặt ảnh banner ở ô phải; Liên hệ, Đóng góp, Bảo mật không có thẻ số liệu.','Thay ba kiểu đầu trang hiện có; h1 46/34.'],
+['Button','Bài học','Rỗng, 404, Liên hệ, Đóng góp, Giới thiệu, Video.','Thêm: biến thể trên nền tối (Giới thiệu), trạng thái bận (Liên hệ, Lỗi), hover #262626 cho nút chính.'],
+['TopicChip, DifficultyMark','Bài học','Thẻ bài, tìm kiếm, bộ lọc Video, bài liên quan.','Chủ đề nhận biết bằng số và nhãn, độ khó bằng ba thanh và nhãn.'],
+['PostCard (thẻ, gọn, dòng)','Bài học','Bài học, Blog, Tìm kiếm (dòng), Video (biến thể VideoCard).','Một vỏ thẻ: bo 16, padding 16, ảnh bo 12.'],
+['InfoCard','Đóng góp','Đóng góp, Giới thiệu.','Cùng vỏ với PostCard; loại tĩnh không có hover.'],
+['Pagination v2','Bài học','Bài học, Blog (9 mục), Video (12 mục).','Tìm kiếm không dùng vì tối đa 10 kết quả mỗi nhóm.'],
+['EmptyState, ErrorState','Bài học, Lỗi','Bài học, Blog, Video, Tìm kiếm, 404, lỗi.','Cùng khung nét đứt bo 24 và họ hình chip.'],
+['Disclosure (details)','Giới thiệu, Liên hệ, Blog, Video','FAQ, báo lỗi bài, mục lục mobile, bộ lọc Video mobile.','Bốn nơi định nghĩa riêng, cần gộp thành một.'],
+['Field, FormField, FormNotice','Liên hệ, Blog','Liên hệ, bình luận Blog, báo lỗi, bình luận Video.','Hai bản gần giống nhau, cần một bản.'],
+['SearchField, SearchForm','Tìm kiếm, Lỗi','Trang Tìm kiếm, popover, menu mobile, 404.','Hai tên cho cùng một mẫu.'],
+['Avatar','Giới thiệu, Blog','Tác giả, người đóng góp, bình luận.','Vòng chữ cái đầu khi không có ảnh.'],
+['ArticleShell (BackLink, LangPill, MetaRow, TOC)','Blog','Bài Blog; nên dùng lại cho bài học chi tiết. Video chi tiết dùng cột 896px riêng.','Bài học chi tiết chưa có bản vẽ.'],
+['MediaSlot, HeroBackdrop, PlayFacade','Giới thiệu, Blog, Video','Banner Giới thiệu, nền hero Blog và Video, khung phát video.','Chỗ giữ ảnh và video; iframe chỉ tạo sau khi bấm.'],
+['PlatformBadge, SourceChip','Video','Chỉ Video.','Không dùng lại nơi khác.'],
+['CardReveal','Bài học','Mọi lưới thẻ.','Trễ theo cột, tôn trọng giảm chuyển động.'],
+['Footer (liên kết 44px, trang hiện tại)','Đóng góp','Mọi trang.','Đổi chân trang, ảnh hưởng tất cả các trang.']
+];
+const CLASH = [
+['Viền ô nhập','Bài học: #D1D1D1 (khoảng 1.5:1). Liên hệ, Blog, Lỗi: #8C8C8C. Tìm kiếm: #767676.','Một token chung #767676: đạt trên trắng (khoảng 4.5:1) và trên nền xám #E5E5E5 (khoảng 3.6:1). #8C8C8C chỉ đạt trên trắng.','Mọi ô nhập, kể cả ô tìm kiếm trên nền xám.'],
+['Thông báo thành công','Liên hệ: khung xanh lá. Blog: màu nhấn kèm dấu tích.','Màu nhấn kèm dấu tích; chỉ dùng đỏ cho lỗi.','Liên hệ, bình luận, báo lỗi. Giữ hệ xám của site.'],
+['Token lỗi','Blog thêm --err và --fb; Liên hệ có đỏ riêng.','Một --err, một --field-border trong tailwind.config.','Form nói chung.'],
+['Disclosure','Bốn định nghĩa: hàng cao 60px, dấu + trong đĩa 32px xoay 45° trong 0.25s, chiều cao không hoạt hoạ.','Chọn một mẫu duy nhất cho FAQ, báo lỗi, mục lục và bộ lọc mobile.','Bốn trang.'],
+['Mục nào sáng trên thanh điều hướng khi ở Video','Ảnh hiện trạng sáng “Bài học”; bản vẽ Video giữ như vậy.','Giữ Video là con của menu Bài học. Cần bạn xác nhận.','Thanh điều hướng.'],
+['Khung bài viết','Blog: cột 768px cộng cột mục lục 272px dính. Video: một cột 896px.','Bài học chi tiết dùng ArticleShell của Blog; Video giữ cột 896px vì có khung phát.','Bài học chi tiết (chưa có bản vẽ).'],
+['Panel mở rộng','Blog: 0.4s. Bảng chuyển động Bài học: 0.45s cho panel khác.','Hai giá trị đã có ở trang chủ, không cùng hiệu ứng; giữ nguyên, không gộp.','Không đổi mã.'],
+['Nền hero có video','Blog giữ video lặp và thêm nút Tạm dừng 44px (WCAG 2.2.2).','Giữ, hoặc đổi thành ảnh tĩnh nếu bạn muốn bớt chuyển động.','Blog.'],
+['Phân trang Tìm kiếm','Bản vẽ Tìm kiếm không có phân trang vì báo cáo mô tả tối đa 10 kết quả mỗi nhóm.','Giữ như vậy; nếu sau này thêm phân trang thì dùng Pagination v2.','Tìm kiếm.'],
+['Chân trang và nút chính','Đóng góp đổi liên kết chân trang thành 44px có trạng thái trang hiện tại, và thêm hover #262626 cho nút chính.','Áp dụng toàn site cùng lúc.','Mọi trang.']
+];
+const DATA = [
+['Đếm số bài theo độ khó từng chủ đề (gợi ý ở Bài học và Video khi lọc ra rỗng). Có thể tính cùng lượt gọi countLessonsByTopic; bỏ được.'],
+['searchPosts trả về trạng thái (thành công, lỗi) để vẽ trang lỗi tìm kiếm riêng; hiện lỗi và không có kết quả trông như nhau.'],
+['sendMessage trả về mọi lỗi của form, không chỉ lỗi đầu tiên, để khung báo lỗi gộp liệt kê được từng ô.'],
+['Chuỗi mới cho cả vi.json và en.json, ví dụ privacy.toc, contribute.waysHead, nhãn thẻ số liệu, gợi ý “Mới bắt đầu?”, nhãn trang lỗi. Hai file phải giữ cùng bộ khoá.'],
+['Nút “Nhắn cho tác giả” ở Đóng góp có thể truyền loại yêu cầu; cần thêm trường loại vào form Liên hệ. Bỏ được.'],
+['Email, mạng xã hội, thời gian phản hồi, tên tác giả, ảnh tác giả vẫn là nội dung giữ chỗ; bản vẽ dùng mẫu minh hoạ.'],
+['Số liệu mẫu trong bản vẽ (47 bài, số bình luận, tên người) không phải dữ liệu thật.']
+];
+const ORDER = [
+['Token: màu, chữ, bo góc, viền ô nhập, màu lỗi; tailwind.config và globals.css.'],
+['Button, Field, Disclosure, Footer 44px, PageHero v2.'],
+['PostCard (thẻ, gọn, dòng), TopicChip, DifficultyMark, Pagination v2, EmptyState và ErrorState, CardReveal.'],
+['Trang Bài học và Bài học theo chủ đề (làm mẫu chuẩn cho cả họ danh sách).'],
+['Blog và bài Blog, rồi Video và Video chi tiết (dùng lại thẻ, phân trang, form).'],
+['Tìm kiếm và popover; Liên hệ, Giới thiệu, Đóng góp, Bảo mật.'],
+['404 và trang lỗi cuối cùng, vì dùng lại gần như mọi thành phần trên.']
+];
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      map: MAP.map((r) => ({ k: r[0], def: r[1], use: r[2], note: r[3] })),
+      clash: CLASH.map((r) => ({ k: r[0], now: r[1], pick: r[2], impact: r[3] })),
+      data: DATA.map((r, i) => ({ n: i + 1, text: r[0] })),
+      order: ORDER.map((r, i) => ({ n: i + 1, text: r[0] }))
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lessons · EN · 390</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt{margin:0}
+svg.ic{width:16px;height:16px;flex:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.ibtn{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);color:var(--tn)}
+.dm{display:inline-flex;align-items:flex-end;gap:2px;height:12px}
+.dm i{display:block;width:3px;border-radius:1px;background:currentColor;opacity:.25}
+.dm i:nth-child(1){height:5px}.dm i:nth-child(2){height:8px}.dm i:nth-child(3){height:12px}
+.dm.l1 i:nth-child(1),.dm.l2 i:nth-child(-n+2),.dm.l3 i{opacity:1}
+.t1{--soft:#E6E6E6}.t2{--soft:#EAEAEA}.t3{--soft:#EEEEEE}.t4{--soft:#F2F2F2}
+.stat{flex:1;display:flex;flex-direction:column-reverse;gap:2px;padding:0 16px}
+.stat+.stat{border-left:1px solid var(--bd)}
+.stat dd{font-size:22px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat dt{font-size:12px;color:var(--tm)}
+.trail{display:flex;gap:8px;overflow:hidden;padding:0 20px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+.chipn{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 8px;border-radius:999px;border:1px solid var(--bd);background:var(--sf);font-size:14px;font-weight:500;color:var(--tn);white-space:nowrap}
+.chipn.on{background:var(--pr);border-color:var(--pr);color:#fff}
+.chipn .tn{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--soft,#fff);border:1px solid rgba(0,0,0,.1);color:#262626;font-size:12px;font-weight:800}
+.chipn.on .tn{background:rgba(255,255,255,.14);border-color:transparent;color:#fff}
+.chipn .cnt{min-width:24px;text-align:center;padding:2px 7px;border-radius:999px;background:var(--mf);font-size:12px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--tm)}
+.chipn.on .cnt{background:rgba(255,255,255,.16);color:#fff}
+.lab{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+.segm{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:4px;background:var(--sf);border:1px solid var(--bd);border-radius:20px}
+.segm a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 12px;border-radius:16px;font-size:14px;font-weight:500;color:var(--tn);text-align:center}
+.segm a.on{background:var(--pr);color:#fff}
+.res{font-size:14px;color:var(--tm);font-variant-numeric:tabular-nums}
+.card{display:flex;flex-direction:column;gap:10px;padding:12px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;transition:transform .2s var(--ease)}
+.card:active{transform:scale(.98)}
+.card:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.top{display:flex;align-items:flex-start;gap:12px}
+.cv{position:relative;flex:none;width:96px;height:96px;border-radius:12px;overflow:hidden;background:var(--soft)}
+.img{position:absolute;inset:0}
+.img.ph{background:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,radial-gradient(120% 100% at 25% 15%,#6b6b6b,#1f1f1f)}
+.img.plate{background:var(--soft)}
+.wm{display:none;position:absolute;right:6px;bottom:-8px;font-size:64px;font-weight:800;line-height:1;letter-spacing:-.04em;color:rgba(0,0,0,.09)}
+.img.plate~.wm{display:block}
+.tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.tchip{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;max-width:100%;padding:3px 10px 3px 3px;border-radius:999px;background:var(--soft);border:1px solid rgba(0,0,0,.08);color:#262626;font-size:12px;font-weight:600;line-height:16px}
+.tchip b{flex:none;display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#fff;font-size:11px;font-weight:800}
+.tchip span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ttl{font-size:16px;font-weight:700;line-height:1.3;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ex{font-size:14px;line-height:1.5;color:var(--tm);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ft{padding-top:10px;border-top:1px solid #EAEAEA;display:flex;align-items:center;gap:8px;font-size:13px;color:var(--tm)}
+.df{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:#262626}
+.dt::before{content:"·";margin-right:8px}
+.go{margin-left:auto;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);color:#000}
+.pg{display:flex;justify-content:center;align-items:center;gap:6px}
+.pg a{display:grid;place-items:center;min-width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);font-size:14px;font-weight:600;color:var(--tn);font-variant-numeric:tabular-nums}
+.pg a.on{background:var(--pr);border-color:var(--pr);color:#fff}
+.pg a.off{opacity:.4}
+.pgc{margin-top:12px;text-align:center;font-size:13px;color:var(--tm)}
+.flink{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:500;color:var(--tn)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.card:active{transform:none}}
+</style>
+</helmet>
+<div style="width:390px;height:4000px;display:flex;flex-direction:column;background:#E5E5E5">
+
+<header style="height:68px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 20px">
+<a href="#" aria-label="Project Chíp Chíp" style="display:block;width:108px;line-height:1">
+<div style="display:flex;align-items:center;gap:6px;font-size:7px;font-weight:700;letter-spacing:.2em"><span style="flex:1;height:1px;background:#000"></span>PROJECT<span style="flex:1;height:1px;background:#000"></span></div>
+<div style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-top:2px">CHÍP CHÍP</div>
+</a>
+<button class="ibtn" aria-label="{{s.menu}}"><svg class="ic" style="width:20px;height:20px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button>
+</header>
+
+<main style="flex:none">
+<section style="padding:40px 20px 0;display:flex;flex-direction:column;align-items:flex-start;gap:16px">
+<span class="eyebrow"><i></i>{{s.eyebrow}}</span>
+<h1 style="font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-.03em">{{s.h1}}</h1>
+<p style="font-size:16px;line-height:1.6;color:#3E424D;text-wrap:pretty">{{s.desc}}</p>
+<dl style="width:100%;display:flex;background:#fff;border:1px solid var(--bd);border-radius:16px;padding:14px 0;margin-top:8px">
+<sc-for list="{{stats}}" as="st" hint-placeholder-count="3">
+<div class="stat"><dt>{{st.l}}</dt><dd>{{st.v}}</dd></div>
+</sc-for>
+</dl>
+</section>
+
+<section id="danh-sach" style="padding:32px 0 40px">
+<nav class="trail" aria-label="{{s.topicHead}}">
+<a class="chipn on" href="#" aria-current="page"><span class="tn"><svg class="ic" style="width:14px;height:14px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></svg></span>{{s.all}}<span class="cnt">47</span></a>
+<sc-for list="{{topics}}" as="tp" hint-placeholder-count="4">
+<a class="chipn t{{tp.n}}" href="#"><span class="tn">{{tp.n}}</span>{{tp.label}}<span class="cnt">{{tp.count}}</span></a>
+</sc-for>
+</nav>
+
+<div style="padding:20px 20px 0;display:flex;flex-direction:column;gap:8px">
+<span class="lab">{{s.diffHead}}</span>
+<div class="segm" role="group" aria-label="{{s.diffHead}}">
+<a class="on" href="#" aria-current="true">{{s.all}}</a>
+<a href="#"><span class="dm l1"><i></i><i></i><i></i></span>{{s.d1}}</a>
+<a href="#"><span class="dm l2"><i></i><i></i><i></i></span>{{s.d2}}</a>
+<a href="#"><span class="dm l3"><i></i><i></i><i></i></span>{{s.d3}}</a>
+</div>
+<p class="res" role="status" aria-live="polite" style="margin-top:8px">{{s.result}}</p>
+</div>
+
+<div style="padding:0 20px">
+<h2 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">{{s.listHead}}</h2>
+<div style="display:flex;flex-direction:column;gap:12px;margin-top:16px">
+<sc-for list="{{cards}}" as="c" hint-placeholder-count="12">
+<a class="card" href="#">
+<div class="top">
+<div class="cv t{{c.t}}"><div class="img {{c.img}}"></div><span class="wm" aria-hidden="true">{{c.t}}</span></div>
+<div class="tx"><span class="tchip t{{c.t}}"><b aria-hidden="true">{{c.t}}</b><span>{{c.topic}}</span></span><h3 class="ttl">{{c.title}}</h3></div>
+</div>
+<p class="ex">{{c.ex}}</p>
+<div class="ft"><span class="df"><span class="dm l{{c.lv}}" aria-hidden="true"><i></i><i></i><i></i></span>{{c.diff}}</span><time class="dt">{{c.date}}</time><span class="go" aria-hidden="true"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span></div>
+</a>
+</sc-for>
+</div>
+
+<nav class="pg" aria-label="{{s.pageNav}}" style="margin-top:32px">
+<a class="off" href="#" aria-disabled="true" aria-label="{{s.prev}}"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></a>
+<a class="on" href="#" aria-current="page">1</a><a href="#">2</a><a href="#">3</a><a href="#">4</a>
+<a href="#" rel="next" aria-label="{{s.next}}"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></a>
+</nav>
+<p class="pgc">{{s.page}}</p>
+</div>
+</section>
+</main>
+
+<footer style="margin-top:auto;flex:none;background:#fff;border-top:1px solid var(--bd);padding:32px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+<a href="#" aria-label="Project Chíp Chíp" style="display:block;width:108px;line-height:1">
+<div style="display:flex;align-items:center;gap:6px;font-size:7px;font-weight:700;letter-spacing:.2em"><span style="flex:1;height:1px;background:#000"></span>PROJECT<span style="flex:1;height:1px;background:#000"></span></div>
+<div style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-top:2px">CHÍP CHÍP</div>
+</a>
+<div style="display:flex;flex-wrap:wrap;justify-content:center;column-gap:20px"><a class="flink" href="#">{{s.f1}}</a><a class="flink" href="#">{{s.f2}}</a><a class="flink" href="#">{{s.f3}}</a></div>
+<p style="font-size:13px;line-height:1.5;color:#3E424D;text-wrap:balance">{{s.copy}}</p>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"locale":{"editor":"enum","options":["vi","en"],"default":"en"},"$preview":{"width":390,"height":4000}}'>
+const VI = {menu:'Mở menu',eyebrow:'Thư viện',h1:'Bài học',desc:'Kiến thức bán dẫn viết cho học sinh trung học: đi từ khái niệm đơn giản nhất tới toàn cảnh ngành, chia theo bốn chủ đề và ba mức độ khó.',st:['Bài học','Chủ đề','Mức độ'],topicHead:'Chủ đề',all:'Tất cả',tp:['Định nghĩa','Nguyên lý','Ứng dụng','Lịch sử và Phát triển'],diffHead:'Độ khó',d1:'Cơ bản',d2:'Trung bình',d3:'Nâng cao',result:'Hiển thị 12 trong 47 bài · Tất cả chủ đề',listHead:'Danh sách bài học',pageNav:'Phân trang',prev:'Trang trước',next:'Trang sau',page:'Trang 1 trong 4',f1:'Liên hệ',f2:'Đóng góp',f3:'Chính sách bảo mật',copy:'© 2026 Project Chíp Chíp. Mọi nội dung được chia sẻ vì mục đích giáo dục.'};
+const EN = {menu:'Open menu',eyebrow:'Library',h1:'Lessons',desc:'Semiconductor knowledge written for high-school students: from the simplest concept to the whole industry, organised into four topics and three difficulty levels.',st:['Lessons','Topics','Levels'],topicHead:'Topics',all:'All',tp:['What is a semiconductor','How they work','Applications','History & development'],diffHead:'Difficulty',d1:'Basic',d2:'Intermediate',d3:'Advanced',result:'Showing 12 of 47 lessons · All topics',listHead:'Lesson list',pageNav:'Pagination',prev:'Previous page',next:'Next page',page:'Page 1 of 4',f1:'Contact',f2:'Contribute',f3:'Privacy policy',copy:'© 2026 Project Chíp Chíp. All content is shared for educational purposes.'};
+const ROWS = [
+[1,1,1,'12 thg 9, 2026','Sep 12, 2026','Bán dẫn là gì? Từ hạt cát đến con chip','What is a semiconductor? From grain of sand to chip','Vì sao silicon vừa không dẫn điện tốt vừa không cách điện hoàn toàn, và điều đó mở ra cả một ngành công nghiệp.','Why silicon neither conducts well nor insulates fully, and how that in-between behaviour built an entire industry.'],
+[1,1,1,'9 thg 9, 2026','Sep 9, 2026','Chất dẫn điện, cách điện và bán dẫn khác nhau ở đâu','Conductor, insulator, semiconductor: what sets them apart','Nhìn vào cách các electron di chuyển để phân biệt ba loại vật liệu chỉ với một hình vẽ.','Follow how electrons move to tell the three kinds of material apart with a single diagram.'],
+[1,2,0,'5 thg 9, 2026','Sep 5, 2026','Pha tạp: biến silicon thành vật liệu điều khiển được','Doping: turning silicon into a material you can control','Chỉ một nguyên tử lạ giữa hàng triệu nguyên tử silicon cũng đủ đổi hoàn toàn tính chất điện.','A single foreign atom among millions of silicon atoms is enough to change how it conducts.'],
+[2,1,1,'30 thg 8, 2026','Aug 30, 2026','Diode hoạt động thế nào: van một chiều của dòng điện','How a diode works: the one-way valve for current','Hiểu mối nối p–n bằng hình ảnh dòng nước chảy qua một cái van.','Understand the p–n junction through the picture of water flowing through a valve.'],
+[2,2,1,'26 thg 8, 2026','Aug 26, 2026','Transistor: công tắc nhỏ nhất thế giới','The transistor: the smallest switch in the world','Một tín hiệu nhỏ ở cực cổng quyết định dòng điện lớn có chạy qua hay không.','A tiny signal on the gate decides whether a large current flows or not.'],
+[2,3,0,'21 thg 8, 2026','Aug 21, 2026','Từ cổng logic đến bộ vi xử lý trong sáu bước','From logic gates to a processor in six steps','Ghép các công tắc thành phép tính, rồi ghép phép tính thành một con chip biết làm toán.','Wire switches into logic, then logic into a chip that can do arithmetic.'],
+[2,2,1,'17 thg 8, 2026','Aug 17, 2026','Quang khắc: in mạch điện bằng ánh sáng','Photolithography: printing circuits with light','Cách một khuôn mẫu và chùm tia cực tím vẽ ra những đường mạch mảnh hơn sợi tóc hàng nghìn lần.','How a pattern and a beam of ultraviolet light draw lines thousands of times thinner than a hair.'],
+[3,1,1,'12 thg 8, 2026','Aug 12, 2026','Những con chip nằm trong điện thoại của bạn','The chips inside your phone','Bộ xử lý, bộ nhớ, cảm biến, sóng vô tuyến: mỗi phần do một loại chip khác nhau đảm nhiệm.','Processor, memory, sensors, radio: each part is handled by a different kind of chip.'],
+[3,2,1,'8 thg 8, 2026','Aug 8, 2026','Vì sao xe điện cần nhiều chip đến vậy','Why an electric car needs so many chips','Từ quản lý pin đến điều khiển động cơ, một chiếc xe điện chứa hàng nghìn linh kiện bán dẫn.','From battery management to motor control, an electric car holds thousands of semiconductor parts.'],
+[3,1,0,'3 thg 8, 2026','Aug 3, 2026','Làm việc trong ngành bán dẫn: các ngành học và con đường nghề nghiệp dành cho học sinh sau tốt nghiệp THPT','Working in semiconductors: study paths and careers open to students after high school','Bạn không cần là thiên tài vật lý để tham gia; ngành cần cả kỹ sư, kỹ thuật viên và người vận hành.','You do not need to be a physics prodigy; the industry needs engineers, technicians and operators.'],
+[4,2,1,'29 thg 7, 2026','Jul 29, 2026','Lịch sử transistor: từ phòng thí nghiệm Bell đến cuộc đua chip','Transistor history: from Bell Labs to the chip race','Gần tám thập kỷ, từ một linh kiện cỡ vài xăng-ti-mét đến hàng chục tỷ transistor trên một con chip.','Nearly eight decades, from a part a few centimetres wide to tens of billions of transistors on one chip.'],
+[4,3,0,'24 thg 7, 2026','Jul 24, 2026','Định luật Moore và giới hạn của việc thu nhỏ','Moore’s law and the limits of shrinking','Vì sao số transistor tăng gấp đôi đều đặn suốt nhiều năm, và vì sao đà đó đang chậm lại.','Why transistor counts doubled steadily for decades, and why that pace is now slowing.']
+];
+const COUNTS = [12,13,11,11];
+class Component extends DCLogic {
+  renderVals() {
+    const en = (this.props.locale ?? 'en') === 'en';
+    const S = en ? EN : VI;
+    const diffs = [S.d1, S.d2, S.d3];
+    return {
+      s: S,
+      stats: [{ v: '47', l: S.st[0] }, { v: '4', l: S.st[1] }, { v: '3', l: S.st[2] }],
+      topics: S.tp.map((label, i) => ({ n: i + 1, label, count: COUNTS[i] })),
+      cards: ROWS.map((r) => ({
+        t: r[0], lv: r[1], img: r[2] ? 'ph' : 'plate',
+        topic: S.tp[r[0] - 1], diff: diffs[r[1] - 1],
+        date: en ? r[4] : r[3], title: en ? r[6] : r[5], ex: en ? r[8] : r[7]
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>

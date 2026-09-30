@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Giới thiệu · Trạng thái · VI · 1280</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt,ul,li,figure{margin:0;padding:0}
+ul{list-style:none}
+svg.ic{width:16px;height:16px;flex:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.nvl{display:inline-flex;align-items:center;height:40px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;color:var(--tn)}
+.nvl.on{background:var(--pr);color:#fff}
+.cta{display:inline-flex;align-items:center;gap:10px;height:44px;padding:0 20px;border-radius:999px;background:linear-gradient(131deg,#333 .8%,#0d0d0d 35%,#262626 99%);color:#fff;font-size:14px;font-weight:600}
+.ibtn{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);color:var(--tn)}
+.lab{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+.h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2;text-wrap:balance}
+.sp{font-size:16px;line-height:1.6;color:var(--tm);text-wrap:pretty}
+.sh{display:flex;flex-direction:column;gap:8px;margin-bottom:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-size:14px;font-weight:600;transition:background .25s var(--ease),border-color .25s var(--ease),transform .2s var(--ease)}
+.btn:active{transform:scale(.97)}
+.btn.inv{background:#fff;color:#0D0D0D}
+.btn.inv:hover,.btn.inv.is-hover{background:#E5E5E5}
+.btn.ol{border-color:rgba(255,255,255,.5);color:#fff}
+.btn.ol:hover,.btn.ol.is-hover{background:rgba(255,255,255,.1)}
+.btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.media{position:relative;aspect-ratio:3/2;border-radius:24px;overflow:hidden;background:#1f1f1f}
+.media .img{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,linear-gradient(90deg,rgba(255,255,255,.06) 1px,transparent 1px) 0 0/24px 24px,radial-gradient(120% 100% at 25% 15%,#6b6b6b,#1f1f1f)}
+.credit{position:absolute;left:12px;bottom:12px;max-width:calc(100% - 24px);padding:6px 12px;border-radius:999px;background:rgba(13,13,13,.72);color:#fff;font-size:12px;font-weight:500;line-height:1.4}
+.av{position:relative;flex:none;display:grid;place-items:center;border-radius:50%;background:var(--mf);border:1px solid var(--bd);color:var(--tn);font-weight:800;letter-spacing:-.02em;overflow:hidden}
+.av.photo{background:radial-gradient(120% 100% at 25% 15%,#6b6b6b,#1f1f1f);border-color:transparent}
+.icard{display:flex;flex-direction:column;gap:10px;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:16px}
+.icard.row{flex-direction:row;align-items:flex-start;gap:14px}
+.icard h3{font-size:16px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+.icard p{font-size:14px;line-height:1.55;color:var(--tm)}
+.icon{flex:none;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:var(--mf);border:1px solid rgba(0,0,0,.08);color:var(--ac)}
+.icon svg{width:20px;height:20px}
+.plink{display:inline-flex;align-items:center;gap:8px;min-height:44px;font-size:14px;font-weight:600;color:var(--ac);text-decoration:underline;text-underline-offset:3px;transition:color .25s var(--ease)}
+.plink:hover{color:#000}
+.plink svg{transition:transform .3s var(--ease)}
+.plink:hover svg{transform:translateX(2px)}
+.plink:focus-visible,.fq summary:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.hint{font-size:14px;line-height:1.55;color:var(--tm)}
+.faq{display:flex;flex-direction:column;gap:1px;background:#EAEAEA;border:1px solid var(--bd);border-radius:16px;overflow:hidden}
+.fq{background:#fff}
+.fq summary{list-style:none;display:flex;align-items:center;gap:16px;min-height:60px;padding:12px 16px 12px 20px;cursor:pointer;font-size:16px;font-weight:600;line-height:1.4;color:#000;transition:color .25s var(--ease),background .25s var(--ease)}
+.fq summary::-webkit-details-marker{display:none}
+.fq .q{flex:1;min-width:0;text-wrap:pretty}
+.fq summary:hover,.fq.is-hover summary{background:#F5F5F5;color:var(--ac)}
+.fq summary:focus-visible,.fq.is-focus summary{outline:2px solid var(--ac);outline-offset:-2px}
+.pm{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);border:1px solid var(--bd);color:#000;transition:transform .25s var(--ease),background .25s var(--ease),color .25s var(--ease),border-color .25s var(--ease)}
+.fq summary:hover .pm,.fq.is-hover .pm{border-color:rgba(0,0,0,.2)}
+.fq[open] .pm{transform:rotate(45deg);background:var(--pr);border-color:var(--pr);color:#fff}
+.fq .ans{padding:0 68px 20px 20px;font-size:16px;line-height:1.65;color:var(--tm);animation:fqIn .25s var(--ease) both}
+.fq .ans p+p{margin-top:10px}
+@keyframes fqIn{from{opacity:0}to{opacity:1}}
+.pgrid{display:grid;gap:16px}
+.pcard{display:flex;align-items:flex-start;gap:14px;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:16px;min-width:0}
+.pcard .pt{flex:1;min-width:0}
+.pcard h3{font-size:16px;font-weight:700;line-height:1.3;letter-spacing:-.01em;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard p{margin-top:4px;font-size:14px;line-height:1.5;color:var(--tm);overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.ctap{position:relative;overflow:hidden;border-radius:24px;color:#fff;background:linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px) 0 0/28px 28px,linear-gradient(131deg,#333 .8%,#0d0d0d 35%,#262626 99%)}
+.ctap p{font-size:16px;line-height:1.6;color:#E5E5E5;text-wrap:pretty}
+.flink{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:500;color:var(--tn)}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.btn:active,.plink:hover svg{transform:none}}
+.cap{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm);margin-bottom:6px}
+.gn{font-size:14px;line-height:1.55;color:var(--tm);margin-bottom:14px;text-wrap:pretty}
+.stg{background:rgba(255,255,255,.5);border:1.5px dashed #A8A8A8;border-radius:24px;padding:24px;min-width:0}
+.stgm{min-width:0}
+.bsec{display:flex;flex-direction:column;gap:20px}
+.bsec>h2{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.2}
+.bsec>p{font-size:15px;line-height:1.6;color:var(--tm);max-width:780px}
+.bar{display:flex;align-items:center;min-height:48px;padding:0 16px;border-radius:12px;background:#fff;border:1px solid var(--bd);font-size:13px;font-weight:600;color:var(--tm)}
+.bar.dk{background:#0D0D0D;border-color:#0D0D0D;color:#fff}
+.gapm{display:flex;align-items:center;justify-content:center;height:72px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--tm);background:repeating-linear-gradient(135deg,rgba(0,0,0,.05) 0 6px,transparent 6px 12px);border-radius:8px}
+</style>
+</helmet>
+<div style="width:1280px;height:3600px;padding:56px 48px;display:flex;flex-direction:column;gap:48px">
+<header style="display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:860px"><span class="eyebrow"><i></i>Trạng thái · Giới thiệu</span><h1 style="font-size:46px;font-weight:800;line-height:1.1;letter-spacing:-.03em;text-wrap:balance">Nội dung giữ chỗ và nội dung thật</h1><p style="font-size:18px;line-height:1.6;color:#3E424D;text-wrap:pretty">Trang Giới thiệu đang chờ chữ, ảnh và danh sách người đồng hành thật. Ba khối dưới đây phải trông đúng ở cả ba giai đoạn: còn chữ giữ chỗ, đã điền, và đã có ảnh. Tên và chữ trong bản vẽ là mẫu để thử độ dài, không phải người thật.</p></header>
+<section class="bsec"><h2>Khối tác giả: ba giai đoạn</h2><p>Bố cục mobile của thẻ (một cột) để đặt cạnh nhau. Chữ trong ngoặc vuông hiện nguyên như bản đang chạy; vòng tròn chữ cái lấy hai chữ cái đầu và cuối của tên. Khi có ảnh, vòng tròn đổi sang khung ảnh (cùng kích thước, cùng viền).</p><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start">
+<sc-for list="{{auths}}" as="a" hint-placeholder-count="3">
+<div class="stgm"><div class="cap">{{a.k}}</div><p class="gn">{{a.note}}</p>
+<section style="background:#fff;border:1px solid var(--bd);border-radius:24px;padding:24px;display:flex;flex-direction:column;align-items:flex-start;gap:12px">
+<sc-if value="{{a.photo}}" hint-placeholder-val="{{false}}"><div class="av photo" role="img" aria-label="{{a.photoAlt}}" style="width:112px;height:112px"><svg viewBox="0 0 100 100" style="position:absolute;inset:0;width:100%;height:100%" aria-hidden="true"><circle cx="50" cy="38" r="15" fill="rgba(255,255,255,.55)"/><path d="M20 92c2-20 14-30 30-30s28 10 30 30z" fill="rgba(255,255,255,.55)"/></svg></div></sc-if>
+<sc-if value="{{a.noPhoto}}" hint-placeholder-val="{{true}}"><div class="av" aria-hidden="true" style="width:112px;height:112px;font-size:40px">{{a.ini}}</div></sc-if>
+<div style="margin-top:8px;display:flex;flex-direction:column;gap:12px;min-width:0;width:100%">
+<span class="lab">{{a.label}}</span>
+<h2 id="au" class="h2" style="overflow-wrap:anywhere">{{a.name}}</h2>
+<p style="font-size:14px;line-height:1.55;color:var(--tm);overflow-wrap:anywhere">{{a.role}}</p>
+<p class="sp" style="margin-top:8px;line-height:1.7">{{a.story1}}</p>
+<p class="sp" style="line-height:1.7">{{a.story2}}</p>
+<h3 style="font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em;margin-top:12px">{{a.whyTitle}}</h3>
+<p class="sp" style="line-height:1.7">{{a.why}}</p>
+</div></section></div>
+</sc-for>
+</div></section>
+<section class="bsec"><h2>Khối “Những người đã đồng hành”: ẩn khi trống</h2><p>Khối không render khi danh sách rỗng. Khoảng cách giữa các phần do <b>gap của thẻ cha</b> giữ (72px desktop, 56px mobile), không phải padding của từng phần, nên khi khối biến mất không sinh khoảng trống thứ hai.</p><div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;align-items:start">
+<sc-for list="{{pst}}" as="st" hint-placeholder-count="4">
+<div class="stgm"><div class="cap">{{st.k}}</div><p class="gn">{{st.note}}</p>
+<div class="stg">
+<sc-if value="{{st.empty}}" hint-placeholder-val="{{false}}"><div style="display:flex;flex-direction:column"><div class="bar">{{st.above}}</div><div class="gapm">{{st.gap}}</div><div class="bar dk">{{st.below}}</div></div></sc-if>
+<sc-if value="{{st.full}}" hint-placeholder-val="{{true}}"><div><div class="sh"><h2 class="h2">{{st.head}}</h2><p class="sp">{{st.desc}}</p></div>
+<ul class="pgrid" style="grid-template-columns:repeat(2,minmax(0,1fr));gap:12px"><sc-for list="{{st.people}}" as="pe" hint-placeholder-count="4"><li class="pcard"><span class="av" aria-hidden="true" style="width:44px;height:44px;font-size:15px">{{pe.ini}}</span><div class="pt"><h3>{{pe.name}}</h3><p>{{pe.role}}</p></div></li></sc-for></ul></div></sc-if>
+</div></div>
+</sc-for>
+</div></section>
+<section class="bsec"><h2>Ảnh banner và dòng ghi nguồn</h2><p>Bản quyền ảnh banner chưa xác nhận, nên bản vẽ dùng ô gradient tối (không phải ảnh thật) và một dòng ghi nguồn nằm trong ô. Dòng này là chữ thật, có trong messages, không phải alt.</p><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:start">
+<sc-for list="{{mst}}" as="md" hint-placeholder-count="3">
+<div class="stgm"><div class="cap">{{md.k}}</div><p class="gn">{{md.note}}</p>
+<figure class="media"><div class="img"></div><svg viewBox="0 0 120 80" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0;width:100%;height:100%" fill="none" aria-hidden="true"><circle cx="60" cy="40" r="30" stroke="rgba(255,255,255,.22)" stroke-width=".8"/><circle cx="60" cy="40" r="20" stroke="rgba(255,255,255,.16)" stroke-width=".8"/><path d="M30 40h60M60 10v60" stroke="rgba(255,255,255,.14)" stroke-width=".8"/><rect x="50" y="30" width="20" height="20" rx="2" stroke="rgba(255,255,255,.3)" stroke-width=".8"/></svg><sc-if value="{{md.hasCredit}}" hint-placeholder-val="{{true}}"><figcaption class="credit">{{md.credit}}</figcaption></sc-if></figure></div>
+</sc-for>
+</div></section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"locale":{"editor":"enum","options":["vi","en"],"default":"vi"},"$preview":{"width":1280,"height":3600}}'>
+const VI = {"n1": "Trang chủ", "n2": "Bài học", "n3": "Blog", "n4": "Giới thiệu", "cta": "Tham gia cùng chúng tôi", "search": "Tìm kiếm", "menu": "Mở menu", "eyebrow": "Về dự án", "h1": "Người đứng sau Project Chíp Chíp", "desc": "Chíp Chíp là dự án một người làm: một chỗ học bán dẫn bằng tiếng Việt, miễn phí cho mọi học sinh, và luôn mở cho những ai muốn góp sức.", "credit": "Ảnh: [nguồn ảnh, giấy phép]", "auLabel": "Về tác giả", "cHead": "Mục đích minh bạch", "cDesc": "Bốn cam kết này không thay đổi, dù sau này dự án lớn đến đâu.", "c1t": "Miễn phí", "c1b": "Mọi bài học, video và bài viết đều đọc được miễn phí, không cần tài khoản.", "c2t": "Không quảng cáo", "c2b": "Không banner, không bài quảng cáo trá hình, không nhà tài trợ chen vào nội dung.", "c3t": "Không thu tiền", "c3b": "Không khoá học trả phí, không gói hội viên, không xin chuyển khoản.", "c4t": "Không bán dữ liệu", "c4b": "Chúng tôi thu rất ít dữ liệu, và không bán hay trao đổi dữ liệu đó với ai.", "privacy": "Xem dữ liệu nào được thu và vì sao", "faqHead": "Câu hỏi thường gặp", "faqHint": "Chưa thấy câu trả lời?", "faqLink": "Viết cho tác giả", "pHead": "Những người đã đồng hành", "pDesc": "Cảm ơn những người đã viết, dịch, góp ý và báo lỗi cho Chíp Chíp.", "ctaH": "Cùng làm Chíp Chíp tốt hơn", "ctaP": "Bạn có thể viết bài, dịch, làm video hoặc đơn giản là báo một lỗi sai. Mỗi đóng góp đều được ghi nhận.", "ctaB1": "Xem cách đóng góp", "ctaB2": "Liên hệ tác giả", "f1": "Liên hệ", "f2": "Đóng góp", "f3": "Chính sách bảo mật", "copy": "© 2026 Project Chíp Chíp. Mọi nội dung được chia sẻ vì mục đích giáo dục."};
+const EN = {"n1": "Home", "n2": "Lessons", "n3": "Blog", "n4": "About", "cta": "Join us", "search": "Search", "menu": "Open menu", "eyebrow": "About us", "h1": "The person behind Project Chíp Chíp", "desc": "Chíp Chíp is a one-person project: a place to learn about semiconductors in Vietnamese, free for every student, and always open to anyone who wants to help.", "credit": "Photo: [source, licence]", "auLabel": "About the author", "cHead": "A transparent purpose", "cDesc": "These four commitments will not change, however large the project grows.", "c1t": "Free", "c1b": "Every lesson, video and article is free to read, with no account needed.", "c2t": "No ads", "c2b": "No banners, no disguised advertising, no sponsors inside the content.", "c3t": "No fees", "c3b": "No paid courses, no memberships, no requests for money.", "c4t": "No data sales", "c4b": "We collect very little data, and we never sell or trade it.", "privacy": "See what data is collected and why", "faqHead": "Frequently asked questions", "faqHint": "Cannot find your answer?", "faqLink": "Write to the author", "pHead": "People who helped", "pDesc": "Thank you to everyone who has written, translated, reviewed or reported mistakes for Chíp Chíp.", "ctaH": "Help make Chíp Chíp better", "ctaP": "You can write, translate, make a video, or simply report a mistake. Every contribution is credited.", "ctaB1": "See how to contribute", "ctaB2": "Contact the author", "f1": "Contact", "f2": "Contribute", "f3": "Privacy policy", "copy": "© 2026 Project Chíp Chíp. All content is shared for educational purposes."};
+const AUTH = {"ph_vi": {"name": "[Tên tác giả]", "role": "[Vai trò, ví dụ: sinh viên ngành thiết kế vi mạch] · Người viết và duy trì Chíp Chíp", "photoAlt": "Ảnh chân dung của [Tên tác giả]", "story1": "[Câu chuyện, đoạn 1] Mình bắt đầu tìm hiểu về bán dẫn từ [thời điểm], khi [sự kiện khiến bạn tò mò]. Tài liệu tốt gần như chỉ có bằng tiếng Anh, và mình mất khá lâu mới hiểu được những điều lẽ ra có thể giải thích đơn giản hơn.", "story2": "[Câu chuyện, đoạn 2] Chíp Chíp là trang mình ước đã có từ hồi đó. Mình tự viết bài, tự dựng trang, và nhờ bạn bè, thầy cô góp ý để nội dung đúng và dễ hiểu.", "whyTitle": "Vì sao có Chíp Chíp", "why": "Vì sao một học sinh cấp ba có thể hiểu van tim hoạt động ra sao, nhưng lại không biết con chip trong chiếc điện thoại mình cầm mỗi ngày được làm thế nào? Bán dẫn ở khắp nơi, nhưng kiến thức về nó lại nằm rải rác trong tài liệu tiếng Anh, trong bài giảng đại học, trong những video không có phụ đề. Học sinh Việt Nam không thiếu tò mò — các em thiếu một chỗ để bắt đầu. Project Chíp Chíp làm chỗ bắt đầu đó: tài liệu tiếng Việt, đi từ khái niệm đơn giản nhất, miễn phí cho tất cả mọi người."}, "ph_en": {"name": "[Author name]", "role": "[Role, e.g. chip design student] · Writes and maintains Chíp Chíp", "photoAlt": "Portrait of [Author name]", "story1": "[Story, paragraph 1] I started learning about semiconductors in [when], after [what made you curious]. Good material was almost all in English, and it took me a long time to understand things that could have been explained much more simply.", "story2": "[Story, paragraph 2] Chíp Chíp is the site I wish I had back then. I write the articles and build the site myself, and ask friends and teachers to check that the content is correct and easy to follow.", "whyTitle": "Why Chíp Chíp exists", "why": "Why can a high-school student explain how a heart valve works, yet not how the chip inside the phone they carry every day is made? Semiconductors are everywhere, but the knowledge about them is scattered across English papers, university lectures and videos with no subtitles. Vietnamese students are not short of curiosity — they are short of a place to start. Project Chíp Chíp is that place: Vietnamese-language material, starting from the simplest idea, free for everyone."}, "fl_vi": {"name": "Lê Minh Anh", "role": "Sinh viên năm hai ngành thiết kế vi mạch · Người viết và duy trì Chíp Chíp", "photoAlt": "Ảnh chân dung của Lê Minh Anh", "story1": "Mình bắt đầu tìm hiểu về bán dẫn từ năm lớp 11, khi chiếc điện thoại cũ bị hỏng và mình tò mò xem bên trong có gì. Tài liệu tốt gần như chỉ có bằng tiếng Anh, và mình mất khá lâu mới hiểu được những điều lẽ ra có thể giải thích đơn giản hơn.", "story2": "Chíp Chíp là trang mình ước đã có từ hồi đó. Mình tự viết bài, tự dựng trang, và nhờ bạn bè, thầy cô góp ý để nội dung đúng và dễ hiểu.", "whyTitle": "Vì sao có Chíp Chíp", "why": "Vì sao một học sinh cấp ba có thể hiểu van tim hoạt động ra sao, nhưng lại không biết con chip trong chiếc điện thoại mình cầm mỗi ngày được làm thế nào? Bán dẫn ở khắp nơi, nhưng kiến thức về nó lại nằm rải rác trong tài liệu tiếng Anh, trong bài giảng đại học, trong những video không có phụ đề. Học sinh Việt Nam không thiếu tò mò — các em thiếu một chỗ để bắt đầu. Project Chíp Chíp làm chỗ bắt đầu đó: tài liệu tiếng Việt, đi từ khái niệm đơn giản nhất, miễn phí cho tất cả mọi người."}, "fl_en": {"name": "Lê Minh Anh", "role": "Second-year student in chip design · Writes and maintains Chíp Chíp", "photoAlt": "Portrait of Lê Minh Anh", "story1": "I started learning about semiconductors in 11th grade, when my old phone broke and I wanted to see what was inside. Good material was almost all in English, and it took me a long time to understand things that could have been explained much more simply.", "story2": "Chíp Chíp is the site I wish I had back then. I write the articles and build the site myself, and ask friends and teachers to check that the content is correct and easy to follow.", "whyTitle": "Why Chíp Chíp exists", "why": "Why can a high-school student explain how a heart valve works, yet not how the chip inside the phone they carry every day is made? Semiconductors are everywhere, but the knowledge about them is scattered across English papers, university lectures and videos with no subtitles. Vietnamese students are not short of curiosity — they are short of a place to start. Project Chíp Chíp is that place: Vietnamese-language material, starting from the simplest idea, free for everyone."}, "lg_vi": {"name": "Nguyễn Thị Phương Quỳnh Trang", "role": "Sinh viên năm hai ngành thiết kế vi mạch và hệ thống nhúng · Người viết, dịch và duy trì Chíp Chíp", "photoAlt": "Ảnh chân dung của Nguyễn Thị Phương Quỳnh Trang", "story1": "Mình bắt đầu tìm hiểu về bán dẫn từ năm lớp 11, khi chiếc điện thoại cũ bị hỏng và mình tò mò xem bên trong có gì. Tài liệu tốt gần như chỉ có bằng tiếng Anh, và mình mất khá lâu mới hiểu được những điều lẽ ra có thể giải thích đơn giản hơn.", "story2": "Chíp Chíp là trang mình ước đã có từ hồi đó. Mình tự viết bài, tự dựng trang, và nhờ bạn bè, thầy cô góp ý để nội dung đúng và dễ hiểu.", "whyTitle": "Vì sao có Chíp Chíp", "why": "Vì sao một học sinh cấp ba có thể hiểu van tim hoạt động ra sao, nhưng lại không biết con chip trong chiếc điện thoại mình cầm mỗi ngày được làm thế nào? Bán dẫn ở khắp nơi, nhưng kiến thức về nó lại nằm rải rác trong tài liệu tiếng Anh, trong bài giảng đại học, trong những video không có phụ đề. Học sinh Việt Nam không thiếu tò mò — các em thiếu một chỗ để bắt đầu. Project Chíp Chíp làm chỗ bắt đầu đó: tài liệu tiếng Việt, đi từ khái niệm đơn giản nhất, miễn phí cho tất cả mọi người."}};
+const PEOPLE = { vi: [["Trần Quốc Bảo", "Dịch bài sang tiếng Anh"], ["Phạm Ngọc Diệp", "Góp ý nội dung vật lý"], ["Đỗ Khánh Linh", "Báo lỗi và rà soát chính tả"], ["Hoàng Thị Mai", "Giáo viên Vật lý, góp ý bài về diode"], ["Võ Thanh Tùng", "Viết bài về quang khắc"], ["Nguyễn Hoàng Long Bảo Châu Anh", "Dịch, biên tập và kiểm tra công thức cho nhiều bài trong chủ đề Nguyên lý"], ["Hà My", "Báo lỗi"], ["Anh Khoa", "Góp ý"]], en: [["Trần Quốc Bảo", "Translated articles into English"], ["Phạm Ngọc Diệp", "Physics content review"], ["Đỗ Khánh Linh", "Mistake reports and proofreading"], ["Hoàng Thị Mai", "Physics teacher, reviewed the diode lesson"], ["Võ Thanh Tùng", "Wrote the photolithography article"], ["Nguyễn Hoàng Long Bảo Châu Anh", "Translation, editing and formula checks across many articles in the Principles topic"], ["Hà My", "Mistake report"], ["Anh Khoa", "Feedback"]] };
+const ini = (n) => {
+  const w = n.replace(/[\[\]]/g, '').split(/\s+/).filter(Boolean);
+  return ((w[0] || '')[0] + (w.length > 1 ? w[w.length - 1][0] : '')).toUpperCase();
+};
+class Component extends DCLogic {
+  renderVals() {
+    const en = (this.props.locale ?? 'vi') === 'en';
+    const lang = en ? 'en' : 'vi';
+    const S = en ? EN : VI;
+    const mk = (src, photo) => Object.assign({}, src, { label: S.auLabel, ini: ini(src.name), photo, noPhoto: !photo });
+    const long = Object.assign({}, AUTH['lg_vi'], en ? { name: 'Nguyễn Thị Phương Quỳnh Trang', role: 'Second-year student in chip design and embedded systems · Writes, translates and maintains Chíp Chíp', photoAlt: 'Portrait of Nguyễn Thị Phương Quỳnh Trang', story1: AUTH.fl_en.story1, story2: AUTH.fl_en.story2, whyTitle: AUTH.fl_en.whyTitle, why: AUTH.fl_en.why } : {});
+    const P = PEOPLE[lang].map((p) => ({ name: p[0], role: p[1], ini: ini(p[0]) }));
+    const rows = (a, b) => P.slice(a, b);
+    return {
+      s: S,
+      auths: [
+        { k: '1 · Giữ chỗ (đang chạy)', note: 'Chữ trong ngoặc vuông hiện nguyên, vòng tròn “TG”/“AN”. Layout đã đúng, chỉ chờ chữ.', a: null },
+        { k: '2 · Đã điền, chưa có ảnh', note: 'Tên thật, vòng tròn chữ cái. Giữ được lâu dài nếu tác giả không muốn đưa ảnh.', a: null },
+        { k: '3 · Có ảnh, tên và vai trò rất dài', note: 'Tên xuống hai dòng (overflow-wrap: anywhere), vai trò ba dòng; khung ảnh giữ 112px, không co.', a: null }
+      ].map((r, i) => Object.assign({}, r, i === 0 ? mk(AUTH['ph_' + lang], false) : i === 1 ? mk(AUTH['fl_' + lang], false) : mk(long, true), { k: r.k, note: r.note })),
+      pst: [
+        { k: 'A · Danh sách rỗng', note: 'Không render. Khoảng cách 72px duy nhất, giữa đáy khối Câu hỏi và đỉnh khối CTA.', empty: true, full: false, above: 'Khối Câu hỏi thường gặp', gap: 'gap 72px (của thẻ cha)', below: 'Khối kêu gọi đóng góp', head: '', desc: '', people: [] },
+        { k: 'B · Một người', note: 'Một thẻ ở cột đầu, không kéo giãn ra hai cột.', empty: false, full: true, head: S.pHead, desc: S.pDesc, people: rows(0, 1) },
+        { k: 'C · Ba người', note: 'Hàng cuối chưa đầy vẫn thẳng cột với hàng trên.', empty: false, full: true, head: S.pHead, desc: S.pDesc, people: rows(0, 3) },
+        { k: 'D · Tên và vai trò dài', note: 'Tên cắt hai dòng, vai trò cắt ba dòng; thẻ cùng hàng cao bằng nhau.', empty: false, full: true, head: S.pHead, desc: S.pDesc, people: [P[5], P[6], P[3], P[7]] }
+      ],
+      mst: [
+        { k: '1 · Chờ xác nhận', note: 'Dòng ghi nguồn giữ chỗ, như bản đang chạy.', hasCredit: true, credit: S.credit },
+        { k: '2 · Ghi nguồn dài', note: 'Viên thuốc co theo chữ và xuống hai dòng, không tràn ô.', hasCredit: true, credit: en ? 'Photo: A very long source name to test wrapping onto two lines, licence CC BY 4.0 (example)' : 'Ảnh: Tên nguồn ảnh rất dài để thử việc xuống hai dòng, giấy phép CC BY 4.0 (ví dụ)' },
+        { k: '3 · Không có ghi nguồn, hoặc ảnh chưa tải', note: 'Ảnh của dự án thì không cần dòng ghi nguồn. Ảnh lỗi hay chậm: ô tối và lưới vẫn ở đó, bố cục không nhảy.', hasCredit: false, credit: '' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

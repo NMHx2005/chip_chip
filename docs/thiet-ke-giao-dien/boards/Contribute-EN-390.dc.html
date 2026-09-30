@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Contribute · EN · 390</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E5E5E5;--sf:#fff;--mf:#EFEFEF;--pr:#0D0D0D;--ac:#314344;--tm:#3E424D;--tn:#4D4D4D;--bd:#D1D1D1;--ease:cubic-bezier(.25,.1,.25,1)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);font-family:'Be Vietnam Pro',system-ui,-apple-system,'Segoe UI',sans-serif;color:#000;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+h1,h2,h3,p,dl,dd,dt,ul,li{margin:0}
+ul{padding:0}
+svg.ic{width:16px;height:16px;flex:none}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;max-width:100%;border:1px solid var(--bd);background:var(--mf);border-radius:999px;padding:6px 14px;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ac)}
+.eyebrow i{flex:none;width:6px;height:6px;border-radius:50%;background:var(--ac)}
+.eyebrow span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.t1{--soft:#E6E6E6}.t2{--soft:#EAEAEA}.t3{--soft:#EEEEEE}.t4{--soft:#F2F2F2}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-size:14px;font-weight:600;text-align:center;transition:background .25s var(--ease),border-color .25s var(--ease),transform .2s var(--ease)}
+.btn.p{background:var(--pr);color:#fff}
+.btn.p:hover{background:#262626}
+.btn.s{background:var(--sf);border-color:var(--bd);color:#000}
+.btn.s:hover{border-color:rgba(0,0,0,.25)}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible,.trow:focus-visible,.chipn:focus-visible,.flink:focus-visible,.note a:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.flink{display:inline-flex;align-items:center;min-height:44px;font-size:14px;font-weight:500;color:var(--tn)}
+.flink.on{color:#000;font-weight:600}
+.card{display:flex;flex-direction:column;gap:12px;height:100%;padding:16px;background:var(--sf);border:1px solid var(--bd);border-radius:16px}
+.card.link{transition:border-color .3s var(--ease),box-shadow .3s var(--ease),transform .2s var(--ease)}
+.card.link:hover,.card.link.is-hover{border-color:rgba(0,0,0,.2);box-shadow:0 2px 4px rgba(0,0,0,.05),0 12px 32px rgba(0,0,0,.12)}
+.card.link:active{transform:scale(.98)}
+.card.link:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.plate{position:relative;flex:none;height:112px;border-radius:12px;overflow:hidden;background:var(--soft)}
+.ptile{position:absolute;left:16px;top:16px;display:grid;place-items:center;width:48px;height:48px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.1);color:var(--ac)}
+.ptile svg{width:22px;height:22px}
+.wmi{position:absolute;right:-8px;bottom:-26px;width:136px;height:136px;color:rgba(0,0,0,.09)}
+.ttl{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em;text-wrap:balance;overflow-wrap:anywhere}
+.ex{font-size:14px;line-height:1.55;color:var(--tm);overflow-wrap:anywhere}
+.ft{margin-top:auto;padding-top:12px;border-top:1px solid #EAEAEA;display:flex;align-items:center;gap:8px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;list-style:none;margin:0;padding:0}
+.grid li:last-child:nth-child(odd){grid-column:1/-1}
+.grid li:last-child:nth-child(odd) .ex{max-width:720px}
+.note{display:flex;align-items:flex-start;gap:20px;padding:28px 32px;background:rgba(255,255,255,.5);border:1px solid var(--bd);border-radius:24px}
+.ntile{flex:none;display:grid;place-items:center;width:44px;height:44px;border-radius:12px;background:#fff;border:1px solid rgba(0,0,0,.1);color:var(--ac)}
+.note p{font-size:16px;line-height:1.6;color:var(--tm);max-width:720px;text-wrap:pretty}
+.note a{color:var(--ac);font-weight:600;text-decoration:underline;text-underline-offset:3px;transition:color .25s var(--ease)}
+.note a:hover{color:#000}
+.lab{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--tm)}
+.k{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:.85em;background:var(--mf);border:1px solid #DDD;border-radius:6px;padding:1px 6px;color:#0D0D0D;overflow-wrap:anywhere}
+.meta{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--tm);font-variant-numeric:tabular-nums}
+.sec{scroll-margin-top:96px}
+.hrow{display:flex;align-items:flex-start;gap:14px}
+.h2{min-width:0;font-size:26px;font-weight:800;line-height:1.2;letter-spacing:-.02em;text-wrap:balance;overflow-wrap:anywhere}
+.h2:focus{outline:none}
+.hn{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--mf);border:1px solid rgba(0,0,0,.1);color:#262626;font-size:13px;font-weight:800}
+.h3{font-size:18px;font-weight:700;line-height:1.3;letter-spacing:-.01em;margin-top:28px;text-wrap:balance;overflow-wrap:anywhere}
+.p{font-size:16px;line-height:1.7;color:#262626;margin-top:16px;text-wrap:pretty;overflow-wrap:anywhere}
+.ul{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:14px}
+.h3+.ul{margin-top:12px}
+.ul li{position:relative;padding-left:22px;font-size:16px;line-height:1.7;color:#262626;overflow-wrap:anywhere;text-wrap:pretty}
+.ul li::before{content:"";position:absolute;left:4px;top:.66em;width:6px;height:6px;border-radius:50%;background:#8C8C8C}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;animation-duration:.01ms!important}.btn:active,.card.link:active{transform:none}}
+.ibtn{display:grid;place-items:center;width:44px;height:44px;border-radius:12px;border:1px solid var(--bd);background:var(--sf);color:var(--tn)}
+.stat{flex:1;display:flex;flex-direction:column-reverse;gap:2px;padding:0 16px}
+.stat+.stat{border-left:1px solid var(--bd)}
+.stat dd{font-size:22px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.1}
+.stat dt{font-size:12px;color:var(--tm)}
+.trail{display:flex;gap:8px;overflow:hidden;padding:0 20px;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 36px),transparent)}
+.chipn{flex:none;display:inline-flex;align-items:center;gap:8px;max-width:280px;min-height:44px;padding:0 14px 0 8px;border-radius:999px;border:1px solid var(--bd);background:var(--sf);font-size:14px;font-weight:500;color:var(--tn);white-space:nowrap}
+.chipn .tn{flex:none;display:grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--soft,#fff);border:1px solid rgba(0,0,0,.1);color:#262626;font-size:12px;font-weight:800}
+.chipn .lb{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.card{gap:10px;padding:12px}
+.top{display:flex;align-items:center;gap:12px}
+.top .ttl{flex:1;min-width:0;font-size:16px}
+.plate{width:64px;height:64px;display:grid;place-items:center}
+.ptile{position:static;width:44px;height:44px}
+.wmi{display:none}
+.ft{padding-top:10px}
+.note{flex-direction:column;gap:16px;padding:20px}
+.h2{font-size:22px;line-height:1.25}
+.hn{width:28px;height:28px;font-size:12px}
+.hrow{gap:12px}
+.sec{padding-top:32px}
+.meta{padding-bottom:24px;border-bottom:1px solid #EAEAEA}
+.cta-row{margin-top:36px;padding-top:28px;border-top:1px solid #EAEAEA}
+.cta-row .btn{width:100%}
+</style>
+</helmet>
+<div style="width:390px;height:2060px;display:flex;flex-direction:column;background:#E5E5E5">
+
+<header style="height:68px;flex:none;display:flex;align-items:center;justify-content:space-between;padding:0 20px">
+<a href="#" aria-label="Project Chíp Chíp" style="display:block;width:108px;line-height:1">
+<div style="display:flex;align-items:center;gap:6px;font-size:7px;font-weight:700;letter-spacing:.2em"><span style="flex:1;height:1px;background:#000"></span>PROJECT<span style="flex:1;height:1px;background:#000"></span></div>
+<div style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-top:2px">CHÍP CHÍP</div>
+</a>
+<button class="ibtn" aria-label="{{s.menu}}"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:20px;height:20px"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg></button>
+</header>
+
+<main style="flex:none">
+<section style="padding:40px 20px 0;display:flex;flex-direction:column;align-items:flex-start;gap:16px">
+<span class="eyebrow"><i></i><span>{{s.eyebrow}}</span></span>
+<h1 style="font-size:34px;font-weight:800;line-height:1.1;letter-spacing:-.03em;text-wrap:balance">{{s.h1}}</h1>
+<p style="font-size:16px;line-height:1.6;color:#3E424D;text-wrap:pretty">{{s.desc}}</p>
+<dl style="width:100%;display:flex;background:#fff;border:1px solid var(--bd);border-radius:16px;padding:14px 0;margin-top:8px">
+<div class="stat"><dt>{{s.st1}}</dt><dd>4</dd></div><div class="stat"><dt>{{s.st2}}</dt><dd>1</dd></div><div class="stat"><dt>{{s.st3}}</dt><dd>0</dd></div>
+</dl>
+</section>
+
+<section aria-labelledby="ways-h" style="padding:32px 20px 0">
+<h2 id="ways-h" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">{{s.waysHead}}</h2>
+<ul class="grid" role="list" style="grid-template-columns:minmax(0,1fr);gap:12px">
+<li><article class="card t1" aria-labelledby="w1">
+<div class="top"><div class="plate"><span class="ptile"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg></span></div><h3 class="ttl" id="w1">{{s.w1t}}</h3></div>
+<p class="ex">{{s.w1b}}</p>
+<div class="ft"><a class="btn s" href="#" aria-label="{{s.w1a}}">{{s.cta}}<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+</article></li>
+<li><article class="card t2" aria-labelledby="w2">
+<div class="top"><div class="plate"><span class="ptile"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg></span></div><h3 class="ttl" id="w2">{{s.w2t}}</h3></div>
+<p class="ex">{{s.w2b}}</p>
+<div class="ft"><a class="btn s" href="#" aria-label="{{s.w2a}}">{{s.cta}}<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+</article></li>
+<li><article class="card t3" aria-labelledby="w3">
+<div class="top"><div class="plate"><span class="ptile"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span></div><h3 class="ttl" id="w3">{{s.w3t}}</h3></div>
+<p class="ex">{{s.w3b}}</p>
+<div class="ft"><a class="btn s" href="#" aria-label="{{s.w3a}}">{{s.cta}}<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+</article></li>
+<li><article class="card t4" aria-labelledby="w4">
+<div class="top"><div class="plate"><span class="ptile"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg></span></div><h3 class="ttl" id="w4">{{s.w4t}}</h3></div>
+<p class="ex">{{s.w4b}}</p>
+<div class="ft"><a class="btn s" href="#" aria-label="{{s.w4a}}">{{s.cta}}<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a></div>
+</article></li>
+</ul>
+</section>
+
+<section style="padding:12px 20px 40px">
+<div class="note">
+<span class="ntile"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="width:22px;height:22px"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+<p>{{s.notePre}}<a href="#">{{s.noteLink}}</a>{{s.notePost}}</p>
+</div>
+</section>
+</main>
+
+<footer style="margin-top:auto;flex:none;background:#fff;border-top:1px solid var(--bd);padding:32px 20px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center">
+<a href="#" aria-label="Project Chíp Chíp" style="display:block;width:108px;line-height:1">
+<div style="display:flex;align-items:center;gap:6px;font-size:7px;font-weight:700;letter-spacing:.2em"><span style="flex:1;height:1px;background:#000"></span>PROJECT<span style="flex:1;height:1px;background:#000"></span></div>
+<div style="font-size:20px;font-weight:800;letter-spacing:-.02em;margin-top:2px">CHÍP CHÍP</div>
+</a>
+<nav aria-label="{{s.footNav}}" style="display:flex;flex-wrap:wrap;justify-content:center;column-gap:20px"><a class="flink" href="#">{{s.f1}}</a><a class="flink {{s.f2c}}" href="#" aria-current="{{s.f2a}}">{{s.f2}}</a><a class="flink {{s.f3c}}" href="#" aria-current="{{s.f3a}}">{{s.f3}}</a></nav>
+<p style="font-size:13px;line-height:1.5;color:#3E424D;text-wrap:balance">{{s.copy}}</p>
+</footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"locale":{"editor":"enum","options":["vi","en"],"default":"en"},"$preview":{"width":390,"height":2060}}'>
+const VI = {"n1": "Trang chủ", "n2": "Bài học", "n3": "Blog", "n4": "Giới thiệu", "cta0": "Tham gia cùng chúng tôi", "search": "Tìm kiếm", "menu": "Mở menu", "mainNav": "Điều hướng chính", "footNav": "Thông tin", "f1": "Liên hệ", "f2": "Đóng góp", "f3": "Chính sách bảo mật", "copy": "© 2026 Project Chíp Chíp. Mọi nội dung được chia sẻ vì mục đích giáo dục.", "f2c": "on", "f2a": "page", "f3c": "", "f3a": "false", "viBg": "#0D0D0D", "viFg": "#fff", "enBg": "transparent", "enFg": "#3E424D", "eyebrow": "Cùng xây Chíp Chíp", "h1": "Đóng góp", "desc": "Chíp Chíp do một người làm, nhưng không cần làm một mình. Nếu bạn muốn giúp, đây là bốn cách, cách nào cũng bắt đầu bằng một tin nhắn.", "waysHead": "Bốn cách đóng góp", "cta": "Nhắn cho tác giả", "st1": "Cách góp sức", "st2": "Tin nhắn để bắt đầu", "st3": "Phí, thù lao", "notePre": "Chíp Chíp không trả thù lao và không thu phí. Người đóng góp được ghi tên trong bài và ở mục “", "noteLink": "Những người đã đồng hành", "notePost": "” trên trang Giới thiệu.", "w1t": "Viết bài", "w1b": "Bạn hiểu một khái niệm bán dẫn và muốn giải thích nó cho học sinh? Gửi dàn ý hoặc bản nháp, tác giả sẽ cùng bạn biên tập trước khi đăng. Tên bạn được ghi ở cuối bài.", "w1has": true, "w1a": "Nhắn cho tác giả: Viết bài", "w2t": "Dịch", "w2b": "Mỗi bài có bản tiếng Việt và tiếng Anh. Nếu bạn thấy bản dịch còn gượng hoặc sai thuật ngữ, hãy đề xuất cách dịch tốt hơn.", "w2has": true, "w2a": "Nhắn cho tác giả: Dịch", "w3t": "Làm video", "w3b": "Một video ngắn đôi khi dễ hiểu hơn cả trang chữ. Nếu bạn quay, dựng hoặc vẽ minh hoạ được, hãy gửi ý tưởng hoặc link video bạn đã làm.", "w3has": true, "w3a": "Nhắn cho tác giả: Làm video", "w4t": "Báo lỗi", "w4b": "Thấy chỗ sai trong bài? Dùng nút \"Báo lỗi bài này\" ở cuối mỗi bài, hoặc viết qua trang Liên hệ. Mọi báo lỗi đều được đọc.", "w4has": true, "w4a": "Nhắn cho tác giả: Báo lỗi"};
+const EN = {"n1": "Home", "n2": "Lessons", "n3": "Blog", "n4": "About", "cta0": "Join us", "search": "Search", "menu": "Open menu", "mainNav": "Main navigation", "footNav": "Information", "f1": "Contact", "f2": "Contribute", "f3": "Privacy policy", "copy": "© 2026 Project Chíp Chíp. All content is shared for educational purposes.", "f2c": "on", "f2a": "page", "f3c": "", "f3a": "false", "viBg": "transparent", "viFg": "#3E424D", "enBg": "#0D0D0D", "enFg": "#fff", "eyebrow": "Build it with us", "h1": "Contribute", "desc": "Chíp Chíp is made by one person, but it does not have to be made alone. If you want to help, here are four ways — each one starts with a message.", "waysHead": "Four ways to contribute", "cta": "Message the author", "st1": "Ways to help", "st2": "Message to start", "st3": "Fees or pay", "notePre": "Chíp Chíp pays no fees and charges none. Contributors are credited in the article and under “", "noteLink": "People who helped", "notePost": "” on the About page.", "w1t": "Write an article", "w1b": "Understand a semiconductor idea and want to explain it to students? Send an outline or a draft and the author will edit it with you before it goes up. Your name appears at the end of the article.", "w1has": true, "w1a": "Message the author: Write an article", "w2t": "Translate", "w2b": "Every article exists in Vietnamese and English. If a translation reads awkwardly or gets a term wrong, suggest a better one.", "w2has": true, "w2a": "Message the author: Translate", "w3t": "Make a video", "w3b": "A short video can explain more than a page of text. If you can film, edit or draw, send an idea or a link to something you have made.", "w3has": true, "w3a": "Message the author: Make a video", "w4t": "Report a mistake", "w4b": "Found an error in an article? Use the \"Report a mistake\" button at the end of every article, or write through the Contact page. Every report is read.", "w4has": true, "w4a": "Message the author: Report a mistake"};
+class Component extends DCLogic {
+  renderVals() {
+    const en = (this.props.locale ?? 'en') === 'en';
+    return { s: en ? EN : VI };
+  }
+}
+</script>
+</body>
+</html>
