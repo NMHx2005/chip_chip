@@ -249,7 +249,15 @@
     "tableOfContents": "On this page",
     "emptyArticle": "This article has no content yet.",
     "videoFrameTitle": "Embedded {platform} video",
-    "playVideo": "Play video on {platform}"
+    "playVideo": "Play video on {platform}",
+    "listHeading": "All posts",
+    "result": "Showing {shown} of {total} posts · Newest first",
+    "backdropPause": "Pause background video",
+    "backdropPlay": "Play background video",
+    "creditLink": "{title} (opens on YouTube, new tab)",
+    "emptyTitle": "No posts yet",
+    "emptyBody": "The first analysis posts are being written. Check back soon, or read the lessons and watch the videos in the meantime.",
+    "statPosts": "Posts"
   },
   "about": {
     "title": "About",

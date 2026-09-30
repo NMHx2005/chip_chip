@@ -249,7 +249,15 @@
     "tableOfContents": "Nội dung bài",
     "emptyArticle": "Bài viết chưa có nội dung.",
     "videoFrameTitle": "Video {platform} nhúng trong bài",
-    "playVideo": "Phát video trên {platform}"
+    "playVideo": "Phát video trên {platform}",
+    "listHeading": "Tất cả bài viết",
+    "result": "Hiển thị {shown} trong {total} bài viết · Mới nhất trước",
+    "backdropPause": "Tạm dừng video nền",
+    "backdropPlay": "Phát video nền",
+    "creditLink": "{title} (mở trên YouTube, tab mới)",
+    "emptyTitle": "Chưa có bài viết nào",
+    "emptyBody": "Các bài phân tích đầu tiên đang được viết. Quay lại sau nhé, hoặc xem bài học và video trong lúc chờ.",
+    "statPosts": "Bài viết"
   },
   "about": {
     "title": "Giới thiệu",
