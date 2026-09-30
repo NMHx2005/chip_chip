@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { TOPIC_IDS } from "@/lib/constants";
-import { lessonHeroStats, startHere } from "@/lib/lesson-listing";
+import { centerScrollLeft, lessonHeroStats, startHere } from "@/lib/lesson-listing";
 import { DIFFICULTIES } from "@/lib/types";
 
 describe("lessonHeroStats", () => {
@@ -35,5 +35,25 @@ describe("startHere", () => {
     expect(startHere()).toEqual({ topic: "dinh-nghia", difficulty: "basic" });
     expect(startHere().topic).toBe(TOPIC_IDS[0]);
     expect(startHere().difficulty).toBe(DIFFICULTIES[0]);
+  });
+});
+
+describe("centerScrollLeft", () => {
+  it("puts the chip in the middle of the row", () => {
+    // Chip 100 wide starting at 400 in a 300 wide row: its centre is 450, the
+    // row's centre must be too, so the row scrolls to 300.
+    expect(centerScrollLeft({ chipLeft: 400, chipWidth: 100, rowWidth: 300, contentWidth: 1000 })).toBe(300);
+  });
+
+  it("does not scroll past the start", () => {
+    expect(centerScrollLeft({ chipLeft: 10, chipWidth: 100, rowWidth: 300, contentWidth: 1000 })).toBe(0);
+  });
+
+  it("does not scroll past the end", () => {
+    expect(centerScrollLeft({ chipLeft: 900, chipWidth: 100, rowWidth: 300, contentWidth: 1000 })).toBe(700);
+  });
+
+  it("stays put when everything already fits", () => {
+    expect(centerScrollLeft({ chipLeft: 50, chipWidth: 100, rowWidth: 300, contentWidth: 280 })).toBe(0);
   });
 });

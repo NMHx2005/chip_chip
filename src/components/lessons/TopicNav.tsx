@@ -48,9 +48,12 @@ export function TopicDisc({
  * count. Collapsed it is a 48px rail of number discs, each with a tooltip that
  * repeats its `aria-label`, so it still navigates. The choice is remembered.
  *
- * Widths animate 260 to 48px over 0.45s; labels fade over 0.25s, waiting 0.2s on
- * the way back so the column is wide enough before they return. Under reduced
- * motion the column switches at once.
+ * The width animates 260 to 48px over 0.45s. Names and counts are only drawn
+ * while the column is fully open (`showLabels`): they disappear the moment it
+ * starts to fold and come back, fading in, once it has finished opening. Drawing
+ * them mid-transition made them wrap onto many lines in a column that was still
+ * narrow. The aside itself must not clip (`overflow-hidden`): the rail's
+ * tooltips sit outside its 48px. Under reduced motion it switches at once.
  */
 export function TopicNav({
   heading,
@@ -72,6 +75,8 @@ export function TopicNav({
   // Off until the stored state is applied, so a returning reader who left the
   // column folded does not watch it fold on every page load.
   const [animate, setAnimate] = useState(false);
+  // Names and counts are drawn only while the column is open; see above.
+  const [showLabels, setShowLabels] = useState(true);
 
   useEffect(() => {
     try {
@@ -83,6 +88,21 @@ export function TopicNav({
     return () => window.cancelAnimationFrame(frame);
   }, []);
 
+  useEffect(() => {
+    if (collapsed) {
+      setShowLabels(false);
+      return;
+    }
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!animate || reduce) {
+      setShowLabels(true);
+      return;
+    }
+    // Wait for the 0.45s width transition to finish before the names return.
+    const timer = window.setTimeout(() => setShowLabels(true), 460);
+    return () => window.clearTimeout(timer);
+  }, [collapsed, animate]);
+
   const toggle = () => {
     const next = !collapsed;
     setCollapsed(next);
@@ -93,29 +113,24 @@ export function TopicNav({
     }
   };
 
-  const fade = animate ? "transition-opacity duration-fast ease-standard motion-reduce:transition-none" : "";
+  const open = !collapsed && showLabels;
 
   return (
     <aside
       aria-label={heading}
       className={cn(
-        "sticky top-28 hidden shrink-0 flex-col gap-3 overflow-hidden lg:flex",
+        "sticky top-28 hidden shrink-0 flex-col gap-3 lg:flex",
         collapsed ? "w-12" : "w-[260px]",
         animate && "transition-[width] duration-panel ease-standard motion-reduce:transition-none",
         className
       )}
     >
-      <div className="flex h-11 items-center justify-between gap-2">
-        <h2
-          aria-hidden={collapsed}
-          className={cn(
-            "whitespace-nowrap text-sm font-bold text-text",
-            fade,
-            collapsed ? "opacity-0" : "opacity-100 delay-200"
-          )}
-        >
-          {heading}
-        </h2>
+      <div className={cn("flex h-11 items-center gap-2", collapsed ? "justify-center" : "justify-between")}>
+        {open && (
+          <h2 className="whitespace-nowrap text-sm font-bold text-text motion-safe:animate-notice-in">
+            {heading}
+          </h2>
+        )}
         <button
           type="button"
           onClick={toggle}
@@ -138,60 +153,56 @@ export function TopicNav({
         aria-label={heading}
         className={cn(
           "flex flex-col gap-0.5 rounded-2xl border border-border bg-surface",
-          collapsed ? "p-1" : "p-2"
+          collapsed ? "p-1" : "overflow-hidden p-2"
         )}
       >
-        {entries.map((entry) => (
-          <Link
-            key={entry.key}
-            href={entry.href}
-            aria-current={entry.active ? "page" : undefined}
-            aria-label={collapsed ? entry.label : undefined}
-            className={cn(
-              "group relative flex min-h-12 items-center rounded-xl text-sm font-medium transition-colors duration-fast ease-standard motion-reduce:transition-none",
-              collapsed ? "justify-center px-0" : "gap-3 py-1.5 pl-2.5 pr-3",
-              entry.active
-                ? "bg-primary text-white"
-                : "text-text-nav [@media(hover:hover)]:hover:bg-surface-muted"
-            )}
-          >
-            <TopicDisc topic={entry.topic} active={entry.active} />
-            <span
-              aria-hidden={collapsed}
+        {entries.map((entry) => {
+          const name = `${entry.label} (${entry.count})`;
+          return (
+            <Link
+              key={entry.key}
+              href={entry.href}
+              aria-current={entry.active ? "page" : undefined}
+              aria-label={collapsed ? name : undefined}
               className={cn(
-                "min-w-0 flex-1 leading-[1.3]",
-                fade,
-                collapsed ? "hidden opacity-0" : "opacity-100 delay-200"
+                "group relative flex min-h-12 items-center rounded-xl text-sm font-medium transition-colors duration-fast ease-standard motion-reduce:transition-none",
+                collapsed ? "justify-center px-0" : "gap-3 py-1.5 pl-2.5 pr-3",
+                entry.active
+                  ? "bg-primary text-white"
+                  : "text-text-nav [@media(hover:hover)]:hover:bg-surface-muted"
               )}
             >
-              {entry.label}
-            </span>
-            <span
-              aria-hidden={collapsed}
-              className={cn(
-                "min-w-7 shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums",
-                entry.active ? "bg-white/[0.16] text-white" : "bg-surface-muted text-text-muted",
-                fade,
-                collapsed ? "hidden opacity-0" : "opacity-100 delay-200"
+              <TopicDisc topic={entry.topic} active={entry.active} />
+              {open && (
+                <>
+                  <span className="min-w-0 flex-1 leading-[1.3] motion-safe:animate-notice-in">
+                    {entry.label}
+                  </span>
+                  <span
+                    className={cn(
+                      "min-w-7 shrink-0 rounded-full px-2 py-0.5 text-center text-xs font-semibold tabular-nums motion-safe:animate-notice-in",
+                      entry.active ? "bg-white/[0.16] text-white" : "bg-surface-muted text-text-muted"
+                    )}
+                  >
+                    {entry.count}
+                  </span>
+                </>
               )}
-            >
-              {entry.count}
-            </span>
-            {collapsed && (
-              <span
-                role="presentation"
-                aria-hidden
-                className="pointer-events-none absolute left-full top-1/2 z-10 ml-2 -translate-x-1 -translate-y-1/2 whitespace-nowrap rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white opacity-0 shadow-float transition-[opacity,transform] duration-fast ease-standard group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:transition-none [@media(hover:hover)]:group-hover:translate-x-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-hover:delay-100"
-              >
-                {entry.label} · {entry.count}
-              </span>
-            )}
-          </Link>
-        ))}
+              {collapsed && (
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute left-full top-1/2 z-10 ml-2 -translate-x-1 -translate-y-1/2 whitespace-nowrap rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-white opacity-0 shadow-float transition-[opacity,transform] duration-fast ease-standard group-focus-visible:translate-x-0 group-focus-visible:opacity-100 motion-reduce:transition-none [@media(hover:hover)]:group-hover:translate-x-0 [@media(hover:hover)]:group-hover:opacity-100 [@media(hover:hover)]:group-hover:delay-100"
+                >
+                  {name}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
 
-      {!collapsed && (
-        <p className="px-1 text-[13px] leading-[1.5] text-text-muted">
+      {open && (
+        <p className="px-1 text-[13px] leading-[1.5] text-text-muted motion-safe:animate-notice-in">
           {hint.lead}{" "}
           <Link
             href={hint.href}

@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { TopicDisc, type TopicNavEntry } from "@/components/lessons/TopicNav";
+import { centerScrollLeft } from "@/lib/lesson-listing";
 import { cn } from "@/lib/utils";
 
 /**
@@ -20,15 +21,29 @@ export function TopicTrail({
   entries: TopicNavEntry[];
   className?: string;
 }) {
+  const rowRef = useRef<HTMLUListElement>(null);
   const activeRef = useRef<HTMLAnchorElement>(null);
 
+  // Centre the chosen chip by moving the row only. scrollIntoView would also
+  // scroll the window, which jumps the page on a short phone.
   useEffect(() => {
-    activeRef.current?.scrollIntoView({ inline: "center", block: "nearest", behavior: "instant" });
+    const row = rowRef.current;
+    const chip = activeRef.current;
+    if (!row || !chip) return;
+    row.scrollLeft = centerScrollLeft({
+      chipLeft: chip.offsetLeft,
+      chipWidth: chip.offsetWidth,
+      rowWidth: row.clientWidth,
+      contentWidth: row.scrollWidth,
+    });
   }, []);
 
   return (
     <nav aria-label={label} className={cn("lg:hidden", className)}>
-      <ul className="-mx-5 flex snap-x snap-proximity gap-2 overflow-x-auto px-5 pb-1 [mask-image:linear-gradient(to_right,#000_calc(100%-32px),transparent)] md:-mx-8 md:px-8">
+      <ul
+        ref={rowRef}
+        className="relative -mx-5 flex snap-x snap-proximity gap-2 overflow-x-auto pb-1 pl-5 pr-10 [mask-image:linear-gradient(to_right,#000_calc(100%-32px),transparent)] md:-mx-8 md:pl-8 md:pr-12"
+      >
         {entries.map((entry) => (
           <li key={entry.key} className="shrink-0 snap-center">
             <Link
