@@ -2,7 +2,9 @@ import { PostCard } from "@/components/forum/PostCard";
 import { Pagination } from "@/components/listing/Pagination";
 import { CardReveal } from "@/components/motion";
 import { Button } from "@/components/ui/Button";
+import { DifficultyMark } from "@/components/ui/DifficultyMark";
 import { EmptyState } from "@/components/ui/EmptyState";
+import { TopicChip } from "@/components/ui/TopicChip";
 import type { PostSummary } from "@/lib/types";
 
 // Sample posts for the gallery only. PostCard is an async Server Component, so
@@ -85,6 +87,37 @@ const SAMPLES: { caption: string; post: PostSummary; showTopic?: boolean }[] = [
 export async function PostCardSamples() {
   return (
     <div className="mx-auto flex w-full max-w-content flex-col gap-10 px-5 md:px-8">
+      <section id="chips" className="flex flex-col gap-4">
+        <h2 className="text-h2 text-text md:text-h2-lg">TopicChip và DifficultyMark</h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface p-5">
+            <div className="flex flex-wrap gap-2">
+              <TopicChip topic="dinh-nghia" label="Định nghĩa" />
+              <TopicChip topic="nguyen-ly" label="Nguyên lý" />
+              <TopicChip topic="ung-dung" label="Ứng dụng" />
+              <TopicChip topic="lich-su" label="Lịch sử và Phát triển" />
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <TopicChip topic="dinh-nghia" label="What is a semiconductor" />
+              <TopicChip topic="nguyen-ly" label="How they work" />
+              <TopicChip topic="ung-dung" label="Applications" />
+              <TopicChip topic="lich-su" label="History & development" />
+            </div>
+            <div className="w-40">
+              <TopicChip topic="dinh-nghia" label="A very long topic name that has to be cut with an ellipsis" />
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-5 rounded-2xl border border-border bg-surface p-5 text-[13px]">
+            <DifficultyMark difficulty="basic" label="Cơ bản" />
+            <DifficultyMark difficulty="intermediate" label="Trung bình" />
+            <DifficultyMark difficulty="advanced" label="Nâng cao" />
+            <DifficultyMark difficulty="basic" label="Basic" />
+            <DifficultyMark difficulty="intermediate" label="Intermediate" />
+            <DifficultyMark difficulty="advanced" label="Advanced" />
+          </div>
+        </div>
+      </section>
+
       <section id="postcard" className="flex flex-col gap-4">
         <h2 className="text-h2 text-text md:text-h2-lg">PostCard · thẻ</h2>
         <p className="text-sm text-text-muted">Dưới 640px thẻ tự chuyển sang dạng gọn.</p>

@@ -78,6 +78,19 @@ Còn lại theo `HANDOFF.md` mục "Thứ tự làm gợi ý": PostCard/phân tr
 (bước 3), Bài học, Blog, Video, Tìm kiếm, Liên hệ, Giới thiệu, Đóng góp, Bảo mật,
 404; khi đó mới xoá `.rise-in` và `EASE_SCROLL_REVEAL`.
 
+**Thiết kế lại giao diện — bước 3 (thẻ, phân trang, trạng thái rỗng).** Kế hoạch:
+`docs/superpowers/plans/2026-09-30-thiet-ke-lai-buoc-3-the-va-phan-trang.md`.
+Đã có: `PostCard` v2 thay tại chỗ (thẻ tự chuyển dạng gọn dưới 640px, `variant="row"`
+cho kết quả tìm kiếm; áp dụng cho Bài học, Blog và khối "Từ Blog" ở trang chủ, giữ
+`TiltCard` và `ExpandingCardLink`), `TopicChip` (số 1–4 + nhãn), `DifficultyMark`
+(ba thanh + nhãn), `CardReveal` (hiện thẻ theo cột, trễ 0.05/0.12/0.19s),
+`Pagination` v2 (mũi tên đầu/cuối mờ và không bấm được, dòng "Trang x trong y"),
+`EmptyState`/`ErrorState` (khung nét đứt + hình chip), logic thuần trong
+`src/lib/post-display.ts`. Xem thử ở `/ui-gallery` (chỉ dev). Chưa làm: tô từ
+khoá ở dòng kết quả tìm kiếm (bước 6), gợi ý mức độ khác kèm số đếm khi lọc ra rỗng
+(cần truy vấn đếm theo độ khó, đã hoãn theo quyết định của người bảo trì), Pagination
+của Blog vẫn là bản riêng (bước 5).
+
 ---
 
 ## 3. Chạy local
