@@ -5,7 +5,13 @@ import { PostCard } from "@/components/forum/PostCard";
 import { CardReveal } from "@/components/motion";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
-import { HeroStat, PageHero } from "@/components/sections/PageHero";
+import { Pagination } from "@/components/listing/Pagination";
+import {
+  HeroBackdropCredit,
+  HeroBackdropLayer,
+  HeroBackdropProvider,
+} from "@/components/sections/HeroBackdrop";
+import { PageHero } from "@/components/sections/PageHero";
 import { listForumPosts } from "@/lib/queries/posts";
 import { localeAlternates } from "@/lib/seo";
 import { BLOG_CLIP, BLOG_CLIP_CREDIT, PAGE_SIZE } from "@/lib/constants";
@@ -25,6 +31,8 @@ export async function generateMetadata({
   };
 }
 
+const LIST_ID = "danh-sach";
+
 export default async function ForumPage({
   params,
   searchParams,
@@ -35,12 +43,7 @@ export default async function ForumPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, tPagination, tCommon, tNav] = await Promise.all([
-    getTranslations("forum"),
-    getTranslations("pagination"),
-    getTranslations("common"),
-    getTranslations("nav"),
-  ]);
+  const [t, tNav] = await Promise.all([getTranslations("forum"), getTranslations("nav")]);
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1);
 
   const { posts, total } = await listForumPosts(locale as Locale, {
@@ -56,73 +59,63 @@ export default async function ForumPage({
 
   return (
     <>
-      <PageHero
-        eyebrow={t("eyebrow")}
-        title={t("title")}
-        description={t("description")}
-        backdropVideo={BLOG_CLIP}
-      >
-        <HeroStat value={total} label={t("title")} />
-      </PageHero>
-
-      <p className="mx-auto mt-4 w-full max-w-content px-5 text-xs text-text-muted md:px-8">
-        {tCommon("videoCredit")}{" "}
-        <a
-          href={BLOG_CLIP_CREDIT.href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline underline-offset-4 hover:text-accent"
-        >
-          {BLOG_CLIP_CREDIT.label}
-        </a>
-      </p>
+      <HeroBackdropProvider>
+        <PageHero
+          eyebrow={t("eyebrow")}
+          title={t("title")}
+          description={t("description")}
+          stats={[{ value: total, label: t("statPosts") }]}
+          backdrop={<HeroBackdropLayer src={BLOG_CLIP} />}
+          below={<HeroBackdropCredit credit={BLOG_CLIP_CREDIT} />}
+        />
+      </HeroBackdropProvider>
 
       <section className="px-5 py-10 md:px-8 md:py-14">
         <div className="mx-auto w-full max-w-content">
-          {posts.length === 0 ? (
-            <EmptyState
-              compact
-              title={t("empty")}
-              actions={
-                <Button href="/bai-hoc" arrow>
-                  {tNav("lessons")}
-                </Button>
-              }
-            />
-          ) : (
-            <>
-              <h2 className="sr-only">{t("postsHeading")}</h2>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Page changes link here, clear of the fixed navbar. */}
+          <div id={LIST_ID} className="scroll-mt-24">
+            <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+              <h2 className="text-[26px] font-extrabold leading-[1.2] tracking-[-0.02em] text-text">
+                {t("listHeading")}
+              </h2>
+              <p role="status" aria-live="polite" className="text-sm text-text-muted">
+                {t("result", { shown: posts.length, total })}
+              </p>
+            </div>
+
+            {posts.length === 0 ? (
+              <EmptyState
+                compact
+                className="mt-6"
+                title={t("emptyTitle")}
+                description={t("emptyBody")}
+                actions={
+                  <>
+                    <Button href="/bai-hoc" arrow>
+                      {tNav("lessons")}
+                    </Button>
+                    <Button href="/video" variant="secondary">
+                      {tNav("lessonsVideo")}
+                    </Button>
+                  </>
+                }
+              />
+            ) : (
+              <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {posts.map((post, index) => (
                   <CardReveal key={post.id} index={index} className="h-full">
                     <PostCard post={post} expand />
                   </CardReveal>
                 ))}
               </div>
-            </>
-          )}
+            )}
+          </div>
 
-          {totalPages > 1 && (
-            <nav
-              aria-label={tPagination("label")}
-              className="mt-10 flex items-center justify-center gap-2"
-            >
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((n) => (
-                <a
-                  key={n}
-                  href={`?page=${n}`}
-                  aria-current={n === page ? "page" : undefined}
-                  className={
-                    n === page
-                      ? "flex size-9 items-center justify-center rounded-lg bg-primary text-sm font-semibold text-white"
-                      : "flex size-9 items-center justify-center rounded-lg border border-border text-sm text-text-nav transition-colors hover:border-black/20"
-                  }
-                >
-                  {n}
-                </a>
-              ))}
-            </nav>
-          )}
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            hrefFor={(n) => ({ pathname: "/blog", query: n > 1 ? { page: n } : {}, hash: LIST_ID })}
+          />
         </div>
       </section>
     </>
