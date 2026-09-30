@@ -1,4 +1,5 @@
 import { PostCard } from "@/components/forum/PostCard";
+import { SegmentedFilter } from "@/components/lessons/SegmentedFilter";
 import { Pagination } from "@/components/listing/Pagination";
 import { CardReveal } from "@/components/motion";
 import { Button } from "@/components/ui/Button";
@@ -115,6 +116,30 @@ export async function PostCardSamples() {
             <DifficultyMark difficulty="intermediate" label="Intermediate" />
             <DifficultyMark difficulty="advanced" label="Advanced" />
           </div>
+        </div>
+      </section>
+
+      <section id="segmented" className="flex flex-col gap-4">
+        <h2 className="text-h2 text-text md:text-h2-lg">SegmentedFilter</h2>
+        <div className="flex flex-col gap-4">
+          <SegmentedFilter
+            label="Độ khó"
+            options={[
+              { key: "all", label: "Tất cả", href: "/bai-hoc", active: true },
+              { key: "basic", label: "Cơ bản", href: "/bai-hoc", active: false, difficulty: "basic" },
+              { key: "intermediate", label: "Trung bình", href: "/bai-hoc", active: false, difficulty: "intermediate" },
+              { key: "advanced", label: "Nâng cao", href: "/bai-hoc", active: false, difficulty: "advanced" },
+            ]}
+          />
+          <SegmentedFilter
+            label="Difficulty"
+            options={[
+              { key: "all", label: "All", href: "/bai-hoc", active: false },
+              { key: "basic", label: "Basic", href: "/bai-hoc", active: true, difficulty: "basic" },
+              { key: "intermediate", label: "Intermediate", href: "/bai-hoc", active: false, difficulty: "intermediate" },
+              { key: "advanced", label: "Advanced", href: "/bai-hoc", active: false, difficulty: "advanced" },
+            ]}
+          />
         </div>
       </section>
 
