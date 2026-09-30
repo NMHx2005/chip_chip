@@ -138,13 +138,17 @@
 }
 
 .chip-prose h2 {
-  font-size: 1.5rem;
+  font-size: 1.625rem;
+  font-weight: 800;
+  line-height: 1.25;
   margin-top: 2em;
+  scroll-margin-top: 6rem;
 }
 
 .chip-prose h3 {
   font-size: 1.25rem;
   margin-top: 1.75em;
+  scroll-margin-top: 6rem;
 }
 
 .chip-prose h4 {
@@ -309,6 +313,24 @@
 
 .chip-prose {
   counter-reset: figure;
+}
+
+/* Phones: a step down in body and headings, and a smaller fixed-navbar offset. */
+@media (max-width: 767px) {
+  .chip-prose {
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+
+  .chip-prose h2 {
+    font-size: 1.375rem;
+    scroll-margin-top: 5.25rem;
+  }
+
+  .chip-prose h3 {
+    font-size: 1.125rem;
+    scroll-margin-top: 5.25rem;
+  }
 }
 
 .chip-prose figure {
