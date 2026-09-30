@@ -133,6 +133,25 @@ export async function countLessonsByTopic(
   return counts;
 }
 
+/** Every published video in this locale, whatever the filters: the real total for the hero and the empty state. */
+export async function countVideos(locale: Locale): Promise<number> {
+  if (!requireSupabase("countVideos")) return 0;
+
+  const supabase = createClient();
+  const { count, error } = await supabase
+    .from("posts")
+    .select("id", { count: "exact", head: true })
+    .eq("status", "published")
+    .eq("locale", locale)
+    .eq("kind", "video");
+
+  if (error) {
+    console.error("[countVideos]", error.message);
+    return 0;
+  }
+  return count ?? 0;
+}
+
 type PageOf = { posts: PostSummary[]; total: number };
 
 function toPage(
