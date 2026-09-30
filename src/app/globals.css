@@ -89,6 +89,24 @@
   animation: rise-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* PageHero entrance (design M1): four items in turn, the same rhythm as the
+   home hero. Plain CSS so PageHero can stay a Server Component. */
+@keyframes hero-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-in {
+  animation: hero-in 0.55s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+  animation-delay: calc(0.1s + var(--i, 0) * 0.12s);
+}
+
 /* ── Article body ───────────────────────────────────────────────────────────
    Styles for HTML generated from the stored Tiptap JSON. Kept outside the
    utilities layer so the element selectors are not purged. */
@@ -543,5 +561,14 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* The block above only shortens durations. .hero-in keeps its animation-delay,
+   which would hold each item at opacity 0 before it appears, so turn the
+   animation off and show the final state at once. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-in {
+    animation: none;
   }
 }

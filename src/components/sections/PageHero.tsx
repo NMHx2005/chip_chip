@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import Image from "next/image";
 import { AutoplayVideo } from "@/components/ui/AutoplayVideo";
 import { cn } from "@/lib/utils";
@@ -11,14 +11,16 @@ import { cn } from "@/lib/utils";
  * every page the same composure: an eyebrow chip, a balanced headline, a lead
  * paragraph, and room for a supporting slot (counts, a form, an action).
  *
- * Server-rendered; the only motion is a one-off CSS rise, which the global
- * `prefers-reduced-motion` rule neutralises.
+ * Server-rendered. The four items (chip, title, lead, stats) rise in turn with
+ * `.hero-in`; `--i` is the item's position and sets its delay. Under
+ * `prefers-reduced-motion` the animation is switched off (globals.css).
  */
 export function PageHero({
   eyebrow,
   title,
   description,
   children,
+  stats,
   className,
   backdropImage,
   backdropVideo,
@@ -26,8 +28,10 @@ export function PageHero({
   eyebrow?: string;
   title: string;
   description?: string;
-  /** Optional supporting column (e.g. stats or an action). */
+  /** Optional supporting column (e.g. an action). Stats have their own prop. */
   children?: ReactNode;
+  /** One to three figures shown in a card beside the title. */
+  stats?: { value: string | number; label: string }[];
   className?: string;
   /** Path under `public/`; faded into the page background behind the text. */
   backdropImage?: string;
@@ -62,24 +66,34 @@ export function PageHero({
         </div>
       )}
       <div className="relative mx-auto w-full max-w-content">
-        <div className="rise-in flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
+        <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between lg:gap-12">
           <header className="max-w-2xl">
             {eyebrow && (
-              <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface-muted px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-accent">
-                <span aria-hidden className="size-1.5 rounded-full bg-accent" />
-                {eyebrow}
+              <p
+                className="hero-in mb-4 inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-surface-muted px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-accent"
+                style={{ "--i": 0 } as CSSProperties}
+              >
+                <span aria-hidden className="size-1.5 shrink-0 rounded-full bg-accent" />
+                <span className="truncate">{eyebrow}</span>
               </p>
             )}
-            <h1 className="text-balance text-[34px] font-extrabold leading-[1.1] tracking-[-0.03em] text-text md:text-[46px]">
+            <h1
+              className="hero-in text-balance text-h1 text-text md:text-h1-lg"
+              style={{ "--i": 1 } as CSSProperties}
+            >
               {title}
             </h1>
             {description && (
-              <p className="mt-5 text-pretty text-base leading-relaxed text-text-muted md:text-lg">
+              <p
+                className="hero-in mt-5 text-pretty text-base leading-relaxed text-text-muted md:text-lg"
+                style={{ "--i": 2 } as CSSProperties}
+              >
                 {description}
               </p>
             )}
           </header>
 
+          {stats && stats.length > 0 && <HeroStats stats={stats} />}
           {children}
         </div>
       </div>
@@ -87,7 +101,36 @@ export function PageHero({
   );
 }
 
-/** Small numeric chip for the hero's supporting column. */
+/**
+ * Stats card: one to three figures in a single white card, divided by hairlines.
+ * On phones the cells share the width equally so three still fit.
+ */
+export function HeroStats({
+  stats,
+}: {
+  stats: { value: string | number; label: string }[];
+}) {
+  return (
+    <dl
+      className="hero-in grid w-full auto-cols-fr grid-flow-col rounded-2xl border border-border bg-surface py-3.5 sm:w-auto"
+      style={{ "--i": 3 } as CSSProperties}
+    >
+      {stats.map((stat) => (
+        <div
+          key={stat.label}
+          className="flex flex-col-reverse gap-0.5 border-border px-4 first:border-l-0 sm:px-6 [&:not(:first-child)]:border-l"
+        >
+          <dt className="text-xs text-text-muted">{stat.label}</dt>
+          <dd className="text-2xl font-extrabold leading-[1.1] tracking-[-0.02em] tabular-nums text-text">
+            {stat.value}
+          </dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+/** One-cell stats card; kept so pages that pass `<HeroStat/>` as children still work. */
 export function HeroStat({
   value,
   label,
@@ -95,12 +138,5 @@ export function HeroStat({
   value: string | number;
   label: string;
 }) {
-  return (
-    <div className="flex flex-col rounded-2xl border border-border bg-surface px-4 py-3">
-      <span className="text-xl font-extrabold tabular-nums text-text">
-        {value}
-      </span>
-      <span className="text-xs text-text-muted">{label}</span>
-    </div>
-  );
+  return <HeroStats stats={[{ value, label }]} />;
 }
