@@ -164,7 +164,8 @@
     "next": "Trang sau",
     "page": "Trang {page}",
     "pageEmpty": "Trang này không có nội dung.",
-    "backToFirst": "Về trang đầu"
+    "backToFirst": "Về trang đầu",
+    "summary": "Trang {page} trong {total}"
   },
   "videos": {
     "title": "Video",

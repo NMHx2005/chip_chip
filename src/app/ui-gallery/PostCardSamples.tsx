@@ -1,4 +1,5 @@
 import { PostCard } from "@/components/forum/PostCard";
+import { Pagination } from "@/components/listing/Pagination";
 import { CardReveal } from "@/components/motion";
 import type { PostSummary } from "@/lib/types";
 
@@ -104,6 +105,28 @@ export async function PostCardSamples() {
         <div className="grid gap-4 md:grid-cols-2">
           {SAMPLES.slice(0, 2).map((sample) => (
             <PostCard key={sample.post.id} post={sample.post} showTopic variant="row" />
+          ))}
+        </div>
+      </section>
+
+      <section id="pagination" className="flex flex-col gap-4">
+        <h2 className="text-h2 text-text md:text-h2-lg">Pagination</h2>
+        <div className="grid gap-6 md:grid-cols-3">
+          {[
+            { caption: "Trang đầu", page: 1, total: 4 },
+            { caption: "Giữa, nhiều trang", page: 6, total: 20 },
+            { caption: "Trang cuối", page: 4, total: 4 },
+          ].map((sample) => (
+            <div key={sample.caption} className="rounded-2xl border border-border bg-surface p-5">
+              <p className="text-xs font-bold uppercase tracking-[0.08em] text-text-muted">
+                {sample.caption}
+              </p>
+              <Pagination
+                page={sample.page}
+                totalPages={sample.total}
+                hrefFor={(page) => ({ pathname: "/bai-hoc", query: { page } })}
+              />
+            </div>
           ))}
         </div>
       </section>

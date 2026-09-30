@@ -164,7 +164,8 @@
     "next": "Next page",
     "page": "Page {page}",
     "pageEmpty": "There is nothing on this page.",
-    "backToFirst": "Back to the first page"
+    "backToFirst": "Back to the first page",
+    "summary": "Page {page} of {total}"
   },
   "videos": {
     "title": "Videos",
