@@ -131,6 +131,20 @@ giả, bài trước/sau, breadcrumb. Neo mục lục dùng `scroll-padding-top`
 liệu cục bộ; kiểm bằng trang mẫu tạm, đã xoá), `npm run build`. Bình luận là bước 5c,
 Video chi tiết là bước 5e.
 
+**Thiết kế lại giao diện — bước 5c (bình luận).** Kế hoạch:
+`docs/superpowers/plans/2026-09-30-thiet-ke-lai-buoc-5c-binh-luan.md`. `CommentSection` tách
+thành `components/forum/comments/` (`CommentForm`, `CommentItem`, `CommentEmpty`); logic thuần
+(kiểm tra, chữ cái avatar, nhận bình luận mới) ở `src/lib/comment-form.ts` có test. Form dùng
+`Field`/`FormNotice`/`Button busy` của bước 1 (lần đầu chúng lên trang thật; `Input` và
+`Textarea` nay nhận `ref`): nhãn luôn hiện, lỗi mọi ô cùng lúc và focus ô sai đầu tiên,
+thông báo lỗi/thành công có biểu tượng, nút gửi đổi nhãn "Đang gửi..." mà không mất focus.
+Bấm "Trả lời" cuộn tới form và focus ô nội dung. Bình luận có avatar, huy hiệu Tác giả, nút
+Trả lời 44px, thụt lề một cấp; bình luận mới hiện dần (tắt khi giảm chuyển động). Vẫn gửi qua
+`POST /api/comments` (không đổi route, truy vấn hay migration); trang Video dùng chung nên
+được thiết kế lại theo. Chưa xác minh: gửi bình luận thật thành công (không có Supabase cục
+bộ; đã thử nhánh lỗi API thật), nhánh giảm chuyển động, `npm run build`. Không làm: bộ đếm ký
+tự (theo quyết định của người bảo trì).
+
 ---
 
 ## 3. Chạy local
@@ -171,7 +185,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **44 file, 416 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **45 file, 431 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash

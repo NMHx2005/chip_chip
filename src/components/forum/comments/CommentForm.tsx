@@ -142,7 +142,7 @@ export function CommentForm({
   return (
     <div
       ref={formRef}
-      className="scroll-mt-24 rounded-3xl border border-border bg-surface p-5 md:p-7"
+      className="rounded-3xl border border-border bg-surface p-5 md:p-7"
     >
       <form onSubmit={submit} noValidate className="flex flex-col gap-4">
         <h3 className="text-lg font-bold leading-[1.3] text-text">
