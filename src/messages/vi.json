@@ -201,6 +201,23 @@
       "easiest": "Dễ trước",
       "hardest": "Khó trước"
     },
+    "stats": {
+      "videos": "Video",
+      "platforms": "Nền tảng",
+      "topics": "Chủ đề"
+    },
+    "filtersSummary": "Bộ lọc và sắp xếp",
+    "result": "Hiển thị {shown} trong {total} video",
+    "resultNone": "Không tìm thấy video nào",
+    "clearFiltersCount": "Xoá bộ lọc ({count})",
+    "listHeading": "Danh sách video",
+    "emptyTitle": "Chưa có video nào",
+    "emptyBody": "Những video đầu tiên đang được thực hiện. Bạn quay lại sau nhé, hoặc đọc bài học và blog trong lúc chờ.",
+    "emptyFilteredTitle": "Không có video nào khớp bộ lọc này",
+    "emptyFilteredBody": "Thử nới lỏng một bộ lọc, hoặc xoá hết để xem toàn bộ video.",
+    "clearAll": "Xoá hết bộ lọc",
+    "readLessons": "Đọc bài học",
+    "readBlog": "Đọc blog",
     "applySort": "Áp dụng",
     "clearFilters": "Xoá lọc",
     "empty": "Chưa có video nào. Quay lại sau nhé!",

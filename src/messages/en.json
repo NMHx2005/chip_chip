@@ -201,6 +201,23 @@
       "easiest": "Easiest first",
       "hardest": "Hardest first"
     },
+    "stats": {
+      "videos": "Videos",
+      "platforms": "Platforms",
+      "topics": "Topics"
+    },
+    "filtersSummary": "Filters and sort",
+    "result": "Showing {shown} of {total} videos",
+    "resultNone": "No videos found",
+    "clearFiltersCount": "Clear filters ({count})",
+    "listHeading": "Video list",
+    "emptyTitle": "No videos yet",
+    "emptyBody": "The first videos are being made. Come back soon, or read the lessons and the blog in the meantime.",
+    "emptyFilteredTitle": "No videos match these filters",
+    "emptyFilteredBody": "Try loosening one filter, or clear them all to see every video.",
+    "clearAll": "Clear all filters",
+    "readLessons": "Read lessons",
+    "readBlog": "Read the blog",
     "applySort": "Apply",
     "clearFilters": "Clear filters",
     "empty": "No videos yet. Please check back soon!",
