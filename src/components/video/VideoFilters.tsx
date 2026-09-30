@@ -1,170 +1,178 @@
+import type { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
-import { ChevronDown, X } from "lucide-react";
-import { FilterPills, type ListingHref } from "@/components/listing/FilterPills";
-import { Link, getPathname } from "@/i18n/navigation";
-import type { Locale } from "@/i18n/routing";
+import { X } from "lucide-react";
+import type { ListingHref } from "@/components/listing/FilterPills";
+import { SegmentedFilter, type SegmentOption } from "@/components/lessons/SegmentedFilter";
+import { TopicTrail } from "@/components/lessons/TopicTrail";
+import { FilterDisclosure } from "@/components/video/FilterDisclosure";
+import { Button } from "@/components/ui/Button";
+import { Link } from "@/i18n/navigation";
 import { TOPIC_IDS } from "@/lib/constants";
-import {
-  DEFAULT_LISTING,
-  VIDEO_PLATFORMS,
-  VIDEO_SORTS,
-  listingQuery,
-  type ListingParams,
-} from "@/lib/listing-params";
+import { VIDEO_PLATFORMS, VIDEO_SORTS, listingQuery, type ListingParams } from "@/lib/listing-params";
 import { DIFFICULTIES } from "@/lib/types";
+import { activeFilterCount, activeScope, isFiltered } from "@/lib/video-listing";
 import { PLATFORM_LABEL } from "@/lib/video";
 
 function videosHref(query: Record<string, string>): ListingHref {
   return { pathname: "/video", query };
 }
 
-type FilterGroupsProps = {
-  t: Awaited<ReturnType<typeof getTranslations<"videos">>>;
-  tTopics: Awaited<ReturnType<typeof getTranslations<"topics">>>;
-  tDifficulty: Awaited<ReturnType<typeof getTranslations<"difficulty">>>;
-  option: <K extends "platform" | "source" | "topic" | "difficulty">(
-    key: K,
-    value: ListingParams[K],
-    label: string
-  ) => { key: string; label: string; href: ListingHref; active: boolean };
-};
-
-/** The four filter groups, shared by the mobile disclosure and the desktop panel. */
-function FilterGroups({ t, tTopics, tDifficulty, option }: FilterGroupsProps) {
+function GroupLabel({ children }: { children: ReactNode }) {
   return (
-    <>
-      <FilterPills
-        label={t("platform")}
-        options={[
-          option("platform", null, t("all")),
-          ...VIDEO_PLATFORMS.map((p) => option("platform", p, PLATFORM_LABEL[p])),
-        ]}
-      />
-      <FilterPills
-        label={t("source")}
-        options={[
-          option("source", null, t("all")),
-          option("source", "own", t("sourceOwn")),
-          option("source", "curated", t("sourceCurated")),
-        ]}
-      />
-      <FilterPills
-        label={t("topic")}
-        options={[
-          option("topic", null, t("all")),
-          ...TOPIC_IDS.map((id) => option("topic", id, tTopics(`${id}.title`))),
-        ]}
-      />
-      <FilterPills
-        label={tDifficulty("label")}
-        options={[
-          option("difficulty", null, t("all")),
-          ...DIFFICULTIES.map((level) => option("difficulty", level, tDifficulty(level))),
-        ]}
-      />
-    </>
+    <span className="text-xs font-bold uppercase tracking-[0.08em] text-text-muted">{children}</span>
   );
 }
 
 /**
- * The filter bar of the video listing. Everything is a link or a GET form,
- * so it works without JavaScript and every state has a shareable URL.
+ * The filter area of the video listing: on `lg` and up a white panel of
+ * segmented filters plus a sort row; below that a disclosure with the same
+ * groups (a closed `details` cannot be forced open by CSS, so the two are
+ * separate copies). Everything is a link, so it works without JavaScript and
+ * every state has a shareable URL. The result line sits outside both, and is
+ * the only live region.
  */
-export async function VideoFilters({ locale, current }: { locale: Locale; current: ListingParams }) {
+export async function VideoFilters({
+  current,
+  shown,
+  total,
+}: {
+  current: ListingParams;
+  /** Videos on this page. */
+  shown: number;
+  /** Videos that match the filters, across all pages. */
+  total: number;
+}) {
   const [t, tTopics, tDifficulty] = await Promise.all([
     getTranslations("videos"),
     getTranslations("topics"),
     getTranslations("difficulty"),
   ]);
 
-  const option = <K extends "platform" | "source" | "topic" | "difficulty">(
+  const option = <K extends "platform" | "source" | "topic" | "difficulty" | "sort">(
     key: K,
     value: ListingParams[K],
-    label: string
-  ) => ({
-    key: value ?? "all",
+    label: string,
+    extra: Partial<SegmentOption> = {}
+  ): SegmentOption => ({
+    key: String(value ?? "all"),
     label,
     href: videosHref(listingQuery(current, { [key]: value })),
     active: current[key] === value,
+    ...extra,
   });
 
-  const activeFilterCount = [current.platform, current.source, current.topic, current.difficulty].filter(
-    (value) => value !== null
-  ).length;
+  const platform = [
+    option("platform", null, t("all")),
+    ...VIDEO_PLATFORMS.map((p) => option("platform", p, PLATFORM_LABEL[p])),
+  ];
+  const source = [
+    option("source", null, t("all")),
+    option("source", "own", t("sourceOwn")),
+    option("source", "curated", t("sourceCurated")),
+  ];
+  const topic = [
+    option("topic", null, t("all")),
+    ...TOPIC_IDS.map((id) => option("topic", id, tTopics(`${id}.title`), { topic: id })),
+  ];
+  const difficulty = [
+    option("difficulty", null, t("all")),
+    ...DIFFICULTIES.map((level) => option("difficulty", level, tDifficulty(level), { difficulty: level })),
+  ];
+  const sort = VIDEO_SORTS.map((value) => option("sort", value, t(`sortOptions.${value}`)));
+  const topicEntries = topic.map((entry, index) => ({
+    key: entry.key,
+    label: entry.label,
+    href: entry.href,
+    active: entry.active,
+    topic: index === 0 ? null : TOPIC_IDS[index - 1],
+  }));
 
-  const isFiltered = activeFilterCount > 0 || current.sort !== DEFAULT_LISTING.sort;
-
-  // The sort form re-submits every other filter as hidden fields; the page
-  // starts over at 1, like any other change.
-  const kept = listingQuery({ ...current, sort: DEFAULT_LISTING.sort });
+  const count = activeFilterCount(current);
+  const filtered = isFiltered(current);
+  const scope = activeScope(current, {
+    platform: (value) => PLATFORM_LABEL[value],
+    source: (value) => (value === "own" ? t("sourceOwn") : t("sourceCurated")),
+    topic: (value) => tTopics(`${value}.title`),
+    difficulty: (value) => tDifficulty(value),
+  });
+  const resultText = [total === 0 ? t("resultNone") : t("result", { shown, total }), ...scope].join(" · ");
+  // Only the sort differs from the default: there is no filter count to show.
+  const clearLabel = count > 0 ? t("clearFiltersCount", { count }) : t("clearFilters");
 
   return (
-    <div className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-5 md:p-6">
+    <div>
       <h2 className="sr-only">{t("filtersLabel")}</h2>
 
-      {/*
-       * Below `lg` the filter groups are hidden behind a native disclosure so
-       * they don't fill the whole first screen. From `lg` up, closed-details
-       * content is `content-visibility: hidden` in current browsers and no
-       * CSS can override that, so the desktop panel is a second, separate
-       * copy of the groups rendered in a plain `div` instead of relying on
-       * forcing the `<details>` open.
-       */}
-      <details className="group lg:hidden" open={activeFilterCount > 0}>
-        <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-xl border border-border bg-surface px-4 text-sm font-semibold text-text marker:content-none [&::-webkit-details-marker]:hidden">
-          <span>
-            {activeFilterCount > 0
-              ? t("filtersToggleActive", { count: activeFilterCount })
-              : t("filtersToggle")}
-          </span>
-          <ChevronDown className="size-4 shrink-0 transition-transform group-open:rotate-180" strokeWidth={2.2} />
-        </summary>
-
-        <div className="mt-4 flex flex-col gap-4">
-          <FilterGroups t={t} tTopics={tTopics} tDifficulty={tDifficulty} option={option} />
+      <div className="hidden flex-col gap-5 rounded-3xl border border-border bg-surface p-6 lg:flex">
+        <div className="flex flex-wrap gap-x-8 gap-y-4">
+          <div className="flex flex-col gap-2">
+            <GroupLabel>{t("platform")}</GroupLabel>
+            <SegmentedFilter label={t("platform")} options={platform} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <GroupLabel>{t("source")}</GroupLabel>
+            <SegmentedFilter label={t("source")} options={source} />
+          </div>
+          <div className="flex flex-col gap-2">
+            <GroupLabel>{tDifficulty("label")}</GroupLabel>
+            <SegmentedFilter label={tDifficulty("label")} options={difficulty} />
+          </div>
         </div>
-      </details>
-
-      <div className="hidden flex-col gap-4 lg:flex">
-        <FilterGroups t={t} tTopics={tTopics} tDifficulty={tDifficulty} option={option} />
+        <div className="flex flex-col gap-2">
+          <GroupLabel>{t("topic")}</GroupLabel>
+          <SegmentedFilter label={t("topic")} options={topic} />
+        </div>
       </div>
 
-      <div className="flex flex-wrap items-end justify-between gap-3 border-t border-border pt-4">
-        <form method="get" action={getPathname({ href: "/video", locale })} className="flex flex-wrap items-end gap-2">
-          {Object.entries(kept).map(([name, value]) => (
-            <input key={name} type="hidden" name={name} value={value} />
-          ))}
-          <label className="flex flex-col gap-1.5">
-            <span className="text-xs font-semibold uppercase tracking-[0.08em] text-text-muted">{t("sort")}</span>
-            <select
-              name="sort"
-              defaultValue={current.sort}
-              className="h-11 rounded-xl border border-border bg-surface px-3 text-sm text-text"
-            >
-              {VIDEO_SORTS.map((sort) => (
-                <option key={sort} value={sort}>
-                  {t(`sortOptions.${sort}`)}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button
-            type="submit"
-            className="h-11 cursor-pointer rounded-xl bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-black/80"
-          >
-            {t("applySort")}
-          </button>
-        </form>
-
-        {isFiltered && (
-          <Link
-            href="/video"
-            className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-sm font-semibold text-accent transition-colors hover:text-black"
-          >
-            <X className="size-4" strokeWidth={2.2} />
-            {t("clearFilters")}
-          </Link>
+      <FilterDisclosure summary={t("filtersSummary")} count={count} defaultOpen={count > 0}>
+        <div className="flex flex-col gap-2">
+          <GroupLabel>{t("platform")}</GroupLabel>
+          <SegmentedFilter label={t("platform")} options={platform} columns={3} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <GroupLabel>{t("source")}</GroupLabel>
+          <SegmentedFilter label={t("source")} options={source} columns={3} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <GroupLabel>{t("topic")}</GroupLabel>
+          <TopicTrail label={t("topic")} entries={topicEntries} className="-mb-1" />
+        </div>
+        <div className="flex flex-col gap-2">
+          <GroupLabel>{tDifficulty("label")}</GroupLabel>
+          <SegmentedFilter label={tDifficulty("label")} options={difficulty} />
+        </div>
+        <div className="flex flex-col gap-2">
+          <GroupLabel>{t("sort")}</GroupLabel>
+          <SegmentedFilter label={t("sort")} options={sort} />
+        </div>
+        {filtered && (
+          <Button href="/video" variant="secondary" scroll={false}>
+            {clearLabel}
+          </Button>
         )}
+      </FilterDisclosure>
+
+      <div className="mt-5 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
+        <div className="hidden items-center gap-3 lg:flex">
+          <GroupLabel>{t("sort")}</GroupLabel>
+          <SegmentedFilter label={t("sort")} options={sort} />
+        </div>
+
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 lg:justify-end">
+          <p role="status" aria-live="polite" className="text-sm tabular-nums text-text-muted">
+            {resultText}
+          </p>
+          {filtered && (
+            <Link
+              href="/video"
+              scroll={false}
+              className="hidden min-h-11 items-center gap-1.5 text-sm font-semibold text-accent underline underline-offset-[3px] [@media(hover:hover)]:hover:text-black lg:inline-flex"
+            >
+              <X aria-hidden className="size-4" strokeWidth={2.2} />
+              {clearLabel}
+            </Link>
+          )}
+        </div>
       </div>
     </div>
   );
