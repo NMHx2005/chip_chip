@@ -7,6 +7,11 @@ import { Field, Input, Textarea } from "@/components/ui/form/Field";
 import { FormNotice } from "@/components/ui/form/FormNotice";
 import { RadioSegment } from "@/components/ui/form/RadioSegment";
 import { HeroStats, PageHero } from "@/components/sections/PageHero";
+import {
+  HeroBackdropCredit,
+  HeroBackdropLayer,
+  HeroBackdropProvider,
+} from "@/components/sections/HeroBackdrop";
 
 // Internal page for eyeballing the shared components in every state, at 1280
 // and 390 px. Text is hard-coded Vietnamese on purpose (like motion-gallery):
@@ -153,6 +158,23 @@ export function UiGalleryClient() {
               </Disclosure>
             </div>
           </div>
+        </Block>
+
+        <Block id="backdrop" title="HeroBackdrop">
+          <HeroBackdropProvider>
+            <div className="relative overflow-hidden rounded-3xl border border-border bg-bg px-6 py-16">
+              <HeroBackdropLayer src="/video/tsmc-open.mp4" />
+              <p className="relative max-w-md text-lg text-text-muted">
+                Chữ mô tả nằm trên video nền và vẫn phải đọc được nhờ lớp scrim.
+              </p>
+            </div>
+            <HeroBackdropCredit
+              credit={{
+                label: "TSMC Đã THỐNG TRỊ Ngành Công Nghiệp Bán Dẫn Toàn Cầu Như Thế Nào?",
+                href: "https://www.youtube.com/watch?v=ZZNHC7N7LTM",
+              }}
+            />
+          </HeroBackdropProvider>
         </Block>
 
         <Block id="stats" title="HeroStats">
