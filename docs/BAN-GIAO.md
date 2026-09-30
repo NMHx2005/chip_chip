@@ -145,6 +145,23 @@ Trả lời 44px, thụt lề một cấp; bình luận mới hiện dần (tắ
 bộ; đã thử nhánh lỗi API thật), nhánh giảm chuyển động, `npm run build`. Không làm: bộ đếm ký
 tự (theo quyết định của người bảo trì).
 
+**Thiết kế lại giao diện — bước 5d (danh sách Video).** Kế hoạch:
+`docs/superpowers/plans/2026-09-30-thiet-ke-lai-buoc-5d-danh-sach-video.md`. `/video` dùng lại bộ
+thành phần của trang Bài học: thẻ số liệu 3 ô (Video, Nền tảng, Chủ đề) với ảnh nền có lớp
+phủ trái→phải (`PageHero`), khối lọc trên máy tính gồm `SegmentedFilter` (vòng số chủ đề, 3
+thanh độ khó) và hàng Sắp xếp là 4 liên kết bấm là áp dụng (bỏ ô chọn native và nút Áp
+dụng); dưới `lg` là ô thu gọn `FilterDisclosure` (mũi tên xoay, huy hiệu đếm, mở sẵn khi
+đang lọc). Dòng kết quả `aria-live` liệt kê mọi bộ lọc đang bật, nút "Xoá bộ lọc (n)" 44px.
+`VideoCard` làm lại theo dáng `PostCard` (huy hiệu nền tảng, nút phát, khối màu theo chủ
+đề khi không có ảnh xem trước như TikTok). Truy vấn mới `countVideos` (đếm tổng, không lọc):
+hero luôn hiện tổng thật và chỉ khi 0 video mới ẩn bộ lọc. Lọc ra rỗng chỉ có nút "Xoá hết
+bộ lọc" (không có gợi ý nới lỏng kèm số đếm, không có hiệu ứng mờ khi chờ V6 — quyết định
+của người bảo trì). `FilterPills` không còn được dùng (chỉ còn kiểu `ListingHref` export từ
+file đó). Bỏ `scroll-mt-24` ở neo danh sách của Bài học và Blog vì nó cộng dồn với
+`scroll-padding-top` của `html`. Khoá i18n không còn dùng: `videos.applySort`, `filtersToggle`,
+`filtersToggleActive`, `empty`, `emptyFiltered`. Chưa xác minh: danh sách có video thật (không
+có Supabase cục bộ; kiểm bằng trang mẫu tạm), `npm run build`.
+
 ---
 
 ## 3. Chạy local
@@ -185,7 +202,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **45 file, 433 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **46 file, 445 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
