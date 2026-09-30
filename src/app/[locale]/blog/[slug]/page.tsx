@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
-import { ArrowLeft, Languages } from "lucide-react";
-import { ReportMistake } from "@/components/contact/ReportMistake";
-import { ArticleBody } from "@/components/forum/ArticleBody";
-import { ArticleToc } from "@/components/forum/ArticleToc";
+import { ArticleShell } from "@/components/forum/ArticleShell";
+import { LangPill } from "@/components/forum/LangPill";
 import { UpdatedAt } from "@/components/forum/UpdatedAt";
 import { CommentSection } from "@/components/forum/CommentSection";
 import { articleLanguageAlternates } from "@/lib/article-alternates";
-import { Link, getPathname } from "@/i18n/navigation";
+import { getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import {
   countComments,
@@ -122,85 +119,46 @@ export default async function ForumPostPage({
   );
 
   return (
-    <article className="px-5 py-14 md:px-8 md:py-20">
-      <div className="mx-auto w-full max-w-3xl">
-        <Link
-          href="/blog"
-          className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-accent"
-        >
-          <ArrowLeft className="size-4" strokeWidth={2.2} />
-          {t("backToForum")}
-        </Link>
+    <ArticleShell
+      back={{ href: "/blog", label: t("backToForum") }}
+      title={post.title}
+      meta={
+        <>
+          {post.publishedAt && (
+            <time dateTime={post.publishedAt}>
+              {t("publishedOn", {
+                date: format.dateTime(new Date(post.publishedAt), {
+                  dateStyle: "long",
+                }),
+              })}
+            </time>
+          )}
 
-        <header className="mt-8">
-          <h1 className="text-balance text-[30px] font-extrabold leading-[1.15] tracking-[-0.03em] text-text md:text-[42px]">
-            {post.title}
-          </h1>
+          <UpdatedAt publishedAt={post.publishedAt} updatedAt={post.updatedAt} />
 
-          <div className="mt-5 flex flex-wrap items-center gap-3 text-sm text-text-muted">
-            {post.publishedAt && (
-              <time dateTime={post.publishedAt}>
-                {t("publishedOn", {
-                  date: format.dateTime(new Date(post.publishedAt), {
-                    dateStyle: "long",
-                  }),
-                })}
-              </time>
-            )}
-
-            <UpdatedAt
-              publishedAt={post.publishedAt}
-              updatedAt={post.updatedAt}
+          {alternates.map((alt) => (
+            <LangPill
+              key={alt.locale}
+              href={{ pathname: "/blog/[slug]", params: { slug: alt.slug } }}
+              locale={alt.locale}
             />
-
-            {alternates.map((alt) => (
-              <Link
-                key={alt.locale}
-                href={{
-                  pathname: "/blog/[slug]",
-                  params: { slug: alt.slug },
-                }}
-                locale={alt.locale}
-                className="inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs font-medium transition-colors hover:border-black/20 hover:text-accent"
-              >
-                <Languages className="size-3.5" strokeWidth={2} />
-                {alt.locale === "en" ? "Read in English" : "Đọc bản tiếng Việt"}
-              </Link>
-            ))}
-          </div>
-        </header>
-
-        {post.coverImageUrl && (
-          <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-2xl">
-            <Image
-              src={post.coverImageUrl}
-              alt=""
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 768px"
-              className="object-cover"
-            />
-          </div>
-        )}
-
-        <ArticleToc content={post.content} />
-
-        <div className="mt-10">
-          <ArticleBody content={post.content} locale={locale as Locale} />
-        </div>
-
-        <ReportMistake postId={post.id} />
-
-        <CommentSection
-          postId={post.id}
-          slug={post.slug}
-          comments={comments}
-          count={commentCount}
-          totalRoots={totalRoots}
-          shownRoots={comments.length}
-          maxRoots={MAX_ROOT_COMMENTS}
-        />
-      </div>
-    </article>
+          ))}
+        </>
+      }
+      coverImageUrl={post.coverImageUrl}
+      content={post.content}
+      locale={locale as Locale}
+      postId={post.id}
+    >
+      <CommentSection
+        postId={post.id}
+        slug={post.slug}
+        comments={comments}
+        count={commentCount}
+        totalRoots={totalRoots}
+        shownRoots={comments.length}
+        maxRoots={MAX_ROOT_COMMENTS}
+      />
+    </ArticleShell>
   );
 }

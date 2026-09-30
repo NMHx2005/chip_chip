@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
-import { ArrowLeft } from "lucide-react";
-import { ReportMistake } from "@/components/contact/ReportMistake";
-import { ArticleBody } from "@/components/forum/ArticleBody";
-import { ArticleToc } from "@/components/forum/ArticleToc";
+import { ArticleShell } from "@/components/forum/ArticleShell";
 import { UpdatedAt } from "@/components/forum/UpdatedAt";
 import { VideoCard } from "@/components/video/VideoCard";
 import { articleLanguageAlternates } from "@/lib/article-alternates";
-import { Link, getPathname } from "@/i18n/navigation";
+import { getPathname } from "@/i18n/navigation";
 import { getPostBySlug, getTranslationSlug, listRelatedVideos } from "@/lib/queries/posts";
 import { articleToPlainText } from "@/lib/tiptap/render";
 import { TOPIC_IDS, TOPIC_TONE, type TopicId } from "@/lib/constants";
@@ -92,69 +88,37 @@ export default async function LessonArticlePage({ params }: { params: Params }) 
   ]);
 
   return (
-    <article className="px-5 py-14 md:px-8 md:py-20">
-      <div className="mx-auto w-full max-w-3xl">
-        <Link
-          href={{ pathname: "/bai-hoc/[topic]", params: { topic: topicId } }}
-          className="inline-flex items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-accent"
+    <ArticleShell
+      back={{
+        href: { pathname: "/bai-hoc/[topic]", params: { topic: topicId } },
+        label: tLessons("backToTopic", { topic: t(`${topicId}.title`) }),
+      }}
+      headerExtra={
+        <span
+          className="inline-flex rounded-full px-3 py-1 text-xs font-semibold"
+          style={{ background: tone.soft, color: tone.text }}
         >
-          <ArrowLeft className="size-4" strokeWidth={2.2} />
-          {tLessons("backToTopic", { topic: t(`${topicId}.title`) })}
-        </Link>
-
-        <header className="mt-8">
-          <span
-            className="inline-flex rounded-full px-3 py-1 text-xs font-semibold"
-            style={{ background: tone.soft, color: tone.text }}
-          >
-            {t(`${topicId}.title`)}
-          </span>
-
-          <h1 className="mt-4 text-balance text-[30px] font-extrabold leading-[1.15] tracking-[-0.03em] text-text md:text-[42px]">
-            {post.title}
-          </h1>
-
+          {t(`${topicId}.title`)}
+        </span>
+      }
+      title={post.title}
+      meta={
+        <>
           {post.publishedAt && (
-            <time
-              dateTime={post.publishedAt}
-              className="mt-5 block text-sm text-text-muted"
-            >
+            <time dateTime={post.publishedAt}>
               {tLessons("title")} ·{" "}
-              {format.dateTime(new Date(post.publishedAt), {
-                dateStyle: "long",
-              })}
+              {format.dateTime(new Date(post.publishedAt), { dateStyle: "long" })}
             </time>
           )}
-
-          <UpdatedAt
-            publishedAt={post.publishedAt}
-            updatedAt={post.updatedAt}
-            className="mt-2 block text-sm text-text-muted"
-          />
-        </header>
-
-        {post.coverImageUrl && (
-          <div className="relative mt-8 aspect-video w-full overflow-hidden rounded-2xl">
-            <Image
-              src={post.coverImageUrl}
-              alt=""
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 768px"
-              className="object-cover"
-            />
-          </div>
-        )}
-
-        <ArticleToc content={post.content} />
-
-        <div className="mt-10">
-          <ArticleBody content={post.content} locale={locale as Locale} />
-        </div>
-
-        <ReportMistake postId={post.id} />
-
-        {relatedVideos.length > 0 && (
+          <UpdatedAt publishedAt={post.publishedAt} updatedAt={post.updatedAt} />
+        </>
+      }
+      coverImageUrl={post.coverImageUrl}
+      content={post.content}
+      locale={locale as Locale}
+      postId={post.id}
+      footer={
+        relatedVideos.length > 0 && (
           <section aria-labelledby="related-videos" className="mt-16 border-t border-border pt-10">
             <h2 id="related-videos" className="text-lg font-bold tracking-[-0.01em] text-text">
               {tVideos("related")}
@@ -165,8 +129,8 @@ export default async function LessonArticlePage({ params }: { params: Params }) 
               ))}
             </div>
           </section>
-        )}
-      </div>
-    </article>
+        )
+      }
+    />
   );
 }
