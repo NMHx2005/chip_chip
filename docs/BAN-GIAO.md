@@ -91,6 +91,18 @@ khoá ở dòng kết quả tìm kiếm (bước 6), gợi ý mức độ khác 
 (cần truy vấn đếm theo độ khó, đã hoãn theo quyết định của người bảo trì), Pagination
 của Blog vẫn là bản riêng (bước 5).
 
+**Thiết kế lại giao diện — bước 4 (trang Bài học).** Kế hoạch:
+`docs/superpowers/plans/2026-09-30-thiet-ke-lai-buoc-4-trang-bai-hoc.md`. `LessonsListing`
+(dùng chung cho `/bai-hoc` và `/bai-hoc/[topic]`) được ráp lại: thẻ số liệu ba ô
+(bài học, chủ đề, mức độ; trang chủ đề còn hai ô), `TopicNav` (cột chủ đề dạng thẻ có
+vòng số và số đếm, thu gọn thành rail 48px có tooltip, nhớ trạng thái ở
+`localStorage`), `TopicTrail` (hàng chip cuộn ngang trên di động, chip đang chọn
+được đưa vào giữa), `SegmentedFilter` (lọc độ khó có ba thanh, lưới 2×2 ở 390px),
+dòng kết quả `aria-live`, gợi ý "Mới bắt đầu?", phân trang chuyển về `#danh-sach`.
+`TopicSidebar` bị xoá; `FilterPills` giữ lại cho trang Video (bước 5). Chưa làm:
+M2 (đổi chủ đề chỉ mờ chữ hero: hiện hero vào lại bằng M1 vì chuyển chủ đề là đổi
+route), gợi ý mức độ khác kèm số đếm (cần truy vấn đếm theo độ khó, đã hoãn).
+
 ---
 
 ## 3. Chạy local
@@ -131,7 +143,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **40 file, 396 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **42 file, 405 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
