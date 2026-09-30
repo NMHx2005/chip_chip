@@ -1,4 +1,5 @@
 import { useTranslations } from "next-intl";
+import { FooterNav } from "@/components/layout/FooterNav";
 import { Logo } from "@/components/layout/Logo";
 import { SocialLinks } from "@/components/layout/SocialLinks";
 import { Link } from "@/i18n/navigation";
@@ -54,20 +55,14 @@ export function Footer() {
         {/* The trust pages sit in the middle column above the copyright, so the
             footer stays one grid row on desktop; on a phone the links wrap. */}
         <div className="flex flex-col items-center gap-2 md:col-start-2 md:row-start-1">
-          <nav aria-label={t("links.label")}>
-            <ul className="flex flex-wrap justify-center gap-x-5">
-              {FOOTER_LINKS.map((link) => (
-                <li key={link.key}>
-                  <Link
-                    href={link.href}
-                    className="inline-flex min-h-11 items-center text-sm text-text-nav underline-offset-4 transition-colors hover:text-accent hover:underline"
-                  >
-                    {t(`links.${link.key}`)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <FooterNav
+            label={t("links.label")}
+            links={FOOTER_LINKS.map((link) => ({
+              key: link.key,
+              href: link.href,
+              text: t(`links.${link.key}`),
+            }))}
+          />
 
           <p className="max-w-xs text-center text-xs leading-relaxed text-text-muted md:max-w-md md:text-sm">
             {t("copyright", { siteName: tMeta("siteName") })}
