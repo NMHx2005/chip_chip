@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { getFormatter, getTranslations } from "next-intl/server";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, FileText } from "lucide-react";
 import { ExpandingCardLink } from "@/components/forum/ExpandingCardLink";
 import { DifficultyMark } from "@/components/ui/DifficultyMark";
 import { TopicChip } from "@/components/ui/TopicChip";
@@ -113,7 +113,7 @@ export async function PostCard({
 
   // No cover: a lesson gets a plate in its topic tone with the topic number as
   // a faint watermark, so an image-less library still reads as designed. A post
-  // without a topic (Blog) keeps a plain grey block, which holds the row level.
+  // without a topic (Blog) gets a neutral plate with a document icon.
   const plate = topic ? TOPIC_TONE[topic].soft : null;
 
   return wrap(
@@ -135,14 +135,22 @@ export async function PostCard({
             className="object-cover transition-transform duration-base ease-standard motion-reduce:transition-none [@media(hover:hover)]:group-hover:scale-[1.03] motion-reduce:[@media(hover:hover)]:group-hover:scale-100"
           />
         ) : (
-          topic && (
-            <span
-              aria-hidden
-              className="absolute -bottom-3.5 right-3.5 text-[64px] font-extrabold leading-none tracking-[-0.04em] text-black/[0.09] sm:text-[96px]"
-            >
-              {topicNumber(topic)}
-            </span>
-          )
+          <>
+            {topic ? (
+              <span
+                aria-hidden
+                className="absolute -bottom-3.5 right-3.5 text-[64px] font-extrabold leading-none tracking-[-0.04em] text-black/[0.09] sm:text-[96px]"
+              >
+                {topicNumber(topic)}
+              </span>
+            ) : (
+              <FileText
+                aria-hidden
+                className="absolute left-1/2 top-1/2 size-8 -translate-x-1/2 -translate-y-1/2 text-black/25 sm:size-10"
+                strokeWidth={1.5}
+              />
+            )}
+          </>
         )}
       </div>
 
