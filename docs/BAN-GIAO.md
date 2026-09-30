@@ -62,6 +62,22 @@ chính thức, mỗi nước một video YouTube nhúng có mốc start/end (b�
 banner ảnh cho Giới thiệu và Video, clip TSMC làm nền trang Blog; giãn chữ logo.
 Các clip tự host (~22 MB) đã nén 720p không tiếng; các video theo nước chỉ nhúng.
 
+**Thiết kế lại giao diện — bước 1 (nền tảng).** Bản thiết kế ở
+`docs/thiet-ke-giao-dien/` (đặc tả, đọc `HANDOFF.md` trước) được đưa vào mã theo
+từng bước; kế hoạch bước 1 ở `docs/superpowers/plans/2026-09-30-thiet-ke-lai-buoc-1-nen-tang.md`.
+Đã có: token mới (màu ô nhập `field`, trạng thái nút, màu lỗi, cỡ chữ `h1`/`h2`,
+easing `ease-standard`, thời lượng `fast`/`card`/`panel`) kèm test tương phản
+trong `src/lib/design-tokens.test.ts`; `PageHero` v2 (thẻ số liệu, vào trang bằng
+CSS `hero-in`, giảm chuyển động tắt hẳn animation); `Footer` liên kết 44px có
+trạng thái trang hiện tại; thành phần mới `Button`, `Field`/`Input`/`Textarea`,
+`FormNotice`, `RadioSegment`, `Disclosure` (chưa trang nào dùng, xem ở
+`/ui-gallery`, chỉ có khi chạy dev). Quyết định đã chốt: viền ô nhập `#767676`;
+thông báo thành công dùng màu nhấn + dấu tích (đỏ chỉ cho lỗi); Disclosure một
+mẫu theo FAQ; màu lỗi theo bản vẽ Liên hệ; `PillButton` giữ nguyên cho trang chủ.
+Còn lại theo `HANDOFF.md` mục "Thứ tự làm gợi ý": PostCard/phân trang/EmptyState
+(bước 3), Bài học, Blog, Video, Tìm kiếm, Liên hệ, Giới thiệu, Đóng góp, Bảo mật,
+404; khi đó mới xoá `.rise-in` và `EASE_SCROLL_REVEAL`.
+
 ---
 
 ## 3. Chạy local
