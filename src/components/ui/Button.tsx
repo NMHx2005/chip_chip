@@ -22,6 +22,8 @@ type Props = {
   /** Request in flight: dims the button and ignores clicks without dropping focus. */
   busy?: boolean;
   className?: string;
+  /** Links only: `false` keeps the scroll position, for "show more" style links. */
+  scroll?: boolean;
 } & (
   | { href: LinkHref; onClick?: never; type?: never }
   | {
@@ -37,6 +39,7 @@ export function Button({
   arrow = false,
   busy = false,
   className,
+  scroll,
   href,
   onClick,
   type = "button",
@@ -53,6 +56,7 @@ export function Button({
     return (
       <Link
         href={href}
+        scroll={scroll}
         className={classes}
         aria-disabled={busy || undefined}
         onClick={busy ? (event) => event.preventDefault() : undefined}
