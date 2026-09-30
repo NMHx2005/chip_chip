@@ -86,8 +86,13 @@ const config: Config = {
 
       animation: {
         float: "float 6s ease-in-out infinite",
+        "notice-in": "notice-in 250ms cubic-bezier(0.25, 0.1, 0.25, 1) both",
       },
       keyframes: {
+        "notice-in": {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
         float: {
           "0%, 100%": { transform: "translateY(0px)" },
           "50%": { transform: "translateY(-12px)" },
