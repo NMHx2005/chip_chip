@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PostCard } from "@/components/forum/PostCard";
 import { CardReveal } from "@/components/motion";
+import { Button } from "@/components/ui/Button";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { HeroStat, PageHero } from "@/components/sections/PageHero";
 import { listForumPosts } from "@/lib/queries/posts";
 import { localeAlternates } from "@/lib/seo";
@@ -33,10 +35,11 @@ export default async function ForumPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, tPagination, tCommon] = await Promise.all([
+  const [t, tPagination, tCommon, tNav] = await Promise.all([
     getTranslations("forum"),
     getTranslations("pagination"),
     getTranslations("common"),
+    getTranslations("nav"),
   ]);
   const page = Math.max(1, Number(searchParams.page ?? "1") || 1);
 
@@ -77,9 +80,15 @@ export default async function ForumPage({
       <section className="px-5 py-10 md:px-8 md:py-14">
         <div className="mx-auto w-full max-w-content">
           {posts.length === 0 ? (
-            <p className="rounded-2xl border border-dashed border-border px-6 py-16 text-center text-sm text-text-muted">
-              {t("empty")}
-            </p>
+            <EmptyState
+              compact
+              title={t("empty")}
+              actions={
+                <Button href="/bai-hoc" arrow>
+                  {tNav("lessons")}
+                </Button>
+              }
+            />
           ) : (
             <>
               <h2 className="sr-only">{t("postsHeading")}</h2>

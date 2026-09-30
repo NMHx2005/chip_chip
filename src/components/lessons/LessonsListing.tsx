@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { PostCard } from "@/components/forum/PostCard";
+import { Button } from "@/components/ui/Button";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { CardReveal } from "@/components/motion";
 import { FilterPills, type ListingHref } from "@/components/listing/FilterPills";
 import { Pagination } from "@/components/listing/Pagination";
@@ -52,11 +54,12 @@ export async function LessonsListing({
     page: parsed.page,
   };
 
-  const [t, tTopics, tDifficulty, tPagination] = await Promise.all([
+  const [t, tTopics, tDifficulty, tPagination, tNav] = await Promise.all([
     getTranslations("lessons"),
     getTranslations("topics"),
     getTranslations("difficulty"),
     getTranslations("pagination"),
+    getTranslations("nav"),
   ]);
 
   const [{ posts, total }, counts] = await Promise.all([
@@ -84,16 +87,6 @@ export async function LessonsListing({
       active: topic === id,
     })),
   ];
-
-  const emptyMessage =
-    current.page > 1
-      ? tPagination("pageEmpty")
-      : current.difficulty
-        ? t("emptyFiltered")
-        : topic
-          ? tTopics("empty")
-          : t("empty");
-
   return (
     <>
       <PageHero
@@ -160,17 +153,46 @@ export async function LessonsListing({
             />
 
             {posts.length === 0 ? (
-              <div className="mt-8 flex flex-col items-center gap-4 rounded-2xl border border-dashed border-border px-6 py-16 text-center">
-                <p className="text-sm text-text-muted">{emptyMessage}</p>
-                {current.page > 1 && (
-                  <Link
-                    href={lessonsHref(topic, listingQuery(current, { page: 1 }))}
-                    className="inline-flex min-h-11 items-center text-sm font-semibold text-accent hover:text-black"
-                  >
-                    {tPagination("backToFirst")}
-                  </Link>
-                )}
-              </div>
+              <EmptyState
+                compact
+                className="mt-8"
+                title={
+                  current.page > 1
+                    ? tPagination("pageEmpty")
+                    : current.difficulty
+                      ? t("emptyFiltered")
+                      : topic
+                        ? tTopics("empty")
+                        : t("emptyTitle")
+                }
+                description={
+                  current.page === 1 && !current.difficulty && !topic ? t("emptyBody") : undefined
+                }
+                actions={
+                  current.page > 1 ? (
+                    <Button href={lessonsHref(topic, listingQuery(current, { page: 1 }))}>
+                      {tPagination("backToFirst")}
+                    </Button>
+                  ) : current.difficulty ? (
+                    <Button href={lessonsHref(topic, listingQuery(current, { difficulty: null }))}>
+                      {t("clearDifficulty")}
+                    </Button>
+                  ) : topic ? (
+                    <Button variant="secondary" href={lessonsHref(null, {})}>
+                      {t("allLessons")}
+                    </Button>
+                  ) : (
+                    <>
+                      <Button href="/video" arrow>
+                        {tNav("lessonsVideo")}
+                      </Button>
+                      <Button href="/blog" variant="secondary">
+                        {tNav("forum")}
+                      </Button>
+                    </>
+                  )
+                }
+              />
             ) : (
               <div className="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
                 {posts.map((post, index) => (

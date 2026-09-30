@@ -1,6 +1,8 @@
 import { PostCard } from "@/components/forum/PostCard";
 import { Pagination } from "@/components/listing/Pagination";
 import { CardReveal } from "@/components/motion";
+import { Button } from "@/components/ui/Button";
+import { EmptyState } from "@/components/ui/EmptyState";
 import type { PostSummary } from "@/lib/types";
 
 // Sample posts for the gallery only. PostCard is an async Server Component, so
@@ -128,6 +130,39 @@ export async function PostCardSamples() {
               />
             </div>
           ))}
+        </div>
+      </section>
+
+      <section id="empty" className="flex flex-col gap-4">
+        <h2 className="text-h2 text-text md:text-h2-lg">EmptyState và ErrorState</h2>
+        <div className="grid gap-6 md:grid-cols-2">
+          <EmptyState
+            compact
+            title="Chưa có bài học nào"
+            description="Các bài học đầu tiên đang được biên soạn. Quay lại sau nhé, hoặc xem video và blog trong lúc chờ."
+            actions={
+              <>
+                <Button href="/video" arrow>
+                  Video
+                </Button>
+                <Button href="/blog" variant="secondary">
+                  Blog
+                </Button>
+              </>
+            }
+          />
+          <EmptyState
+            compact
+            title="Chưa có bài học nào ở mức độ này."
+            actions={<Button href="/bai-hoc">Bỏ lọc độ khó</Button>}
+          />
+          <EmptyState
+            compact
+            tone="error"
+            title="Đã có lỗi xảy ra."
+            description="Đã có lỗi xảy ra khi tải nội dung. Bạn thử tải lại trang nhé."
+            actions={<Button>Thử lại</Button>}
+          />
         </div>
       </section>
     </div>

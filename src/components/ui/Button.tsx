@@ -1,7 +1,6 @@
-import type { MouseEvent, ReactNode } from "react";
+import type { ComponentProps, MouseEvent, ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import type { StaticPathname } from "@/i18n/routing";
 import { FOCUS_RING, VARIANT_CLASSES, type ButtonVariant } from "@/components/ui/button-variants";
 import { cn } from "@/lib/utils";
 
@@ -12,6 +11,9 @@ const BASE =
 // `disabled` attribute, and swallows the click itself.
 const BUSY = "cursor-progress bg-disabled text-white hover:bg-disabled active:scale-100";
 
+/** Anything the localized Link accepts: a path, or a path with params and query. */
+type LinkHref = ComponentProps<typeof Link>["href"];
+
 type Props = {
   children: ReactNode;
   variant?: ButtonVariant;
@@ -21,7 +23,7 @@ type Props = {
   busy?: boolean;
   className?: string;
 } & (
-  | { href: StaticPathname; onClick?: never; type?: never }
+  | { href: LinkHref; onClick?: never; type?: never }
   | {
       href?: undefined;
       onClick?: (event: MouseEvent<HTMLButtonElement>) => void;

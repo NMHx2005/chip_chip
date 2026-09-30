@@ -149,7 +149,11 @@
     "collapseTopics": "Collapse the topic column",
     "expandTopics": "Expand the topic column",
     "empty": "No lessons yet. Please check back soon!",
-    "emptyFiltered": "No lessons at this level yet."
+    "emptyFiltered": "No lessons at this level yet.",
+    "emptyTitle": "No lessons yet",
+    "emptyBody": "The first lessons are being written. Check back soon, or watch the videos and read the blog in the meantime.",
+    "clearDifficulty": "Clear the difficulty filter",
+    "allLessons": "All lessons"
   },
   "difficulty": {
     "label": "Difficulty",

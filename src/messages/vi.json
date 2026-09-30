@@ -149,7 +149,11 @@
     "collapseTopics": "Thu gọn cột chủ đề",
     "expandTopics": "Mở cột chủ đề",
     "empty": "Chưa có bài học nào. Quay lại sau nhé!",
-    "emptyFiltered": "Chưa có bài học nào ở mức độ này."
+    "emptyFiltered": "Chưa có bài học nào ở mức độ này.",
+    "emptyTitle": "Chưa có bài học nào",
+    "emptyBody": "Các bài học đầu tiên đang được biên soạn. Quay lại sau nhé, hoặc xem video và blog trong lúc chờ.",
+    "clearDifficulty": "Bỏ lọc độ khó",
+    "allLessons": "Tất cả bài học"
   },
   "difficulty": {
     "label": "Độ khó",
