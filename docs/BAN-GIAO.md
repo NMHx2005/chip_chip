@@ -226,9 +226,12 @@ màu nhấn + dấu tích, đỏ chỉ cho lỗi (D2). `Field` thêm `id` tuỳ 
 dấu cách trước ghi chú "(không bắt buộc)". Không có Supabase cục bộ nên kiểm bằng trang thật +
 gallery tạm `/ui-gallery/contact` (đã xoá): 1280/390 không tràn ngang, aside 2 thẻ, gửi rỗng → "Cần
 sửa 2 chỗ" + đánh dấu tên/nội dung + focus ô tên, gợi ý đổi khi chọn "Góp ý", nút báo lỗi 56px mở
-ra form bên trong; mọi target thật ≥44px. Chưa xác minh: trạng thái đang gửi/đã gửi (cần API thật),
-nhánh giảm chuyển động. Tiếp theo: 6c Giới thiệu, 6d Đóng góp + Bảo mật, rồi bước 7 (404 và trang
-lỗi).
+ra form bên trong; mọi target thật ≥44px. Sau review đã sửa: thông báo gộp nêu **thông báo lỗi**
+(mỗi liên kết cao 44px) thay vì nhãn ô, vùng `aria-live` luôn có trong DOM (rỗng thì ẩn) và chỉ các
+ô mang `aria-busy`, focus chuyển bằng `flushSync` nên ô đã có `aria-invalid` + `aria-describedby`
+trước khi nhận focus, radio khoá khi đang gửi, và thêm dòng nhắc giới hạn dưới nút ở Báo lỗi bài.
+Chưa xác minh: trạng thái đang gửi/đã gửi (cần API thật), nhánh giảm chuyển động. Tiếp theo: 6c Giới
+thiệu, 6d Đóng góp + Bảo mật, rồi bước 7 (404 và trang lỗi).
 
 ---
 
