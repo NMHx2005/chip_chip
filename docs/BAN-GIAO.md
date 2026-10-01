@@ -220,9 +220,11 @@ chọn), `FormNotice`, `Button`: kiểm **mọi ô cùng lúc** khi gửi (hàm 
 có test) — hiện thông báo gộp "Cần sửa n chỗ" kèm liên kết tới từng ô, đánh dấu từng ô và focus ô
 sai đầu tiên; trạng thái đang gửi (ô readOnly, `aria-busy`, nút "Đang gửi…", không spinner), đã gửi
 (nhấn + dấu tích, xoá form), lỗi máy chủ (tiêu đề riêng + dòng "nội dung vẫn còn"). "Báo lỗi bài
-này" dùng `Disclosure` dùng chung (hàng 56px, đĩa "+") bọc trong thẻ có viền — thống nhất một mẫu
-disclosure toàn site (quyết định D1). Ô nhập vẫn dùng token `field` #767676 (D3); thành công dùng
-màu nhấn + dấu tích, đỏ chỉ cho lỗi (D2). `Field` thêm `id` tuỳ chọn (để liên kết neo tới ô) và giữ
+này" dùng `Disclosure` dùng chung (hàng 56px, đĩa "+") bọc trong thẻ có viền — cùng mẫu disclosure
+với FAQ (bước 6c) và bộ lọc di động; chỉ `FilterDisclosure` (bảng lọc video) còn là bản riêng vì đó
+là panel lọc, không phải disclosure nội dung (quyết định D1). Ô nhập vẫn dùng token `field` #767676
+(D3); thành công dùng màu nhấn + dấu tích, đỏ chỉ cho lỗi (D2). `Field` thêm `id` tuỳ chọn (để liên
+kết neo tới ô) và giữ
 dấu cách trước ghi chú "(không bắt buộc)". Không có Supabase cục bộ nên kiểm bằng trang thật +
 gallery tạm `/ui-gallery/contact` (đã xoá): 1280/390 không tràn ngang, aside 2 thẻ, gửi rỗng → "Cần
 sửa 2 chỗ" + đánh dấu tên/nội dung + focus ô tên, gợi ý đổi khi chọn "Góp ý", nút báo lỗi 56px mở
@@ -232,6 +234,21 @@ ra form bên trong; mọi target thật ≥44px. Sau review đã sửa: thông b
 trước khi nhận focus, radio khoá khi đang gửi, và thêm dòng nhắc giới hạn dưới nút ở Báo lỗi bài.
 Chưa xác minh: trạng thái đang gửi/đã gửi (cần API thật), nhánh giảm chuyển động. Tiếp theo: 6c Giới
 thiệu, 6d Đóng góp + Bảo mật, rồi bước 7 (404 và trang lỗi).
+
+**Thiết kế lại giao diện — bước 6c (Giới thiệu).** Kế hoạch:
+`docs/superpowers/plans/2026-10-01-thiet-ke-lai-buoc-6c-gioi-thieu.md`. `/gioi-thieu` dùng `PageHero`
+với ảnh banner (`ABOUT_BANNER`) ở cột phải (bỏ hero tự viết và `.rise-in`); khối tác giả (thẻ bo
+24px) dùng `Avatar` chung (ảnh hoặc chữ cái đầu, 112/176px); bốn cam kết dùng `InfoCard` (icon tròn
+40px, dạng dòng trên điện thoại, cột từ `sm`) hiện dần bằng `CardReveal`; FAQ chuyển sang `Disclosure`
+dùng chung (hàng 60px, đĩa "+") kèm gợi ý "Chưa thấy câu trả lời? Viết cho tác giả" (khoá
+`about.faq.moreHint`/`moreLink`) — trên điện thoại gợi ý nằm dưới danh sách, từ `lg` nằm dưới tiêu
+đề; "Những người đã đồng hành" vẫn ẩn khi `CONTRIBUTORS` rỗng, khi có người thì lưới thẻ `Avatar`
+44px + tên/vai trò; CTA cuối là panel tối bo 24px với hai nút (`Button` thêm biến thể `onDarkOutline`
+viền trắng, cạnh `onDark`). Kiểm bằng trình duyệt trên trang thật: 1280/390 không tràn ngang, hàng
+FAQ 60px và `<details>` ẩn/hiện nội dung đúng (`checkVisibility()`), banner 3:2 (558×371 / 348×231),
+nút CTA 44px, mục "Những người đã đồng hành" vắng mặt khi rỗng. Chưa xác minh: tên tác giả/người
+đóng góp dài (chữ hiện ngắn), lưới người đóng góp khi có dữ liệu, nhánh giảm chuyển động. Tiếp theo:
+6d Đóng góp + Bảo mật, rồi bước 7 (404 và trang lỗi).
 
 ---
 
@@ -273,7 +290,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **49 file, 476 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **49 file, 477 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
