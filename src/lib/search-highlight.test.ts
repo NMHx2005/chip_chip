@@ -62,4 +62,15 @@ describe("highlightRanges", () => {
   it("returns nothing when the text does not match", () => {
     expect(highlightRanges("hello", searchTokens("xyz"))).toEqual([]);
   });
+
+  it("does not mark a word inside an email or a URL", () => {
+    // Postgres' parser keeps `ban@example.com` and `asml.com` as single tokens,
+    // so "com" is not a word start there — and must not be marked here.
+    expect(highlightRanges("ban@example.com", searchTokens("com"))).toEqual([]);
+    expect(highlightRanges("https://asml.com", searchTokens("com"))).toEqual([]);
+  });
+
+  it("still indexes the parts of a hyphenated word", () => {
+    expect(highlightRanges("chip-diode", searchTokens("diode"))).toEqual([[5, 10]]);
+  });
 });

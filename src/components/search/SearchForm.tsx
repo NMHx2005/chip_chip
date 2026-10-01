@@ -1,5 +1,6 @@
 import type { Ref } from "react";
 import { Search } from "lucide-react";
+import { HINT_COLORS } from "@/components/search/search-field-variants";
 import { MAX_QUERY_LENGTH } from "@/lib/search-query";
 import { cn } from "@/lib/utils";
 
@@ -47,7 +48,7 @@ export function SearchForm({
       </label>
       <div
         className={cn(
-          "flex items-center gap-2 rounded-full border pl-5 pr-1 transition-colors duration-fast ease-standard focus-within:outline focus-within:outline-2 focus-within:outline-offset-2",
+          "flex h-[52px] items-center gap-2 rounded-full border pl-5 pr-1 transition-colors duration-fast ease-standard focus-within:outline focus-within:outline-2 focus-within:outline-offset-2",
           dark
             ? "border-white/50 bg-white/10 focus-within:border-white focus-within:outline-white [@media(hover:hover)]:hover:border-white/75"
             : "border-field bg-surface focus-within:border-primary focus-within:outline-accent [@media(hover:hover)]:hover:border-field-hover"
@@ -79,7 +80,9 @@ export function SearchForm({
           {submitLabel}
         </button>
       </div>
-      {hint && <p className="text-[13px] leading-[1.5] text-text-muted">{hint}</p>}
+      {hint && (
+        <p className={cn("text-[13px] leading-[1.5]", HINT_COLORS[variant].class)}>{hint}</p>
+      )}
     </form>
   );
 }

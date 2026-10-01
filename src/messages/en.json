@@ -251,6 +251,7 @@
     "searchHint": "Accented or unaccented input both work.",
     "resultsFor": "Results for “{query}”",
     "resultLine": "Showing {shown} of {total, plural, one {# result} other {# results}} for “{query}”",
+    "resultLineCapped": "Showing {shown} of {total}+ results for “{query}”",
     "initialTitle": "Start with a keyword",
     "initialBody": "Type in the box above to search lessons, videos and the blog. Matching starts at the beginning of each word, so “transis” already finds “transistor”.",
     "trySearching": "Try searching for",

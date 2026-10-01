@@ -251,6 +251,7 @@
     "searchHint": "Có dấu hay không dấu đều được.",
     "resultsFor": "Kết quả cho “{query}”",
     "resultLine": "Hiển thị {shown} trong {total} kết quả cho “{query}”",
+    "resultLineCapped": "Hiển thị {shown} trong {total}+ kết quả cho “{query}”",
     "initialTitle": "Bắt đầu bằng một từ khoá",
     "initialBody": "Gõ vào ô phía trên để tìm trong bài học, video và blog. Có dấu hay không dấu đều được: “ban dan” vẫn tìm ra “bán dẫn”. Gõ phần đầu của từ cũng đủ.",
     "trySearching": "Thử tìm",

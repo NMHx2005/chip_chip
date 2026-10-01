@@ -72,6 +72,8 @@ export default async function SearchPage({
   const found = groups.filter((group) => group.posts.length > 0);
   const total = found.reduce((sum, group) => sum + group.posts.length, 0);
   const shown = found.reduce((sum, group) => sum + Math.min(SHOWN, group.posts.length), 0);
+  // A group that filled the fetch cap makes `total` a floor, not a count.
+  const capped = found.some((group) => group.posts.length >= FETCH_LIMIT);
 
   // The "browse by topic" chips are only built for the empty state.
   const tTopics = await getTranslations("topics");
@@ -125,7 +127,7 @@ export default async function SearchPage({
                 aria-live="polite"
                 className="mt-5 text-sm leading-[1.5] tabular-nums text-text-muted"
               >
-                {t("resultLine", { shown, total, query })}
+                {t(capped ? "resultLineCapped" : "resultLine", { shown, total, query })}
               </p>
               <div className="mt-8 flex flex-col gap-12">
                 {found.map((group) => (

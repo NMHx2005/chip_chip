@@ -7,6 +7,12 @@
  * highlighter applies the same rule, so a result row never marks text the
  * database did not match — a query that only matched `plain_text` (not the
  * title or the excerpt) marks nothing here.
+ *
+ * Scope: the folding and the token split are ASCII, which is exact for
+ * Vietnamese (every accented code point folds to one ASCII letter) but means a
+ * non-Latin query (Greek, Cyrillic, CJK) can be searched by the database and
+ * still go unmarked here. That direction is safe — a missed mark is invisible,
+ * a wrong one is not.
  */
 
 /**
@@ -49,7 +55,10 @@ export function searchTokens(query: string): string[] {
   return tokens.length > 1 ? tokens.filter((token) => token.length > 1) : tokens;
 }
 
-const WORD = /[a-z0-9]/;
+// A token continues through letters and digits, and through the joiners
+// Postgres keeps inside one token: `.` in `asml.com`, `@` in an email, `/` in a
+// URL. A hyphen does not continue a token — Postgres indexes `chip-diode` as two.
+const CONTINUES = /[a-z0-9.@/]/;
 
 /**
  * Half-open `[start, end)` ranges in `text` to wrap in `<mark>`: one per
@@ -62,7 +71,7 @@ export function highlightRanges(text: string, tokens: string[]): [number, number
   const ranges: [number, number][] = [];
 
   for (let i = 0; i < folded.length; i += 1) {
-    if (i > 0 && WORD.test(folded[i - 1])) continue;
+    if (i > 0 && CONTINUES.test(folded[i - 1])) continue;
     for (const token of tokens) {
       if (!folded.startsWith(token, i)) continue;
       const end = i + token.length;
