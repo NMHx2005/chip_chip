@@ -14,14 +14,23 @@ import { renderArticle } from "@/lib/tiptap/render";
  * KaTeX's stylesheet is imported here rather than in a layout so that only
  * article pages pay for it; its fonts are bundled and served from our origin.
  */
-export async function ArticleBody({ content, locale }: { content: unknown; locale: Locale }) {
+export async function ArticleBody({
+  content,
+  locale,
+  emptyText,
+}: {
+  content: unknown;
+  locale: Locale;
+  /** Overrides the shared "no content" line; the video page passes its own. */
+  emptyText?: string;
+}) {
   const html = renderArticle(content, locale);
 
   if (!html) {
     const t = await getTranslations("forum");
     return (
       <p className="rounded-2xl border border-dashed border-border px-5 py-10 text-center text-sm text-text-muted">
-        {t("emptyArticle")}
+        {emptyText ?? t("emptyArticle")}
       </p>
     );
   }

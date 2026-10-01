@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
-import { ArrowLeft, BookOpen, ExternalLink, Languages } from "lucide-react";
+import { ArrowLeft, Bookmark, BookOpen, Cpu, ExternalLink, Languages, Lock } from "lucide-react";
 import { ReportMistake } from "@/components/contact/ReportMistake";
 import { ArticleBody } from "@/components/forum/ArticleBody";
 import {
@@ -10,10 +10,13 @@ import {
   ROOT_PAGE_SIZE,
 } from "@/components/forum/CommentSection";
 import { VideoFacades } from "@/components/forum/VideoFacades";
+import { Button, buttonClassName } from "@/components/ui/Button";
+import { DifficultyMark } from "@/components/ui/DifficultyMark";
+import { TopicChip } from "@/components/ui/TopicChip";
+import { RelatedLessonCard } from "@/components/video/RelatedLessonCard";
 import { articleLanguageAlternates } from "@/lib/article-alternates";
 import { Link, getPathname } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
-import { TOPIC_TONE } from "@/lib/constants";
 import { firstParam, type SearchParams } from "@/lib/listing-params";
 import {
   countComments,
@@ -113,7 +116,6 @@ export default async function VideoPage({
   ]);
 
   const ref = videoRefFrom(post.videoPlatform, post.videoExternalId);
-  const tone = post.topic ? TOPIC_TONE[post.topic] : null;
   const source =
     post.videoSource === "own"
       ? t("sourceOwn")
@@ -122,52 +124,69 @@ export default async function VideoPage({
           ? t("sourceCuratedBy", { channel: post.channelName })
           : t("sourceCurated")
         : null;
+  const SourceIcon = post.videoSource === "own" ? Cpu : Bookmark;
 
   return (
-    <article className="px-5 py-14 md:px-8 md:py-20">
-      <div className="mx-auto w-full max-w-4xl">
+    <article className="px-5 pb-12 pt-4 lg:px-8 lg:pb-20 lg:pt-10">
+      <div className="mx-auto w-full max-w-[896px]">
         <Link
           href="/video"
-          className="inline-flex min-h-11 items-center gap-1.5 text-sm text-text-muted transition-colors hover:text-accent"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full pr-3 text-sm font-semibold text-accent transition-colors duration-fast ease-standard hover:text-black"
         >
           <ArrowLeft className="size-4" strokeWidth={2.2} />
           {t("backToVideos")}
         </Link>
 
         {ref && (
-          <>
+          <div className="mt-1 lg:mt-3">
             {/* Built only from the validated (platform, id); see videoFacadeHtml.
-                Eager: this facade image is the page's LCP element. */}
+                Eager: this facade image is the page's LCP element; large: the
+                bigger player; title: names the video in the accessible name. */}
             <div
-              className="chip-prose mt-6"
-              dangerouslySetInnerHTML={{ __html: videoFacadeHtml(ref, locale as Locale, { eager: true }) }}
+              className="chip-prose"
+              dangerouslySetInnerHTML={{
+                __html: videoFacadeHtml(ref, locale as Locale, {
+                  eager: true,
+                  large: true,
+                  title: post.title,
+                }),
+              }}
             />
             <VideoFacades />
-          </>
+            <p className="mt-3 flex items-start gap-2 text-[13px] leading-[1.5] text-text-nav">
+              <Lock aria-hidden className="mt-0.5 size-3.5 shrink-0" strokeWidth={2} />
+              <span>{t("loadsAfterPlay", { platform: PLATFORM_LABEL[ref.platform] })}</span>
+            </p>
+          </div>
         )}
 
-        <header className="mt-8">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-semibold">
-            {source && <span className="rounded-full bg-surface-muted px-3 py-1 text-text-nav">{source}</span>}
-            {post.difficulty && (
-              <span className="rounded-full border border-border px-3 py-1 text-text-muted">
-                {tDifficulty(post.difficulty)}
+        <header className="mt-6 flex flex-col items-start gap-5 lg:mt-8">
+          <div className="flex max-w-full flex-wrap items-center gap-x-3 gap-y-2">
+            {source && (
+              <span className="inline-flex max-w-full items-center gap-1.5 self-start rounded-full border border-black/[0.08] bg-surface-muted py-[3px] pl-2 pr-2.5 text-xs font-semibold leading-4 text-[#262626]">
+                <SourceIcon aria-hidden className="size-3.5 shrink-0" strokeWidth={2} />
+                <span className="min-w-0 truncate">{source}</span>
               </span>
             )}
-            {post.topic && tone && (
-              <span className="rounded-full px-3 py-1" style={{ background: tone.soft, color: tone.text }}>
-                {tTopics(`${post.topic}.title`)}
-              </span>
+            {post.difficulty && (
+              <DifficultyMark
+                difficulty={post.difficulty}
+                label={tDifficulty(post.difficulty)}
+                className="text-[13px]"
+              />
+            )}
+            {post.topic && (
+              <TopicChip topic={post.topic} label={tTopics(`${post.topic}.title`)} />
             )}
           </div>
 
-          <h1 className="mt-4 text-balance text-[28px] font-extrabold leading-[1.15] tracking-[-0.03em] text-text md:text-[38px]">
+          <h1 className="max-w-3xl text-balance text-h1 text-text [overflow-wrap:anywhere] lg:text-h1-lg">
             {post.title}
           </h1>
 
-          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm text-text-muted">
+          <div className="flex w-full max-w-3xl flex-wrap items-center gap-6">
             {post.publishedAt && (
-              <time dateTime={post.publishedAt}>
+              <time dateTime={post.publishedAt} className="text-sm text-text-muted">
                 {tForum("publishedOn", {
                   date: format.dateTime(new Date(post.publishedAt), { dateStyle: "long" }),
                 })}
@@ -179,44 +198,63 @@ export default async function VideoPage({
                   key={alt.locale}
                   href={{ pathname: "/video/[slug]", params: { slug: alt.slug } }}
                   locale={alt.locale}
-                  className="inline-flex min-h-11 items-center gap-1.5 rounded-full border border-border px-3 text-xs font-medium transition-colors hover:border-black/20 hover:text-accent"
+                  hrefLang={alt.locale}
+                  className={buttonClassName("secondary", "lg:ml-auto")}
                 >
-                  <Languages className="size-3.5" strokeWidth={2} />
+                  <Languages aria-hidden className="size-4 shrink-0" strokeWidth={2} />
                   {t(`switchTo.${alt.locale}`)}
                 </Link>
               ) : null
             )}
           </div>
 
-          <div className="mt-6 flex flex-wrap gap-3">
+          <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap">
             {lesson && (
-              <Link
-                href={{ pathname: "/bai-hoc/[topic]/[slug]", params: { topic: lesson.topic, slug: lesson.slug } }}
-                className="inline-flex min-h-11 items-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-black/80"
+              <Button
+                href={{
+                  pathname: "/bai-hoc/[topic]/[slug]",
+                  params: { topic: lesson.topic, slug: lesson.slug },
+                }}
+                arrow
+                className="w-full sm:w-auto"
               >
-                <BookOpen className="size-4" strokeWidth={2} />
+                <BookOpen aria-hidden className="size-4 shrink-0" strokeWidth={2} />
                 {t("relatedLesson")}
-              </Link>
+              </Button>
             )}
             {ref && (
               <a
                 href={watchUrl(ref)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-border px-5 text-sm font-semibold text-text-nav transition-colors hover:border-black/20 hover:text-accent"
+                className={buttonClassName("secondary", "w-full sm:w-auto")}
               >
-                <ExternalLink className="size-4" strokeWidth={2} />
+                <ExternalLink aria-hidden className="size-4 shrink-0" strokeWidth={2} />
                 {t("watchOn", { platform: PLATFORM_LABEL[ref.platform] })}
+                <span className="sr-only"> {t("opensInNewTab")}</span>
               </a>
             )}
           </div>
         </header>
 
-        <div className="mt-10">
-          <ArticleBody content={post.content} locale={locale as Locale} />
+        <div className="mt-8 max-w-3xl lg:mt-10">
+          <ArticleBody
+            content={post.content}
+            locale={locale as Locale}
+            emptyText={t("noDescription")}
+          />
         </div>
 
-        <div className="mt-12">
+        {lesson && (
+          <section className="mt-10 flex flex-col gap-4 lg:mt-14" aria-labelledby="related-lesson">
+            <h2 id="related-lesson" className="text-h2 text-text">
+              {t("relatedLessonHeading")}
+            </h2>
+            <RelatedLessonCard lesson={lesson} />
+          </section>
+        )}
+
+        <div className="mt-8 lg:mt-12">
           <ReportMistake postId={post.id} />
         </div>
 

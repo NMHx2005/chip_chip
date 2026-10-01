@@ -14,6 +14,14 @@ const BUSY = "cursor-progress bg-disabled text-white hover:bg-disabled active:sc
 /** Anything the localized Link accepts: a path, or a path with params and query. */
 type LinkHref = ComponentProps<typeof Link>["href"];
 
+/**
+ * The Button look as a class string, for an element Button cannot render — an
+ * external `<a>` that needs the same size, shape and focus ring.
+ */
+export function buttonClassName(variant: ButtonVariant = "primary", className?: string) {
+  return cn(BASE, FOCUS_RING[variant].class, VARIANT_CLASSES[variant], className);
+}
+
 type Props = {
   children: ReactNode;
   variant?: ButtonVariant;
@@ -44,7 +52,9 @@ export function Button({
   onClick,
   type = "button",
 }: Props) {
-  const classes = cn(BASE, FOCUS_RING[variant].class, busy ? BUSY : VARIANT_CLASSES[variant], className);
+  const classes = busy
+    ? cn(BASE, FOCUS_RING[variant].class, BUSY, className)
+    : buttonClassName(variant, className);
   const content = (
     <>
       {children}
