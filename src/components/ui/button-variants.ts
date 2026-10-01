@@ -1,10 +1,11 @@
-export type ButtonVariant = "primary" | "secondary" | "onDark";
+export type ButtonVariant = "primary" | "secondary" | "onDark" | "onDarkOutline";
 
 export const VARIANT_CLASSES: Record<ButtonVariant, string> = {
   primary: "bg-primary text-white hover:bg-primary-hover",
   secondary: "border-border bg-surface text-text hover:border-black/25",
   // For the black panel on the About page.
   onDark: "bg-white text-accent hover:bg-white/90",
+  onDarkOutline: "border-white/50 bg-transparent text-white hover:bg-white/10",
 };
 
 /**
@@ -16,4 +17,5 @@ export const FOCUS_RING: Record<ButtonVariant, { class: string; hex: string; sur
   primary: { class: "focus-visible:outline-accent", hex: "#314344", surface: "#E5E5E5" },
   secondary: { class: "focus-visible:outline-accent", hex: "#314344", surface: "#E5E5E5" },
   onDark: { class: "focus-visible:outline-white", hex: "#FFFFFF", surface: "#0D0D0D" },
+  onDarkOutline: { class: "focus-visible:outline-white", hex: "#FFFFFF", surface: "#0D0D0D" },
 };
