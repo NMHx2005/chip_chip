@@ -1,4 +1,6 @@
 import { getTranslations } from "next-intl/server";
+import { CardReveal } from "@/components/motion";
+import { Avatar } from "@/components/ui/Avatar";
 import { CONTRIBUTORS } from "@/lib/constants";
 
 /** Hidden until someone has actually helped — an empty "thank you" list reads worse than none. */
@@ -15,14 +17,26 @@ export async function Contributors() {
         >
           {t("headline")}
         </h2>
-        <p className="mt-4 max-w-2xl text-pretty text-[15px] leading-relaxed text-text-muted md:text-base">
+        <p className="mt-4 max-w-2xl text-pretty text-base leading-relaxed text-text-muted">
           {t("description")}
         </p>
+
         <ul className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {CONTRIBUTORS.map((person) => (
-            <li key={person.name} className="rounded-2xl border border-border bg-surface p-5">
-              <p className="text-[15px] font-bold text-text">{person.name}</p>
-              <p className="mt-1 text-[13px] text-text-muted">{person.role}</p>
+          {CONTRIBUTORS.map((person, index) => (
+            <li key={person.name} className="flex">
+              <CardReveal index={index} columns={4} className="flex w-full">
+                <div className="flex w-full flex-col gap-3 rounded-2xl border border-border bg-surface p-4">
+                  <Avatar photo={null} alt="" name={person.name} />
+                  <div className="min-w-0">
+                    <h3 className="line-clamp-2 text-base font-bold leading-snug text-text">
+                      {person.name}
+                    </h3>
+                    <p className="mt-1 line-clamp-3 text-sm leading-relaxed text-text-muted">
+                      {person.role}
+                    </p>
+                  </div>
+                </div>
+              </CardReveal>
             </li>
           ))}
         </ul>
