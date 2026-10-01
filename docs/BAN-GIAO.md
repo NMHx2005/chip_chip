@@ -246,9 +246,12 @@ dùng chung (hàng 60px, đĩa "+") kèm gợi ý "Chưa thấy câu trả lời
 44px + tên/vai trò; CTA cuối là panel tối bo 24px với hai nút (`Button` thêm biến thể `onDarkOutline`
 viền trắng, cạnh `onDark`). Kiểm bằng trình duyệt trên trang thật: 1280/390 không tràn ngang, hàng
 FAQ 60px và `<details>` ẩn/hiện nội dung đúng (`checkVisibility()`), banner 3:2 (558×371 / 348×231),
-nút CTA 44px, mục "Những người đã đồng hành" vắng mặt khi rỗng. Chưa xác minh: tên tác giả/người
-đóng góp dài (chữ hiện ngắn), lưới người đóng góp khi có dữ liệu, nhánh giảm chuyển động. Tiếp theo:
-6d Đóng góp + Bảo mật, rồi bước 7 (404 và trang lỗi).
+nút CTA 44px, mục "Những người đã đồng hành" vắng mặt khi rỗng. Sau review đã sửa: gợi ý FAQ cách
+tiêu đề 12px (thay vì 64px do khoảng cách hàng của grid) và danh sách FAQ nằm trong panel trắng viền
+1px bo 16px; thẻ người đóng góp xếp avatar bên trái tên; `Avatar` yêu cầu đúng cỡ ảnh (44/112/176) và
+có viền mảnh; liên kết dùng duration token; đã xoá CSS `.rise-in` thừa; câu chữ EN của gợi ý khớp bản
+vẽ. Chưa xác minh: tên tác giả/người đóng góp dài (chữ hiện ngắn), lưới người đóng góp khi có dữ liệu,
+nhánh giảm chuyển động. Tiếp theo: 6d Đóng góp + Bảo mật, rồi bước 7 (404 và trang lỗi).
 
 ---
 
