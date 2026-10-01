@@ -50,8 +50,13 @@ export function videoFacadeHtml(
 ): string {
   const id = escapeHtml(ref.externalId);
   const label = PLATFORM_LABEL[ref.platform];
+  // The title goes in through a replacer function, so `$` sequences in it stay
+  // literal, and {platform} is filled first so a title containing that token is
+  // not substituted a second time.
   const name = title
-    ? PLAY_ARIA[locale].replace("{title}", title).replace("{platform}", label)
+    ? PLAY_ARIA[locale]
+        .replace("{platform}", () => label)
+        .replace("{title}", () => title)
     : PLAY_VIDEO[locale].replace("{platform}", label);
   const ariaLabel = escapeHtml(name);
   const still = thumbnailUrl(ref);

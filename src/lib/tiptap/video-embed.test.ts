@@ -50,4 +50,16 @@ describe("videoFacadeHtml", () => {
 
     expect(html).toContain('aria-label="Phát video: Vì sao chip nóng (YouTube)"');
   });
+
+  it("inserts the title literally, even with $ patterns or a {platform} token", () => {
+    const ref = { platform: "youtube", externalId: "dQw4w9WgXcQ" } as const;
+    const html = videoFacadeHtml(ref, "vi", {
+      large: true,
+      title: "Giá $& và {platform} trong chip",
+    });
+
+    expect(html).toContain(
+      'aria-label="Phát video: Giá $&amp; và {platform} trong chip (YouTube)"'
+    );
+  });
 });
