@@ -463,7 +463,8 @@
       }
     },
     "cta": "Nhắn cho tác giả",
-    "note": "Chíp Chíp không trả thù lao và không thu phí. Người đóng góp được ghi tên trong bài và ở mục \"Những người đã đồng hành\" trên trang Giới thiệu."
+    "note": "Chíp Chíp không trả thù lao và không thu phí. Người đóng góp được ghi tên trong bài.",
+    "noteLink": "Những người đã đồng hành"
   },
   "privacy": {
     "title": "Chính sách bảo mật",

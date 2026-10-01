@@ -463,7 +463,8 @@
       }
     },
     "cta": "Message the author",
-    "note": "Chíp Chíp pays no fees and charges none. Contributors are credited in the article and under \"People who helped\" on the About page."
+    "note": "Chíp Chíp pays no fee and charges none. Contributors are credited in the article.",
+    "noteLink": "People who helped"
   },
   "privacy": {
     "title": "Privacy policy",
