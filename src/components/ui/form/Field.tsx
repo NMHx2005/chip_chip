@@ -69,9 +69,7 @@ export function Field({
     <div className={cn("flex min-w-0 flex-col gap-1.5", className)}>
       <label htmlFor={id} className="text-sm font-semibold leading-[1.4] text-primary">
         {label}
-        {optionalNote && (
-          <span className="ml-1 font-normal text-text-muted">{optionalNote}</span>
-        )}
+        {optionalNote && <span className="font-normal text-text-muted">{" "}{optionalNote}</span>}
       </label>
       {children({
         id,
