@@ -377,8 +377,7 @@
     },
     "join": {
       "headline": "Sign up to help",
-      "lead": "Volunteer, survey, webinar or competition — pick one and leave a message.",
-      "link": "Open the sign-up page"
+      "lead": "Volunteer, survey, webinar or competition — pick one and leave a message."
     },
     "cta": {
       "headline": "Want to grow the community together? Why not join us",
@@ -595,7 +594,9 @@
     "title": "Sign up",
     "eyebrow": "Join Chíp Chíp",
     "description": "Leave a message and pick what you would like to help with. The author reads every sign-up and replies by email if you leave one.",
-    "typeLegend": "What would you like to help with?",
+    "chooseHeading": "Choose what you would like to help with",
+    "openLink": "Sign up",
+    "back": "Back to Sign up",
     "types": {
       "volunteer": "Volunteer",
       "survey": "Survey",

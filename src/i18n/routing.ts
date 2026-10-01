@@ -32,6 +32,10 @@ export const routing = defineRouting({
     "/dong-gop": { vi: "/dong-gop", en: "/contribute" },
     "/chinh-sach-bao-mat": { vi: "/chinh-sach-bao-mat", en: "/privacy" },
     "/dang-ky": { vi: "/dang-ky", en: "/sign-up" },
+    "/dang-ky/tinh-nguyen": { vi: "/dang-ky/tinh-nguyen", en: "/sign-up/volunteer" },
+    "/dang-ky/khao-sat": { vi: "/dang-ky/khao-sat", en: "/sign-up/survey" },
+    "/dang-ky/webinar": { vi: "/dang-ky/webinar", en: "/sign-up/webinar" },
+    "/dang-ky/cuoc-thi": { vi: "/dang-ky/cuoc-thi", en: "/sign-up/competition" },
     "/bao-chi": { vi: "/bao-chi", en: "/press" },
   },
 });

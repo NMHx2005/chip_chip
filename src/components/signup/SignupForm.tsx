@@ -10,11 +10,10 @@ import {
   type MessageFieldErrors,
   type MessageFormField,
 } from "@/components/contact/message-form-fields";
-import { SIGNUP_TYPES, signupKindToMessageKind, type SignupType } from "@/components/signup/signup-kind";
+import { signupKindToMessageKind, type SignupType } from "@/components/signup/signup-kind";
 import { Button } from "@/components/ui/Button";
 import { Field, Input, Textarea } from "@/components/ui/form/Field";
 import { FormNotice } from "@/components/ui/form/FormNotice";
-import { RadioSegment } from "@/components/ui/form/RadioSegment";
 import {
   MESSAGE_LIMITS,
   buildMessagePayload,
@@ -39,13 +38,14 @@ const SERVER_TITLE: Partial<Record<MessageErrorKey, string>> = {
 };
 
 /**
- * The one sign-up form, used by /dang-ky and embedded on the About page.
+ * The sign-up form for one type, rendered on that type's own page (the visitor
+ * picks the type on /dang-ky).
  *
  * It reuses the contact form's machinery — the same validation, the same
- * `/api/messages` route, the same honeypot and rate limit — and only adds the
- * type selector; the chosen type becomes the message `kind`.
+ * `/api/messages` route, the same honeypot and rate limit — and the page's type
+ * becomes the message `kind`.
  */
-export function SignupForm() {
+export function SignupForm({ type }: { type: SignupType }) {
   const t = useTranslations("signup");
   const tContact = useTranslations("contact");
   const locale = useLocale() as Locale;
@@ -53,7 +53,6 @@ export function SignupForm() {
   const uid = useId();
   const ids = { name: `${uid}-name`, email: `${uid}-email`, body: `${uid}-body` } as const;
 
-  const [type, setType] = useState<SignupType>("volunteer");
   const [status, setStatus] = useState<Status>({ state: "idle" });
   const [errors, setErrors] = useState<MessageFieldErrors>({});
 
@@ -115,7 +114,6 @@ export function SignupForm() {
 
     if (outcome.ok) {
       form.reset();
-      setType("volunteer");
       setStatus({ state: "sent" });
     } else {
       const field = fieldForError(outcome.error);
@@ -128,16 +126,6 @@ export function SignupForm() {
     <form onSubmit={submit} noValidate className="relative flex flex-col gap-5">
       {/* Only the fields are busy, so the notice region below is still announced. */}
       <div aria-busy={sending || undefined} className="flex flex-col gap-5">
-        <RadioSegment
-          legend={t("typeLegend")}
-          name="kind"
-          options={SIGNUP_TYPES.map((value) => ({ value, label: t(`types.${value}`) }))}
-          value={type}
-          onChange={setType}
-          hint={t(`typeHint.${type}`)}
-          disabled={sending}
-        />
-
         <div className="grid gap-5 sm:grid-cols-2">
           <Field
             label={tContact("form.nameLabel")}

@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { SIGNUP_TYPES, signupKindToMessageKind } from "@/components/signup/signup-kind";
+import {
+  SIGNUP_TYPES,
+  SIGNUP_TYPE_PATHS,
+  signupKindToMessageKind,
+} from "@/components/signup/signup-kind";
+import { routing } from "@/i18n/routing";
 import { MESSAGE_KINDS } from "@/lib/contact-message";
 
 describe("sign-up kinds", () => {
@@ -12,5 +17,12 @@ describe("sign-up kinds", () => {
   it("offers the four types once each", () => {
     expect(SIGNUP_TYPES).toHaveLength(4);
     expect(new Set(SIGNUP_TYPES).size).toBe(4);
+  });
+
+  it("points every type at a route declared in routing", () => {
+    const declared = Object.keys(routing.pathnames);
+    for (const type of SIGNUP_TYPES) {
+      expect(declared).toContain(SIGNUP_TYPE_PATHS[type]);
+    }
   });
 });

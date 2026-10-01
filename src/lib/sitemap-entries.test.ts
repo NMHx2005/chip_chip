@@ -60,6 +60,8 @@ describe("staticSitemapEntries", () => {
       expect.arrayContaining([
         `${SITE_URL}/vi/dang-ky`,
         `${SITE_URL}/en/sign-up`,
+        `${SITE_URL}/vi/dang-ky/tinh-nguyen`,
+        `${SITE_URL}/en/sign-up/volunteer`,
         `${SITE_URL}/vi/bao-chi`,
         `${SITE_URL}/en/press`,
       ])

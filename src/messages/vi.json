@@ -377,8 +377,7 @@
     },
     "join": {
       "headline": "Đăng ký tham gia",
-      "lead": "Tình nguyện viên, khảo sát, webinar hay cuộc thi — chọn một việc và để lại lời nhắn.",
-      "link": "Mở trang Đăng ký"
+      "lead": "Tình nguyện viên, khảo sát, webinar hay cuộc thi — chọn một việc và để lại lời nhắn."
     },
     "cta": {
       "headline": "Muốn cùng nhau phát triển cộng đồng, tại sao không cùng tham gia với chúng tôi",
@@ -595,7 +594,9 @@
     "title": "Đăng ký",
     "eyebrow": "Tham gia cùng Chíp Chíp",
     "description": "Để lại lời nhắn và chọn việc bạn muốn tham gia. Tác giả đọc mọi đăng ký và trả lời qua email nếu bạn để lại.",
-    "typeLegend": "Bạn muốn tham gia việc gì",
+    "chooseHeading": "Chọn việc bạn muốn tham gia",
+    "openLink": "Đăng ký",
+    "back": "Về trang Đăng ký",
     "types": {
       "volunteer": "Tình nguyện viên",
       "survey": "Khảo sát",

@@ -1,3 +1,4 @@
+import type { StaticPathname } from "@/i18n/routing";
 import type { MessageKind } from "@/lib/contact-message";
 
 /**
@@ -11,3 +12,11 @@ export type SignupType = (typeof SIGNUP_TYPES)[number];
 export function signupKindToMessageKind(type: SignupType): MessageKind {
   return type;
 }
+
+/** The page each type signs up on (declared in src/i18n/routing.ts). */
+export const SIGNUP_TYPE_PATHS: Record<SignupType, StaticPathname> = {
+  volunteer: "/dang-ky/tinh-nguyen",
+  survey: "/dang-ky/khao-sat",
+  webinar: "/dang-ky/webinar",
+  competition: "/dang-ky/cuoc-thi",
+};

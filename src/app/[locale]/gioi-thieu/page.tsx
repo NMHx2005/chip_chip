@@ -8,7 +8,7 @@ import { Contributors } from "@/components/sections/about/Contributors";
 import { Faq } from "@/components/sections/about/Faq";
 import { MediaSlot } from "@/components/sections/about/MediaSlot";
 import { PageHero } from "@/components/sections/PageHero";
-import { SignupForm } from "@/components/signup/SignupForm";
+import { SIGNUP_TYPES, SIGNUP_TYPE_PATHS } from "@/components/signup/signup-kind";
 import { Link } from "@/i18n/navigation";
 import { localeAlternates } from "@/lib/seo";
 import { ABOUT_BANNER } from "@/lib/constants";
@@ -36,7 +36,10 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const t = await getTranslations("about");
+  const [t, tSignup] = await Promise.all([
+    getTranslations("about"),
+    getTranslations("signup"),
+  ]);
 
   return (
     <>
@@ -68,16 +71,21 @@ export default async function AboutPage({
               <p className="mt-4 text-pretty text-base leading-relaxed text-text-muted">
                 {t("join.lead")}
               </p>
-              <Link
-                href="/dang-ky"
-                className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-accent underline underline-offset-4 transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:text-black"
-              >
-                {t("join.link")}
-                <ArrowRight className="size-4" strokeWidth={2.2} aria-hidden />
-              </Link>
             </div>
 
-            <SignupForm />
+            <ul className="flex flex-col gap-2">
+              {SIGNUP_TYPES.map((type) => (
+                <li key={type}>
+                  <Link
+                    href={SIGNUP_TYPE_PATHS[type]}
+                    className="flex min-h-11 items-center justify-between gap-3 rounded-xl border border-border bg-surface px-4 text-sm font-medium text-text-nav transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:border-black/25"
+                  >
+                    <span>{tSignup(`types.${type}`)}</span>
+                    <ArrowRight className="size-4 shrink-0" strokeWidth={2.2} aria-hidden />
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
