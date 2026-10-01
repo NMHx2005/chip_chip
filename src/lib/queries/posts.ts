@@ -4,9 +4,10 @@ import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured, requireSupabase } from "@/lib/supabase/config";
 import type { Locale } from "@/i18n/routing";
-import { TOPIC_IDS, type TopicId } from "@/lib/constants";
+import type { TopicId } from "@/lib/constants";
 import { listingOrder, pageRange } from "@/lib/listing-order";
 import type { ListingParams } from "@/lib/listing-params";
+import { toRelatedLesson, type RelatedLesson } from "@/lib/related-lesson";
 import type { Comment, Difficulty, Post, PostKind, PostSummary, VideoPost } from "@/lib/types";
 import { videoRefFrom } from "@/lib/video";
 
@@ -284,13 +285,13 @@ export async function listRelatedVideos(
 export async function getLessonByTranslation(
   locale: Locale,
   translationId: string
-): Promise<{ slug: string; topic: TopicId; title: string } | null> {
+): Promise<RelatedLesson | null> {
   if (!requireSupabase("getLessonByTranslation")) return null;
 
   const supabase = createClient();
   const { data, error } = await supabase
     .from("posts")
-    .select("slug, topic, title")
+    .select("slug, topic, title, excerpt, difficulty, published_at")
     .eq("status", "published")
     .eq("locale", locale)
     .eq("kind", "lesson")
@@ -301,8 +302,7 @@ export async function getLessonByTranslation(
     console.error("[getLessonByTranslation]", error.message);
     return null;
   }
-  const topic = TOPIC_IDS.find((id) => id === data?.topic);
-  return data && topic ? { slug: String(data.slug), topic, title: String(data.title ?? "") } : null;
+  return toRelatedLesson(data);
 }
 
 export async function getPostBySlug(
