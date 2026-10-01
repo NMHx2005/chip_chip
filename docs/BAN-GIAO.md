@@ -203,9 +203,11 @@ Supabase cục bộ nên trạng thái có kết quả kiểm bằng trang mẫu
 1280 lưới 2 cột (thẻ 600px), 390 một cột (350px), `mark` đúng cả khi chỉ khớp tiền tố ("đan" trong
 "đang"), không tràn ngang, mọi target ≥44px; trạng thái đầu/rỗng và popover kiểm trên trang thật
 (popover 380px, nhãn + gợi ý, focus vào ô, Escape trả focus về nút — `press_key` của công cụ trình
-duyệt không phân phối được phím nên Escape kiểm bằng keydown thật). Chưa xác minh: biến thể tối
-trong menu di động, nhánh giảm chuyển động. Trạng thái lỗi tìm kiếm (cần `searchPosts` trả về trạng
-thái) để sang bước 7. Tiếp theo: 6b Liên hệ (+ Báo lỗi bài), 6c Giới thiệu, 6d Đóng góp + Bảo mật,
+duyệt không phân phối được phím nên Escape kiểm bằng keydown thật). Sau review đã sửa: màu dòng gợi
+ý ở biến thể tối (nay theo biến thể, giữ 4.5:1 bằng test), tô từ khoá không còn tô sai trong
+email/URL (`.`, `@`, `/` không tính là ranh giới từ, khớp parser của Postgres), dòng kết quả có dạng
+"{n}+" khi một nhóm chạm trần 50, và pill đúng 52px như bản vẽ. Chưa xác minh: nhánh giảm chuyển
+động. Trạng thái lỗi tìm kiếm (cần `searchPosts` trả về trạng thái) để sang bước 7. Tiếp theo: 6b Liên hệ (+ Báo lỗi bài), 6c Giới thiệu, 6d Đóng góp + Bảo mật,
 rồi bước 7 (404 và trang lỗi).
 
 ---
@@ -248,7 +250,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **48 file, 466 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **49 file, 470 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
