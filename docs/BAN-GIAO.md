@@ -316,7 +316,9 @@ trình duyệt: `/vi/dang-ky` 1280/390 không tràn ngang, bốn lựa chọn, g
 "Cần sửa 2 chỗ" + focus ô tên; `/vi/bao-chi` đủ ba mục, nút liên hệ 44px; `/vi/gioi-thieu` hiện câu chữ
 mới + form nhúng và mục Đội ngũ vắng khi rỗng; `/en/sign-up` và `/en/press` trả 200. Chưa xác minh:
 trạng thái gửi thành công của form đăng ký (cần Supabase thật) và `verify-security.sh` (cần Supabase
-local).
+local). Sau review đã sửa: thêm liên kết **Báo chí** ở footer (trang từng bị mồ côi, không có đường vào),
+khoá test cho hai URL mới (`/dang-ky` ↔ `/en/sign-up`, `/bao-chi` ↔ `/en/press`), bỏ thuộc tính thừa ở
+tiêu đề trang báo chí, và cập nhật README về trường `photo` của `CONTRIBUTORS`.
 
 ---
 
@@ -358,7 +360,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **50 file, 479 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **50 file, 480 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
