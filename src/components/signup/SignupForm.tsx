@@ -195,7 +195,7 @@ export function SignupForm({ type }: { type: SignupType }) {
           className="pointer-events-none absolute -left-[9999px] top-0 h-px w-px overflow-hidden"
         >
           <label>
-            Website
+            {tContact("form.honeypotLabel")}
             <input name="website" tabIndex={-1} autoComplete="off" />
           </label>
         </div>

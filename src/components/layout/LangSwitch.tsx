@@ -67,8 +67,8 @@ export function LangSwitch({
                   ? "bg-white text-accent"
                   : "bg-primary text-white"
                 : variant === "dark"
-                  ? "text-white/60 hover:text-white"
-                  : "text-text-muted hover:text-accent"
+                  ? "text-white/60 [@media(hover:hover)]:hover:text-white"
+                  : "text-text-muted [@media(hover:hover)]:hover:text-accent"
             )}
           >
             {LOCALE_LABELS[option]}

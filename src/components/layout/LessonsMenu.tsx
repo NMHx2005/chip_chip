@@ -97,7 +97,9 @@ export function LessonsMenu({ active }: { active: boolean }) {
         }}
         className={cn(
           "relative flex cursor-pointer items-center gap-1 rounded-full px-4 py-2 text-sm font-medium leading-none transition-colors",
-          active ? "bg-primary text-white" : "text-text-nav hover:bg-surface-muted hover:text-accent"
+          active
+            ? "bg-primary text-white"
+            : "text-text-nav [@media(hover:hover)]:hover:bg-surface-muted [@media(hover:hover)]:hover:text-accent"
         )}
       >
         {t("lessons")}
@@ -128,7 +130,7 @@ export function LessonsMenu({ active }: { active: boolean }) {
                   <Link
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium text-text-nav transition-colors hover:bg-surface-muted hover:text-accent focus-visible:bg-surface-muted"
+                    className="flex min-h-11 items-center rounded-xl px-4 text-sm font-medium text-text-nav transition-colors [@media(hover:hover)]:hover:bg-surface-muted [@media(hover:hover)]:hover:text-accent focus-visible:bg-surface-muted"
                   >
                     {t(item.key)}
                   </Link>

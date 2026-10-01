@@ -18,6 +18,7 @@ export function SearchForm({
   inputId,
   hint,
   labelHidden = false,
+  formLabel,
   defaultValue = "",
   inputRef,
   variant = "light",
@@ -31,6 +32,8 @@ export function SearchForm({
   hint?: string;
   /** Hides the label, where the placeholder carries the meaning (the 404 panel). */
   labelHidden?: boolean;
+  /** Names the `role="search"` landmark, so two forms on one page are distinct. */
+  formLabel?: string;
   defaultValue?: string;
   inputRef?: Ref<HTMLInputElement>;
   variant?: "light" | "dark";
@@ -39,7 +42,13 @@ export function SearchForm({
   const dark = variant === "dark";
 
   return (
-    <form method="get" action={action} role="search" className={cn("flex flex-col gap-2.5", className)}>
+    <form
+      method="get"
+      action={action}
+      role="search"
+      aria-label={formLabel}
+      className={cn("flex flex-col gap-2.5", className)}
+    >
       <label
         htmlFor={inputId}
         className={cn(
@@ -77,7 +86,9 @@ export function SearchForm({
           type="submit"
           className={cn(
             "inline-flex h-11 shrink-0 cursor-pointer items-center gap-2 rounded-full px-[22px] text-sm font-semibold transition-colors duration-fast ease-standard active:scale-[0.98] motion-reduce:active:scale-100",
-            dark ? "bg-white text-primary hover:bg-[#EFEFEF]" : "bg-primary text-white hover:bg-primary-hover"
+            dark
+              ? "bg-white text-primary [@media(hover:hover)]:hover:bg-[#EFEFEF]"
+              : "bg-primary text-white [@media(hover:hover)]:hover:bg-primary-hover"
           )}
         >
           <Search aria-hidden className="size-4 shrink-0" strokeWidth={2.2} />

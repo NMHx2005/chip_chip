@@ -58,6 +58,7 @@ export default function LocaleError({
           headingLevel="h1"
           chip="error"
           tone="error"
+          role="status"
           title={t("titleRuntime")}
           description={t("descRuntime")}
           className="min-h-0 gap-5 sm:min-h-[520px]"

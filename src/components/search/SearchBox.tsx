@@ -55,7 +55,7 @@ export function SearchBox({ className }: { className?: string }) {
         aria-expanded={open}
         aria-controls={panelId}
         aria-label={open ? t("close") : t("open")}
-        className="flex size-11 cursor-pointer items-center justify-center rounded-full text-text-nav transition-colors hover:bg-surface-muted hover:text-accent"
+        className="flex size-11 cursor-pointer items-center justify-center rounded-full text-text-nav transition-colors [@media(hover:hover)]:hover:bg-surface-muted [@media(hover:hover)]:hover:text-accent"
       >
         {open ? (
           <X className="size-[18px]" strokeWidth={2} aria-hidden />
@@ -72,6 +72,7 @@ export function SearchBox({ className }: { className?: string }) {
         <SearchForm
           action={getPathname({ href: "/tim-kiem", locale })}
           label={t("searchIn")}
+          formLabel={t("searchIn")}
           hint={t("searchHint")}
           placeholder={t("placeholder")}
           submitLabel={t("submit")}

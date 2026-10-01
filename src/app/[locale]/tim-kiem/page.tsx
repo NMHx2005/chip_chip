@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { BookOpen, FileText, PlayCircle } from "lucide-react";
+import { KIND_ICON } from "@/components/search/KindLabel";
 import { SearchForm } from "@/components/search/SearchForm";
 import { SearchResultRow } from "@/components/search/SearchResultRow";
 import {
@@ -27,8 +27,6 @@ const FETCH_LIMIT = 50;
 /** Rows shown per group. */
 const SHOWN = 10;
 const GROUPS: PostKind[] = ["lesson", "video", "forum"];
-
-const GROUP_ICON = { lesson: BookOpen, video: PlayCircle, forum: FileText } as const;
 
 export async function generateMetadata({
   params,
@@ -113,6 +111,7 @@ export default async function SearchPage({
             <SearchForm
               action={getPathname({ href: "/tim-kiem", locale: activeLocale })}
               label={t("label")}
+              formLabel={t("title")}
               placeholder={t("placeholder")}
               submitLabel={t("submit")}
               inputId="search-q"
@@ -190,7 +189,7 @@ async function ResultGroup({
   count: string;
   note: string | null;
 }) {
-  const Icon = GROUP_ICON[kind];
+  const Icon = KIND_ICON[kind];
 
   return (
     <section aria-labelledby={`results-${kind}`}>

@@ -50,7 +50,7 @@ export default async function ContactPage({
               <InfoBlock icon={Mail} title={t("aside.emailTitle")}>
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="inline-flex min-h-11 items-center font-mono text-sm text-text-nav underline underline-offset-4 transition-colors hover:text-accent"
+                  className="inline-flex min-h-11 items-center font-mono text-sm text-text-nav underline underline-offset-4 transition-colors [@media(hover:hover)]:hover:text-accent"
                 >
                   {CONTACT_EMAIL}
                 </a>
@@ -66,7 +66,7 @@ export default async function ContactPage({
                         href={link.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex min-h-11 items-center text-sm text-text-nav underline underline-offset-4 transition-colors hover:text-accent"
+                        className="inline-flex min-h-11 items-center text-sm text-text-nav underline underline-offset-4 transition-colors [@media(hover:hover)]:hover:text-accent"
                       >
                         {tNav(link.key)}
                       </a>
@@ -102,7 +102,7 @@ export default async function ContactPage({
                   <p className="text-sm leading-relaxed text-text-muted">{t("aside.privacyNote")}</p>
                   <Link
                     href="/chinh-sach-bao-mat"
-                    className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline underline-offset-4 transition-colors hover:text-black"
+                    className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline underline-offset-4 transition-colors [@media(hover:hover)]:hover:text-black"
                   >
                     {t("aside.privacyLink")}
                   </Link>

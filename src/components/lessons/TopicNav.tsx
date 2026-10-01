@@ -139,7 +139,7 @@ export function TopicNav({
           aria-controls={listId}
           aria-label={collapsed ? expandLabel : collapseLabel}
           title={collapsed ? expandLabel : collapseLabel}
-          className="grid size-11 shrink-0 cursor-pointer place-items-center rounded-xl border border-border bg-surface text-text-nav transition-colors duration-fast ease-standard hover:border-black/20 hover:text-accent motion-reduce:transition-none"
+          className="grid size-11 shrink-0 cursor-pointer place-items-center rounded-xl border border-border bg-surface text-text-nav transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:border-black/20 [@media(hover:hover)]:hover:text-accent motion-reduce:transition-none"
         >
           {collapsed ? (
             <PanelLeftOpen className="size-[18px]" strokeWidth={2} />
@@ -209,7 +209,7 @@ export function TopicNav({
           {hint.lead}{" "}
           <Link
             href={hint.href}
-            className="font-semibold text-accent underline underline-offset-[3px] hover:text-primary"
+            className="font-semibold text-accent underline underline-offset-[3px] [@media(hover:hover)]:hover:text-primary"
           >
             {hint.link}
           </Link>

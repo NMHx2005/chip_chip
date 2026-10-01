@@ -30,6 +30,7 @@ export async function ArticleNotFound({ section }: { section: Section }) {
           headingLevel="h1"
           chip="notFound"
           tone="error"
+          role="status"
           title={t(TITLE[section])}
           description={t(DESCRIPTION[section])}
           className="min-h-0 sm:min-h-[520px]"

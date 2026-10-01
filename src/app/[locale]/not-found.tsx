@@ -30,6 +30,7 @@ export default async function NotFound() {
           headingLevel="h1"
           chip="notFound"
           tone="error"
+          role="status"
           title={t("titleGlobal")}
           description={t("descGlobal")}
           className="min-h-0 gap-5 sm:min-h-[520px]"
@@ -73,6 +74,7 @@ export default async function NotFound() {
             <SearchForm
               action={getPathname({ href: "/tim-kiem", locale: locale as Locale })}
               label={t("search")}
+              formLabel={t("search")}
               placeholder={t("search")}
               submitLabel={tSearch("submit")}
               inputId="error-search"

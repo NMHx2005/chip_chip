@@ -131,7 +131,7 @@ export default async function VideoPage({
       <div className="mx-auto w-full max-w-[896px]">
         <Link
           href="/video"
-          className="inline-flex min-h-11 items-center gap-2 rounded-full pr-3 text-sm font-semibold text-accent transition-colors duration-fast ease-standard hover:text-black"
+          className="inline-flex min-h-11 items-center gap-2 rounded-full pr-3 text-sm font-semibold text-accent transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:text-black"
         >
           <ArrowLeft className="size-4" strokeWidth={2.2} />
           {t("backToVideos")}

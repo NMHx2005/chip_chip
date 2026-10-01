@@ -406,6 +406,7 @@
       "emailHint": "Chỉ dùng để trả lời bạn, không hiển thị ở đâu. Để trống thì chúng tôi không trả lời lại được.",
       "bodyLabel": "Nội dung",
       "bodyHint": "Tối đa {max} ký tự.",
+      "honeypotLabel": "Trang web",
       "errorSummary": "Cần sửa {count} chỗ trước khi gửi",
       "submit": "Gửi tin nhắn",
       "submitting": "Đang gửi…",

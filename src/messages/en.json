@@ -406,6 +406,7 @@
       "emailHint": "Used only to reply to you and never shown anywhere. Leave it blank and we cannot write back.",
       "bodyLabel": "Message",
       "bodyHint": "Up to {max} characters.",
+      "honeypotLabel": "Website",
       "errorSummary": "Fix {count, plural, one {# field} other {# fields}} before sending",
       "submit": "Send message",
       "submitting": "Sending…",

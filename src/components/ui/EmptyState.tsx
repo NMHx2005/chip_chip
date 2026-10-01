@@ -26,6 +26,7 @@ export function EmptyState({
   tone = "empty",
   chip = "empty",
   headingLevel = "h2",
+  role,
   compact = false,
   className,
 }: {
@@ -42,6 +43,12 @@ export function EmptyState({
   chip?: ChipVariant;
   /** `h1` where this is the page's only heading (the error pages). */
   headingLevel?: "h1" | "h2";
+  /**
+   * Live-region role; defaults to `alert` for the error tone. A whole-page
+   * error (a 404, a runtime failure) passes `status`: it is the page, not an
+   * asynchronous change, so it need not interrupt the reader.
+   */
+  role?: "alert" | "status";
   /** Shorter box for a list that sits inside a page section. */
   compact?: boolean;
   className?: string;
@@ -50,7 +57,7 @@ export function EmptyState({
 
   return (
     <div
-      role={tone === "error" ? "alert" : "status"}
+      role={role ?? (tone === "error" ? "alert" : "status")}
       className={cn(
         "fade-up flex flex-col items-center justify-center gap-4 rounded-3xl border-[1.5px] border-dashed border-[#A8A8A8] bg-white/50 px-8 text-center",
         compact ? "min-h-[280px] py-10" : "min-h-[400px] py-14",
