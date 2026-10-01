@@ -68,7 +68,9 @@ export default async function PrivacyPage({
           <div className="flex gap-10">
             <aside className="hidden w-[260px] shrink-0 lg:block">
               <div className="sticky top-24">
-                <p className="mb-2 text-sm font-bold text-text">{t("tocHead")}</p>
+                <p aria-hidden className="mb-2 text-sm font-bold text-text">
+                  {t("tocHead")}
+                </p>
                 <TocRail label={t("tocHead")} entries={entries} />
               </div>
             </aside>
@@ -96,16 +98,19 @@ export default async function PrivacyPage({
                       <h2
                         id={`privacy-${section.id}`}
                         tabIndex={-1}
-                        className="text-[22px] font-extrabold leading-tight tracking-[-0.02em] text-text focus:outline-none md:text-h2"
+                        className="text-balance text-[22px] font-extrabold leading-tight tracking-[-0.02em] text-text [overflow-wrap:anywhere] focus:outline-none md:text-h2"
                       >
                         {t(`sections.${section.id}.title`)}
                       </h2>
                     </div>
-                    <ul className="mt-4 flex flex-col gap-3.5 text-base leading-[1.7] text-[#262626]">
+                    <ul
+                      role="list"
+                      className="mt-4 flex flex-col gap-3.5 text-base leading-[1.7] text-[#262626]"
+                    >
                       {section.items.map((item) => (
                         <li
                           key={item}
-                          className="relative pl-[22px] before:absolute before:left-0 before:top-[0.62em] before:size-1.5 before:rounded-full before:bg-[#8C8C8C] before:content-['']"
+                          className="relative pl-[22px] [overflow-wrap:anywhere] before:absolute before:left-0 before:top-[0.62em] before:size-1.5 before:rounded-full before:bg-[#8C8C8C] before:content-['']"
                         >
                           {t(`sections.${section.id}.items.${item}`)}
                         </li>

@@ -444,6 +444,7 @@
     "title": "Contribute",
     "eyebrow": "Build it with us",
     "description": "Chíp Chíp is made by one person, but it does not have to be made alone. If you want to help, here are four ways — each one starts with a message.",
+    "waysHead": "Four ways to contribute",
     "ways": {
       "write": {
         "title": "Write an article",

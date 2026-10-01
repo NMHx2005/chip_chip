@@ -46,7 +46,7 @@ export function TopicTrail({
       <ul
         ref={rowRef}
         className={cn(
-          "relative flex snap-x snap-proximity gap-2 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,#000_calc(100%-32px),transparent)]",
+          "relative flex snap-x snap-proximity gap-2 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,#000_calc(100%_-_32px),transparent)]",
           inset ? "-mx-4 pl-4 pr-10" : "-mx-5 pl-5 pr-10 md:-mx-8 md:pl-8 md:pr-12"
         )}
       >

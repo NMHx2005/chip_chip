@@ -19,7 +19,7 @@ export function DocTocTrail({
       <p aria-hidden className="mb-2 text-sm font-bold text-text">
         {label}
       </p>
-      <ul className="flex snap-x snap-proximity gap-2 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,#000_calc(100%-32px),transparent)]">
+      <ul className="flex snap-x snap-proximity gap-2 overflow-x-auto pb-1 [mask-image:linear-gradient(to_right,#000_calc(100%_-_32px),transparent)]">
         {entries.map((entry) => (
           <li key={entry.id} className="shrink-0 snap-center">
             <a

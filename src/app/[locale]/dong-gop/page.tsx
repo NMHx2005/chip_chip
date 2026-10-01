@@ -48,6 +48,9 @@ export default async function ContributePage({
 
       <section className="px-5 pb-16 md:px-8 md:pb-20">
         <div className="mx-auto w-full max-w-content">
+          {/* Keeps the card titles (h3) from skipping a level under the hero's h1. */}
+          <h2 className="sr-only">{t("waysHead")}</h2>
+
           <ul className="grid gap-4 sm:grid-cols-2">
             {WAYS.map(({ id, icon }, index) => (
               <li
