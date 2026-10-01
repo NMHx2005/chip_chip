@@ -27,6 +27,7 @@
       "label": "Thông tin",
       "contact": "Liên hệ",
       "contribute": "Đóng góp",
+      "signup": "Đăng ký",
       "privacy": "Chính sách bảo mật"
     },
     "copyright": "© 2026 Project Chíp Chíp. Mọi nội dung được chia sẻ vì mục đích giáo dục."
@@ -300,9 +301,10 @@
   "about": {
     "title": "Giới thiệu",
     "eyebrow": "Về dự án",
+    "metaDescription": "Project Chíp Chíp là chỗ học bán dẫn song ngữ, miễn phí cho học sinh trung học — do một người làm và luôn mở cho ai muốn góp sức.",
     "hero": {
-      "headline": "Người đứng sau Project Chíp Chíp",
-      "description": "Chíp Chíp là dự án một người làm: một chỗ học bán dẫn bằng tiếng Việt, miễn phí cho mọi học sinh, và luôn mở cho những ai muốn góp sức."
+      "headline": "Khai phá những vùng đất mới",
+      "description": "Hơn cả một dự án… Bắt đầu từ số 0, kết thúc là thành công."
     },
     "author": {
       "label": "Về tác giả",
@@ -369,11 +371,16 @@
       }
     },
     "contributors": {
-      "headline": "Những người đã đồng hành",
-      "description": "Cảm ơn những người đã viết, dịch, góp ý và báo lỗi cho Chíp Chíp."
+      "headline": "Đội ngũ",
+      "description": "Cảm ơn những người đã viết, dịch, góp ý và báo lỗi cho Chíp Chíp. Danh sách này lớn dần theo thời gian."
+    },
+    "join": {
+      "headline": "Đăng ký tham gia",
+      "lead": "Tình nguyện viên, khảo sát, webinar hay cuộc thi — chọn một việc và để lại lời nhắn.",
+      "link": "Mở trang Đăng ký"
     },
     "cta": {
-      "headline": "Cùng làm Chíp Chíp tốt hơn",
+      "headline": "Muốn cùng nhau phát triển cộng đồng, tại sao không cùng tham gia với chúng tôi",
       "description": "Bạn có thể viết bài, dịch, làm video hoặc đơn giản là báo một lỗi sai. Mỗi đóng góp đều được ghi nhận.",
       "contribute": "Xem cách đóng góp",
       "contact": "Liên hệ tác giả"
@@ -582,6 +589,44 @@
     "digestLabel": "Mã lỗi",
     "reportHint": "Chắc chắn đường dẫn này đúng?",
     "reportLink": "Báo cho chúng tôi"
+  },
+  "signup": {
+    "title": "Đăng ký",
+    "eyebrow": "Tham gia cùng Chíp Chíp",
+    "description": "Để lại lời nhắn và chọn việc bạn muốn tham gia. Tác giả đọc mọi đăng ký và trả lời qua email nếu bạn để lại.",
+    "typeLegend": "Bạn muốn tham gia việc gì",
+    "types": {
+      "volunteer": "Tình nguyện viên",
+      "survey": "Khảo sát",
+      "webinar": "Webinar",
+      "competition": "Cuộc thi"
+    },
+    "typeHint": {
+      "volunteer": "Viết bài, dịch, làm video hoặc hỗ trợ vận hành dự án.",
+      "survey": "Nhận bảng hỏi ngắn để giúp Chíp Chíp hiểu người đọc hơn.",
+      "webinar": "Nhận thông tin buổi chia sẻ trực tuyến sắp tới.",
+      "competition": "Đăng ký đội tham gia cuộc thi của dự án."
+    },
+    "bodyLabel": "Lời nhắn",
+    "bodyHint": "Tối đa {max} ký tự.",
+    "note": "Giới hạn 3 tin mỗi giờ, tính chung cả liên hệ, góp ý và báo lỗi bài.",
+    "submit": "Gửi đăng ký",
+    "sending": "Đang gửi đăng ký của bạn…",
+    "sent": "Đã nhận đăng ký. Cảm ơn bạn!",
+    "sentBody": "Tác giả sẽ liên hệ với bạn qua email nếu bạn để lại."
+  },
+  "press": {
+    "title": "Báo chí",
+    "eyebrow": "Dành cho báo chí & truyền thông",
+    "description": "Thông tin cơ bản về Project Chíp Chíp để viết bài hoặc dẫn nguồn.",
+    "aboutTitle": "Về dự án",
+    "aboutBody": "Project Chíp Chíp là dự án học tập bán dẫn phi lợi nhuận, song ngữ Việt — Anh, dành cho học sinh trung học phổ thông. Nội dung do một người biên soạn, miễn phí, không quảng cáo và không thu phí.",
+    "creditTitle": "Dẫn nguồn và sử dụng",
+    "creditBody": "Bạn có thể trích dẫn hoặc dùng nội dung cho mục đích giáo dục không thu phí, kèm tên “Project Chíp Chíp” và link tới bài gốc.",
+    "contactTitle": "Liên hệ báo chí",
+    "contactBody": "Cần thêm thông tin, phỏng vấn hoặc tài liệu? Gửi qua trang Liên hệ.",
+    "contactLink": "Gửi tin cho tác giả",
+    "mentionsNote": "Danh sách bài viết về dự án sẽ được cập nhật khi có."
   },
   "common": {
     "loading": "Đang tải…",

@@ -27,6 +27,7 @@
       "label": "Information",
       "contact": "Contact",
       "contribute": "Contribute",
+      "signup": "Sign up",
       "privacy": "Privacy policy"
     },
     "copyright": "© 2026 Project Chíp Chíp. All content is shared for educational purposes."
@@ -300,9 +301,10 @@
   "about": {
     "title": "About",
     "eyebrow": "About us",
+    "metaDescription": "Project Chíp Chíp is a bilingual, free place to learn about semiconductors, made by one person and open to anyone who wants to help.",
     "hero": {
-      "headline": "The person behind Project Chíp Chíp",
-      "description": "Chíp Chíp is a one-person project: a place to learn about semiconductors in Vietnamese, free for every student, and always open to anyone who wants to help."
+      "headline": "Breaking new ground",
+      "description": "More than a project… starting from zero, ending in success."
     },
     "author": {
       "label": "About the author",
@@ -369,11 +371,16 @@
       }
     },
     "contributors": {
-      "headline": "People who helped",
-      "description": "Thank you to everyone who has written, translated, reviewed or reported mistakes for Chíp Chíp."
+      "headline": "The team",
+      "description": "Thank you to everyone who has written, translated, reviewed or reported mistakes for Chíp Chíp. The list grows over time."
+    },
+    "join": {
+      "headline": "Sign up to help",
+      "lead": "Volunteer, survey, webinar or competition — pick one and leave a message.",
+      "link": "Open the sign-up page"
     },
     "cta": {
-      "headline": "Help make Chíp Chíp better",
+      "headline": "Want to grow the community together? Why not join us",
       "description": "You can write, translate, make a video, or simply report a mistake. Every contribution is credited.",
       "contribute": "See how to contribute",
       "contact": "Contact the author"
@@ -582,6 +589,44 @@
     "digestLabel": "Error code",
     "reportHint": "Sure this link should work?",
     "reportLink": "Let us know"
+  },
+  "signup": {
+    "title": "Sign up",
+    "eyebrow": "Join Chíp Chíp",
+    "description": "Leave a message and pick what you would like to help with. The author reads every sign-up and replies by email if you leave one.",
+    "typeLegend": "What would you like to help with?",
+    "types": {
+      "volunteer": "Volunteer",
+      "survey": "Survey",
+      "webinar": "Webinar",
+      "competition": "Competition"
+    },
+    "typeHint": {
+      "volunteer": "Write, translate, make a video, or help run the project.",
+      "survey": "Get a short questionnaire to help Chíp Chíp understand its readers.",
+      "webinar": "Hear about the next online session.",
+      "competition": "Register a team for the project's competition."
+    },
+    "bodyLabel": "Message",
+    "bodyHint": "Up to {max} characters.",
+    "note": "Up to 3 messages an hour, counting contact, feedback and mistake reports together.",
+    "submit": "Send sign-up",
+    "sending": "Sending your sign-up…",
+    "sent": "Sign-up received. Thank you!",
+    "sentBody": "The author will get back to you by email if you left one."
+  },
+  "press": {
+    "title": "Press",
+    "eyebrow": "For press & media",
+    "description": "The basics about Project Chíp Chíp for writing about it or citing it.",
+    "aboutTitle": "About the project",
+    "aboutBody": "Project Chíp Chíp is a non-profit, bilingual (Vietnamese and English) semiconductor-learning project for high-school students. One person writes the content; it is free, ad-free and charges nothing.",
+    "creditTitle": "Citing and reuse",
+    "creditBody": "You may quote or reuse the content for non-commercial education, with the name “Project Chíp Chíp” and a link to the original article.",
+    "contactTitle": "Press contact",
+    "contactBody": "Need more detail, an interview or material? Write through the Contact page.",
+    "contactLink": "Send the author a message",
+    "mentionsNote": "Articles about the project will be listed here as they appear."
   },
   "common": {
     "loading": "Loading…",
