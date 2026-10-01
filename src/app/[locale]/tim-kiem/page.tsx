@@ -1,13 +1,17 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { BookOpen, FileText, PlayCircle } from "lucide-react";
 import { SearchForm } from "@/components/search/SearchForm";
+import { SearchResultRow } from "@/components/search/SearchResultRow";
+import { SearchInitialState, SearchNoResultsState } from "@/components/search/SearchStates";
 import { PageHero } from "@/components/sections/PageHero";
-import { Link, getPathname } from "@/i18n/navigation";
+import { getPathname } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
+import { TOPIC_IDS } from "@/lib/constants";
 import type { SearchParams } from "@/lib/listing-params";
 import { parseSearchQuery } from "@/lib/search-query";
 import { postHref } from "@/lib/paths";
-import { searchPosts } from "@/lib/queries/posts";
+import { countLessonsByTopic, searchPosts } from "@/lib/queries/posts";
 import { localeAlternates } from "@/lib/seo";
 import type { PostKind, PostSummary } from "@/lib/types";
 
@@ -19,6 +23,8 @@ const FETCH_LIMIT = 50;
 /** Rows shown per group. */
 const SHOWN = 10;
 const GROUPS: PostKind[] = ["lesson", "video", "forum"];
+
+const GROUP_ICON = { lesson: BookOpen, video: PlayCircle, forum: FileText } as const;
 
 export async function generateMetadata({
   params,
@@ -46,6 +52,7 @@ export default async function SearchPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
+  const activeLocale = locale as Locale;
 
   const query = parseSearchQuery(searchParams.q);
   const t = await getTranslations("search");
@@ -56,13 +63,22 @@ export default async function SearchPage({
         GROUPS.map(async (kind) => ({
           kind,
           // A row no page can serve (a lesson without a topic) is not a result.
-          posts: (await searchPosts(locale as Locale, query, [kind], FETCH_LIMIT)).filter(
+          posts: (await searchPosts(activeLocale, query, [kind], FETCH_LIMIT)).filter(
             (post) => postHref(post) !== null
           ),
         }))
       )
     : [];
   const found = groups.filter((group) => group.posts.length > 0);
+  const total = found.reduce((sum, group) => sum + group.posts.length, 0);
+  const shown = found.reduce((sum, group) => sum + Math.min(SHOWN, group.posts.length), 0);
+
+  // The "browse by topic" chips are only built for the empty state.
+  const tTopics = await getTranslations("topics");
+  const counts = query ? {} : await countLessonsByTopic(activeLocale);
+  const topics = query
+    ? []
+    : TOPIC_IDS.map((id) => ({ id, label: tTopics(`${id}.title`), count: counts[id] ?? 0 }));
 
   return (
     <>
@@ -70,93 +86,116 @@ export default async function SearchPage({
         eyebrow={t("eyebrow")}
         title={query ? t("resultsFor", { query }) : t("title")}
         description={query ? undefined : t("description")}
+        stats={
+          query
+            ? [
+                { value: groups[0].posts.length, label: t("groups.lesson") },
+                { value: groups[1].posts.length, label: t("groups.video") },
+                { value: groups[2].posts.length, label: t("groups.forum") },
+              ]
+            : undefined
+        }
       />
 
       <section className="px-5 pb-16 md:px-8 md:pb-20">
-        <div className="mx-auto w-full max-w-3xl">
-        <div>
-          <SearchForm
-            action={getPathname({ href: "/tim-kiem", locale: locale as Locale })}
-            label={t("label")}
-            placeholder={t("placeholder")}
-            submitLabel={t("submit")}
-            defaultValue={query}
-          />
-        </div>
-
-        {!query ? (
-          <p className="mt-10 rounded-2xl border border-dashed border-border px-6 py-12 text-center text-sm text-text-muted">
-            {t("prompt")}
-          </p>
-        ) : found.length === 0 ? (
-          <p className="mt-10 rounded-2xl border border-dashed border-border px-6 py-12 text-center text-sm text-text-muted">
-            {t("noResults", { query })}
-          </p>
-        ) : (
-          <div className="mt-10 flex flex-col gap-12">
-            {found.map((group) => (
-              <ResultGroup
-                key={group.kind}
-                kind={group.kind}
-                posts={group.posts}
-                title={t(`groups.${group.kind}`)}
-                count={
-                  group.posts.length >= FETCH_LIMIT
-                    ? t("resultCountCapped", { count: FETCH_LIMIT })
-                    : t("resultCount", { count: group.posts.length })
-                }
-                note={group.posts.length > SHOWN ? t("showingFirst", { shown: SHOWN }) : null}
-              />
-            ))}
+        <div className="mx-auto w-full max-w-content">
+          <div className="max-w-[720px]">
+            <SearchForm
+              action={getPathname({ href: "/tim-kiem", locale: activeLocale })}
+              label={t("label")}
+              placeholder={t("placeholder")}
+              submitLabel={t("submit")}
+              inputId="search-q"
+              defaultValue={query}
+            />
           </div>
-        )}
+
+          {!query ? (
+            <div className="mt-8">
+              <SearchInitialState topics={topics} />
+            </div>
+          ) : found.length === 0 ? (
+            <div className="mt-8">
+              <SearchNoResultsState query={query} />
+            </div>
+          ) : (
+            <>
+              <p
+                role="status"
+                aria-live="polite"
+                className="mt-5 text-sm leading-[1.5] tabular-nums text-text-muted"
+              >
+                {t("resultLine", { shown, total, query })}
+              </p>
+              <div className="mt-8 flex flex-col gap-12">
+                {found.map((group) => (
+                  <ResultGroup
+                    key={group.kind}
+                    kind={group.kind}
+                    posts={group.posts}
+                    query={query}
+                    title={t(`groups.${group.kind}`)}
+                    count={
+                      group.posts.length >= FETCH_LIMIT
+                        ? t("resultCountCapped", { count: FETCH_LIMIT })
+                        : t("resultCount", { count: group.posts.length })
+                    }
+                    note={group.posts.length > SHOWN ? t("showingFirst", { shown: SHOWN }) : null}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </div>
       </section>
     </>
   );
 }
 
-function ResultGroup({
+async function ResultGroup({
   kind,
   posts,
+  query,
   title,
   count,
   note,
 }: {
   kind: PostKind;
   posts: PostSummary[];
+  query: string;
   title: string;
   count: string;
   note: string | null;
 }) {
+  const Icon = GROUP_ICON[kind];
+
   return (
     <section aria-labelledby={`results-${kind}`}>
-      <h2 id={`results-${kind}`} className="flex items-baseline gap-3 text-lg font-bold tracking-[-0.01em] text-text">
-        {title}
-        <span className="text-sm font-medium text-text-muted">{count}</span>
-      </h2>
-      {note && <p className="mt-1 text-xs text-text-muted">{note}</p>}
+      <div className="flex flex-wrap items-center gap-x-3.5 gap-y-2">
+        <span
+          aria-hidden
+          className="grid size-9 shrink-0 place-items-center rounded-xl border border-border bg-surface text-[#262626] md:size-10"
+        >
+          <Icon className="size-5" strokeWidth={2} />
+        </span>
+        <h2
+          id={`results-${kind}`}
+          className="text-[22px] font-extrabold leading-[1.2] tracking-[-0.02em] text-text md:text-h2"
+        >
+          {title}
+        </h2>
+        <span className="text-sm tabular-nums text-text-muted">{count}</span>
+        {note && (
+          <span className="w-full text-[13px] text-text-muted sm:ml-auto sm:w-auto">{note}</span>
+        )}
+      </div>
 
-      <ul className="mt-4 flex flex-col gap-3">
-        {posts.slice(0, SHOWN).map((post) => {
-          const href = postHref(post);
-          if (!href) return null;
-          return (
-            <li key={post.id}>
-              <Link
-                href={href}
-                className="block rounded-2xl border border-border bg-surface p-5 transition-colors hover:border-black/20"
-              >
-                <span className="block text-base font-semibold leading-snug text-text">{post.title}</span>
-                {post.excerpt && (
-                  <span className="mt-1.5 line-clamp-2 block text-sm leading-relaxed text-text-muted">
-                    {post.excerpt}
-                  </span>
-                )}
-              </Link>
-            </li>
-          );
-        })}
+      <ul className="mt-5 grid gap-3 sm:grid-cols-2 sm:gap-4">
+        {posts.slice(0, SHOWN).map((post) => (
+          <li key={post.id} className="flex">
+            <SearchResultRow post={post} query={query} />
+          </li>
+        ))}
       </ul>
     </section>
   );

@@ -247,8 +247,6 @@
     "submit": "Search",
     "open": "Open search",
     "close": "Close search",
-    "prompt": "Type a keyword to search the lessons, videos and blog.",
-    "noResults": "Nothing found for “{query}”. Try a shorter keyword.",
     "searchIn": "Search Chíp Chíp",
     "searchHint": "Accented or unaccented input both work.",
     "resultsFor": "Results for “{query}”",
