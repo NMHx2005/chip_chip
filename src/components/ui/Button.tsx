@@ -9,7 +9,7 @@ const BASE =
 
 // A busy button keeps focus, so it is marked with aria-disabled instead of the
 // `disabled` attribute, and swallows the click itself.
-const BUSY = "cursor-progress bg-disabled text-white hover:bg-disabled active:scale-100";
+const BUSY = "cursor-progress bg-disabled text-white [@media(hover:hover)]:hover:bg-disabled active:scale-100";
 
 /** Anything the localized Link accepts: a path, or a path with params and query. */
 type LinkHref = ComponentProps<typeof Link>["href"];

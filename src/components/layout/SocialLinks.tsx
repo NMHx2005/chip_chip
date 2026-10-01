@@ -40,8 +40,8 @@ export function SocialLinks({
             className={cn(
               "flex size-9 items-center justify-center rounded-full transition-colors",
               variant === "dark"
-                ? "text-white/70 hover:bg-white/10 hover:text-white"
-                : "text-text-muted hover:bg-surface-muted hover:text-accent"
+                ? "text-white/70 [@media(hover:hover)]:hover:bg-white/10 [@media(hover:hover)]:hover:text-white"
+                : "text-text-muted [@media(hover:hover)]:hover:bg-surface-muted [@media(hover:hover)]:hover:text-accent"
             )}
           >
             <svg

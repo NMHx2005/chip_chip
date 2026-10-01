@@ -160,7 +160,7 @@ export function Hero() {
                     href={HOME_VIDEO_CREDIT.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline underline-offset-4 hover:text-brand-600"
+                    className="underline underline-offset-4 [@media(hover:hover)]:hover:text-brand-600"
                   >
                     {HOME_VIDEO_CREDIT.label}
                   </a>

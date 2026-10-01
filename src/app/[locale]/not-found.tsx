@@ -74,7 +74,7 @@ export default async function NotFound() {
             <SearchForm
               action={getPathname({ href: "/tim-kiem", locale: locale as Locale })}
               label={t("search")}
-              formLabel={t("search")}
+              formLabel={tSearch("title")}
               placeholder={t("search")}
               submitLabel={tSearch("submit")}
               inputId="error-search"

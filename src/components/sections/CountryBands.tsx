@@ -66,7 +66,7 @@ function CountryBandRow({
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={tc("openSite", { company: company.name })}
-                    className="inline-flex h-9 items-center rounded-full border border-black/10 bg-white/80 px-3.5 text-sm font-semibold text-text/80 transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent motion-reduce:transition-none"
+                    className="inline-flex h-9 items-center rounded-full border border-black/10 bg-white/80 px-3.5 text-sm font-semibold text-text/80 transition-colors [@media(hover:hover)]:hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent motion-reduce:transition-none"
                   >
                     {company.logo ? (
                       // eslint-disable-next-line @next/next/no-img-element

@@ -19,10 +19,16 @@ describe("sign-up kinds", () => {
     expect(new Set(SIGNUP_TYPES).size).toBe(4);
   });
 
-  it("points every type at a route declared in routing", () => {
-    const declared = Object.keys(routing.pathnames);
+  it("points every type at its own route, at the right URLs", () => {
+    const expected = {
+      volunteer: { vi: "/dang-ky/tinh-nguyen", en: "/sign-up/volunteer" },
+      survey: { vi: "/dang-ky/khao-sat", en: "/sign-up/survey" },
+      webinar: { vi: "/dang-ky/webinar", en: "/sign-up/webinar" },
+      competition: { vi: "/dang-ky/cuoc-thi", en: "/sign-up/competition" },
+    } as const;
+
     for (const type of SIGNUP_TYPES) {
-      expect(declared).toContain(SIGNUP_TYPE_PATHS[type]);
+      expect(routing.pathnames[SIGNUP_TYPE_PATHS[type]]).toEqual(expected[type]);
     }
   });
 });

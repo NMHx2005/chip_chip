@@ -32,7 +32,7 @@ export function Disclosure({
     <details open={defaultOpen} className={cn("group bg-surface", className)}>
       <summary
         className={cn(
-          "flex cursor-pointer list-none items-center gap-4 py-3 pl-5 pr-4 font-semibold leading-[1.4] text-text transition-colors duration-fast ease-standard hover:bg-surface-hover hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent motion-reduce:transition-none [&::-webkit-details-marker]:hidden",
+          "flex cursor-pointer list-none items-center gap-4 py-3 pl-5 pr-4 font-semibold leading-[1.4] text-text transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:bg-surface-hover [@media(hover:hover)]:hover:text-accent focus-visible:outline focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-accent motion-reduce:transition-none [&::-webkit-details-marker]:hidden",
           size === "md" ? "min-h-[60px] text-base" : "min-h-[52px] text-sm"
         )}
       >

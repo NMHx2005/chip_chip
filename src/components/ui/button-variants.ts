@@ -1,11 +1,11 @@
 export type ButtonVariant = "primary" | "secondary" | "onDark" | "onDarkOutline";
 
 export const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: "bg-primary text-white hover:bg-primary-hover",
-  secondary: "border-border bg-surface text-text hover:border-black/25",
+  primary: "bg-primary text-white [@media(hover:hover)]:hover:bg-primary-hover",
+  secondary: "border-border bg-surface text-text [@media(hover:hover)]:hover:border-black/25",
   // For the black panel on the About page.
-  onDark: "bg-white text-accent hover:bg-white/90",
-  onDarkOutline: "border-white/50 bg-transparent text-white hover:bg-white/10",
+  onDark: "bg-white text-accent [@media(hover:hover)]:hover:bg-white/90",
+  onDarkOutline: "border-white/50 bg-transparent text-white [@media(hover:hover)]:hover:bg-white/10",
 };
 
 /**

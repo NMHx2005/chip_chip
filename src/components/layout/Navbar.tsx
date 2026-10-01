@@ -183,7 +183,7 @@ export function Navbar() {
                         "relative rounded-full px-4 py-2 text-sm font-medium leading-none transition-colors",
                         active
                           ? "text-white"
-                          : "text-text-nav hover:bg-surface-muted hover:text-accent"
+                          : "text-text-nav [@media(hover:hover)]:hover:bg-surface-muted [@media(hover:hover)]:hover:text-accent"
                       )}
                     >
                       <AnimatePresence>
@@ -266,6 +266,7 @@ export function Navbar() {
               <SearchForm
                 action={getPathname({ href: "/tim-kiem", locale })}
                 label={tSearch("searchIn")}
+                formLabel={tSearch("searchIn")}
                 hint={tSearch("searchHint")}
                 placeholder={tSearch("placeholder")}
                 submitLabel={tSearch("submit")}

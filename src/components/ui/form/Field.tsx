@@ -14,7 +14,7 @@ export type FieldControlProps = {
 
 // 16px on phones stops iOS zooming into the field; 14px from `md` up.
 const CONTROL =
-  "block w-full rounded-xl border border-field bg-white px-3.5 text-base text-text transition-[border-color,box-shadow,background-color] duration-fast ease-standard placeholder:text-[#6E6E6E] hover:border-field-hover focus:border-accent focus:shadow-field-focus focus:outline-none md:text-sm aria-[invalid=true]:border-err-border aria-[invalid=true]:shadow-[inset_0_0_0_1px_#D92D20] aria-[invalid=true]:focus:shadow-[inset_0_0_0_1px_#D92D20,0_0_0_2px_#fff,0_0_0_4px_#314344] disabled:cursor-not-allowed disabled:border-border disabled:bg-surface-muted disabled:text-disabled read-only:cursor-not-allowed read-only:border-border read-only:bg-surface-muted read-only:text-disabled";
+  "block w-full rounded-xl border border-field bg-white px-3.5 text-base text-text transition-[border-color,box-shadow,background-color] duration-fast ease-standard placeholder:text-[#6E6E6E] [@media(hover:hover)]:hover:border-field-hover focus:border-accent focus:shadow-field-focus focus:outline-none md:text-sm aria-[invalid=true]:border-err-border aria-[invalid=true]:shadow-[inset_0_0_0_1px_#D92D20] aria-[invalid=true]:focus:shadow-[inset_0_0_0_1px_#D92D20,0_0_0_2px_#fff,0_0_0_4px_#314344] disabled:cursor-not-allowed disabled:border-border disabled:bg-surface-muted disabled:text-disabled read-only:cursor-not-allowed read-only:border-border read-only:bg-surface-muted read-only:text-disabled";
 
 // forwardRef so a form can focus the first invalid control.
 export const Input = forwardRef<HTMLInputElement, React.InputHTMLAttributes<HTMLInputElement>>(

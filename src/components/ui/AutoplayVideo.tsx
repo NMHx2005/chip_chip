@@ -306,7 +306,7 @@ export function AutoplayVideo({
                   : t("pauseVideo", { label: ariaLabel ?? t("video") })
               }
               className={cn(
-                "absolute bottom-2.5 right-2.5 z-20 flex size-9 items-center justify-center rounded-full bg-black/55 text-white transition-opacity hover:bg-black/75 focus-visible:opacity-100",
+                "absolute bottom-2.5 right-2.5 z-20 flex size-9 items-center justify-center rounded-full bg-black/55 text-white transition-opacity [@media(hover:hover)]:hover:bg-black/75 focus-visible:opacity-100",
                 userPaused ? "opacity-100" : "opacity-0 group-hover:opacity-100"
               )}
             >

@@ -50,7 +50,7 @@ export function RadioSegment<T extends string>({
               onChange={() => onChange(option.value)}
               className="peer sr-only"
             />
-            <span className="flex min-h-11 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-3 text-sm font-medium text-text-nav transition-colors duration-fast ease-standard hover:bg-surface-muted peer-checked:bg-primary peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent peer-disabled:cursor-not-allowed peer-disabled:opacity-60 sm:rounded-full sm:px-5">
+            <span className="flex min-h-11 cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-2xl px-3 text-sm font-medium text-text-nav transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:bg-surface-muted peer-checked:bg-primary peer-checked:text-white peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-accent peer-disabled:cursor-not-allowed peer-disabled:opacity-60 sm:rounded-full sm:px-5">
               {option.value === value && (
                 <Check aria-hidden className="size-4" strokeWidth={2.5} />
               )}

@@ -33,7 +33,7 @@ export function FilterPills({ label, options }: { label: string; options: Filter
                 "inline-flex min-h-11 items-center rounded-full border px-4 text-sm font-medium transition-colors",
                 option.active
                   ? "border-primary bg-primary text-white"
-                  : "border-border bg-surface text-text-nav hover:border-black/20 hover:text-accent"
+                  : "border-border bg-surface text-text-nav [@media(hover:hover)]:hover:border-black/20 [@media(hover:hover)]:hover:text-accent"
               )}
             >
               {option.label}

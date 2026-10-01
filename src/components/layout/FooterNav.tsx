@@ -29,7 +29,7 @@ export function FooterNav({
                 href={link.href}
                 aria-current={current ? "page" : undefined}
                 className={cn(
-                  "inline-flex min-h-11 items-center text-sm underline-offset-4 transition-colors duration-fast ease-standard hover:text-accent hover:underline",
+                  "inline-flex min-h-11 items-center text-sm underline-offset-4 transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:text-accent [@media(hover:hover)]:hover:underline",
                   current ? "font-semibold text-text" : "font-medium text-text-nav"
                 )}
               >

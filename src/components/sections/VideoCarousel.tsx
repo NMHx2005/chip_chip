@@ -176,7 +176,7 @@ export function VideoCarousel() {
               type="button"
               onClick={() => step(-1)}
               aria-label={t("prev")}
-              className="flex size-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-brand-300 hover:text-brand-600"
+              className="flex size-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface transition-colors [@media(hover:hover)]:hover:border-brand-300 [@media(hover:hover)]:hover:text-brand-600"
             >
               <ChevronLeft className="size-5" strokeWidth={2} />
             </button>
@@ -184,7 +184,7 @@ export function VideoCarousel() {
               type="button"
               onClick={() => step(1)}
               aria-label={t("next")}
-              className="flex size-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface transition-colors hover:border-brand-300 hover:text-brand-600"
+              className="flex size-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface transition-colors [@media(hover:hover)]:hover:border-brand-300 [@media(hover:hover)]:hover:text-brand-600"
             >
               <ChevronRight className="size-5" strokeWidth={2} />
             </button>
@@ -193,7 +193,7 @@ export function VideoCarousel() {
           <div className="mt-10 text-center">
             <Link
               href="/video"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors hover:text-brand-700"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-600 transition-colors [@media(hover:hover)]:hover:text-brand-700"
             >
               {t("cta")}
               <ArrowRight className="size-4" strokeWidth={2.2} />

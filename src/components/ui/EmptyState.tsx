@@ -5,7 +5,8 @@ import { cn } from "@/lib/utils";
 /**
  * One frame for "nothing here" and "something went wrong": a dashed box with the
  * chip drawing, a title, a line of explanation and the way out. `tone="error"`
- * announces itself (`role="alert"`); the empty tone is polite (`role="status"`).
+ * announces itself (`role="alert"`) unless `role` says otherwise — a whole-page
+ * error passes `"status"`; the empty tone is polite (`role="status"`).
  *
  * It rises in through the plain CSS `.fade-up`, not framer-motion: a JS-driven
  * `initial` would leave the box at opacity 0 until hydration, so a reader

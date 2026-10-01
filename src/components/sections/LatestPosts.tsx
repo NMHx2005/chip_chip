@@ -32,7 +32,7 @@ export async function LatestPosts({ posts }: { posts: PostSummary[] }) {
 
             <Link
               href="/blog"
-              className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors hover:text-black"
+              className="inline-flex items-center gap-1.5 text-sm font-semibold text-accent transition-colors [@media(hover:hover)]:hover:text-black"
             >
               {t("viewAll")}
               <ArrowRight className="size-4" strokeWidth={2.2} />

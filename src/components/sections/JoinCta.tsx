@@ -101,7 +101,7 @@ export function JoinCta() {
                 href="/dong-gop"
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
-                className="inline-flex h-[52px] items-center gap-2 rounded-3xl bg-white px-6 text-base font-semibold text-accent transition-transform duration-200 hover:scale-[1.02]"
+                className="inline-flex h-[52px] items-center gap-2 rounded-3xl bg-white px-6 text-base font-semibold text-accent transition-transform duration-200 [@media(hover:hover)]:hover:scale-[1.02]"
               >
                 <AnimatedButtonLabel active={hovered}>{t("cta")}</AnimatedButtonLabel>
                 <ArrowRight className="size-[18px]" strokeWidth={2.2} />
@@ -110,7 +110,7 @@ export function JoinCta() {
               {CONTACT_EMAIL && (
                 <a
                   href={`mailto:${CONTACT_EMAIL}`}
-                  className="font-mono text-xs text-white/75 underline underline-offset-4 transition-colors hover:text-white"
+                  className="font-mono text-xs text-white/75 underline underline-offset-4 transition-colors [@media(hover:hover)]:hover:text-white"
                 >
                   {CONTACT_EMAIL}
                 </a>
@@ -130,7 +130,7 @@ export function JoinCta() {
                 <Link
                   key={item.key}
                   href={item.href}
-                  className="w-fit text-left transition-colors hover:text-white"
+                  className="w-fit text-left transition-colors [@media(hover:hover)]:hover:text-white"
                 >
                   {tNav(item.key)}
                 </Link>

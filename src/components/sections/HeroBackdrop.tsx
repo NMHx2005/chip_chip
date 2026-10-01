@@ -147,7 +147,7 @@ export function HeroBackdropCredit({
         type="button"
         onClick={toggle}
         aria-label={playing ? t("backdropPause") : t("backdropPlay")}
-        className="grid size-11 shrink-0 cursor-pointer place-items-center rounded-full border border-border bg-surface text-text-nav transition-colors duration-fast ease-standard hover:border-black/25 hover:text-black motion-reduce:transition-none"
+        className="grid size-11 shrink-0 cursor-pointer place-items-center rounded-full border border-border bg-surface text-text-nav transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:border-black/25 [@media(hover:hover)]:hover:text-black motion-reduce:transition-none"
       >
         {playing ? (
           <Pause aria-hidden className="size-4" strokeWidth={2} />
@@ -162,7 +162,7 @@ export function HeroBackdropCredit({
           target="_blank"
           rel="noopener noreferrer"
           aria-label={t("creditLink", { title: credit.label })}
-          className="inline-flex min-h-11 items-center gap-1.5 underline underline-offset-[3px] hover:text-accent"
+          className="inline-flex min-h-11 items-center gap-1.5 underline underline-offset-[3px] [@media(hover:hover)]:hover:text-accent"
         >
           {credit.label}
           <ExternalLink aria-hidden className="size-3.5 shrink-0" strokeWidth={2} />
