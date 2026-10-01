@@ -301,6 +301,23 @@ lại dùng `aria-disabled` thay `disabled` để giữ focus bàn phím; `ChipA
 CSS không phân giải trong thuộc tính trình bày của SVG). **Đợt thiết kế lại giao diện đã xong (bước
 1–7).** Việc còn lại trước ra mắt là nội dung và dữ liệu — xem mục 6 và mục 7 dưới.
 
+**Bổ sung theo kế hoạch hoạt động — bước 8 (đăng ký, đội ngũ, báo chí).** Kế hoạch:
+`docs/superpowers/plans/2026-10-01-thiet-ke-lai-buoc-8-dang-ky-doi-ngu-bao-chi.md`. Ba việc lấy từ file kế
+hoạch hoạt động của chủ dự án, giữ đúng tinh thần dự án một người: **`/dang-ky`** (en `/sign-up`) là một
+trang với form chọn loại — Tình nguyện viên / Khảo sát / Webinar / Cuộc thi — dùng lại đường `messages`
+sẵn có (**không thêm bảng**; chỉ thêm bốn giá trị `message_kind`), admin đọc chung hộp thư với nhãn
+riêng; form này cũng được **nhúng ở trang Giới thiệu**. Trang Giới thiệu đổi câu chữ theo file ("Khai
+phá những vùng đất mới" / "Hơn cả một dự án… Bắt đầu từ số 0, kết thúc là thành công"; câu CTA cuối
+"Muốn cùng nhau phát triển cộng đồng…"), mục "Những người đã đồng hành" đổi thành **Đội ngũ** (thẻ có
+ảnh khi bổ sung; vẫn ẩn khi rỗng). Thêm **`/bao-chi`** (en `/press`) — thông tin cơ bản, cách dẫn nguồn,
+liên hệ báo chí, chỗ chờ danh sách bài viết về dự án. **Lưu ý khi lên production: migration mới
+`20261001000000_signup_kinds.sql` phải chạy trước khi deploy code** (đúng thứ tự ở README). Kiểm bằng
+trình duyệt: `/vi/dang-ky` 1280/390 không tràn ngang, bốn lựa chọn, gợi ý đổi theo loại, gửi rỗng →
+"Cần sửa 2 chỗ" + focus ô tên; `/vi/bao-chi` đủ ba mục, nút liên hệ 44px; `/vi/gioi-thieu` hiện câu chữ
+mới + form nhúng và mục Đội ngũ vắng khi rỗng; `/en/sign-up` và `/en/press` trả 200. Chưa xác minh:
+trạng thái gửi thành công của form đăng ký (cần Supabase thật) và `verify-security.sh` (cần Supabase
+local).
+
 ---
 
 ## 3. Chạy local
@@ -341,7 +358,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **49 file, 477 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **50 file, 479 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
