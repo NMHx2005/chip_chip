@@ -185,6 +185,29 @@ trang nhúng vì không lưu username nên không dựng được URL xem thư�
 bình luận, danh sách Video, Video chi tiết) **đã xong**; tiếp theo là bước 6 (Tìm kiếm + popover;
 Liên hệ, Giới thiệu, Đóng góp, Bảo mật) và bước 7 (404 và trang lỗi).
 
+**Thiết kế lại giao diện — bước 6a (Tìm kiếm + popover).** Kế hoạch:
+`docs/superpowers/plans/2026-10-01-thiet-ke-lai-buoc-6a-tim-kiem.md`. `/tim-kiem` được ráp lại: hero
+có thẻ số liệu ba ô (bài học/video/blog), ô tìm kiếm dùng chung `SearchForm` nay là pill 52px có
+nhãn hiện (SearchField), dòng kết quả `aria-live` ("Hiển thị {shown} trong {total} kết quả cho
+«query»"), rồi từng nhóm Bài học → Video → Blog (ô biểu tượng 40px, h2 26/22px, đếm theo nhóm, ghi
+chú "Đang hiện 10 kết quả đầu tiên." khi hơn 10) và lưới 2 cột (1 cột dưới 640px) thẻ
+`SearchResultRow` (KindLabel, TopicChip, DifficultyMark, ngày; tiêu đề/trích đoạn tô từ khoá). Tô
+từ khoá bằng `Mark` trên logic thuần `src/lib/search-highlight.ts` (bỏ dấu, khớp **tiền tố theo
+từ**, có test) khớp đúng luật của `search_posts` nên không tô chỗ CSDL không khớp. Trạng thái đầu
+(chưa có từ khoá) và trạng thái rỗng dùng lại `EmptyState` (thêm slot `children`): pill gợi ý 5 từ
+khoá (vi/en khác nhau), chip duyệt theo chủ đề (số đếm từ `countLessonsByTopic`), hộp trích từ khoá
+và hai nút "Xoá từ khoá"/"Xem bài học". Popover navbar theo bản vẽ: panel 380px, nhãn "Tìm trong
+Chíp Chíp" + dòng gợi ý, tự focus khi mở, Escape/bấm ra ngoài đóng và trả focus về nút; ô trong menu
+di động dùng biến thể tối. Khoá i18n không còn dùng: `search.prompt`, `search.noResults`. Không có
+Supabase cục bộ nên trạng thái có kết quả kiểm bằng trang mẫu tạm ở `/ui-gallery/search` (đã xoá):
+1280 lưới 2 cột (thẻ 600px), 390 một cột (350px), `mark` đúng cả khi chỉ khớp tiền tố ("đan" trong
+"đang"), không tràn ngang, mọi target ≥44px; trạng thái đầu/rỗng và popover kiểm trên trang thật
+(popover 380px, nhãn + gợi ý, focus vào ô, Escape trả focus về nút — `press_key` của công cụ trình
+duyệt không phân phối được phím nên Escape kiểm bằng keydown thật). Chưa xác minh: biến thể tối
+trong menu di động, nhánh giảm chuyển động. Trạng thái lỗi tìm kiếm (cần `searchPosts` trả về trạng
+thái) để sang bước 7. Tiếp theo: 6b Liên hệ (+ Báo lỗi bài), 6c Giới thiệu, 6d Đóng góp + Bảo mật,
+rồi bước 7 (404 và trang lỗi).
+
 ---
 
 ## 3. Chạy local
@@ -225,7 +248,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **47 file, 454 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **48 file, 466 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
