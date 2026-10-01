@@ -432,6 +432,7 @@
       "intro": "Spotted an error, something unclear or a broken link? A short description helps the author fix it faster.",
       "bodyLabel": "What is wrong",
       "submit": "Send report",
+      "limitNote": "Up to 3 messages an hour, counting contact and feedback as well.",
       "sent": "Report sent.",
       "sentBody": "Thank you for making this article better! You can report another spot if you find one.",
       "kept": "What you wrote is still in the fields above."

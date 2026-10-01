@@ -16,6 +16,7 @@ export function RadioSegment<T extends string>({
   value,
   onChange,
   hint,
+  disabled = false,
   className,
 }: {
   legend: string;
@@ -25,6 +26,8 @@ export function RadioSegment<T extends string>({
   onChange: (value: T) => void;
   /** A line under the control, wired to the fieldset via aria-describedby. */
   hint?: string;
+  /** Locks the group, e.g. while the form is sending. */
+  disabled?: boolean;
   className?: string;
 }) {
   const uid = useId();
@@ -43,6 +46,7 @@ export function RadioSegment<T extends string>({
               name={name}
               value={option.value}
               checked={option.value === value}
+              disabled={disabled}
               onChange={() => onChange(option.value)}
               className="peer sr-only"
             />

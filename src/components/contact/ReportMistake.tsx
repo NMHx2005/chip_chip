@@ -17,7 +17,7 @@ export async function ReportMistake({ postId }: { postId: string }) {
     <div className="overflow-hidden rounded-2xl border border-border bg-surface">
       <Disclosure
         size="sm"
-        bodyClassName="pr-5"
+        bodyClassName="border-t border-border pr-5"
         summary={
           <span className="flex items-center gap-2">
             <Flag aria-hidden className="size-4 shrink-0" strokeWidth={2} />
@@ -27,6 +27,7 @@ export async function ReportMistake({ postId }: { postId: string }) {
       >
         <p className="mb-5 leading-relaxed">{t("intro")}</p>
         <MessageForm variant="report" postId={postId} />
+        <p className="mt-4 text-[13px] leading-relaxed">{t("limitNote")}</p>
       </Disclosure>
     </div>
   );
