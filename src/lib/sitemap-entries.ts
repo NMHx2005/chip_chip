@@ -14,6 +14,8 @@ export const STATIC_ROUTES: readonly StaticPathname[] = [
   "/gioi-thieu",
   "/lien-he",
   "/dong-gop",
+  "/dang-ky",
+  "/bao-chi",
   "/chinh-sach-bao-mat",
 ];
 

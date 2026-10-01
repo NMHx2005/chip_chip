@@ -31,6 +31,8 @@ export const routing = defineRouting({
     "/lien-he": { vi: "/lien-he", en: "/contact" },
     "/dong-gop": { vi: "/dong-gop", en: "/contribute" },
     "/chinh-sach-bao-mat": { vi: "/chinh-sach-bao-mat", en: "/privacy" },
+    "/dang-ky": { vi: "/dang-ky", en: "/sign-up" },
+    "/bao-chi": { vi: "/bao-chi", en: "/press" },
   },
 });
 
