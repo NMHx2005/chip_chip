@@ -266,9 +266,13 @@ theo cuộn) từ 1024px, dưới đó là dải chip `DocTocTrail`; panel tài 
 chấm đầu dòng và CTA cuối. Không đổi câu chữ Bảo mật hay `PRIVACY_UPDATED`. Kiểm bằng trình duyệt:
 1280/390 không tràn ngang; Đóng góp 2 cột → 1 cột, CTA 44px với tên truy cập đúng ("Nhắn cho tác giả:
 Viết bài"…); Bảo mật 6 mục đánh số, mục lục hiện ở 1280 / ẩn ở 390 (dải chip thay thế), hàng đang đọc
-chuyển theo, và bấm liên kết mục lục đưa heading dừng ở 96px (thoát navbar 78px). Chưa xác minh: nhánh
-giảm chuyển động. **Bước 6 (Tìm kiếm, Liên hệ, Giới thiệu, Đóng góp, Bảo mật) đã xong**; tiếp theo là
-bước 7 (404 và trang lỗi, gồm cả trạng thái lỗi tìm kiếm).
+chuyển theo, và bấm liên kết mục lục đưa heading dừng ở 96px (thoát navbar 78px). Sau review đã sửa:
+phiến thẻ Đóng góp thành dải full-width cao 112px từ `sm` (trước là ô 64px cố định làm mất watermark),
+tiêu đề nằm cạnh phiến trên điện thoại; thêm `h2` ẩn `contribute.waysHead` để tiêu đề thẻ không nhảy
+cấp h1→h3; sửa `calc` của lớp mờ dải chip (và ở `TopicTrail` cùng lỗi có sẵn); nhãn mục lục của rail
+`aria-hidden`, danh sách giữ `role="list"`, chữ dài tự ngắt. Chưa xác minh: nhánh giảm chuyển động.
+**Bước 6 (Tìm kiếm, Liên hệ, Giới thiệu, Đóng góp, Bảo mật) đã xong**; tiếp theo là bước 7 (404 và
+trang lỗi, gồm cả trạng thái lỗi tìm kiếm).
 
 ---
 
