@@ -253,6 +253,23 @@ có viền mảnh; liên kết dùng duration token; đã xoá CSS `.rise-in` th
 vẽ. Chưa xác minh: tên tác giả/người đóng góp dài (chữ hiện ngắn), lưới người đóng góp khi có dữ liệu,
 nhánh giảm chuyển động. Tiếp theo: 6d Đóng góp + Bảo mật, rồi bước 7 (404 và trang lỗi).
 
+**Thiết kế lại giao diện — bước 6d (Đóng góp + Bảo mật).** Kế hoạch:
+`docs/superpowers/plans/2026-10-01-thiet-ke-lai-buoc-6d-dong-gop-bao-mat.md`. `/dong-gop`: hero chỉ
+còn chữ (bỏ thẻ số liệu "4·1·0" theo quyết định D1); bốn thẻ cách góp sức làm lại (`WayCard`: phiến
+màu theo tông xám + ô icon 48px + watermark icon mờ, tiêu đề 18px, thân 14px, nút pill phụ 44px
+"Nhắn cho tác giả" kèm `sr-only` nêu tên cách) xếp 2 cột, trên điện thoại phiến thành ô 64px bên
+trái; panel ghi chú (nền trắng 50%, icon 44px) có liên kết "Những người đã đồng hành" trỏ tới trang
+Giới thiệu (D3) — `contribute.note` rút gọn và thêm `contribute.noteLink`. `/chinh-sach-bao-mat`: thân
+hai cột — mục lục bên phải dùng lại `TocRail` (cố định, hàng đang đọc tô đen, `aria-current="location"`,
+theo cuộn) từ 1024px, dưới đó là dải chip `DocTocTrail`; panel tài liệu bo 24px chứa cột 768px: dòng
+"cập nhật" (icon lịch), sáu mục **đánh số** (vòng số 28/32px + h2 22/26px, `tabindex="-1"`), danh sách
+chấm đầu dòng và CTA cuối. Không đổi câu chữ Bảo mật hay `PRIVACY_UPDATED`. Kiểm bằng trình duyệt:
+1280/390 không tràn ngang; Đóng góp 2 cột → 1 cột, CTA 44px với tên truy cập đúng ("Nhắn cho tác giả:
+Viết bài"…); Bảo mật 6 mục đánh số, mục lục hiện ở 1280 / ẩn ở 390 (dải chip thay thế), hàng đang đọc
+chuyển theo, và bấm liên kết mục lục đưa heading dừng ở 96px (thoát navbar 78px). Chưa xác minh: nhánh
+giảm chuyển động. **Bước 6 (Tìm kiếm, Liên hệ, Giới thiệu, Đóng góp, Bảo mật) đã xong**; tiếp theo là
+bước 7 (404 và trang lỗi, gồm cả trạng thái lỗi tìm kiếm).
+
 ---
 
 ## 3. Chạy local
