@@ -462,12 +462,13 @@ Bài học chỉ là khung rỗng nếu không có bài.
   thì phải thêm cột lưu username.
 - Trang riêng cho từng quốc gia và bản đồ silhouette các nước — nằm ngoài
   phạm vi đã chốt ở roadmap (`docs/superpowers/specs/2026-09-28-lo-trinh-nang-cap-design.md`).
-- Vài mục cosmetic của đợt thiết kế lại giao diện để lại trong ledger, không cái
-  nào chặn ra mắt: `listing/FilterPills.tsx` là code chết (chỉ còn giữ type
-  `ListingHref` mà nơi khác import — nên chuyển type sang `src/lib/types.ts` rồi
-  xoá), lưới thẻ ở `/dang-ky` truyền cứng `columns={2}` cho hiệu ứng so le, và
-  bốn trang đăng ký là bốn file `page.tsx` gần giống nhau (đánh đổi để có URL
-  tiếng Anh riêng cho từng loại). Ghi chú đầy đủ:
+- Bốn trang đăng ký vẫn là bốn file `page.tsx` mỏng (19 dòng, chỉ khác `type`;
+  phần chung nằm ở `SignupTypePage` + `signupTypeMetadata`). Giữ vậy để mỗi loại
+  có URL tiếng Anh riêng — segment động `[type]` không bản địa hoá được theo
+  locale. Đã dọn trong đợt cosmetic: xoá `listing/FilterPills.tsx` (code chết,
+  type `ListingHref` chuyển sang `src/lib/types.ts`). Lưới thẻ ở `/dang-ky`
+  truyền `columns={2}` **không phải lỗi** — giống `/dong-gop`, và hiệu ứng so le
+  theo hàng chỉ có tác dụng khi nhiều thẻ cùng hàng (desktop). Chi tiết:
   `.superpowers/sdd/2026-10-01-thiet-ke-lai-buoc-9-tach-dang-ky/notes.md`.
 
 ---
