@@ -1,5 +1,6 @@
 "use client";
 
+import { useId } from "react";
 import { Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +15,7 @@ export function RadioSegment<T extends string>({
   options,
   value,
   onChange,
+  hint,
   className,
 }: {
   legend: string;
@@ -21,10 +23,15 @@ export function RadioSegment<T extends string>({
   options: { value: T; label: string }[];
   value: T;
   onChange: (value: T) => void;
+  /** A line under the control, wired to the fieldset via aria-describedby. */
+  hint?: string;
   className?: string;
 }) {
+  const uid = useId();
+  const hintId = hint ? `${uid}-hint` : undefined;
+
   return (
-    <fieldset className={cn("m-0 min-w-0 border-0 p-0", className)}>
+    <fieldset aria-describedby={hintId} className={cn("m-0 min-w-0 border-0 p-0", className)}>
       <legend className="mb-2 p-0 text-sm font-semibold leading-[1.4] text-primary">
         {legend}
       </legend>
@@ -48,6 +55,11 @@ export function RadioSegment<T extends string>({
           </label>
         ))}
       </div>
+      {hint && (
+        <p id={hintId} className="mt-2 text-[13px] leading-[1.45] text-text-muted">
+          {hint}
+        </p>
+      )}
     </fieldset>
   );
 }
