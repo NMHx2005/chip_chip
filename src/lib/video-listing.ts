@@ -1,4 +1,4 @@
-import type { ListingHref } from "@/components/listing/FilterPills";
+import type { ListingHref } from "@/lib/types";
 import { TOPIC_IDS } from "@/lib/constants";
 import {
   DEFAULT_LISTING,

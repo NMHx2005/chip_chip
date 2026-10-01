@@ -1,6 +1,11 @@
+import type { ComponentProps } from "react";
+import type { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import type { TopicId } from "@/lib/constants";
 import type { VideoPlatform } from "@/lib/video";
+
+/** A localised destination, as next-intl's `Link` accepts it. */
+export type ListingHref = ComponentProps<typeof Link>["href"];
 
 export type PostKind = "lesson" | "forum" | "video";
 export type PostStatus = "draft" | "published";

@@ -3,7 +3,7 @@
 import { useEffect, useId, useState } from "react";
 import { LayoutGrid, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import type { ListingHref } from "@/components/listing/FilterPills";
+import type { ListingHref } from "@/lib/types";
 import { TOPIC_TONE, type TopicId } from "@/lib/constants";
 import { topicNumber } from "@/lib/post-display";
 import { cn } from "@/lib/utils";

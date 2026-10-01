@@ -1,7 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import type { ListingHref } from "@/components/listing/FilterPills";
+import type { ListingHref } from "@/lib/types";
 import { pageWindow } from "@/lib/listing-params";
 import { cn } from "@/lib/utils";
 

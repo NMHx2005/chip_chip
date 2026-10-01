@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { getTranslations } from "next-intl/server";
 import { X } from "lucide-react";
-import type { ListingHref } from "@/components/listing/FilterPills";
+import type { ListingHref } from "@/lib/types";
 import { SegmentedFilter, type SegmentOption } from "@/components/lessons/SegmentedFilter";
 import { TopicTrail } from "@/components/lessons/TopicTrail";
 import { FilterDisclosure } from "@/components/video/FilterDisclosure";

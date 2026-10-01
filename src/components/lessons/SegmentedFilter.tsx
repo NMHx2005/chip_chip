@@ -1,5 +1,5 @@
 import { Link } from "@/i18n/navigation";
-import type { ListingHref } from "@/components/listing/FilterPills";
+import type { ListingHref } from "@/lib/types";
 import { TopicDisc } from "@/components/lessons/TopicNav";
 import { DifficultyBars } from "@/components/ui/DifficultyMark";
 import type { TopicId } from "@/lib/constants";

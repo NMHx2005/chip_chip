@@ -4,7 +4,7 @@ import { PostCard } from "@/components/forum/PostCard";
 import { Button } from "@/components/ui/Button";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { CardReveal } from "@/components/motion";
-import type { ListingHref } from "@/components/listing/FilterPills";
+import type { ListingHref } from "@/lib/types";
 import { Pagination } from "@/components/listing/Pagination";
 import { SegmentedFilter } from "@/components/lessons/SegmentedFilter";
 import { TopicNav, type TopicNavEntry } from "@/components/lessons/TopicNav";
