@@ -290,7 +290,7 @@ trong ngoặc vuông, ví dụ "[Tên tác giả]". DA5 thay theo danh sách nà
 | Messages | `contact.aside.responseBody` | Thời gian phản hồi thật |
 | Messages | `contribute.*` | Duyệt lại bốn cách đóng góp cho khớp cách làm thật |
 | `src/lib/constants.ts` | `AUTHOR.photo` | Đường dẫn ảnh trong `public/`; `null` thì hiện chữ cái đầu |
-| `src/lib/constants.ts` | `CONTRIBUTORS` | `{ name, role }[]`; rỗng thì mục "Những người đã đồng hành" ẩn |
+| `src/lib/constants.ts` | `CONTRIBUTORS` | `{ name, role, photo }[]`; rỗng thì mục "Đội ngũ" ẩn; `photo` là đường dẫn trong `public/` hoặc `null` (hiện chữ cái đầu) |
 | `src/lib/constants.ts` | `CONTACT_EMAIL` | Email liên hệ; rỗng thì ẩn ở trang Liên hệ và khối cuối trang chủ |
 | `src/lib/constants.ts` | `SOCIAL_LINKS` | URL Facebook, TikTok; rỗng thì ẩn |
 | `src/lib/constants.ts` | `PRIVACY_UPDATED` | Đổi khi sửa chính sách bảo mật |

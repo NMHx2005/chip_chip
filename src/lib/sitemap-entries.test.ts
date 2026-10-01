@@ -55,6 +55,17 @@ describe("staticSitemapEntries", () => {
     );
   });
 
+  it("lists the sign-up and press pages at their localised URLs", () => {
+    expect(urls).toEqual(
+      expect.arrayContaining([
+        `${SITE_URL}/vi/dang-ky`,
+        `${SITE_URL}/en/sign-up`,
+        `${SITE_URL}/vi/bao-chi`,
+        `${SITE_URL}/en/press`,
+      ])
+    );
+  });
+
   it("keeps the existing pages and leaves search out", () => {
     expect(urls).toEqual(
       expect.arrayContaining([`${SITE_URL}/vi`, `${SITE_URL}/en/lessons`, `${SITE_URL}/en/about`])

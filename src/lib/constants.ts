@@ -16,12 +16,13 @@ export const NAV_ITEMS: {
 
 /** The trust pages linked from every footer. */
 export const FOOTER_LINKS: {
-  key: "contact" | "contribute" | "signup" | "privacy";
+  key: "contact" | "contribute" | "signup" | "press" | "privacy";
   href: StaticPathname;
 }[] = [
   { key: "contact", href: "/lien-he" },
   { key: "contribute", href: "/dong-gop" },
   { key: "signup", href: "/dang-ky" },
+  { key: "press", href: "/bao-chi" },
   { key: "privacy", href: "/chinh-sach-bao-mat" },
 ];
 

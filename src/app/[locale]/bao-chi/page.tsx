@@ -43,8 +43,7 @@ export default async function PressPage({
             <section key={section.id} aria-labelledby={`press-${section.id}`} className="mt-10 first:mt-0">
               <h2
                 id={`press-${section.id}`}
-                tabIndex={-1}
-                className="text-balance text-[22px] font-extrabold leading-tight tracking-[-0.02em] text-text [overflow-wrap:anywhere] focus:outline-none md:text-h2"
+                className="text-balance text-[22px] font-extrabold leading-tight tracking-[-0.02em] text-text [overflow-wrap:anywhere] md:text-h2"
               >
                 {t(`${section.id}Title`)}
               </h2>
@@ -57,8 +56,7 @@ export default async function PressPage({
           <section aria-labelledby="press-contact" className="mt-10">
             <h2
               id="press-contact"
-              tabIndex={-1}
-              className="text-balance text-[22px] font-extrabold leading-tight tracking-[-0.02em] text-text [overflow-wrap:anywhere] focus:outline-none md:text-h2"
+              className="text-balance text-[22px] font-extrabold leading-tight tracking-[-0.02em] text-text [overflow-wrap:anywhere] md:text-h2"
             >
               {t("contactTitle")}
             </h2>
