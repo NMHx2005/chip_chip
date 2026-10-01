@@ -470,6 +470,7 @@
     "eyebrow": "Your data",
     "description": "Chíp Chíp collects very little. This page says exactly what, what it is for, and how long it is kept.",
     "updated": "Updated {date}",
+    "tocHead": "On this page",
     "sections": {
       "collect": {
         "title": "What we collect",

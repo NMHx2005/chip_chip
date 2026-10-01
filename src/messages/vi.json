@@ -470,6 +470,7 @@
     "eyebrow": "Dữ liệu của bạn",
     "description": "Chíp Chíp thu rất ít dữ liệu. Trang này nói rõ đó là dữ liệu gì, dùng vào việc gì và giữ trong bao lâu.",
     "updated": "Cập nhật ngày {date}",
+    "tocHead": "Trên trang này",
     "sections": {
       "collect": {
         "title": "Chúng tôi thu những gì",
