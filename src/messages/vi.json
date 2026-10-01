@@ -230,7 +230,13 @@
       "vi": "Xem bản tiếng Việt",
       "en": "Xem bản tiếng Anh"
     },
-    "related": "Video liên quan"
+    "related": "Video liên quan",
+    "loadsAfterPlay": "Video chỉ được tải từ {platform} sau khi bạn bấm phát.",
+    "playAria": "Phát video: {title} ({platform})",
+    "loadingPlayer": "Đang tải video",
+    "opensInNewTab": "(mở trong tab mới)",
+    "relatedLessonHeading": "Bài học liên quan",
+    "noDescription": "Video này chưa có phần mô tả."
   },
   "search": {
     "title": "Tìm kiếm",

@@ -230,7 +230,13 @@
       "vi": "Watch in Vietnamese",
       "en": "Watch in English"
     },
-    "related": "Related videos"
+    "related": "Related videos",
+    "loadsAfterPlay": "The video only loads from {platform} after you press play.",
+    "playAria": "Play video: {title} ({platform})",
+    "loadingPlayer": "Loading video",
+    "opensInNewTab": "(opens in a new tab)",
+    "relatedLessonHeading": "Related lesson",
+    "noDescription": "This video has no description yet."
   },
   "search": {
     "title": "Search",
