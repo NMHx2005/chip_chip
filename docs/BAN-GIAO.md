@@ -162,6 +162,29 @@ file đó). Bỏ `scroll-mt-24` ở neo danh sách của Bài học và Blog vì
 `filtersToggleActive`, `empty`, `emptyFiltered`. Chưa xác minh: danh sách có video thật (không
 có Supabase cục bộ; kiểm bằng trang mẫu tạm), `npm run build`.
 
+**Thiết kế lại giao diện — bước 5e (Video chi tiết).** Kế hoạch:
+`docs/superpowers/plans/2026-09-30-thiet-ke-lai-buoc-5e-video-chi-tiet.md`. `/video/[slug]` được
+ráp lại và **không** dùng `ArticleShell`: một cột trái 896px, không hero, không mục lục. Player
+lớn bấm-để-phát dùng lại facade của bài viết qua biến thể `video-embed-lg`
+(`videoFacadeHtml(ref, locale, { large, title })`): bo 24px, nút tròn 68px viền trắng 3px, iframe
+mờ dần khi tải xong (`is-loaded`); dưới player là dòng nhắc quyền riêng tư có biểu tượng khoá.
+Đầu trang: hàng chip (nguồn `Cpu`/`Bookmark`, `DifficultyMark`, `TopicChip`), h1 46/34px, hàng
+ngày đăng + nút chuyển ngôn ngữ 44px (`hrefLang`), hàng nút: chính "Xem bài học liên quan"
+(`BookOpen` + mũi tên) chỉ khi có bài học, phụ "Xem trên {platform}" mở tab mới (`sr-only`
+"(mở trong tab mới)"). Thân bài rỗng hiện hộp nét đứt với `videos.noDescription`; khối "Bài học
+liên quan" (h2 26px + `RelatedLessonCard` dạng thu gọn) chỉ khi có bài học. `VideoFacades` nay
+thêm `is-loaded` khi iframe tải xong và giữ một vùng `sr-only role="status"` đọc "Đang tải video"
+trong lúc chờ. Truy vấn `getLessonByTranslation` mang thêm `excerpt`, `difficulty`, `published_at`
+(không migration), qua `toRelatedLesson` có test. Không có Supabase cục bộ nên kiểm bố cục bằng
+trang mẫu tạm ở `/ui-gallery/video-detail` (đã xoá): ở 1280 và 390 không tràn ngang; player
+896×504 (TikTok 340×604 căn giữa), nút và hàng đều 44px, h1 46/34px; bấm facade tạo iframe được
+focus, có `is-loaded` và opacity 1, chuột phải/Ctrl mở tab mới (không chặn), thân rỗng hiện hộp,
+thiếu bài học/nguồn thì ẩn nút và player. Chưa xác minh: nhánh giảm chuyển động (công cụ trình
+duyệt không giả lập được), `npm run build`. **Giới hạn đã biết (D3):** "Xem trên TikTok" vẫn mở
+trang nhúng vì không lưu username nên không dựng được URL xem thường. Bước 5 (Blog, bài viết,
+bình luận, danh sách Video, Video chi tiết) **đã xong**; tiếp theo là bước 6 (Tìm kiếm + popover;
+Liên hệ, Giới thiệu, Đóng góp, Bảo mật) và bước 7 (404 và trang lỗi).
+
 ---
 
 ## 3. Chạy local
@@ -202,7 +225,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **46 file, 445 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **47 file, 453 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
@@ -272,6 +295,9 @@ Bài học chỉ là khung rỗng nếu không có bài.
   hưởng chức năng, ví dụ: tên kênh video dài không được cắt gọn trong thẻ,
   hộp tìm kiếm trên di động không tự focus, `rebuildSearchText` chạy tuần tự
   từng dòng (ổn ở quy mô hiện tại). Không có cái nào chặn ra mắt.
+- **"Xem trên TikTok" mở trang nhúng, không phải URL xem thường.** Không lưu
+  username TikTok nên không dựng được link watch (bước 5e, quyết định D3). Sửa
+  thì phải thêm cột lưu username.
 - Trang riêng cho từng quốc gia và bản đồ silhouette các nước — nằm ngoài
   phạm vi đã chốt ở roadmap (`docs/superpowers/specs/2026-09-28-lo-trinh-nang-cap-design.md`).
 
