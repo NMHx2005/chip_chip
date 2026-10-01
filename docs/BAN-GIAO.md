@@ -274,6 +274,29 @@ cấp h1→h3; sửa `calc` của lớp mờ dải chip (và ở `TopicTrail` c�
 **Bước 6 (Tìm kiếm, Liên hệ, Giới thiệu, Đóng góp, Bảo mật) đã xong**; tiếp theo là bước 7 (404 và
 trang lỗi, gồm cả trạng thái lỗi tìm kiếm).
 
+**Thiết kế lại giao diện — bước 7 (404 và trang lỗi).** Kế hoạch:
+`docs/superpowers/plans/2026-10-01-thiet-ke-lai-buoc-7-trang-loi.md`. Trang lỗi dùng chung khung
+`EmptyState` mở rộng (thêm `eyebrow`, cấp tiêu đề `h1`, biến thể chip và slot `after` — đây chính là
+"ErrorState" của bản vẽ), và `ChipArt` vẽ thêm "404"/"!" trong cùng hình chip. **404 toàn cục**: panel
+nét đứt (eyebrow "Lỗi 404", h1 46/34, mô tả), ô tìm kiếm dùng lại `SearchForm` (nhãn ẩn, GET sang
+`/tim-kiem?q=`), hai nút (về trang chủ / xem bài học), hàng pill "Hoặc đi tới" (Blog, Video, Giới
+thiệu) và dòng gợi ý "Báo cho chúng tôi" (liên kết 44px) — chạy cả khi tắt JS. **404 bài viết** (bài
+học/blog/video) dùng một `ArticleNotFound` chung: cùng khung, tiêu đề/mô tả theo loại, nút về danh
+sách + nút Tìm kiếm; không đánh dấu mục menu (vỏ chung không biết ngữ cảnh) — chấp nhận. **Trang lỗi
+runtime** (`error.tsx`): chip "!", nút Thử lại có trạng thái đang gửi (`aria-busy`, nhãn "Đang thử
+lại…", dòng `role=status`, không spinner) và dòng ER7 `role=alert` sau lần thử lại đầu vẫn lỗi; hiện
+`error.digest` (chọn-cả-chuỗi, không nút sao chép) và dòng gợi ý báo lỗi. **Trạng thái lỗi tìm kiếm**
+(đã hoãn từ 6a): `searchPosts` nay trả `{ posts, failed }`; nếu một nhóm lỗi thì trang hiện dòng "Không
+lấy được kết quả cho «q»" và panel lỗi (Thử lại / Xem bài học) thay vì coi như rỗng. Khoá i18n: thêm
+namespace `errors.*` và `search.resultFailed/errorTitle/errorBody/retry`; bỏ khoá thừa
+(`common.error/retry/notFound*/backHome/errorDescription`, ba `notFound` chi tiết). Kiểm bằng trình
+duyệt: các URL lạ trả **404** (toàn cục và ba loại bài), panel/h1/nút/pill/hint đúng ở 1280 và 390
+(không tràn ngang, liên kết gợi ý 44px); trạng thái lỗi tìm kiếm và trang lỗi runtime kiểm qua gallery
+tạm (đã xoá) — 2 panel lỗi, mã lỗi hiện, bấm Thử lại thì dòng ER7 hiện. Giới hạn đã biết vẫn còn: 404
+của route chi tiết do Next 14 stream khung chung trước khi hydrate (chỉ nâng cấp Next mới sửa).
+**Đợt thiết kế lại giao diện đã xong (bước 1–7).** Việc còn lại trước ra mắt là nội dung và dữ liệu —
+xem mục 6 và mục 7 dưới.
+
 ---
 
 ## 3. Chạy local
