@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { getFormatter, getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
+import { Calendar } from "lucide-react";
+import { TocRail } from "@/components/forum/TocRail";
+import { DocTocTrail } from "@/components/legal/DocTocTrail";
 import { PageHero } from "@/components/sections/PageHero";
+import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/i18n/routing";
 import { PRIVACY_UPDATED } from "@/lib/constants";
 import { localeAlternates } from "@/lib/seo";
@@ -44,51 +47,83 @@ export default async function PrivacyPage({
 
   const [t, format] = await Promise.all([getTranslations("privacy"), getFormatter()]);
 
+  const entries = SECTIONS.map((section) => ({
+    id: `privacy-${section.id}`,
+    text: t(`sections.${section.id}.title`),
+    level: 2,
+  }));
+  const updated = format.dateTime(new Date(`${PRIVACY_UPDATED}T00:00:00Z`), {
+    dateStyle: "long",
+    timeZone: "UTC",
+  });
+
   return (
     <>
-      <PageHero
-        eyebrow={t("eyebrow")}
-        title={t("title")}
-        description={t("description")}
-      />
+      <PageHero eyebrow={t("eyebrow")} title={t("title")} description={t("description")} />
 
-      <article className="px-5 pb-16 md:px-8 md:pb-20">
-        <div className="mx-auto w-full max-w-3xl">
-        <p className="text-sm text-text-muted">
-          <time dateTime={PRIVACY_UPDATED}>
-            {t("updated", {
-              date: format.dateTime(new Date(`${PRIVACY_UPDATED}T00:00:00Z`), {
-                dateStyle: "long",
-                timeZone: "UTC",
-              }),
-            })}
-          </time>
-        </p>
+      <section className="px-5 pb-16 md:px-8 md:pb-20">
+        <div className="mx-auto w-full max-w-content">
+          <DocTocTrail label={t("tocHead")} entries={entries} className="mb-6" />
 
-        {SECTIONS.map((section) => (
-          <section key={section.id} aria-labelledby={`privacy-${section.id}`} className="mt-10">
-            <h2
-              id={`privacy-${section.id}`}
-              className="text-xl font-bold tracking-[-0.01em] text-text"
-            >
-              {t(`sections.${section.id}.title`)}
-            </h2>
-            <ul className="mt-4 flex list-disc flex-col gap-3 pl-5 text-[15px] leading-relaxed text-text-nav marker:text-text-muted">
-              {section.items.map((item) => (
-                <li key={item}>{t(`sections.${section.id}.items.${item}`)}</li>
-              ))}
-            </ul>
-          </section>
-        ))}
+          <div className="flex gap-10">
+            <aside className="hidden w-[260px] shrink-0 lg:block">
+              <div className="sticky top-24">
+                <p className="mb-2 text-sm font-bold text-text">{t("tocHead")}</p>
+                <TocRail label={t("tocHead")} entries={entries} />
+              </div>
+            </aside>
 
-        <Link
-          href="/lien-he"
-          className="mt-10 inline-flex min-h-11 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-white transition-colors hover:bg-black/80"
-        >
-          {t("contactLink")}
-        </Link>
+            <article className="min-w-0 flex-1 rounded-3xl border border-border bg-surface px-5 py-8 lg:px-14 lg:py-12">
+              <div className="mx-auto max-w-[768px]">
+                <p className="flex items-center gap-2 border-b border-hairline pb-6 text-sm tabular-nums text-text-muted">
+                  <Calendar aria-hidden className="size-4 shrink-0" strokeWidth={2} />
+                  <time dateTime={PRIVACY_UPDATED}>{t("updated", { date: updated })}</time>
+                </p>
+
+                {SECTIONS.map((section, index) => (
+                  <section
+                    key={section.id}
+                    aria-labelledby={`privacy-${section.id}`}
+                    className="mt-8 md:mt-10"
+                  >
+                    <div className="flex items-center gap-3">
+                      <span
+                        aria-hidden
+                        className="grid size-7 shrink-0 place-items-center rounded-full bg-surface-muted text-xs font-extrabold tabular-nums text-[#262626] md:size-8 md:text-[13px]"
+                      >
+                        {index + 1}
+                      </span>
+                      <h2
+                        id={`privacy-${section.id}`}
+                        tabIndex={-1}
+                        className="text-[22px] font-extrabold leading-tight tracking-[-0.02em] text-text focus:outline-none md:text-h2"
+                      >
+                        {t(`sections.${section.id}.title`)}
+                      </h2>
+                    </div>
+                    <ul className="mt-4 flex flex-col gap-3.5 text-base leading-[1.7] text-[#262626]">
+                      {section.items.map((item) => (
+                        <li
+                          key={item}
+                          className="relative pl-[22px] before:absolute before:left-0 before:top-[0.62em] before:size-1.5 before:rounded-full before:bg-[#8C8C8C] before:content-['']"
+                        >
+                          {t(`sections.${section.id}.items.${item}`)}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                ))}
+
+                <div className="mt-10 border-t border-hairline pt-8">
+                  <Button href="/lien-he" arrow className="w-full sm:w-auto">
+                    {t("contactLink")}
+                  </Button>
+                </div>
+              </div>
+            </article>
+          </div>
         </div>
-      </article>
+      </section>
     </>
   );
 }
