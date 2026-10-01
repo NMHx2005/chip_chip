@@ -338,6 +338,8 @@
     },
     "faq": {
       "headline": "Frequently asked questions",
+      "moreHint": "Not seeing your question?",
+      "moreLink": "Write to the author",
       "items": {
         "free": {
           "question": "Is Chíp Chíp free?",

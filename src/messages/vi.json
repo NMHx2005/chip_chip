@@ -338,6 +338,8 @@
     },
     "faq": {
       "headline": "Câu hỏi thường gặp",
+      "moreHint": "Chưa thấy câu trả lời?",
+      "moreLink": "Viết cho tác giả",
       "items": {
         "free": {
           "question": "Chíp Chíp có miễn phí không?",
