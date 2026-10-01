@@ -1,18 +1,19 @@
-"use client";
-
 import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
 import { ChipArt, type ChipVariant } from "@/components/ui/ChipArt";
-import { EASE_STANDARD } from "@/components/motion/tokens";
 import { cn } from "@/lib/utils";
 
 /**
  * One frame for "nothing here" and "something went wrong": a dashed box with the
  * chip drawing, a title, a line of explanation and the way out. `tone="error"`
  * announces itself (`role="alert"`); the empty tone is polite (`role="status"`).
- * It rises in (design M12); under prefers-reduced-motion it just appears.
  *
- * The error pages are this same frame with an eyebrow, a `h1` and the extra
+ * It rises in through the plain CSS `.fade-up`, not framer-motion: a JS-driven
+ * `initial` would leave the box at opacity 0 until hydration, so a reader
+ * without JavaScript — exactly the reader of a 404 or an error page — would see
+ * nothing. The CSS animation runs on its own and the reduced-motion block
+ * switches it off.
+ *
+ * The error pages are this same frame with an eyebrow, an `h1` and the extra
  * slots (the design's separate "ErrorState"); everything else keeps the defaults.
  */
 export function EmptyState({
@@ -45,17 +46,13 @@ export function EmptyState({
   compact?: boolean;
   className?: string;
 }) {
-  const reduce = useReducedMotion();
   const Heading = headingLevel;
 
   return (
-    <motion.div
+    <div
       role={tone === "error" ? "alert" : "status"}
-      initial={reduce ? false : { opacity: 0, y: 24 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: EASE_STANDARD }}
       className={cn(
-        "flex flex-col items-center justify-center gap-4 rounded-3xl border-[1.5px] border-dashed border-[#A8A8A8] bg-white/50 px-8 text-center",
+        "fade-up flex flex-col items-center justify-center gap-4 rounded-3xl border-[1.5px] border-dashed border-[#A8A8A8] bg-white/50 px-8 text-center",
         compact ? "min-h-[280px] py-10" : "min-h-[400px] py-14",
         className
       )}
@@ -68,7 +65,10 @@ export function EmptyState({
         </p>
       )}
       <Heading
-        className={cn("text-balance text-text", headingLevel === "h1" ? "text-h1 md:text-h1-lg" : "text-h2")}
+        className={cn(
+          "text-balance text-text",
+          headingLevel === "h1" ? "text-h1 md:text-h1-lg" : "text-h2"
+        )}
       >
         {title}
       </Heading>
@@ -80,6 +80,6 @@ export function EmptyState({
       {children}
       {actions && <div className="mt-2 flex flex-wrap justify-center gap-3">{actions}</div>}
       {after}
-    </motion.div>
+    </div>
   );
 }

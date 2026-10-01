@@ -631,3 +631,27 @@
     animation: none;
   }
 }
+
+/* Empty/error panel entrance (design M12 / ER1). Plain CSS, not framer-motion:
+   a JS-driven initial state would leave the box at opacity 0 until hydration,
+   so a 404 or an error page would be blank without JavaScript. */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.25, 0.1, 0.25, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-up {
+    animation: none;
+  }
+}

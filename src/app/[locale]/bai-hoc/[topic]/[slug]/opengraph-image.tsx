@@ -13,13 +13,14 @@ export default async function LessonOpenGraphImage({
 }: {
   params: { locale: string; topic: string; slug: string };
 }) {
-  const [post, t] = await Promise.all([
+  const [post, t, tErrors] = await Promise.all([
     getPostBySlug(params.locale as Locale, params.slug, "lesson"),
     getTranslations({ locale: params.locale, namespace: "lessons" }),
+    getTranslations({ locale: params.locale, namespace: "errors" }),
   ]);
 
   return renderOgCard({
     eyebrow: t("title"),
-    title: post?.title ?? t("notFound"),
+    title: post?.title ?? tErrors("titleLesson"),
   });
 }

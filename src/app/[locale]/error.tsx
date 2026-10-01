@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { RotateCcw } from "lucide-react";
 import { Button, buttonClassName } from "@/components/ui/Button";
@@ -23,24 +23,31 @@ export default function LocaleError({
   reset: () => void;
 }) {
   const t = useTranslations("errors");
-  const [isPending, startTransition] = useTransition();
+  const [retrying, setRetrying] = useState(false);
   const [failedAgain, setFailedAgain] = useState(false);
-  const attempted = useRef(false);
+  const retryingRef = useRef(false);
 
   useEffect(() => {
     console.error("[locale error]", error);
   }, [error]);
 
-  // A retry that works unmounts this boundary; still being mounted when the
-  // transition ends means it failed again (design ER7).
+  // A retry that works unmounts this boundary; still being here means the
+  // retry failed and handed us a new error (design ER7). The flag lives in a
+  // ref so this effect only runs when the error changes.
   useEffect(() => {
-    if (attempted.current && !isPending) setFailedAgain(true);
-  }, [isPending]);
+    if (!retryingRef.current) return;
+    retryingRef.current = false;
+    setRetrying(false);
+    setFailedAgain(true);
+  }, [error]);
 
   const retry = () => {
-    attempted.current = true;
+    if (retryingRef.current) return;
+    retryingRef.current = true;
     setFailedAgain(false);
-    startTransition(() => reset());
+    setRetrying(true);
+    // Let the busy state paint before the (synchronous) retry runs.
+    requestAnimationFrame(() => reset());
   };
 
   return (
@@ -57,26 +64,27 @@ export default function LocaleError({
           actions={
             <>
               <div className="flex flex-col items-center gap-3">
+                {/* aria-disabled, not disabled: a disabled control drops focus. */}
                 <button
                   type="button"
                   onClick={retry}
-                  disabled={isPending}
-                  aria-busy={isPending || undefined}
+                  aria-disabled={retrying || undefined}
+                  aria-busy={retrying || undefined}
                   className={cn(
                     buttonClassName("primary"),
-                    isPending &&
-                      "cursor-progress bg-disabled text-white hover:bg-disabled active:scale-100"
+                    retrying &&
+                      "cursor-progress bg-disabled text-white [@media(hover:hover)]:hover:bg-disabled active:scale-100"
                   )}
                 >
                   <RotateCcw aria-hidden className="size-4 shrink-0" strokeWidth={2.2} />
-                  {isPending ? t("retrying") : t("retry")}
+                  {retrying ? t("retrying") : t("retry")}
                 </button>
-                {isPending && (
+                {retrying && (
                   <p role="status" className="text-sm leading-relaxed text-text-muted">
                     {t("retryStatus")}
                   </p>
                 )}
-                {failedAgain && !isPending && (
+                {failedAgain && !retrying && (
                   <p role="alert" className="text-sm font-medium leading-relaxed text-err">
                     {t("retryFailed")}
                   </p>

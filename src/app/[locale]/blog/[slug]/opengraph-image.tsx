@@ -13,13 +13,14 @@ export default async function ForumPostOpenGraphImage({
 }: {
   params: { locale: string; slug: string };
 }) {
-  const [post, t] = await Promise.all([
+  const [post, t, tErrors] = await Promise.all([
     getPostBySlug(params.locale as Locale, params.slug, "forum"),
     getTranslations({ locale: params.locale, namespace: "forum" }),
+    getTranslations({ locale: params.locale, namespace: "errors" }),
   ]);
 
   return renderOgCard({
     eyebrow: t("title"),
-    title: post?.title ?? t("notFound"),
+    title: post?.title ?? tErrors("titlePost"),
   });
 }

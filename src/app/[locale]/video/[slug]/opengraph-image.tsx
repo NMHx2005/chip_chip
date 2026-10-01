@@ -13,13 +13,14 @@ export default async function VideoOpenGraphImage({
 }: {
   params: { locale: string; slug: string };
 }) {
-  const [post, t] = await Promise.all([
+  const [post, t, tErrors] = await Promise.all([
     getVideoBySlug(params.locale as Locale, params.slug),
     getTranslations({ locale: params.locale, namespace: "videos" }),
+    getTranslations({ locale: params.locale, namespace: "errors" }),
   ]);
 
   return renderOgCard({
     eyebrow: t("title"),
-    title: post?.title ?? t("notFound"),
+    title: post?.title ?? tErrors("titleVideo"),
   });
 }

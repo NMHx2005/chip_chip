@@ -30,7 +30,9 @@ export function ChipArt({
           y="49"
           textAnchor="middle"
           dominantBaseline="central"
-          fontFamily="var(--font-be-vietnam-pro), sans-serif"
+          // `style`, not the presentation attribute: custom properties do not
+          // resolve in SVG attributes.
+          style={{ fontFamily: "var(--font-be-vietnam-pro), sans-serif" }}
           fontSize={variant === "notFound" ? 18 : 30}
           fontWeight="800"
           fill="#0D0D0D"
