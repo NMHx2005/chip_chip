@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 export function EmptyState({
   title,
   description,
+  children,
   actions,
   tone = "empty",
   compact = false,
@@ -22,6 +23,8 @@ export function EmptyState({
 }: {
   title: string;
   description?: string;
+  /** Extra content between the description and the actions (search suggestions, a query box). */
+  children?: ReactNode;
   actions?: ReactNode;
   tone?: "empty" | "error";
   /** Shorter box for a list that sits inside a page section. */
@@ -49,6 +52,7 @@ export function EmptyState({
           {description}
         </p>
       )}
+      {children}
       {actions && <div className="mt-2 flex flex-wrap justify-center gap-3">{actions}</div>}
     </motion.div>
   );

@@ -4,34 +4,57 @@ import { MAX_QUERY_LENGTH } from "@/lib/search-query";
 import { cn } from "@/lib/utils";
 
 /**
- * The search form: a plain GET to the search page, so it works without
- * JavaScript. No hooks, so the navbar (client) and the search page (server)
- * both render it.
+ * The search field (design "SearchField"): a plain GET to the search page, so
+ * it works without JavaScript. No hooks, so the navbar (client) and the search
+ * page (server) both render it. `inputId` is required so the visible label can
+ * point at the input.
  */
 export function SearchForm({
   action,
   label,
   placeholder,
   submitLabel,
+  inputId,
+  hint,
   defaultValue = "",
   inputRef,
   variant = "light",
+  className,
 }: {
   action: string;
   label: string;
   placeholder: string;
   submitLabel: string;
+  inputId: string;
+  hint?: string;
   defaultValue?: string;
   inputRef?: Ref<HTMLInputElement>;
   variant?: "light" | "dark";
+  className?: string;
 }) {
   const dark = variant === "dark";
 
   return (
-    <form method="get" action={action} role="search" className="flex items-center gap-2">
-      <label className="min-w-0 flex-1">
-        <span className="sr-only">{label}</span>
+    <form method="get" action={action} role="search" className={cn("flex flex-col gap-2.5", className)}>
+      <label
+        htmlFor={inputId}
+        className={cn(
+          "text-xs font-bold uppercase tracking-[0.08em]",
+          dark ? "text-[#D1D1D1]" : "text-text-muted"
+        )}
+      >
+        {label}
+      </label>
+      <div
+        className={cn(
+          "flex items-center gap-2 rounded-full border pl-5 pr-1 transition-colors duration-fast ease-standard focus-within:outline focus-within:outline-2 focus-within:outline-offset-2",
+          dark
+            ? "border-white/50 bg-white/10 focus-within:border-white focus-within:outline-white [@media(hover:hover)]:hover:border-white/75"
+            : "border-field bg-surface focus-within:border-primary focus-within:outline-accent [@media(hover:hover)]:hover:border-field-hover"
+        )}
+      >
         <input
+          id={inputId}
           ref={inputRef}
           type="search"
           name="q"
@@ -41,23 +64,22 @@ export function SearchForm({
           autoComplete="off"
           enterKeyHint="search"
           className={cn(
-            "h-11 w-full rounded-xl border px-3.5 text-base outline-none md:text-sm",
-            dark
-              ? "border-white/20 bg-white/10 text-white placeholder:text-white/60 focus:border-white/50 focus-visible:ring-2 focus-visible:ring-white"
-              : "border-border bg-surface text-text placeholder:text-text-muted focus:border-black/40 focus-visible:ring-2 focus-visible:ring-accent"
+            "h-11 min-w-0 flex-1 bg-transparent text-base outline-none [&::-webkit-search-cancel-button]:hidden",
+            dark ? "text-white placeholder:text-white/70" : "text-text placeholder:text-[#6B6B6B]"
           )}
         />
-      </label>
-      <button
-        type="submit"
-        className={cn(
-          "flex h-11 shrink-0 cursor-pointer items-center gap-1.5 rounded-xl px-4 text-sm font-semibold transition-colors",
-          dark ? "bg-white text-primary hover:bg-white/90" : "bg-primary text-white hover:bg-black/80"
-        )}
-      >
-        <Search className="size-4" strokeWidth={2.2} aria-hidden />
-        {submitLabel}
-      </button>
+        <button
+          type="submit"
+          className={cn(
+            "inline-flex h-11 shrink-0 cursor-pointer items-center gap-2 rounded-full px-[22px] text-sm font-semibold transition-colors duration-fast ease-standard active:scale-[0.98] motion-reduce:active:scale-100",
+            dark ? "bg-white text-primary hover:bg-[#EFEFEF]" : "bg-primary text-white hover:bg-primary-hover"
+          )}
+        >
+          <Search aria-hidden className="size-4 shrink-0" strokeWidth={2.2} />
+          {submitLabel}
+        </button>
+      </div>
+      {hint && <p className="text-[13px] leading-[1.5] text-text-muted">{hint}</p>}
     </form>
   );
 }
