@@ -8,7 +8,16 @@ import { isUuid } from "@/lib/shared-fields";
  * code rather than coerced — `String(["x"])` would otherwise sail through.
  */
 
-export const MESSAGE_KINDS = ["contact", "feedback", "content_error"] as const;
+export const MESSAGE_KINDS = [
+  "contact",
+  "feedback",
+  "content_error",
+  // Sign-ups from /dang-ky; they share this inbox and its rate limit.
+  "volunteer",
+  "survey",
+  "webinar",
+  "competition",
+] as const;
 export type MessageKind = (typeof MESSAGE_KINDS)[number];
 
 export type MessageInput = {

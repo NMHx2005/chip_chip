@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 type Row = {
   id: string;
-  kind: "contact" | "feedback" | "content_error";
+  kind: "contact" | "feedback" | "content_error" | "volunteer" | "survey" | "webinar" | "competition";
   name: string;
   email: string | null;
   body: string;
@@ -23,6 +23,10 @@ const KIND_LABEL: Record<Row["kind"], string> = {
   contact: "Liên hệ",
   feedback: "Góp ý",
   content_error: "Báo lỗi nội dung",
+  volunteer: "Đăng ký · Tình nguyện viên",
+  survey: "Đăng ký · Khảo sát",
+  webinar: "Đăng ký · Webinar",
+  competition: "Đăng ký · Cuộc thi",
 };
 
 export default async function AdminMessagesPage({
