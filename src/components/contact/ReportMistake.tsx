@@ -1,34 +1,33 @@
 import { getTranslations } from "next-intl/server";
-import { ChevronDown, Flag } from "lucide-react";
+import { Flag } from "lucide-react";
 import { MessageForm } from "@/components/contact/MessageForm";
+import { Disclosure } from "@/components/ui/Disclosure";
 
 /**
  * "Report a mistake" under an article.
  *
- * A native `<details>`: opening and closing needs no JavaScript and works with
- * keyboard and screen readers as is. Only the form inside is a client
- * component. Closed by default; nothing ever needs to force it open, so the
- * DA3 caveat about CSS and closed `<details>` does not apply here.
+ * The shared `Disclosure` (native `<details>`) inside a bordered card, so this
+ * is the same open/close pattern as the rest of the site and needs no
+ * JavaScript. Only the form inside is a client component.
  */
 export async function ReportMistake({ postId }: { postId: string }) {
   const t = await getTranslations("contact.report");
 
   return (
-    <details className="group rounded-2xl border border-border bg-surface">
-      <summary className="flex min-h-[52px] cursor-pointer list-none items-center gap-2 rounded-2xl px-5 py-3 text-sm font-semibold text-text-nav transition-colors hover:text-accent [&::-webkit-details-marker]:hidden">
-        <Flag className="size-4" strokeWidth={2} aria-hidden />
-        {t("toggle")}
-        <ChevronDown
-          className="ml-auto size-4 transition-transform duration-300 group-open:rotate-180 motion-reduce:transition-none"
-          strokeWidth={2.2}
-          aria-hidden
-        />
-      </summary>
-
-      <div className="border-t border-border px-5 pb-6 pt-5">
-        <p className="mb-5 text-sm leading-relaxed text-text-muted">{t("intro")}</p>
+    <div className="overflow-hidden rounded-2xl border border-border bg-surface">
+      <Disclosure
+        size="sm"
+        bodyClassName="pr-5"
+        summary={
+          <span className="flex items-center gap-2">
+            <Flag aria-hidden className="size-4 shrink-0" strokeWidth={2} />
+            {t("toggle")}
+          </span>
+        }
+      >
+        <p className="mb-5 leading-relaxed">{t("intro")}</p>
         <MessageForm variant="report" postId={postId} />
-      </div>
-    </details>
+      </Disclosure>
+    </div>
   );
 }

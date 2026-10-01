@@ -16,6 +16,7 @@ export function Disclosure({
   size = "md",
   defaultOpen = false,
   className,
+  bodyClassName,
   children,
 }: {
   summary: ReactNode;
@@ -23,6 +24,8 @@ export function Disclosure({
   size?: "md" | "sm";
   defaultOpen?: boolean;
   className?: string;
+  /** Extra classes on the content panel (e.g. less right padding for a form). */
+  bodyClassName?: string;
   children: ReactNode;
 }) {
   return (
@@ -44,7 +47,8 @@ export function Disclosure({
       <div
         className={cn(
           "px-5 pb-5 pr-[68px] leading-[1.65] text-text-muted motion-safe:animate-notice-in",
-          size === "md" ? "text-base" : "text-sm"
+          size === "md" ? "text-base" : "text-sm",
+          bodyClassName
         )}
       >
         {children}

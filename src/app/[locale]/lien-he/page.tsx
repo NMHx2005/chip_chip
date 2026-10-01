@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Clock, Info, Mail, Share2, ShieldCheck } from "lucide-react";
+import { InfoBlock } from "@/components/contact/InfoBlock";
 import { MessageForm } from "@/components/contact/MessageForm";
+import { PageHero } from "@/components/sections/PageHero";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { CONTACT_EMAIL, SOCIAL_LINKS } from "@/lib/constants";
@@ -33,77 +36,82 @@ export default async function ContactPage({
   const socials = SOCIAL_LINKS.filter((link) => link.href.length > 0);
 
   return (
-    <section className="px-5 py-14 md:px-8 md:py-20">
-      <div className="mx-auto grid w-full max-w-content gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
-        <div>
-          <header className="max-w-2xl">
-            <p className="rise-in mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface-muted px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-accent">
-              <span aria-hidden className="size-1.5 rounded-full bg-accent" />
-              {t("eyebrow")}
-            </p>
-            <h1 className="text-balance text-[32px] font-extrabold leading-tight tracking-[-0.03em] text-text md:text-[44px]">
-              {t("title")}
-            </h1>
-            <p className="mt-4 text-pretty text-base leading-relaxed text-text-muted">
-              {t("description")}
-            </p>
-          </header>
+    <>
+      <PageHero eyebrow={t("eyebrow")} title={t("title")} description={t("description")} />
 
-          <div className="mt-10 rounded-3xl border border-border bg-surface p-6 md:p-8">
+      <section className="px-5 pb-16 md:px-8 md:pb-20">
+        <div className="mx-auto grid w-full max-w-content gap-10 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
+          <div className="rounded-3xl border border-border bg-surface p-6 md:p-8">
             <MessageForm variant="contact" />
           </div>
+
+          <aside className="flex flex-col gap-4">
+            {CONTACT_EMAIL && (
+              <InfoBlock icon={Mail} title={t("aside.emailTitle")}>
+                <a
+                  href={`mailto:${CONTACT_EMAIL}`}
+                  className="inline-flex min-h-11 items-center font-mono text-sm text-text-nav underline underline-offset-4 transition-colors hover:text-accent"
+                >
+                  {CONTACT_EMAIL}
+                </a>
+              </InfoBlock>
+            )}
+
+            {socials.length > 0 && (
+              <InfoBlock icon={Share2} title={t("aside.socialTitle")}>
+                <ul className="flex flex-wrap gap-x-6">
+                  {socials.map((link) => (
+                    <li key={link.key}>
+                      <a
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex min-h-11 items-center text-sm text-text-nav underline underline-offset-4 transition-colors hover:text-accent"
+                      >
+                        {tNav(link.key)}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </InfoBlock>
+            )}
+
+            <InfoBlock icon={Clock} title={t("aside.responseTitle")}>
+              <p className="text-sm leading-relaxed text-text-muted">{t("aside.responseBody")}</p>
+            </InfoBlock>
+
+            <InfoBlock icon={Info} title={t("aside.beforeSendTitle")}>
+              <div className="flex items-start gap-3">
+                <span
+                  aria-hidden
+                  className="grid size-6 shrink-0 place-items-center rounded-full bg-surface-muted text-xs font-bold text-text"
+                >
+                  3
+                </span>
+                <div>
+                  <p className="text-sm leading-relaxed text-text-muted">{t("aside.limitNote")}</p>
+                  <p className="mt-1 text-[13px] leading-relaxed text-text-muted">
+                    {t("aside.limitHint")}
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3 border-t border-hairline pt-3">
+                <ShieldCheck aria-hidden className="size-5 shrink-0 text-accent" strokeWidth={2} />
+                <div>
+                  <p className="text-sm leading-relaxed text-text-muted">{t("aside.privacyNote")}</p>
+                  <Link
+                    href="/chinh-sach-bao-mat"
+                    className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline underline-offset-4 transition-colors hover:text-black"
+                  >
+                    {t("aside.privacyLink")}
+                  </Link>
+                </div>
+              </div>
+            </InfoBlock>
+          </aside>
         </div>
-
-        <aside className="flex flex-col gap-8 lg:pt-24">
-          {CONTACT_EMAIL && (
-            <div>
-              <h2 className="text-sm font-semibold text-text">{t("aside.emailTitle")}</h2>
-              <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                className="mt-1 inline-flex min-h-11 items-center font-mono text-sm text-text-nav underline underline-offset-4 transition-colors hover:text-accent"
-              >
-                {CONTACT_EMAIL}
-              </a>
-            </div>
-          )}
-
-          {socials.length > 0 && (
-            <div>
-              <h2 className="text-sm font-semibold text-text">{t("aside.socialTitle")}</h2>
-              <ul className="mt-1 flex flex-wrap gap-x-6">
-                {socials.map((link) => (
-                  <li key={link.key}>
-                    <a
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex min-h-11 items-center text-sm text-text-nav underline underline-offset-4 transition-colors hover:text-accent"
-                    >
-                      {tNav(link.key)}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          <div>
-            <h2 className="text-sm font-semibold text-text">{t("aside.responseTitle")}</h2>
-            <p className="mt-2 text-sm leading-relaxed text-text-muted">{t("aside.responseBody")}</p>
-            <p className="mt-2 text-sm leading-relaxed text-text-muted">{t("aside.limitNote")}</p>
-          </div>
-
-          <div>
-            <p className="text-sm leading-relaxed text-text-muted">{t("aside.privacyNote")}</p>
-            <Link
-              href="/chinh-sach-bao-mat"
-              className="inline-flex min-h-11 items-center text-sm font-semibold text-accent underline underline-offset-4 transition-colors hover:text-black"
-            >
-              {t("aside.privacyLink")}
-            </Link>
-          </div>
-        </aside>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
