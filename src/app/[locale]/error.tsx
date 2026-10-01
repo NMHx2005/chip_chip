@@ -103,7 +103,7 @@ export default function LocaleError({
                 {t("reportHint")}{" "}
                 <Link
                   href="/lien-he"
-                  className="font-semibold text-accent underline underline-offset-4 transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:text-black"
+                  className="inline-flex min-h-11 items-center font-semibold text-accent underline underline-offset-4 transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:text-black"
                 >
                   {t("reportLink")}
                 </Link>
