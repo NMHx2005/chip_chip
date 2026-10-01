@@ -210,6 +210,26 @@ email/URL (`.`, `@`, `/` không tính là ranh giới từ, khớp parser của 
 động. Trạng thái lỗi tìm kiếm (cần `searchPosts` trả về trạng thái) để sang bước 7. Tiếp theo: 6b Liên hệ (+ Báo lỗi bài), 6c Giới thiệu, 6d Đóng góp + Bảo mật,
 rồi bước 7 (404 và trang lỗi).
 
+**Thiết kế lại giao diện — bước 6b (Liên hệ + Báo lỗi bài).** Kế hoạch:
+`docs/superpowers/plans/2026-10-01-thiet-ke-lai-buoc-6b-lien-he.md`. `/lien-he` dùng `PageHero`
+full-width rồi thân hai cột (form 1.5fr, aside 1fr): form trong thẻ bo 24px; aside là các `InfoBlock`
+(thẻ trắng, icon tròn 32px) — email (ẩn khi trống), mạng xã hội (ẩn khi trống), "Khi nào có phản
+hồi", "Trước khi gửi" (huy hiệu 3 + ghi chú giới hạn, rồi khiên + chính sách bảo mật). `MessageForm`
+nay dựng trên `Field`/`Input`/`Textarea`, `RadioSegment` (chọn Liên hệ/Góp ý, gợi ý đổi theo lựa
+chọn), `FormNotice`, `Button`: kiểm **mọi ô cùng lúc** khi gửi (hàm thuần `validateMessageFields`
+có test) — hiện thông báo gộp "Cần sửa n chỗ" kèm liên kết tới từng ô, đánh dấu từng ô và focus ô
+sai đầu tiên; trạng thái đang gửi (ô readOnly, `aria-busy`, nút "Đang gửi…", không spinner), đã gửi
+(nhấn + dấu tích, xoá form), lỗi máy chủ (tiêu đề riêng + dòng "nội dung vẫn còn"). "Báo lỗi bài
+này" dùng `Disclosure` dùng chung (hàng 56px, đĩa "+") bọc trong thẻ có viền — thống nhất một mẫu
+disclosure toàn site (quyết định D1). Ô nhập vẫn dùng token `field` #767676 (D3); thành công dùng
+màu nhấn + dấu tích, đỏ chỉ cho lỗi (D2). `Field` thêm `id` tuỳ chọn (để liên kết neo tới ô) và giữ
+dấu cách trước ghi chú "(không bắt buộc)". Không có Supabase cục bộ nên kiểm bằng trang thật +
+gallery tạm `/ui-gallery/contact` (đã xoá): 1280/390 không tràn ngang, aside 2 thẻ, gửi rỗng → "Cần
+sửa 2 chỗ" + đánh dấu tên/nội dung + focus ô tên, gợi ý đổi khi chọn "Góp ý", nút báo lỗi 56px mở
+ra form bên trong; mọi target thật ≥44px. Chưa xác minh: trạng thái đang gửi/đã gửi (cần API thật),
+nhánh giảm chuyển động. Tiếp theo: 6c Giới thiệu, 6d Đóng góp + Bảo mật, rồi bước 7 (404 và trang
+lỗi).
+
 ---
 
 ## 3. Chạy local
@@ -250,7 +270,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **49 file, 470 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **49 file, 476 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
