@@ -16,11 +16,12 @@ export const NAV_ITEMS: {
 
 /** The trust pages linked from every footer. */
 export const FOOTER_LINKS: {
-  key: "contact" | "contribute" | "privacy";
+  key: "contact" | "contribute" | "signup" | "privacy";
   href: StaticPathname;
 }[] = [
   { key: "contact", href: "/lien-he" },
   { key: "contribute", href: "/dong-gop" },
+  { key: "signup", href: "/dang-ky" },
   { key: "privacy", href: "/chinh-sach-bao-mat" },
 ];
 
@@ -228,7 +229,7 @@ export const AUTHOR: { photo: string | null } = { photo: null };
  * People credited under "People who helped" on the About page. The section is
  * hidden while this is empty. `role` is shown as written, in both languages.
  */
-export const CONTRIBUTORS: { name: string; role: string }[] = [];
+export const CONTRIBUTORS: { name: string; role: string; photo: string | null }[] = [];
 
 
 /**
