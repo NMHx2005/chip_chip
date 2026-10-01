@@ -38,3 +38,8 @@ next-env.d.ts
 # local env
 .env.local
 .env
+
+# tooling scratch — not part of the project
+.claude/
+.commandcode/
+.crossweave/

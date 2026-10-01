@@ -1,25 +1,31 @@
 # Bàn giao — Project Chíp Chíp
 
-Cập nhật: 29/09/2026 · Nhánh: `feat/quoc-gia-video-hero`
+Cập nhật: 01/10/2026 · Nhánh: `main` (cục bộ)
 
 ---
 
 ## 1. Trạng thái cây làm việc
 
-`feat/da5-hoan-thien` đứng trên `main` cục bộ (main ahead of `origin/main` 86
-commit — **chưa có gì được push lên GitHub**, toàn bộ DA1–DA5 vẫn nằm ở máy
-local). Nhánh này gồm các commit sửa lỗi/độ hoàn thiện của đợt DA5 (CSP, ẩn
-`/motion-gallery` ở production, 404 hoá URL lạ, hreflang trung thực, giới hạn
-kích thước request, a11y, SEO rẻ tiền, tách service-role key khỏi bundle
-client) cộng các commit cập nhật tài liệu này — số lượng đang tăng dần, xem
-chính xác bằng `git log main..feat/da5-hoan-thien`.
+Cây làm việc **sạch**, không có gì sửa dở. `main` đang **ahead of `origin/main` 72
+commit** — **chưa có gì được push lên GitHub**, toàn bộ DA1–DA5 lẫn đợt thiết kế
+lại giao diện vẫn nằm ở máy local. Đếm chính xác bằng
+`git rev-list --count origin/main..main`.
 
-Nhánh `feat/quoc-gia-video-hero` tách ra từ `fix/review-ux-hardening` (đã commit thành ba commit: hardening API, UX quản trị, UX công khai). Cây làm việc sạch — không có gì sửa dở ngoài các file `.claude/`,
-`.commandcode/`, `.crossweave/` (rác công cụ, không phải của dự án).
+Cách làm: mỗi bước dựng trên một nhánh riêng, xong thì merge `--ff-only` trở lại
+`main` rồi xoá nhánh — nên `main` đi thẳng một mạch, không có merge commit. Xem
+lịch sử bằng `git log --oneline -20`.
+
+Ba thư mục rác công cụ nằm trong `.gitignore` (`.claude/`, `.commandcode/`,
+`.crossweave/`) — không phải của dự án, đừng commit.
 
 ---
 
-## 2. Đã có gì (DA1–DA5)
+## 2. Đã có gì (DA1–DA5, và thiết kế lại giao diện bước 1–9)
+
+Chín bước của đợt thiết kế lại giao diện đã xong (bước 1, 3, 4, 5a–5e, 6a–6d, 7,
+8, 9); mỗi bước một plan ở `docs/superpowers/plans/2026-09-30-thiet-ke-lai-*` và
+`2026-10-01-thiet-ke-lai-*`. Bản thiết kế gốc ở `docs/thiet-ke-giao-dien/` (đọc
+`HANDOFF.md` trước).
 
 **DA1 — Nền dữ liệu.** Migration cho loại bài Video, độ khó (3 mức, bắt buộc
 với `lesson`/`video`), tìm kiếm không dấu (`plain_text`, `search_vector`, hàm
@@ -456,6 +462,13 @@ Bài học chỉ là khung rỗng nếu không có bài.
   thì phải thêm cột lưu username.
 - Trang riêng cho từng quốc gia và bản đồ silhouette các nước — nằm ngoài
   phạm vi đã chốt ở roadmap (`docs/superpowers/specs/2026-09-28-lo-trinh-nang-cap-design.md`).
+- Vài mục cosmetic của đợt thiết kế lại giao diện để lại trong ledger, không cái
+  nào chặn ra mắt: `listing/FilterPills.tsx` là code chết (chỉ còn giữ type
+  `ListingHref` mà nơi khác import — nên chuyển type sang `src/lib/types.ts` rồi
+  xoá), lưới thẻ ở `/dang-ky` truyền cứng `columns={2}` cho hiệu ứng so le, và
+  bốn trang đăng ký là bốn file `page.tsx` gần giống nhau (đánh đổi để có URL
+  tiếng Anh riêng cho từng loại). Ghi chú đầy đủ:
+  `.superpowers/sdd/2026-10-01-thiet-ke-lai-buoc-9-tach-dang-ky/notes.md`.
 
 ---
 
