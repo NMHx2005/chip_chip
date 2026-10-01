@@ -294,8 +294,12 @@ duyệt: các URL lạ trả **404** (toàn cục và ba loại bài), panel/h1/
 (không tràn ngang, liên kết gợi ý 44px); trạng thái lỗi tìm kiếm và trang lỗi runtime kiểm qua gallery
 tạm (đã xoá) — 2 panel lỗi, mã lỗi hiện, bấm Thử lại thì dòng ER7 hiện. Giới hạn đã biết vẫn còn: 404
 của route chi tiết do Next 14 stream khung chung trước khi hydrate (chỉ nâng cấp Next mới sửa).
-**Đợt thiết kế lại giao diện đã xong (bước 1–7).** Việc còn lại trước ra mắt là nội dung và dữ liệu —
-xem mục 6 và mục 7 dưới.
+Sau review đã sửa: ba route ảnh OG của bài chi tiết hết đọc khoá `notFound` đã xoá (nay dùng
+`errors.titleLesson/titlePost/titleVideo`); panel 404/lỗi chuyển hiệu ứng vào CSS `.fade-up` nên hiện
+được **cả khi tắt JS** (trước đó framer-motion giữ `opacity: 0` tới khi hydrate — 404 trắng); nút Thử
+lại dùng `aria-disabled` thay `disabled` để giữ focus bàn phím; `ChipArt` đặt font qua `style` (biến
+CSS không phân giải trong thuộc tính trình bày của SVG). **Đợt thiết kế lại giao diện đã xong (bước
+1–7).** Việc còn lại trước ra mắt là nội dung và dữ liệu — xem mục 6 và mục 7 dưới.
 
 ---
 
