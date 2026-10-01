@@ -17,6 +17,7 @@ export function SearchForm({
   submitLabel,
   inputId,
   hint,
+  labelHidden = false,
   defaultValue = "",
   inputRef,
   variant = "light",
@@ -28,6 +29,8 @@ export function SearchForm({
   submitLabel: string;
   inputId: string;
   hint?: string;
+  /** Hides the label, where the placeholder carries the meaning (the 404 panel). */
+  labelHidden?: boolean;
   defaultValue?: string;
   inputRef?: Ref<HTMLInputElement>;
   variant?: "light" | "dark";
@@ -41,7 +44,8 @@ export function SearchForm({
         htmlFor={inputId}
         className={cn(
           "text-xs font-bold uppercase tracking-[0.08em]",
-          dark ? "text-[#D1D1D1]" : "text-text-muted"
+          dark ? "text-[#D1D1D1]" : "text-text-muted",
+          labelHidden && "sr-only"
         )}
       >
         {label}
