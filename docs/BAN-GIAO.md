@@ -320,6 +320,21 @@ local). Sau review đã sửa: thêm liên kết **Báo chí** ở footer (trang
 khoá test cho hai URL mới (`/dang-ky` ↔ `/en/sign-up`, `/bao-chi` ↔ `/en/press`), bỏ thuộc tính thừa ở
 tiêu đề trang báo chí, và cập nhật README về trường `photo` của `CONTRIBUTORS`.
 
+**Bước 9 — tách trang Đăng ký và dọn nốt các mục nhỏ.** Kế hoạch:
+`docs/superpowers/plans/2026-10-01-thiet-ke-lai-buoc-9-tach-dang-ky.md`. Bốn loại đăng ký nay **mỗi loại
+một trang riêng**, URL bản địa hoá: `/dang-ky/tinh-nguyen` ↔ `/en/sign-up/volunteer`, `/dang-ky/khao-sat`
+↔ `/en/sign-up/survey`, `/dang-ky/webinar` ↔ `/en/sign-up/webinar`, `/dang-ky/cuoc-thi` ↔
+`/en/sign-up/competition`; mỗi trang có tiêu đề/mô tả/SEO riêng và form **không còn bộ chọn loại** (loại
+lấy từ route). `/dang-ky` thành trang giới thiệu bốn lựa chọn (thẻ có icon, liên kết sang từng trang);
+trang Giới thiệu thay form nhúng bằng bốn liên kết. Dọn nốt các mục nhỏ đã hoãn: mọi `hover:` ở khu vực
+công khai được scope `[@media(hover:hover)]:` (tránh hover dính trên cảm ứng); panel 404/lỗi **cả trang**
+chuyển sang `role="status"` (lỗi tìm kiếm — thay đổi bất đồng bộ — vẫn `role="alert"`); map kind→icon
+dùng chung một chỗ; hai form tìm kiếm có tên landmark riêng; nhãn honeypot lấy từ catalogue; sitemap liệt
+kê bốn trang loại và test khoá lại. Kiểm bằng trình duyệt: 10 URL (4 loại × 2 ngôn ngữ + hai trang mục)
+trả **200**, 404 vẫn 404; trang giới thiệu 4 liên kết, không tràn ngang ở 1280/390; trang loại có hero +
+form không bộ chọn + link về; Giới thiệu có 4 liên kết; trang tìm kiếm có hai landmark tên khác nhau.
+Chưa xác minh: trạng thái gửi thành công của form (cần Supabase thật).
+
 ---
 
 ## 3. Chạy local
@@ -360,7 +375,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **50 file, 480 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **50 file, 481 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
