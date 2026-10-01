@@ -452,6 +452,10 @@ export async function countComments(postId: string): Promise<number> {
   return count ?? 0;
 }
 
+/** Search results plus whether the query itself failed, so the page can tell
+ * "nothing matched" from "we could not look it up". */
+export type SearchOutcome = { posts: PostSummary[]; failed: boolean };
+
 /**
  * Accent-insensitive search over published posts (see search_posts in the
  * migrations). A blank query never reaches the database.
@@ -461,10 +465,10 @@ export async function searchPosts(
   query: string,
   kinds: PostKind[] = ["lesson", "forum", "video"],
   limit = 30
-): Promise<PostSummary[]> {
+): Promise<SearchOutcome> {
   const q = query.trim();
-  if (!q) return [];
-  if (!requireSupabase("searchPosts")) return [];
+  if (!q) return { posts: [], failed: false };
+  if (!requireSupabase("searchPosts")) return { posts: [], failed: false };
 
   const supabase = createClient();
   const { data, error } = await supabase.rpc("search_posts", {
@@ -477,7 +481,7 @@ export async function searchPosts(
 
   if (error) {
     console.error("[searchPosts]", error.message);
-    return [];
+    return { posts: [], failed: true };
   }
-  return ((data ?? []) as Row[]).map(toSummary);
+  return { posts: ((data ?? []) as Row[]).map(toSummary), failed: false };
 }

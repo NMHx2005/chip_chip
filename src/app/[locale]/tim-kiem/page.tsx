@@ -3,7 +3,11 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { BookOpen, FileText, PlayCircle } from "lucide-react";
 import { SearchForm } from "@/components/search/SearchForm";
 import { SearchResultRow } from "@/components/search/SearchResultRow";
-import { SearchInitialState, SearchNoResultsState } from "@/components/search/SearchStates";
+import {
+  SearchErrorState,
+  SearchInitialState,
+  SearchNoResultsState,
+} from "@/components/search/SearchStates";
 import { PageHero } from "@/components/sections/PageHero";
 import { getPathname } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
@@ -60,15 +64,19 @@ export default async function SearchPage({
   // One request per group, so a group's count is not squeezed by the others.
   const groups = query
     ? await Promise.all(
-        GROUPS.map(async (kind) => ({
-          kind,
-          // A row no page can serve (a lesson without a topic) is not a result.
-          posts: (await searchPosts(activeLocale, query, [kind], FETCH_LIMIT)).filter(
-            (post) => postHref(post) !== null
-          ),
-        }))
+        GROUPS.map(async (kind) => {
+          const { posts, failed } = await searchPosts(activeLocale, query, [kind], FETCH_LIMIT);
+          return {
+            kind,
+            // A row no page can serve (a lesson without a topic) is not a result.
+            posts: posts.filter((post) => postHref(post) !== null),
+            failed,
+          };
+        })
       )
     : [];
+  // One group failing is enough: a partial list would read as the whole answer.
+  const failed = groups.some((group) => group.failed);
   const found = groups.filter((group) => group.posts.length > 0);
   const total = found.reduce((sum, group) => sum + group.posts.length, 0);
   const shown = found.reduce((sum, group) => sum + Math.min(SHOWN, group.posts.length), 0);
@@ -89,7 +97,7 @@ export default async function SearchPage({
         title={query ? t("resultsFor", { query }) : t("title")}
         description={query ? undefined : t("description")}
         stats={
-          query
+          query && !failed
             ? [
                 { value: groups[0].posts.length, label: t("groups.lesson") },
                 { value: groups[1].posts.length, label: t("groups.video") },
@@ -116,6 +124,19 @@ export default async function SearchPage({
             <div className="mt-8">
               <SearchInitialState topics={topics} />
             </div>
+          ) : failed ? (
+            <>
+              <p
+                role="status"
+                aria-live="polite"
+                className="mt-5 text-sm leading-[1.5] tabular-nums text-text-muted"
+              >
+                {t("resultFailed", { query })}
+              </p>
+              <div className="mt-8">
+                <SearchErrorState query={query} />
+              </div>
+            </>
           ) : found.length === 0 ? (
             <div className="mt-8">
               <SearchNoResultsState query={query} />

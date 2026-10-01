@@ -86,3 +86,25 @@ export async function SearchNoResultsState({ query }: { query: string }) {
     </EmptyState>
   );
 }
+
+/** The query itself failed (the RPC errored): say so, and offer a retry. */
+export async function SearchErrorState({ query }: { query: string }) {
+  const t = await getTranslations("search");
+
+  return (
+    <EmptyState
+      tone="error"
+      chip="error"
+      title={t("errorTitle")}
+      description={t("errorBody")}
+      actions={
+        <>
+          <Button href={{ pathname: "/tim-kiem", query: { q: query } }}>{t("retry")}</Button>
+          <Button href="/bai-hoc" variant="secondary">
+            {t("browseLessons")}
+          </Button>
+        </>
+      }
+    />
+  );
+}
