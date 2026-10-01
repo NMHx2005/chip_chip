@@ -22,6 +22,7 @@ export function SearchBox({ className }: { className?: string }) {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const panelId = useId();
+  const inputId = useId();
 
   useEffect(() => {
     if (!open) return;
@@ -66,13 +67,15 @@ export function SearchBox({ className }: { className?: string }) {
       <div
         id={panelId}
         hidden={!open}
-        className="absolute right-0 top-full z-10 mt-2 w-[min(380px,calc(100vw-2.5rem))] rounded-2xl border border-border bg-surface p-2 shadow-float"
+        className="absolute right-0 top-full z-10 mt-2 w-[min(380px,calc(100vw-2.5rem))] rounded-2xl border border-border bg-surface p-4 shadow-float"
       >
         <SearchForm
           action={getPathname({ href: "/tim-kiem", locale })}
-          label={t("label")}
+          label={t("searchIn")}
+          hint={t("searchHint")}
           placeholder={t("placeholder")}
           submitLabel={t("submit")}
+          inputId={inputId}
           inputRef={inputRef}
         />
       </div>

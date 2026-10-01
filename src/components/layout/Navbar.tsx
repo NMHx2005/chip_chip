@@ -265,9 +265,11 @@ export function Navbar() {
             <div className="mt-2 px-5">
               <SearchForm
                 action={getPathname({ href: "/tim-kiem", locale })}
-                label={tSearch("label")}
+                label={tSearch("searchIn")}
+                hint={tSearch("searchHint")}
                 placeholder={tSearch("placeholder")}
                 submitLabel={tSearch("submit")}
+                inputId="mobile-search"
                 variant="dark"
               />
             </div>
