@@ -506,6 +506,63 @@
   border: 0;
 }
 
+/* Large player (video detail page). Same facade markup, bigger look: rounded
+   24px, a white-ringed disc that scales in, and a frame that fades in once the
+   player has loaded. `video-embed-lg` comes from videoFacadeHtml(...,
+   { large: true }); `is-loaded` is added by VideoFacades on load. Article
+   embeds never carry either, so they keep the look above. */
+.chip-prose .video-embed-lg {
+  border-radius: 24px;
+}
+
+.chip-prose .video-embed-lg .video-facade-play {
+  border: 3px solid #ffffff;
+  transition:
+    background-color 250ms cubic-bezier(0.25, 0.1, 0.25, 1),
+    transform 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.chip-prose .video-embed-lg .video-facade:hover .video-facade-play,
+.chip-prose .video-embed-lg .video-facade:focus-visible .video-facade-play {
+  background: #000000;
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+.chip-prose .video-embed-lg .video-facade:focus-visible {
+  outline: 2px solid #314344;
+  outline-offset: 2px;
+}
+
+.chip-prose .video-embed-lg .video-facade-label {
+  left: 16px;
+  bottom: 16px;
+}
+
+.chip-prose .video-embed-lg .video-frame {
+  opacity: 0;
+  transition: opacity 250ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.chip-prose .video-embed-lg .video-frame.is-loaded {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chip-prose .video-embed-lg .video-facade-play {
+    transition: none;
+  }
+
+  .chip-prose .video-embed-lg .video-facade:hover .video-facade-play,
+  .chip-prose .video-embed-lg .video-facade:focus-visible .video-facade-play {
+    transform: translate(-50%, -50%);
+  }
+
+  .chip-prose .video-embed-lg .video-frame {
+    opacity: 1;
+    transition: none;
+  }
+}
+
 /* Hero video hover-card: a bright dash traveling the notch outline, drawn as an
    SVG stroke so it follows the bottom-right scoop. pathLength is normalised to
    100, so the dash offset animates exactly one full perimeter. */

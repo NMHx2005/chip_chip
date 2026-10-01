@@ -29,4 +29,25 @@ describe("videoFacadeHtml", () => {
     expect(html).toContain('loading="eager" fetchpriority="high"');
     expect(html).not.toContain('loading="lazy"');
   });
+
+  it("adds the large modifier to the figure and nothing else", () => {
+    const ref = { platform: "youtube", externalId: "dQw4w9WgXcQ" } as const;
+    const base = videoFacadeHtml(ref, "en");
+    const large = videoFacadeHtml(ref, "en", { large: true });
+
+    expect(base).not.toContain("video-embed-lg");
+    expect(large).toBe(
+      base.replace(
+        'class="video-embed video-embed-youtube"',
+        'class="video-embed video-embed-youtube video-embed-lg"'
+      )
+    );
+  });
+
+  it("names the video in the label when given a title", () => {
+    const ref = { platform: "youtube", externalId: "dQw4w9WgXcQ" } as const;
+    const html = videoFacadeHtml(ref, "vi", { large: true, title: "Vì sao chip nóng" });
+
+    expect(html).toContain('aria-label="Phát video: Vì sao chip nóng (YouTube)"');
+  });
 });

@@ -26,6 +26,10 @@ const LEFTOVER = /<div data-type="video"[^>]*><\/div>/g;
 
 const PLAY_VIDEO: Record<Locale, string> = { vi: vi.forum.playVideo, en: en.forum.playVideo };
 
+// The video detail page names the video in the facade's accessible name, since
+// it is the page's main control; article embeds keep the shorter generic label.
+const PLAY_ARIA: Record<Locale, string> = { vi: vi.videos.playAria, en: en.videos.playAria };
+
 /**
  * The click-to-load facade for one validated video. Exported for the video
  * page, which shows the same player as an article does; the markup is built
@@ -34,22 +38,29 @@ const PLAY_VIDEO: Record<Locale, string> = { vi: vi.forum.playVideo, en: en.foru
  * `eager` is for the video detail page, where the facade image is the LCP
  * element: it swaps the default lazy loading for eager, high-priority
  * loading. Article embeds keep the default, since they are rarely the LCP.
+ *
+ * `large` is a CSS-only modifier for that same page's bigger player.
+ * `title`, when given, names the video in the accessible name instead of the
+ * generic "play video on …".
  */
 export function videoFacadeHtml(
   ref: VideoRef,
   locale: Locale,
-  { eager = false }: { eager?: boolean } = {}
+  { eager = false, large = false, title }: { eager?: boolean; large?: boolean; title?: string } = {}
 ): string {
   const id = escapeHtml(ref.externalId);
   const label = PLATFORM_LABEL[ref.platform];
-  const ariaLabel = escapeHtml(PLAY_VIDEO[locale].replace("{platform}", label));
+  const name = title
+    ? PLAY_ARIA[locale].replace("{title}", title).replace("{platform}", label)
+    : PLAY_VIDEO[locale].replace("{platform}", label);
+  const ariaLabel = escapeHtml(name);
   const still = thumbnailUrl(ref);
   const loading = eager ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"';
   const thumbnail = still
     ? `<img src="${escapeHtml(still)}" alt="" ${loading} decoding="async">`
     : "";
   return (
-    `<figure class="video-embed video-embed-${ref.platform}">` +
+    `<figure class="video-embed video-embed-${ref.platform}${large ? " video-embed-lg" : ""}">` +
     `<a class="video-facade" href="${escapeHtml(watchUrl(ref))}" target="_blank" rel="noopener noreferrer" ` +
     `aria-label="${ariaLabel}" data-video-platform="${ref.platform}" data-video-id="${id}">` +
     thumbnail +
