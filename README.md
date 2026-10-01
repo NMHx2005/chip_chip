@@ -229,9 +229,19 @@ src/
 | `/vi/lien-he`     | `/en/contact`  |
 | `/vi/dong-gop`    | `/en/contribute` |
 | `/vi/chinh-sach-bao-mat` | `/en/privacy` |
+| `/vi/dang-ky`     | `/en/sign-up`  |
+| `/vi/dang-ky/tinh-nguyen` | `/en/sign-up/volunteer` |
+| `/vi/dang-ky/khao-sat` | `/en/sign-up/survey` |
+| `/vi/dang-ky/webinar` | `/en/sign-up/webinar` |
+| `/vi/dang-ky/cuoc-thi` | `/en/sign-up/competition` |
+| `/vi/bao-chi`     | `/en/press`    |
 
 Khai báo ở `src/i18n/routing.ts`. Slug bài viết **không** bản địa hoá — mỗi bản dịch
 có slug riêng trong database.
+
+Đăng ký tách **mỗi loại một trang**; danh sách loại và đường dẫn nằm ở
+`src/components/signup/signup-kind.ts` (`SIGNUP_TYPES`, `SIGNUP_TYPE_PATHS`), còn `/dang-ky` là
+trang giới thiệu bốn lựa chọn.
 
 **Font:** Be Vietnam Pro + JetBrains Mono, cả hai đều có subset `vietnamese`.
 Không đổi sang font thiếu subset này — chữ có dấu sẽ rớt về font hệ thống.

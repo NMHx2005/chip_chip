@@ -334,6 +334,12 @@ kê bốn trang loại và test khoá lại. Kiểm bằng trình duyệt: 10 UR
 trả **200**, 404 vẫn 404; trang giới thiệu 4 liên kết, không tràn ngang ở 1280/390; trang loại có hero +
 form không bộ chọn + link về; Giới thiệu có 4 liên kết; trang tìm kiếm có hai landmark tên khác nhau.
 Chưa xác minh: trạng thái gửi thành công của form (cần Supabase thật).
+Sau review đã sửa: đợt scope hover còn sót — `Button` (các variant), `Field`, và cả khu vực công khai còn lại
+(Navbar, FooterNav, SocialLinks, Disclosure, RadioSegment, các section trang chủ) nay đều đã scope; form
+tìm kiếm ở menu di động có tên landmark; landmark tìm kiếm của trang 404 không trùng nhãn ô nhập; bỏ khoá
+`signup.openLink` (thêm nhưng không dùng); sửa hai chú thích cũ; test route nay khoá cả bốn slug bản địa
+hoá chứ không chỉ khoá tên route. Đã xác minh Tailwind sinh đúng rule trong `@media(hover:hover)` (đọc file
+CSS build ra), nên hover không bị mất.
 
 ---
 
