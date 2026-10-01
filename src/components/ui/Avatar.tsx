@@ -29,10 +29,20 @@ export function Avatar({
 
   return (
     <div
-      className={cn("relative shrink-0 overflow-hidden rounded-full bg-surface-muted", box, className)}
+      className={cn(
+        "relative shrink-0 overflow-hidden rounded-full border border-border bg-surface-muted",
+        box,
+        className
+      )}
     >
       {photo ? (
-        <Image src={photo} alt={alt} fill sizes="176px" className="object-cover" />
+        <Image
+          src={photo}
+          alt={alt}
+          fill
+          sizes={size === "lg" ? "(min-width: 768px) 176px, 112px" : "44px"}
+          className="object-cover"
+        />
       ) : (
         <span
           aria-hidden

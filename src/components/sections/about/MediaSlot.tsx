@@ -25,7 +25,7 @@ export function MediaSlot({
     >
       <Image src={src} alt={alt} fill priority sizes={sizes} className="object-cover" />
       {credit && (
-        <span className="absolute bottom-3 left-3 rounded-full bg-[rgba(13,13,13,0.72)] px-3 py-1.5 text-xs font-medium text-white">
+        <span className="absolute bottom-3 left-3 max-w-[calc(100%-1.5rem)] truncate rounded-full bg-[rgba(13,13,13,0.72)] px-3 py-1.5 text-xs font-medium text-white">
           {credit}
         </span>
       )}

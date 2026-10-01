@@ -43,7 +43,7 @@ export async function Commitments() {
 
         <Link
           href="/chinh-sach-bao-mat"
-          className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-accent underline underline-offset-4 transition-colors [@media(hover:hover)]:hover:text-black"
+          className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-accent underline underline-offset-4 transition-colors duration-fast ease-standard [@media(hover:hover)]:hover:text-black"
         >
           {t("privacyLink")}
           <ArrowRight className="size-4" strokeWidth={2.2} aria-hidden />

@@ -25,13 +25,13 @@ export async function Contributors() {
           {CONTRIBUTORS.map((person, index) => (
             <li key={person.name} className="flex">
               <CardReveal index={index} columns={4} className="flex w-full">
-                <div className="flex w-full flex-col gap-3 rounded-2xl border border-border bg-surface p-4">
+                <div className="flex w-full items-start gap-3.5 rounded-2xl border border-border bg-surface p-4">
                   <Avatar photo={null} alt="" name={person.name} />
-                  <div className="min-w-0">
-                    <h3 className="line-clamp-2 text-base font-bold leading-snug text-text">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="line-clamp-2 text-base font-bold leading-snug text-text [overflow-wrap:anywhere]">
                       {person.name}
                     </h3>
-                    <p className="mt-1 line-clamp-3 text-sm leading-relaxed text-text-muted">
+                    <p className="mt-1 line-clamp-3 text-sm leading-relaxed text-text-muted [overflow-wrap:anywhere]">
                       {person.role}
                     </p>
                   </div>

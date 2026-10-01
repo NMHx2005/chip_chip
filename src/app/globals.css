@@ -72,23 +72,6 @@
   }
 }
 
-/* One-off entrance for interior page headers. The global reduce block above
-   collapses the duration, so this is safe under prefers-reduced-motion. */
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.rise-in {
-  animation: rise-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
-}
-
 /* PageHero entrance (design M1): four items in turn, the same rhythm as the
    home hero. Plain CSS so PageHero can stay a Server Component. */
 @keyframes hero-in {
