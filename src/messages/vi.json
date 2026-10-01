@@ -391,7 +391,8 @@
         "feedback": "Suy nghĩ về nội dung, cách trình bày, hoặc điều bạn muốn thấy trên trang."
       },
       "nameLabel": "Tên của bạn",
-      "emailLabel": "Email (không bắt buộc)",
+      "emailLabel": "Email",
+      "optionalNote": "(không bắt buộc)",
       "emailHint": "Chỉ dùng để trả lời bạn, không hiển thị ở đâu. Để trống thì chúng tôi không trả lời lại được.",
       "bodyLabel": "Nội dung",
       "bodyHint": "Tối đa {max} ký tự.",

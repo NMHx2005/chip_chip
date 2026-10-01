@@ -391,7 +391,8 @@
         "feedback": "Thoughts on the content, the way it is presented, or what you would like to see on the site."
       },
       "nameLabel": "Your name",
-      "emailLabel": "Email (optional)",
+      "emailLabel": "Email",
+      "optionalNote": "(optional)",
       "emailHint": "Used only to reply to you and never shown anywhere. Leave it blank and we cannot write back.",
       "bodyLabel": "Message",
       "bodyHint": "Up to {max} characters.",

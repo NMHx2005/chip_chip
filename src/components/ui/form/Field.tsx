@@ -46,6 +46,7 @@ export function Field({
   hint,
   error,
   optionalNote,
+  id: idProp,
   className,
   children,
 }: {
@@ -54,11 +55,13 @@ export function Field({
   error?: string;
   /** Muted text after the label, e.g. "(không bắt buộc)". */
   optionalNote?: string;
+  /** Override the generated control id, so a caller can link to it by anchor. */
+  id?: string;
   className?: string;
   children: (control: FieldControlProps) => ReactNode;
 }) {
   const uid = useId();
-  const id = `${uid}-control`;
+  const id = idProp ?? `${uid}-control`;
   const hintId = hint ? `${uid}-hint` : undefined;
   const errorId = error ? `${uid}-error` : undefined;
 
