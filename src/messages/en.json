@@ -386,14 +386,22 @@
         "contact": "A message",
         "feedback": "Feedback"
       },
+      "kindHint": {
+        "contact": "A question, a collaboration offer, or anything else you want to ask the author.",
+        "feedback": "Thoughts on the content, the way it is presented, or what you would like to see on the site."
+      },
       "nameLabel": "Your name",
       "emailLabel": "Email (optional)",
       "emailHint": "Used only to reply to you and never shown anywhere. Leave it blank and we cannot write back.",
       "bodyLabel": "Message",
       "bodyHint": "Up to {max} characters.",
+      "errorSummary": "Fix {count, plural, one {# field} other {# fields}} before sending",
       "submit": "Send message",
       "submitting": "Sending…",
-      "sent": "Sent. Thank you for writing to Chíp Chíp!"
+      "sending": "Sending your message…",
+      "sent": "Sent. Thank you for writing to Chíp Chíp!",
+      "sentBody": "Your message reached the author. You can send another one if you need to.",
+      "kept": "What you wrote is still in the fields above."
     },
     "errors": {
       "nameLength": "Please enter your name (up to 80 characters).",
@@ -401,8 +409,11 @@
       "emailInvalid": "That email address does not look right. You can leave it blank.",
       "postNotFound": "This article no longer exists. Please use the Contact page instead.",
       "rateLimited": "Each person can send up to 3 messages an hour, counting contact, feedback and mistake reports together. Please try again later.",
+      "rateLimitedTitle": "Message limit reached",
       "network": "Could not connect. Check your connection and send again.",
-      "generic": "Your message was not sent. Please try again in a few minutes."
+      "networkTitle": "No connection",
+      "generic": "Your message was not sent. Please try again in a few minutes.",
+      "genericTitle": "Could not send"
     },
     "aside": {
       "emailTitle": "Email",
@@ -410,6 +421,8 @@
       "responseTitle": "When to expect a reply",
       "responseBody": "[Response time] The author usually replies within [number] days. Messages without an email are still read, but cannot be answered.",
       "limitNote": "To stop spam, each person can send up to 3 messages an hour.",
+      "limitHint": "The limit counts contact, feedback and mistake reports together.",
+      "beforeSendTitle": "Before you send",
       "privacyNote": "What you send is used only to reply to you.",
       "privacyLink": "Read the privacy policy"
     },
@@ -418,7 +431,9 @@
       "intro": "Spotted an error, something unclear or a broken link? A short description helps the author fix it faster.",
       "bodyLabel": "What is wrong",
       "submit": "Send report",
-      "sent": "Report sent. Thank you for making this article better!"
+      "sent": "Report sent.",
+      "sentBody": "Thank you for making this article better! You can report another spot if you find one.",
+      "kept": "What you wrote is still in the fields above."
     }
   },
   "contribute": {

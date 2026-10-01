@@ -386,14 +386,22 @@
         "contact": "Liên hệ",
         "feedback": "Góp ý"
       },
+      "kindHint": {
+        "contact": "Câu hỏi, đề nghị hợp tác hoặc bất cứ điều gì bạn muốn hỏi tác giả.",
+        "feedback": "Suy nghĩ về nội dung, cách trình bày, hoặc điều bạn muốn thấy trên trang."
+      },
       "nameLabel": "Tên của bạn",
       "emailLabel": "Email (không bắt buộc)",
       "emailHint": "Chỉ dùng để trả lời bạn, không hiển thị ở đâu. Để trống thì chúng tôi không trả lời lại được.",
       "bodyLabel": "Nội dung",
       "bodyHint": "Tối đa {max} ký tự.",
+      "errorSummary": "Cần sửa {count} chỗ trước khi gửi",
       "submit": "Gửi tin nhắn",
       "submitting": "Đang gửi…",
-      "sent": "Đã gửi. Cảm ơn bạn đã viết cho Chíp Chíp!"
+      "sending": "Đang gửi tin nhắn của bạn…",
+      "sent": "Đã gửi. Cảm ơn bạn đã viết cho Chíp Chíp!",
+      "sentBody": "Tin nhắn đã tới tác giả. Bạn có thể gửi thêm tin khác nếu cần.",
+      "kept": "Nội dung bạn viết vẫn còn nguyên trong các ô bên trên."
     },
     "errors": {
       "nameLength": "Vui lòng nhập tên (tối đa 80 ký tự).",
@@ -401,8 +409,11 @@
       "emailInvalid": "Email chưa đúng định dạng. Bạn có thể để trống ô này.",
       "postNotFound": "Không tìm thấy bài này nữa. Bạn thử gửi qua trang Liên hệ nhé.",
       "rateLimited": "Mỗi người gửi được tối đa 3 tin mỗi giờ, tính chung cả liên hệ, góp ý và báo lỗi bài. Bạn thử lại sau nhé.",
+      "rateLimitedTitle": "Đã đạt giới hạn gửi tin",
       "network": "Không kết nối được. Kiểm tra mạng rồi gửi lại nhé.",
-      "generic": "Chưa gửi được tin nhắn. Bạn thử lại sau ít phút nhé."
+      "networkTitle": "Mất kết nối",
+      "generic": "Chưa gửi được tin nhắn. Bạn thử lại sau ít phút nhé.",
+      "genericTitle": "Chưa gửi được"
     },
     "aside": {
       "emailTitle": "Email",
@@ -410,6 +421,8 @@
       "responseTitle": "Khi nào có phản hồi",
       "responseBody": "[Thời gian phản hồi] Tác giả thường trả lời trong vòng [số] ngày. Tin không kèm email vẫn được đọc, nhưng không trả lời lại được.",
       "limitNote": "Để chặn spam, mỗi người gửi được tối đa 3 tin mỗi giờ.",
+      "limitHint": "Giới hạn tính chung cả liên hệ, góp ý và báo lỗi bài.",
+      "beforeSendTitle": "Trước khi gửi",
       "privacyNote": "Thông tin bạn gửi chỉ dùng để trả lời bạn.",
       "privacyLink": "Xem chính sách bảo mật"
     },
@@ -418,7 +431,9 @@
       "intro": "Thấy chỗ sai, chỗ khó hiểu hoặc link hỏng? Mô tả ngắn gọn giúp tác giả sửa nhanh hơn.",
       "bodyLabel": "Lỗi bạn thấy",
       "submit": "Gửi báo lỗi",
-      "sent": "Đã gửi báo lỗi. Cảm ơn bạn đã giúp bài tốt hơn!"
+      "sent": "Đã gửi báo lỗi.",
+      "sentBody": "Cảm ơn bạn đã giúp bài tốt hơn! Bạn có thể báo tiếp nếu còn chỗ khác.",
+      "kept": "Nội dung bạn viết vẫn còn nguyên trong các ô bên trên."
     }
   },
   "contribute": {
