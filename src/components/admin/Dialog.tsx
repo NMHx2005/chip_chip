@@ -60,7 +60,14 @@ export function Dialog({
         if (!pending) onCancel();
       }}
       onClick={(event) => {
-        if (event.target === ref.current && !pending) onCancel();
+        // Hit-test the panel's own box rather than the event target: the
+        // dialog's padding is part of the dialog element, so a click there
+        // would otherwise read as a backdrop click and throw the answer away.
+        if (pending) return;
+        const box = ref.current?.getBoundingClientRect();
+        if (!box) return;
+        const { clientX: x, clientY: y } = event;
+        if (x < box.left || x > box.right || y < box.top || y > box.bottom) onCancel();
       }}
       className={PANEL}
     >

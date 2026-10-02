@@ -45,8 +45,7 @@ export default async function AdminMessagesPage({
   await requireStaff();
   const supabase = createClient();
   const showAll = searchParams.filter === "all";
-  const page = parsePageParam(searchParams.page);
-  const from = adminOffset(page);
+  const requestedPage = parsePageParam(searchParams.page);
 
   // Counts come from their own cheap head queries, so the tab labels are true
   // totals rather than "however many this page happened to load".
@@ -58,9 +57,14 @@ export default async function AdminMessagesPage({
     supabase.from("messages").select("id", { count: "exact", head: true }),
   ]);
 
+  const countError = unhandledCount.error ?? allCount.error;
   const unhandled = unhandledCount.count ?? 0;
   const all = allCount.count ?? 0;
   const total = showAll ? all : unhandled;
+  // A stale `?page=` past the end would otherwise render "Trang 99 / 2" with a
+  // bar whose pages do not include 99.
+  const page = Math.min(requestedPage, adminPageCount(total));
+  const from = adminOffset(page);
 
   // RLS lets only activated staff read this table, email included.
   let query = supabase
@@ -121,28 +125,13 @@ export default async function AdminMessagesPage({
         ))}
       </nav>
 
-      {error ? (
+      {error || countError ? (
         <p className="rounded-2xl border border-red-200 bg-red-50 px-6 py-16 text-center text-sm text-red-700">
           Không đọc được hộp thư. Thử tải lại trang.
         </p>
       ) : rows.length === 0 ? (
         <p className="rounded-2xl border border-dashed border-border px-6 py-16 text-center text-sm text-text-muted">
-          {page > 1 ? (
-            <>
-              Trang này không có tin nào.{" "}
-              <Link
-                href={adminListHref(path, showAll ? { filter: "all" } : {})}
-                className="underline"
-              >
-                Về trang đầu
-              </Link>
-              .
-            </>
-          ) : showAll ? (
-            "Chưa có tin nhắn nào."
-          ) : (
-            "Không còn tin nào chờ xử lý."
-          )}
+          {showAll ? "Chưa có tin nhắn nào." : "Không còn tin nào chờ xử lý."}
         </p>
       ) : (
         <ul className="flex flex-col gap-3">

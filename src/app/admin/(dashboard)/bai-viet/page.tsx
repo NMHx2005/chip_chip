@@ -28,7 +28,6 @@ type GroupRow = {
   vi_title: string | null;
   en_title: string | null;
   ready: boolean;
-  total: number;
 };
 
 const KIND_LABEL = { lesson: "Bài học", forum: "Blog", video: "Video" } as const;
@@ -42,19 +41,28 @@ export default async function AdminPostsPage({
   const supabase = createClient();
 
   const q = parseAdminSearch(searchParams.q);
-  const page = parsePageParam(searchParams.page);
+  const search = q || null;
+
+  // The count comes first so a stale `?page=` beyond the end can be pulled back
+  // into range — an empty page carries no rows, and therefore no total.
+  const { data: countData, error: countError } = await supabase.rpc(
+    "admin_post_group_count",
+    { p_search: search }
+  );
+
+  const total = countError ? 0 : Number(countData ?? 0);
+  const totalPages = adminPageCount(total);
+  const page = Math.min(parsePageParam(searchParams.page), totalPages);
 
   // Grouping and paging live in the database: an article is two rows sharing a
   // translation_id, so paging over raw rows would split one across two pages.
   const { data, error } = await supabase.rpc("admin_post_groups", {
-    p_search: q || null,
+    p_search: search,
     p_limit: ADMIN_PAGE_SIZE,
     p_offset: adminOffset(page),
   });
 
   const rows = (data ?? []) as GroupRow[];
-  const total = rows[0]?.total ?? 0;
-  const totalPages = adminPageCount(total);
   const hrefFor = (target: number) => adminListHref("/admin/bai-viet", { q, page: target });
 
   return (
@@ -104,7 +112,7 @@ export default async function AdminPostsPage({
         )}
       </form>
 
-      {error ? (
+      {error || countError ? (
         <p className="rounded-2xl border border-red-200 bg-red-50 px-6 py-16 text-center text-sm text-red-700">
           Không đọc được danh sách bài. Thử tải lại trang.
         </p>
@@ -112,18 +120,7 @@ export default async function AdminPostsPage({
         <p className="rounded-2xl border border-dashed border-border px-6 py-16 text-center text-sm text-text-muted">
           {q
             ? `Không có bài nào khớp “${q}”.`
-            : page > 1
-              ? "Trang này không có bài nào."
-              : "Chưa có bài viết nào. Bắt đầu bằng nút “Viết bài mới”."}
-          {page > 1 && (
-            <>
-              {" "}
-              <Link href={hrefFor(1)} className="underline">
-                Về trang đầu
-              </Link>
-              .
-            </>
-          )}
+            : "Chưa có bài viết nào. Bắt đầu bằng nút “Viết bài mới”."}
         </p>
       ) : (
         <ul className="flex flex-col gap-3">

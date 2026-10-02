@@ -98,6 +98,11 @@ check "không gọi được publish_translation" "403" "$(status -X POST "$API_
   "${auth[@]}" -H 'Content-Type: application/json' -d "$publish_body")"
 check "không upload được vào storage" "denied" "$(denied -X POST "$API_URL/storage/v1/object/post-images/sec-check-$$.txt" \
   "${auth[@]}" -H 'Content-Type: text/plain' --data 'x')"
+# The admin post list is one RPC, so its staff fence is the only thing between
+# a signed-in outsider and every draft in the table.
+check "tài khoản chưa kích hoạt không gọi được admin_post_groups" "403" \
+  "$(status -X POST "$API_URL/rest/v1/rpc/admin_post_groups" \
+    "${auth[@]}" -H 'Content-Type: application/json' -d '{"p_limit":5,"p_offset":0}')"
 
 drafts=$(curl -s "$API_URL/rest/v1/posts?select=id&status=eq.draft" "${auth[@]}")
 check "không đọc được bài nháp" "[]" "$drafts"
@@ -263,6 +268,44 @@ check "bài học hợp lệ thì đăng được" "204" "$(status -X POST "$API
 check "cả hai bản chuyển sang published" "2" \
   "$(psql "$DB_URL" -t -A -c \
     "select count(*) from public.posts where translation_id = '$ok' and status = 'published';")"
+
+echo
+echo "D3 — danh sách bài của admin: đếm, tìm kiếm và cờ sẵn sàng"
+# The list pages in the database, so its count doubles as the test that a page
+# past the end still knows the real total, and its `ready` flag is what the
+# admin's "Đăng" button trusts. If the two ever disagree, the button offers a
+# publish the gate then refuses.
+check "anon không gọi được admin_post_groups" "401" \
+  "$(status -X POST "$API_URL/rest/v1/rpc/admin_post_groups" -H "apikey: $ANON_KEY" \
+    -H 'Content-Type: application/json' -d '{"p_limit":5,"p_offset":0}')"
+
+count_groups() {
+  curl -s -X POST "$API_URL/rest/v1/rpc/admin_post_group_count" "${auth[@]}" \
+    -H 'Content-Type: application/json' -d "{\"p_search\":$1}" | tr -d '[]"'
+}
+# One entry per object in the array, so the flag can be read off the group.
+ready_for() {
+  curl -s -X POST "$API_URL/rest/v1/rpc/admin_post_groups" "${auth[@]}" \
+    -H 'Content-Type: application/json' \
+    -d "{\"p_limit\":100,\"p_offset\":0}" |
+    tr '}' '\n' | grep -F "\"$1\"" | sed -n 's/.*"ready":\([a-z]*\).*/\1/p' | head -1
+}
+
+check "đếm được nhóm theo slug" "1" "$(count_groups "\"sec-ok-$$\"")"
+# A typed "%" is a character, not a wildcard: LIKE would have matched every row.
+check "ký tự % không phải ký tự đại diện" "0" "$(count_groups '"%"')"
+check "nhóm đủ hai bản thì sẵn sàng" "true" "$(ready_for "$ok")"
+
+# A third, empty row in the group is enough for publish_translation to refuse —
+# the list has to say so too, or the button lies.
+extra=$(uuidgen | tr '[:upper:]' '[:lower:]')
+psql "$DB_URL" -q -c "insert into public.posts
+  (translation_id, locale, kind, topic, difficulty, title, slug, content) values
+  ('$extra', 'vi', 'lesson', 'nguyen-ly', 'basic', 'x', 'sec-extra-$$-vi', '$doc'),
+  ('$extra', 'en', 'lesson', 'nguyen-ly', 'basic', 'x', 'sec-extra-$$-en', '$doc'),
+  ('$extra', 'en', 'lesson', 'nguyen-ly', 'basic', 'x', 'sec-extra-$$-en2', '{}');"
+check "nhóm có bản thừa rỗng thì không sẵn sàng" "false" "$(ready_for "$extra")"
+check "và publish_translation cũng từ chối" "translation_empty" "$(publish_detail "$extra")"
 
 echo
 if [ "$failures" -eq 0 ]; then

@@ -337,6 +337,7 @@ export async function setCommentHidden(
 ): Promise<ActionResult> {
   const lookup = await lookUpStaff();
   if (lookup.status !== "ok") return SESSION_ENDED;
+  if (!isUuid(commentId)) return fail("Không tìm thấy bình luận.");
 
   const supabase = createClient();
 
@@ -348,14 +349,18 @@ export async function setCommentHidden(
     .maybeSingle();
 
   if (error) return dbFail("setCommentHidden", error);
+  // No row means the comment is already gone (or a policy dropped it); saying
+  // "ok" would leave the list looking unchanged for no stated reason.
+  if (!data) return fail("Không tìm thấy bình luận.");
 
-  await revalidateCommentPost(data?.post_id ?? null);
+  await revalidateCommentPost(data.post_id);
   return { ok: true };
 }
 
 export async function deleteComment(commentId: string): Promise<ActionResult> {
   const lookup = await lookUpStaff();
   if (lookup.status !== "ok") return SESSION_ENDED;
+  if (!isUuid(commentId)) return fail("Không tìm thấy bình luận.");
 
   const supabase = createClient();
 

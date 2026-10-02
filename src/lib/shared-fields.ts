@@ -158,23 +158,8 @@ export function validateNewPostFields(
   return { ok: true, topic, difficulty };
 }
 
-/**
- * Whether a translation group may be published, mirroring `publish_translation`
- * in the database: both locales present, each with a title and at least one
- * body block.
- *
- * The admin list uses this to enable its "Đăng" button. Checking titles alone
- * (the earlier behaviour) left the button clickable on a body-less group,
- * which then failed only when the server-side gate refused it.
- */
-export function isTranslationGroupReady(
-  rows: readonly { locale: string; title: string; content: unknown }[]
-): boolean {
-  const locales = new Set(rows.map((row) => row.locale));
-  if (!locales.has("vi") || !locales.has("en")) return false;
-
-  return rows.every((row) => {
-    const blocks = (row.content as { content?: unknown[] } | null)?.content;
-    return row.title.trim().length > 0 && Array.isArray(blocks) && blocks.length > 0;
-  });
-}
+// Whether a translation group may be published is decided by
+// `publish_translation()` in Postgres, and the admin list asks the database the
+// same question through `admin_post_groups.ready`. There is deliberately no
+// JavaScript copy of that rule: the two would only have to disagree once, and
+// the enforcement is not in the app anyway.

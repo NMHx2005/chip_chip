@@ -39,6 +39,11 @@ export function useUnsavedChangesWarning(dirty: boolean) {
       const href = anchor.getAttribute("href");
       if (!href || href.startsWith("#")) return;
 
+      // A new tab keeps this page (and its draft) alive, so it is not a way of
+      // leaving. Same for a download link.
+      if (anchor.target && anchor.target !== "_self") return;
+      if (anchor.hasAttribute("download")) return;
+
       const url = new URL(anchor.href, window.location.href);
       if (url.origin !== window.location.origin) return;
 

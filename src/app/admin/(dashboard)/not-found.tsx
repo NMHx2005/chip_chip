@@ -9,7 +9,7 @@ import Link from "next/link";
  */
 export default function AdminNotFound() {
   return (
-    <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border-[1.5px] border-dashed border-[#A8A8A8] bg-white/50 px-8 py-16 text-center">
+    <div className="flex flex-col items-center justify-center gap-4 rounded-2xl border-[1.5px] border-dashed border-border bg-surface/70 px-8 py-16 text-center">
       <span
         aria-hidden
         className="grid size-14 place-items-center rounded-2xl bg-surface-muted text-lg font-bold text-text-muted"

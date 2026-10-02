@@ -14,7 +14,8 @@ export default function AdminLoading() {
         <div className="h-4 w-72 animate-pulse rounded-full bg-surface-muted" />
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+      {/* Matches the dashboard's own grid, so the cards do not jump on load. */}
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {[0, 1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
