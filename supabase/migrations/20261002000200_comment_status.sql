@@ -27,6 +27,14 @@ create policy "comments_select_visible"
 
 alter table public.comments drop column is_hidden;
 
+-- Dropping `is_hidden` also drops `comments_post_idx (post_id, created_at)
+-- where is_hidden = false` from 20260912000000_init.sql — Postgres removes an
+-- index whose predicate names a dropped column, and says nothing about it. That
+-- is the index listComments and countComments lean on, so it is re-created on
+-- the new predicate (after the drop, hence the same name being free again).
+create index comments_post_idx on public.comments (post_id, created_at)
+  where status = 'approved';
+
 -- 20260913000000_harden_access.sql grants SELECT on an explicit column list so
 -- `author_email` stays out of reach. That list names `is_hidden`, and a column
 -- grant does not follow a rename — this has to be re-issued or anon ends up

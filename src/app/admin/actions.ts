@@ -136,8 +136,8 @@ export async function savePost(input: SavePostInput): Promise<ActionResult> {
     .eq("id", input.id)
     .maybeSingle<RevisionRow>();
 
-  if (
-    before &&
+  const changed =
+    before !== null &&
     revisionChanged(toSnapshot(before), {
       title,
       slug,
@@ -145,10 +145,7 @@ export async function savePost(input: SavePostInput): Promise<ActionResult> {
       coverImageUrl: input.coverImageUrl,
       content: input.content,
       status: before.status as PostStatus,
-    })
-  ) {
-    await snapshotPost(supabase, before, lookup.staff.id);
-  }
+    });
 
   const { data, error } = await supabase
     .from("posts")
@@ -170,6 +167,10 @@ export async function savePost(input: SavePostInput): Promise<ActionResult> {
     }
     return dbFail("savePost", error);
   }
+
+  // Snapshotted after the write succeeded, holding the values read before it: a
+  // rejected save must not leave a revision of a state that was never replaced.
+  if (changed && before) await snapshotPost(supabase, before, lookup.staff.id);
 
   await revalidatePost([
     {
@@ -436,7 +437,18 @@ async function snapshotPost(
  * slug would break the article's public URL (and could collide with another
  * article), and publishing is a gated action, not a side effect of restoring.
  */
-export async function restoreRevision(revisionId: string): Promise<ActionResult> {
+export async function restoreRevision(revisionId: string): Promise<
+  ActionResult & {
+    /** The restored row, so the editor can adopt it without a page reload. */
+    restored?: {
+      locale: Locale;
+      title: string;
+      excerpt: string;
+      coverImageUrl: string | null;
+      content: unknown;
+    };
+  }
+> {
   const lookup = await lookUpStaff();
   if (lookup.status !== "ok") return SESSION_ENDED;
   if (!isUuid(revisionId)) return fail("Không tìm thấy bản lưu.");
@@ -459,9 +471,6 @@ export async function restoreRevision(revisionId: string): Promise<ActionResult>
 
   if (!current) return fail("Bài viết không còn tồn tại.");
 
-  // Snapshot what is there now, so restoring is itself undoable.
-  await snapshotPost(supabase, current, lookup.staff.id);
-
   const { data: updated, error } = await supabase
     .from("posts")
     .update({
@@ -477,6 +486,11 @@ export async function restoreRevision(revisionId: string): Promise<ActionResult>
 
   if (error) return dbFail("restoreRevision", error);
 
+  // Snapshot what was there before the restore — after the write succeeded, so
+  // a failed restore does not leave a revision behind. Restoring is therefore
+  // itself undoable.
+  await snapshotPost(supabase, current, lookup.staff.id);
+
   await revalidatePost([
     {
       locale: updated.locale as Locale,
@@ -486,7 +500,16 @@ export async function restoreRevision(revisionId: string): Promise<ActionResult>
     },
   ]);
 
-  return { ok: true };
+  return {
+    ok: true,
+    restored: {
+      locale: updated.locale as Locale,
+      title: revision.title,
+      excerpt: revision.excerpt ?? "",
+      coverImageUrl: revision.cover_image_url,
+      content: revision.content,
+    },
+  };
 }
 
 /**

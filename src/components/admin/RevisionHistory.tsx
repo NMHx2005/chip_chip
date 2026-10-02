@@ -17,6 +17,15 @@ export type RevisionView = {
   createdAt: string;
 };
 
+/** What a restore hands back for the editor to adopt. */
+export type RestoredDraft = {
+  locale: "vi" | "en";
+  title: string;
+  excerpt: string;
+  coverImageUrl: string | null;
+  content: unknown;
+};
+
 /**
  * The article's recent snapshots, newest first, with a way back.
  *
@@ -24,12 +33,29 @@ export type RevisionView = {
  * saved it and when. The article body is deliberately not loaded here: twenty
  * full documents on every editor open would cost more than the feature is
  * worth, and the title/excerpt pair is what tells versions apart in practice.
+ *
+ * A restore rewrites a row in the database, so the result has to be adopted by
+ * whoever holds the text being edited — that is `onRestored`, and `dirty` is
+ * what makes the confirmation honest about unsaved text.
  */
-export function RevisionHistory({ revisions }: { revisions: RevisionView[] }) {
+export function RevisionHistory({
+  revisions,
+  dirty,
+  onRestored,
+}: {
+  revisions: RevisionView[];
+  /** The editor holds unsaved changes a restore would replace. */
+  dirty: boolean;
+  onRestored: (restored: RestoredDraft) => void;
+}) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [target, setTarget] = useState<RevisionView | null>(null);
   const [error, setError] = useState<string | null>(null);
+  // `<details>` has no `defaultOpen` in React, and a bare `open` prop would
+  // fight the browser; mirroring the DOM's own state keeps the panel open by
+  // default while still letting the reader collapse it.
+  const [open, setOpen] = useState(revisions.length > 0);
 
   const restore = (revision: RevisionView) => {
     setError(null);
@@ -40,21 +66,17 @@ export function RevisionHistory({ revisions }: { revisions: RevisionView[] }) {
         router.replace("/admin/dang-nhap");
         return;
       }
-      if (!result.ok) {
+      if (!result.ok || !result.restored) {
         setError(result.error ?? "Không khôi phục được.");
         return;
       }
-      // A full reload, not router.refresh(): the editor keeps the article in
-      // useState, so fresh server props alone would leave the old text on
-      // screen — and the next save would write it straight back over the
-      // restore.
-      window.location.reload();
+      onRestored(result.restored as RestoredDraft);
     });
   };
 
   return (
     <section className="rounded-2xl border border-border bg-surface">
-      <details open={revisions.length > 0}>
+      <details open={open} onToggle={(event) => setOpen(event.currentTarget.open)}>
         <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3.5 text-sm font-semibold text-text [&::-webkit-details-marker]:hidden">
           <History className="size-4 shrink-0" strokeWidth={2.2} aria-hidden />
           Lịch sử phiên bản
@@ -123,7 +145,16 @@ export function RevisionHistory({ revisions }: { revisions: RevisionView[] }) {
         title="Khôi phục bản này?"
         description={
           target
-            ? `Nội dung hiện tại sẽ được lưu lại thành một bản mới, rồi thay bằng bản ${new Date(target.createdAt).toLocaleString("vi-VN")}.`
+            ? [
+                // The snapshot holds what was last saved, not what is on screen.
+                "Bản đang lưu trong cơ sở dữ liệu sẽ được giữ lại thành một bản mới, rồi thay bằng bản " +
+                  `${new Date(target.createdAt).toLocaleString("vi-VN")}.`,
+                dirty
+                  ? "Bài này đang có thay đổi chưa lưu ở trình soạn — khôi phục sẽ bỏ các thay đổi đó."
+                  : null,
+              ]
+                .filter(Boolean)
+                .join(" ")
             : undefined
         }
         confirmLabel="Khôi phục"

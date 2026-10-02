@@ -1,10 +1,7 @@
 import { notFound } from "next/navigation";
 import type { JSONContent } from "@tiptap/react";
 import { PostEditor, type Draft } from "@/components/admin/PostEditor";
-import {
-  RevisionHistory,
-  type RevisionView,
-} from "@/components/admin/RevisionHistory";
+import type { RevisionView } from "@/components/admin/RevisionHistory";
 import { SharedFieldsPanel, type LessonOption } from "@/components/admin/SharedFieldsPanel";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
@@ -184,14 +181,15 @@ export default async function EditPostPage({
         />
       )}
 
+      {/* The history is the editor's: a restore has to replace the text in the
+          editor's own state, so the panel is rendered from inside it. */}
       <PostEditor
         translationId={anchor.translation_id as string}
         initialDrafts={drafts}
         status={primary.status}
         translateEnabled={Boolean(process.env.DEEPSEEK_API_KEY)}
+        revisions={revisions}
       />
-
-      <RevisionHistory revisions={revisions} />
     </div>
   );
 }

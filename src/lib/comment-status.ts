@@ -9,9 +9,6 @@ export const COMMENT_STATUSES = ["pending", "approved", "hidden"] as const;
 
 export type CommentStatus = (typeof COMMENT_STATUSES)[number];
 
-/** Statuses a moderator can pick from the admin, in queue order. */
-export const MODERATION_STATUSES: readonly CommentStatus[] = ["pending", "approved", "hidden"];
-
 export function isCommentStatus(value: string): value is CommentStatus {
   return (COMMENT_STATUSES as readonly string[]).includes(value);
 }

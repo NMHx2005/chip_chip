@@ -31,7 +31,21 @@ Chín bước của đợt thiết kế lại giao diện đã xong (bước 1, 
 `2026-10-01-thiet-ke-lai-*`. Bản thiết kế gốc ở `docs/thiet-ke-giao-dien/` (đọc
 `HANDOFF.md` trước).
 
-**Admin — giai đoạn 1 (đang làm tiếp giai đoạn 2–4).** Kế hoạch tổng thể: bốn giai
+**Admin — giai đoạn 2 (duyệt bình luận + lịch sử phiên bản).** Bình luận của người
+đọc **không còn hiện ngay**: `is_hidden` được thay bằng enum `comment_status`
+(`pending` / `approved` / `hidden`, migration `20261002000200`, enum ở file riêng
+`20261002000100`), bình luận cũ được backfill nên không đổi trạng thái hiển thị của
+bất kỳ bình luận nào. `/api/comments` ghi `pending` cho khách và `approved` cho nhân
+sự; form nói rõ "sẽ hiện sau khi được duyệt"; `/admin/comments` thành hàng đợi với
+bốn tab và số đếm đúng. Lịch sử phiên bản: bảng `post_revisions`
+(`20261002000300`) giữ **20 bản gần nhất** cho mỗi bài, chụp lại trước mỗi lần lưu,
+đăng, bỏ đăng hoặc khôi phục; tab "Lịch sử phiên bản" trong trình soạn bài có nút
+khôi phục (không đụng đường dẫn và trạng thái đăng). Kế hoạch:
+`docs/superpowers/plans/2026-10-02-admin-2-duyet-va-phien-ban.md`.
+⚠️ **Ba migration này phải chạy trước khi deploy code** (đúng thứ tự ở README) —
+code mới đọc cột `comments.status`, cột này chỉ có sau migration.
+
+**Admin — giai đoạn 1 (đang làm tiếp giai đoạn 3–4).** Kế hoạch tổng thể: bốn giai
 đoạn, mỗi giai đoạn một nhánh. Giai đoạn 1 xong: danh sách bài phân trang + tìm
 kiếm bằng RPC gộp nhóm `admin_post_groups` / `admin_post_group_count`
 (migration `20261002000000_admin_post_groups.sql`), hộp thư phân trang và đếm
@@ -403,7 +417,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **51 file, 485 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **53 file, 491 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
@@ -413,7 +427,7 @@ pass**. `npm run lint` sạch, không cảnh báo.
 Diễn lại các cuộc tấn công mà migration `20260913000000_harden_access.sql` và
 các ràng buộc dữ liệu về sau chặn lại — cần một stack Supabase local đang chạy
 (`npx supabase start`), **không bao giờ chạy nhắm vào production**. Hiện có
-**39 kiểm tra**, tất cả phải xanh (39/39) trước khi lên production.
+**47 kiểm tra**, tất cả phải xanh (47/47) trước khi lên production.
 
 ---
 
@@ -452,6 +466,10 @@ Bài học chỉ là khung rỗng nếu không có bài.
   tra riêng, không thể giả định đã sạch.
 - Quyết định về `preload` trong header HSTS (mục 5) — gần như không thể gỡ
   nhanh sau khi domain vào danh sách preload cứng của trình duyệt.
+- **Duyệt bình luận là việc hằng ngày, không phải việc một lần.** Từ giai đoạn 2,
+  bình luận của người đọc chỉ hiện sau khi được duyệt (bình luận do nhân sự viết thì
+  vào thẳng, có huy hiệu tác giả). Trang `/admin/comments` mở sẵn ở tab "Chờ duyệt";
+  đừng để hàng đợi tồn đọng lâu, vì người gửi không thấy bình luận của mình.
 
 ### Có thể để sau ra mắt
 

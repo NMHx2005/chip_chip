@@ -9,6 +9,11 @@ import { EditorToolbar } from "@/components/admin/EditorToolbar";
 import { buildEditorExtensions } from "@/components/admin/editor-extensions";
 import { ConfirmDialog, PromptDialog } from "@/components/admin/Dialog";
 import {
+  RevisionHistory,
+  type RestoredDraft,
+  type RevisionView,
+} from "@/components/admin/RevisionHistory";
+import {
   applyMath,
   MATH_LABEL,
   type ExistingMath,
@@ -47,12 +52,15 @@ export function PostEditor({
   initialDrafts,
   status,
   translateEnabled,
+  revisions,
 }: {
   translationId: string;
   initialDrafts: Record<Locale, Draft>;
   status: "draft" | "published";
   /** Whether the server has a DeepSeek key; the button explains itself when not. */
   translateEnabled: boolean;
+  /** The article's recent snapshots, shown under the editor. */
+  revisions: RevisionView[];
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -366,6 +374,48 @@ export function PostEditor({
     });
   };
 
+  /**
+   * Takes a restored snapshot into the editor.
+   *
+   * The database row was just replaced by the revision, so the buffer it
+   * replaces is the old text: swapping it in and marking the locale clean is
+   * what keeps the editor and the row in step. Nothing is reloaded — the panel
+   * lives inside this component precisely so it can do this.
+   */
+  const adoptRestore = (restored: RestoredDraft) => {
+    const content = restored.content as JSONContent;
+    const next = {
+      ...draftsRef.current,
+      [restored.locale]: {
+        ...draftsRef.current[restored.locale],
+        title: restored.title,
+        excerpt: restored.excerpt,
+        coverImageUrl: restored.coverImageUrl,
+        content,
+      },
+    };
+    draftsRef.current = next;
+    setDrafts(next);
+
+    // The buffer matches the row again, so there is nothing left to save for it.
+    dirtyRef.current = { ...dirtyRef.current, [restored.locale]: false };
+    setDirty(dirtyRef.current);
+    if (!savingRef.current) setState("idle");
+
+    if (activeRef.current === restored.locale) {
+      editor
+        ?.chain()
+        .setMeta("addToHistory", false)
+        .setContent(content, { emitUpdate: false })
+        .run();
+      setMessage("Đã khôi phục bản lưu. Kiểm tra lại rồi lưu nếu cần.");
+    } else {
+      setMessage(
+        `Đã khôi phục bản ${LOCALE_LABELS[restored.locale]} — chuyển sang tab đó để xem.`
+      );
+    }
+  };
+
   const current = drafts[active];
   const bothComplete = routing.locales.every(
     (locale) =>
@@ -655,6 +705,12 @@ export function PostEditor({
           <EditorContent editor={editor} />
         </div>
       </div>
+
+      <RevisionHistory
+        revisions={revisions}
+        dirty={hasUnsavedChanges}
+        onRestored={adoptRestore}
+      />
 
       <PromptDialog
         open={mathPrompt !== null}
