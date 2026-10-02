@@ -6,13 +6,14 @@ import { DocTocTrail } from "@/components/legal/DocTocTrail";
 import { PageHero } from "@/components/sections/PageHero";
 import { Button } from "@/components/ui/Button";
 import type { Locale } from "@/i18n/routing";
-import { PRIVACY_UPDATED } from "@/lib/constants";
+import { getSiteSettings } from "@/lib/queries/site-settings";
 import { localeAlternates } from "@/lib/seo";
 
 /**
  * Every sentence here describes what the code does today — see the DA4 plan
  * (Task 5) for the file each claim was checked against. Change the copy when
- * the behaviour changes, and move PRIVACY_UPDATED with it.
+ * the behaviour changes, and move the "privacy updated" date with it (now
+ * editable at /admin/cai-dat, defaulting to PRIVACY_UPDATED in constants.ts).
  */
 const SECTIONS = [
   { id: "collect", items: ["comments", "messages", "ip", "none"] },
@@ -45,14 +46,19 @@ export default async function PrivacyPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, format] = await Promise.all([getTranslations("privacy"), getFormatter()]);
+  const [t, format, settings] = await Promise.all([
+    getTranslations("privacy"),
+    getFormatter(),
+    getSiteSettings(),
+  ]);
+  const privacyUpdated = settings.privacyUpdated;
 
   const entries = SECTIONS.map((section) => ({
     id: `privacy-${section.id}`,
     text: t(`sections.${section.id}.title`),
     level: 2,
   }));
-  const updated = format.dateTime(new Date(`${PRIVACY_UPDATED}T00:00:00Z`), {
+  const updated = format.dateTime(new Date(`${privacyUpdated}T00:00:00Z`), {
     dateStyle: "long",
     timeZone: "UTC",
   });
@@ -79,7 +85,7 @@ export default async function PrivacyPage({
               <div className="mx-auto max-w-[768px]">
                 <p className="flex items-center gap-2 border-b border-hairline pb-6 text-sm tabular-nums text-text-muted">
                   <Calendar aria-hidden className="size-4 shrink-0" strokeWidth={2} />
-                  <time dateTime={PRIVACY_UPDATED}>{t("updated", { date: updated })}</time>
+                  <time dateTime={privacyUpdated}>{t("updated", { date: updated })}</time>
                 </p>
 
                 {SECTIONS.map((section, index) => (

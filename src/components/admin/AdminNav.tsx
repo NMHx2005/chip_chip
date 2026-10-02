@@ -9,6 +9,8 @@ const ITEMS = [
   { href: "/admin/bai-viet", label: "Bài viết" },
   { href: "/admin/comments", label: "Bình luận" },
   { href: "/admin/tin-nhan", label: "Tin nhắn" },
+  { href: "/admin/thu-vien", label: "Thư viện ảnh" },
+  { href: "/admin/cai-dat", label: "Cài đặt" },
   // Only admins may hand out access, so only they get the link; the page and
   // the action check it again.
   { href: "/admin/nguoi-dung", label: "Nhân sự", adminOnly: true },

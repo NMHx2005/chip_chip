@@ -13,6 +13,8 @@ import {
   type RestoredDraft,
   type RevisionView,
 } from "@/components/admin/RevisionHistory";
+import { MediaPickerDialog } from "@/components/admin/MediaGrid";
+import type { MediaObject } from "@/lib/media";
 import {
   applyMath,
   MATH_LABEL,
@@ -53,6 +55,7 @@ export function PostEditor({
   status,
   translateEnabled,
   revisions,
+  media,
 }: {
   translationId: string;
   initialDrafts: Record<Locale, Draft>;
@@ -61,6 +64,8 @@ export function PostEditor({
   translateEnabled: boolean;
   /** The article's recent snapshots, shown under the editor. */
   revisions: RevisionView[];
+  /** Images already in the library, for the cover and the insert pickers. */
+  media: MediaObject[];
 }) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -85,6 +90,7 @@ export function PostEditor({
   );
   const [confirmTranslate, setConfirmTranslate] = useState(false);
   const [confirmUnpublish, setConfirmUnpublish] = useState(false);
+  const [coverPicker, setCoverPicker] = useState(false);
   const coverInputRef = useRef<HTMLInputElement>(null);
 
   // The editor instance is shared across tabs, so callbacks read the active
@@ -668,15 +674,27 @@ export function PostEditor({
             )}
           </button>
 
-          {current.coverImageUrl && (
+          <div className="flex flex-wrap items-center gap-3">
+            {current.coverImageUrl && (
+              <button
+                type="button"
+                onClick={() => updateDraft(active, { coverImageUrl: null })}
+                className="cursor-pointer text-xs text-text-muted underline hover:text-red-600"
+              >
+                Bỏ ảnh bìa
+              </button>
+            )}
+
+            {/* The library is already on hand (the page loaded it), so reusing
+                an image costs no upload. */}
             <button
               type="button"
-              onClick={() => updateDraft(active, { coverImageUrl: null })}
-              className="cursor-pointer text-xs text-text-muted underline hover:text-red-600"
+              onClick={() => setCoverPicker(true)}
+              className="cursor-pointer text-xs text-accent underline [@media(hover:hover)]:hover:text-black"
             >
-              Bỏ ảnh bìa
+              Chọn ảnh có sẵn
             </button>
-          )}
+          </div>
 
           <input
             ref={coverInputRef}
@@ -700,7 +718,11 @@ export function PostEditor({
           toolbar's stickiness. `overflow: clip` clips without creating a
           scroll container, so the toolbar can stick. */}
       <div className="overflow-clip rounded-2xl border border-border bg-surface">
-        <EditorToolbar editor={editor} onAskMath={(kind) => setMathPrompt({ kind })} />
+        <EditorToolbar
+          editor={editor}
+          media={media}
+          onAskMath={(kind) => setMathPrompt({ kind })}
+        />
         <div className="px-4 py-5 md:px-8 md:py-8">
           <EditorContent editor={editor} />
         </div>
@@ -710,6 +732,16 @@ export function PostEditor({
         revisions={revisions}
         dirty={hasUnsavedChanges}
         onRestored={adoptRestore}
+      />
+
+      <MediaPickerDialog
+        open={coverPicker}
+        objects={media}
+        onPick={(object) => {
+          updateDraft(active, { coverImageUrl: object.url });
+          setCoverPicker(false);
+        }}
+        onCancel={() => setCoverPicker(false)}
       />
 
       <PromptDialog

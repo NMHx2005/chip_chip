@@ -16,6 +16,7 @@ import {
   Highlighter,
   Image as ImageIcon,
   ImagePlus,
+  Images,
   Italic,
   Link2,
   List,
@@ -34,6 +35,8 @@ import {
 import { cn } from "@/lib/utils";
 import { UploadError, uploadPostImage } from "@/lib/supabase/upload";
 import { PromptDialog } from "@/components/admin/Dialog";
+import { MediaPickerDialog } from "@/components/admin/MediaGrid";
+import type { MediaObject } from "@/lib/media";
 import type { MathKind } from "@/components/admin/math-edit";
 import { CALLOUT_VARIANTS, calloutVariant, type CalloutVariant } from "@/lib/tiptap/nodes/callout";
 import { parseVideoUrl } from "@/lib/video";
@@ -112,9 +115,12 @@ type PromptRequest = {
 
 export function EditorToolbar({
   editor,
+  media,
   onAskMath,
 }: {
   editor: Editor | null;
+  /** Images already in the library, for the "insert an existing image" picker. */
+  media: MediaObject[];
   onAskMath: (kind: MathKind) => void;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -123,6 +129,7 @@ export function EditorToolbar({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [prompt, setPrompt] = useState<PromptRequest | null>(null);
+  const [mediaPicker, setMediaPicker] = useState(false);
 
   if (!editor) return null;
 
@@ -381,6 +388,9 @@ export function EditorToolbar({
         >
           <ImagePlus className="size-[18px]" strokeWidth={2.2} />
         </ToolButton>
+        <ToolButton label="Chèn ảnh có sẵn" onClick={() => setMediaPicker(true)}>
+          <Images className="size-[18px]" strokeWidth={2.2} />
+        </ToolButton>
         <ToolButton
           label="Chèn bảng"
           onClick={() =>
@@ -518,6 +528,16 @@ export function EditorToolbar({
           event.target.value = "";
           if (file) void handleImage(file);
         }}
+      />
+
+      <MediaPickerDialog
+        open={mediaPicker}
+        objects={media}
+        onPick={(object) => {
+          editor.chain().focus().setImage({ src: object.url }).run();
+          setMediaPicker(false);
+        }}
+        onCancel={() => setMediaPicker(false)}
       />
 
       <PromptDialog

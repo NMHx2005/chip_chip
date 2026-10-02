@@ -1,5 +1,5 @@
 import { useTranslations } from "next-intl";
-import { SOCIAL_LINKS } from "@/lib/constants";
+import type { SocialLink } from "@/lib/site-settings";
 import { cn } from "@/lib/utils";
 
 const ICON_PATHS: Record<"facebook" | "tiktok", React.ReactNode> = {
@@ -11,11 +11,20 @@ const ICON_PATHS: Record<"facebook" | "tiktok", React.ReactNode> = {
   ),
 };
 
+/**
+ * The social icons.
+ *
+ * The links arrive as a prop rather than being read here: this component sits
+ * inside the client navbar (and inside the server footer), and the settings
+ * come from the database, which only a server component can reach.
+ */
 export function SocialLinks({
+  links,
   className,
   iconClassName,
   variant = "light",
 }: {
+  links: SocialLink[];
   className?: string;
   iconClassName?: string;
   variant?: "light" | "dark";
@@ -24,13 +33,13 @@ export function SocialLinks({
 
   // A blank href means the page does not exist yet — hide the icon rather than
   // linking nowhere.
-  const links = SOCIAL_LINKS.filter((link) => link.href.length > 0);
+  const shown = links.filter((link) => link.href.length > 0);
 
-  if (links.length === 0) return null;
+  if (shown.length === 0) return null;
 
   return (
     <ul className={cn("flex items-center gap-2", className)}>
-      {links.map((link) => (
+      {shown.map((link) => (
         <li key={link.key}>
           <a
             href={link.href}

@@ -1,6 +1,7 @@
 import { useTranslations } from "next-intl";
 import { FooterNav } from "@/components/layout/FooterNav";
 import { Logo } from "@/components/layout/Logo";
+import type { SocialLink } from "@/lib/site-settings";
 import { SocialLinks } from "@/components/layout/SocialLinks";
 import { Link } from "@/i18n/navigation";
 import { FOOTER_LINKS } from "@/lib/constants";
@@ -23,7 +24,7 @@ import { FOOTER_LINKS } from "@/lib/constants";
  * simply does not appear, which is exactly how it was reported: "there is no
  * footer". Keep it level with `MainSection` (`z-20`), not below it.
  */
-export function Footer() {
+export function Footer({ socialLinks }: { socialLinks: SocialLink[] }) {
   const t = useTranslations("footer");
   const tMeta = useTranslations("meta");
 
@@ -49,7 +50,10 @@ export function Footer() {
             <Logo className="text-[19px] md:text-[22px]" />
           </Link>
 
-          <SocialLinks className="md:col-start-3 md:row-start-1 md:justify-self-end" />
+          <SocialLinks
+            links={socialLinks}
+            className="md:col-start-3 md:row-start-1 md:justify-self-end"
+          />
         </div>
 
         {/* The trust pages sit in the middle column above the copyright, so the

@@ -30,6 +30,7 @@ import {
   revisionChanged,
   type RevisionSnapshot,
 } from "@/lib/revisions";
+import { MEDIA_BUCKET, isMediaPath, mediaPublicUrl, postsUsingUrl } from "@/lib/media";
 
 export type ActionResult = {
   ok: boolean;
@@ -492,6 +493,118 @@ export async function createStaffAccount(input: {
   revalidatePath("/admin/nguoi-dung");
   // Handed back once, to pass on to the person; never stored or logged.
   return { ok: true, password };
+}
+
+/**
+ * Removes one image from the media bucket.
+ *
+ * Refused while an article still points at it: the cover and the body document
+ * both hold plain URLs, so deleting one out from under a live page would leave
+ * a broken image with nothing to explain it.
+ */
+export async function deleteMediaObject(path: string): Promise<ActionResult> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+  // The path comes from the browser; only shapes the uploader writes may reach
+  // Storage (see isMediaPath).
+  if (!isMediaPath(path)) return fail("Đường dẫn ảnh không hợp lệ.");
+
+  const supabase = createClient();
+  const url = mediaPublicUrl(path);
+
+  const { data: posts, error: readError } = await supabase
+    .from("posts")
+    .select("id, title, content, cover_image_url");
+
+  if (readError) return dbFail("deleteMediaObject:read", readError);
+
+  const used = postsUsingUrl(
+    (posts ?? []).map((post) => ({
+      id: post.id,
+      title: post.title,
+      content: post.content,
+      coverImageUrl: post.cover_image_url,
+    })),
+    url
+  );
+
+  if (used.length > 0) {
+    const names = used.slice(0, 3).map((post) => `“${post.title}”`).join(", ");
+    return fail(
+      used.length > 3
+        ? `Ảnh đang được dùng trong ${used.length} bài (${names}…). Gỡ khỏi các bài đó trước.`
+        : `Ảnh đang được dùng trong ${names}. Gỡ khỏi bài đó trước.`
+    );
+  }
+
+  const { error } = await supabase.storage.from(MEDIA_BUCKET).remove([path]);
+  if (error) return dbFail("deleteMediaObject", error);
+
+  revalidatePath("/admin/thu-vien");
+  return { ok: true };
+}
+
+/**
+ * Saves the values the settings screen owns.
+ *
+ * Only these four are writable; everything else about the site is code. The
+ * values are validated here because they end up in an emailed `mailto:`, in
+ * anchors, and in a `<time>` attribute on public pages.
+ */
+export async function saveSiteSettings(input: {
+  contactEmail: string;
+  facebook: string;
+  tiktok: string;
+  responseVi: string;
+  responseEn: string;
+  privacyUpdated: string;
+}): Promise<ActionResult> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+
+  const contactEmail = input.contactEmail.trim();
+  if (contactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) {
+    return fail("Email liên hệ không hợp lệ.");
+  }
+
+  const socialLinks = [
+    { key: "facebook", href: input.facebook.trim() },
+    { key: "tiktok", href: input.tiktok.trim() },
+  ];
+  for (const link of socialLinks) {
+    // `https://` only: these become anchors with target="_blank".
+    if (link.href && !/^https:\/\//i.test(link.href)) {
+      return fail("Liên kết mạng xã hội phải bắt đầu bằng https://");
+    }
+  }
+
+  const privacyUpdated = input.privacyUpdated.trim();
+  if (privacyUpdated && !/^\d{4}-\d{2}-\d{2}$/.test(privacyUpdated)) {
+    return fail("Ngày cập nhật chính sách phải theo dạng NĂM-THÁNG-NGÀY.");
+  }
+
+  // An empty note falls back to the message copy, so blank is not stored.
+  const responseTime: Record<string, string> = {};
+  if (input.responseVi.trim()) responseTime.vi = input.responseVi.trim();
+  if (input.responseEn.trim()) responseTime.en = input.responseEn.trim();
+
+  const stamp = new Date().toISOString();
+  const rows = [
+    { key: "contact_email", value: contactEmail },
+    { key: "social_links", value: socialLinks },
+    { key: "response_time", value: responseTime },
+    { key: "privacy_updated", value: privacyUpdated },
+  ].map((row) => ({ ...row, updated_at: stamp, updated_by: lookup.staff.id }));
+
+  const { error } = await createClient()
+    .from("site_settings")
+    .upsert(rows, { onConflict: "key" });
+
+  if (error) return dbFail("saveSiteSettings", error);
+
+  // These reach every page (the footer, the contact page), so the whole app.
+  revalidatePath("/", "layout");
+  return { ok: true };
 }
 
 /** Every column a snapshot keeps, read back as a row. */

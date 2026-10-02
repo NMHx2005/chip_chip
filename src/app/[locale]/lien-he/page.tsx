@@ -6,7 +6,7 @@ import { MessageForm } from "@/components/contact/MessageForm";
 import { PageHero } from "@/components/sections/PageHero";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
-import { CONTACT_EMAIL, SOCIAL_LINKS } from "@/lib/constants";
+import { getSiteSettings } from "@/lib/queries/site-settings";
 import { localeAlternates } from "@/lib/seo";
 
 export async function generateMetadata({
@@ -31,9 +31,18 @@ export default async function ContactPage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [t, tNav] = await Promise.all([getTranslations("contact"), getTranslations("nav")]);
+  const [t, tNav, settings] = await Promise.all([
+    getTranslations("contact"),
+    getTranslations("nav"),
+    getSiteSettings(),
+  ]);
+
   // A blank href means the account does not exist yet — same rule as SocialLinks.
-  const socials = SOCIAL_LINKS.filter((link) => link.href.length > 0);
+  const socials = settings.socialLinks.filter((link) => link.href.length > 0);
+  const contactEmail = settings.contactEmail;
+  // The reply note is a setting so the maintainer can keep it true without a
+  // deploy; with nothing stored, the message copy answers.
+  const responseBody = settings.responseTime[locale as Locale] ?? t("aside.responseBody");
 
   return (
     <>
@@ -46,13 +55,13 @@ export default async function ContactPage({
           </div>
 
           <aside className="flex flex-col gap-4">
-            {CONTACT_EMAIL && (
+            {contactEmail && (
               <InfoBlock icon={Mail} title={t("aside.emailTitle")}>
                 <a
-                  href={`mailto:${CONTACT_EMAIL}`}
+                  href={`mailto:${contactEmail}`}
                   className="inline-flex min-h-11 items-center font-mono text-sm text-text-nav underline underline-offset-4 transition-colors [@media(hover:hover)]:hover:text-accent"
                 >
-                  {CONTACT_EMAIL}
+                  {contactEmail}
                 </a>
               </InfoBlock>
             )}
@@ -77,7 +86,7 @@ export default async function ContactPage({
             )}
 
             <InfoBlock icon={Clock} title={t("aside.responseTitle")}>
-              <p className="text-sm leading-relaxed text-text-muted">{t("aside.responseBody")}</p>
+              <p className="text-sm leading-relaxed text-text-muted">{responseBody}</p>
             </InfoBlock>
 
             <InfoBlock icon={Info} title={t("aside.beforeSendTitle")}>

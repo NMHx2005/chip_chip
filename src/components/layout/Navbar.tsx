@@ -10,6 +10,7 @@ import { Logo } from "@/components/layout/Logo";
 import { SocialLinks } from "@/components/layout/SocialLinks";
 import { DURATION, EASE_STANDARD } from "@/components/motion";
 import { SearchBox } from "@/components/search/SearchBox";
+import type { SocialLink } from "@/lib/site-settings";
 import { SearchForm } from "@/components/search/SearchForm";
 import { GlassPill } from "@/components/ui/GlassPill";
 import { MenuIcon } from "@/components/ui/MenuIcon";
@@ -58,7 +59,7 @@ function isActive(pathname: string, href: string) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function Navbar() {
+export function Navbar({ socialLinks }: { socialLinks: SocialLink[] }) {
   const t = useTranslations("nav");
   const tSearch = useTranslations("search");
   const locale = useLocale() as Locale;
@@ -211,7 +212,7 @@ export function Navbar() {
 
           <div className="flex items-center gap-3">
             <SearchBox className="hidden lg:block" />
-            <SocialLinks className="hidden md:flex" />
+            <SocialLinks links={socialLinks} className="hidden md:flex" />
             <Suspense fallback={<LangSwitchFallback className="hidden sm:flex" />}>
               <LangSwitch className="hidden sm:flex" />
             </Suspense>
@@ -331,7 +332,7 @@ export function Navbar() {
                     onSwitch={() => setMobileOpen(false)}
                   />
                 </Suspense>
-                <SocialLinks variant="dark" />
+                <SocialLinks links={socialLinks} variant="dark" />
               </div>
 
               <PillButtonCta

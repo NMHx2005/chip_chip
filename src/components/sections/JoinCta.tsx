@@ -15,7 +15,7 @@ import {
 } from "@/components/motion";
 import { CircularText } from "@/components/ui/CircularText";
 import { Link } from "@/i18n/navigation";
-import { CONTACT_EMAIL, CTA_BACKDROP, NAV_ITEMS } from "@/lib/constants";
+import { CTA_BACKDROP, NAV_ITEMS } from "@/lib/constants";
 
 /**
  * Closing block of the homepage, built to Strike's CTA layout: a black card
@@ -28,7 +28,7 @@ import { CONTACT_EMAIL, CTA_BACKDROP, NAV_ITEMS } from "@/lib/constants";
  * FOOTER_LINKS — see Footer.tsx. This is the only place on the page that
  * carries the full navigation.
  */
-export function JoinCta() {
+export function JoinCta({ contactEmail }: { contactEmail: string }) {
   const t = useTranslations("home.join");
   const tNav = useTranslations("nav");
   const prefersReducedMotion = useReducedMotion();
@@ -107,12 +107,12 @@ export function JoinCta() {
                 <ArrowRight className="size-[18px]" strokeWidth={2.2} />
               </Link>
 
-              {CONTACT_EMAIL && (
+              {contactEmail && (
                 <a
-                  href={`mailto:${CONTACT_EMAIL}`}
+                  href={`mailto:${contactEmail}`}
                   className="font-mono text-xs text-white/75 underline underline-offset-4 transition-colors [@media(hover:hover)]:hover:text-white"
                 >
-                  {CONTACT_EMAIL}
+                  {contactEmail}
                 </a>
               )}
             </motion.div>

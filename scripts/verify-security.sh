@@ -22,6 +22,7 @@ failures=0
 cleanup() {
   psql "$DB_URL" -q -c "delete from public.posts where slug like 'sec-%-$$%';" >/dev/null 2>&1 || true
   psql "$DB_URL" -q -c "delete from public.messages where name = 'sec-check-$$';" >/dev/null 2>&1 || true
+  psql "$DB_URL" -q -c "delete from public.site_settings where key like 'sec-%';" >/dev/null 2>&1 || true
   psql "$DB_URL" -q -c "delete from auth.users where email = '$EMAIL';" >/dev/null 2>&1 || true
 }
 trap cleanup EXIT
@@ -381,6 +382,20 @@ check "quản trị viên không tự hạ quyền mình" "self_change" \
   "$(curl -s -X POST "$API_URL/rest/v1/rpc/admin_set_staff" "${auth[@]}" \
     -H 'Content-Type: application/json' -d "$demote_body" |
     sed -n 's/.*"details":"\([^"]*\)".*/\1/p')"
+
+echo
+echo "C6 — cài đặt site: công khai đọc, chỉ nhân sự ghi"
+psql "$DB_URL" -q -c "insert into public.site_settings (key, value)
+  values ('sec-read-$$', '\"x\"'::jsonb);"
+check "anon đọc được cài đặt" "200" \
+  "$(status "$API_URL/rest/v1/site_settings?select=key&limit=1" -H "apikey: $ANON_KEY")"
+settings_body=$(printf '{"key":"sec-write-%s","value":"x"}' "$$")
+check "anon không ghi được cài đặt" "denied" \
+  "$(denied -X POST "$API_URL/rest/v1/site_settings" -H "apikey: $ANON_KEY" \
+    -H 'Content-Type: application/json' -d "$settings_body")"
+check "nhân sự ghi được cài đặt" "201" \
+  "$(status -X POST "$API_URL/rest/v1/site_settings" "${auth[@]}" \
+    -H 'Content-Type: application/json' -d "$settings_body")"
 
 echo
 if [ "$failures" -eq 0 ]; then

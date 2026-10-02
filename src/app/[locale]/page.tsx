@@ -15,6 +15,7 @@ import {
 } from "@/components/motion";
 import { HERO_BACKDROP } from "@/lib/constants";
 import { countLessonsByTopic, getLatestPosts } from "@/lib/queries/posts";
+import { getSiteSettings } from "@/lib/queries/site-settings";
 import { localeAlternates } from "@/lib/seo";
 import type { Locale } from "@/i18n/routing";
 
@@ -45,9 +46,10 @@ export default async function HomePage({
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const [posts, topicCounts] = await Promise.all([
+  const [posts, topicCounts, settings] = await Promise.all([
     getLatestPosts(locale as Locale, 3),
     countLessonsByTopic(locale as Locale),
+    getSiteSettings(),
   ]);
 
   return (
@@ -71,7 +73,8 @@ export default async function HomePage({
         <CountryBands />
         <VideoCarousel />
         <LatestPosts posts={posts} />
-        <JoinCta />
+        {/* A client component, so the address is handed down rather than read. */}
+        <JoinCta contactEmail={settings.contactEmail} />
       </MainSection>
     </>
   );

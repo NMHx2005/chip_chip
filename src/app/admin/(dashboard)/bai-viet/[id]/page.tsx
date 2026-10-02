@@ -8,6 +8,7 @@ import { requireStaff } from "@/lib/auth";
 import { routing, type Locale } from "@/i18n/routing";
 import type { TopicId } from "@/lib/constants";
 import { REVISION_KEEP } from "@/lib/revisions";
+import { listMedia } from "@/lib/queries/media";
 import type { Difficulty, VideoSource } from "@/lib/types";
 import { watchUrl, type VideoPlatform } from "@/lib/video";
 
@@ -128,6 +129,10 @@ export default async function EditPostPage({
       ? watchUrl({ platform: primary.video_platform, externalId: primary.video_external_id })
       : "";
 
+  // A small slice of the media library, so the editor can reuse an image
+  // without an upload; the full library has its own page.
+  const media = await listMedia(24);
+
   // A video can point at one lesson; staff pick it by its Vietnamese title.
   let lessonOptions: LessonOption[] = [];
   if (primary.kind === "video") {
@@ -189,6 +194,7 @@ export default async function EditPostPage({
         status={primary.status}
         translateEnabled={Boolean(process.env.DEEPSEEK_API_KEY)}
         revisions={revisions}
+        media={media}
       />
     </div>
   );

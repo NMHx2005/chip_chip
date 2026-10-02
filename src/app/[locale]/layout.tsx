@@ -5,6 +5,7 @@ import { DocumentLang } from "@/components/layout/DocumentLang";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import { getSiteSettings } from "@/lib/queries/site-settings";
 import { routing } from "@/i18n/routing";
 
 export function generateStaticParams() {
@@ -26,8 +27,13 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale);
 
-  const t = await getTranslations("nav");
-  const messages = await getMessages();
+  const [t, messages, settings] = await Promise.all([
+    getTranslations("nav"),
+    getMessages(),
+    // One read for the whole chrome: the navbar and the footer both show the
+    // social icons, and both live below the client boundary.
+    getSiteSettings(),
+  ]);
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
@@ -41,11 +47,11 @@ export default async function LocaleLayout({
           {t("skipToContent")}
         </a>
 
-        <Navbar />
+        <Navbar socialLinks={settings.socialLinks} />
 
         <main id="main">{children}</main>
 
-        <Footer />
+        <Footer socialLinks={settings.socialLinks} />
       </SmoothScroll>
     </NextIntlClientProvider>
   );
