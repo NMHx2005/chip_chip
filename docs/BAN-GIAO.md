@@ -44,6 +44,12 @@ khôi phục (không đụng đường dẫn và trạng thái đăng). Kế ho�
 `docs/superpowers/plans/2026-10-02-admin-2-duyet-va-phien-ban.md`.
 ⚠️ **Ba migration này phải chạy trước khi deploy code** (đúng thứ tự ở README) —
 code mới đọc cột `comments.status`, cột này chỉ có sau migration.
+Sau review đã sửa: **tạo lại index `comments_post_idx`** (bỏ cột `is_hidden` làm Postgres xoá luôn index có
+predicate trỏ vào cột đó, và nó xoá im lặng — mất index thì mỗi lần mở bài là một lần quét toàn bộ bình luận
+đã duyệt); khôi phục phiên bản **cập nhật tại chỗ trong trình soạn** thay vì nạp lại trang (nạp lại có thể bị
+huỷ ở hộp thoại beforeunload, để lại DB đã khôi phục mà editor còn nội dung cũ, và lần Lưu sau ghi đè ngược);
+chụp ảnh phiên bản **sau** khi ghi thành công (lưu lỗi không còn để lại bản lưu ma); hộp thoại khôi phục nói
+rõ khi có thay đổi chưa lưu.
 
 **Admin — giai đoạn 1 (đang làm tiếp giai đoạn 3–4).** Kế hoạch tổng thể: bốn giai
 đoạn, mỗi giai đoạn một nhánh. Giai đoạn 1 xong: danh sách bài phân trang + tìm
