@@ -31,6 +31,30 @@ Chín bước của đợt thiết kế lại giao diện đã xong (bước 1, 
 `2026-10-01-thiet-ke-lai-*`. Bản thiết kế gốc ở `docs/thiet-ke-giao-dien/` (đọc
 `HANDOFF.md` trước).
 
+**Admin — giai đoạn 3 (quản lý nhân sự + mật khẩu).** Từ đây `admin` và `editor` **khác nhau**: thêm
+`is_admin()`, `admin_list_staff()` (cũng là đường lấy email, vì không role client nào đọc được `auth.users`)
+và `admin_set_staff()` trong `20261002000400_is_admin.sql`. `/admin/nguoi-dung` (chỉ admin thấy trên nav)
+liệt kê nhân sự, bật/tắt, đổi vai trò và **tạo tài khoản** qua Admin API kèm mật khẩu tạm hiện một lần. Chốt an
+toàn duy nhất cần thiết: **không ai tự đổi hàng của mình** — người gọi vốn đã là admin đang hoạt động, nên chỉ
+cần vậy là không bao giờ mất hết admin. Mật khẩu: `/admin/quen-mat-khau` gửi liên kết (có giới hạn tần suất,
+trả lời y hệt nhau dù email có tồn tại hay không), liên kết trong email đi qua `/auth/xac-nhan` để đổi code
+thành phiên, rồi `/admin/dat-lai-mat-khau` đặt mật khẩu mới; `/admin/doi-mat-khau` là form đó khi đã đăng nhập
+(bắt buộc nhập mật khẩu hiện tại). Middleware mở ba trang công khai này và tách `/auth` khỏi next-intl (nếu
+không nó bị đổi thành `/vi/auth/...` rồi 404).
+⚠️ **Để mật khẩu hoạt động thật, cần cấu hình Supabase**: bật SMTP (Authentication → Emails) và thêm domain
+vào danh sách redirect được phép (Authentication → URL Configuration). Chưa có SMTP thì form vẫn trả lời
+trung tính nhưng không có email nào được gửi.
+Sau review đã sửa hai lỗ hổng thật: (1) **"đã đăng nhập" từng đủ để mở trang đặt lại mật khẩu** — chế độ đến
+từ form field và trang chỉ kiểm tra có phiên, nên ai giữ phiên cũng đặt được mật khẩu mới mà không cần biết
+mật khẩu cũ; nay callback đặt một cookie đánh dấu ngắn hạn (httpOnly, 15 phút, tiêu sau khi dùng), action
+quyết định theo cookie chứ không theo field, và trang chỉ hiện form khi có cookie; (2) `?next=` trong
+`/auth/xac-nhan` là **open redirect** (chỉ chặn `//`) — nay so sánh origin của URL đã parse, tách thành hàm
+thuần có test. Cùng đợt: kiểm mật khẩu hiện tại đi qua cùng bộ giới hạn tần suất với form đăng nhập; tạo tài
+khoản mà bước gán quyền lỗi thì xoá user vừa tạo thay vì để lại tài khoản không dùng được.
+**Giới hạn đã biết:** liên kết đặt lại chỉ dùng được trong cùng trình duyệt (`@supabase/ssr` chạy PKCE, giữ
+code-verifier trong cookie). Muốn dùng chéo thiết bị thì đổi mẫu email Auth sang `{{ .TokenHash }}` — route
+handler đã hỗ trợ sẵn nhánh đó.
+
 **Admin — giai đoạn 2 (duyệt bình luận + lịch sử phiên bản).** Bình luận của người
 đọc **không còn hiện ngay**: `is_hidden` được thay bằng enum `comment_status`
 (`pending` / `approved` / `hidden`, migration `20261002000200`, enum ở file riêng
@@ -423,7 +447,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **53 file, 491 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **55 file, 501 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
@@ -433,7 +457,7 @@ pass**. `npm run lint` sạch, không cảnh báo.
 Diễn lại các cuộc tấn công mà migration `20260913000000_harden_access.sql` và
 các ràng buộc dữ liệu về sau chặn lại — cần một stack Supabase local đang chạy
 (`npx supabase start`), **không bao giờ chạy nhắm vào production**. Hiện có
-**47 kiểm tra**, tất cả phải xanh (47/47) trước khi lên production.
+**52 kiểm tra**, tất cả phải xanh (52/52) trước khi lên production.
 
 ---
 

@@ -67,9 +67,13 @@ update public.profiles
  where id = (select id from auth.users where email = 'you@example.com');
 ```
 
-Sau đó đăng nhập ở `/admin/dang-nhap`. Thêm người về sau thì lặp lại 2 bước trên với
-`role = 'editor'`. Ai đăng nhập mà chưa được kích hoạt sẽ thấy thông báo chờ cấp quyền
-thay vì vào được trang quản trị.
+Sau đó đăng nhập ở `/admin/dang-nhap`. Ai đăng nhập mà chưa được kích hoạt sẽ thấy thông báo chờ cấp
+quyền thay vì vào được trang quản trị.
+
+Hai bước trên chỉ cần cho **tài khoản quản trị đầu tiên** (người tạo nó phải làm bằng tay). Từ đó về sau,
+thêm người ngay trong `/admin/nguoi-dung`: nhập email, chọn vai trò, hệ thống tạo tài khoản với mật khẩu tạm
+hiện **một lần** để bạn gửi cho họ, và bật/tắt hay đổi vai trò bất cứ lúc nào. Không ai tự đổi quyền của
+chính mình — nhờ một quản trị viên khác.
 
 > Nên tắt luôn tự đăng ký trong Supabase Dashboard (*Authentication → Sign In / Providers
 > → Allow new users to sign up*) như một lớp phòng thủ thứ hai. Lớp thứ nhất vẫn là
@@ -85,7 +89,7 @@ thay vì vào được trang quản trị.
 
    ```bash
    npx supabase db reset          # áp toàn bộ migration từ đầu vào DB local
-   ./scripts/verify-security.sh   # phải xanh hết (47/47) trước khi đi tiếp
+   ./scripts/verify-security.sh   # phải xanh hết (52/52) trước khi đi tiếp
    ```
 
 3. **Chạy migration trên production**, trước khi merge/deploy code này — code
