@@ -3,7 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { lookUpStaff } from "@/lib/auth";
+import { tempPassword } from "@/lib/staff";
 import type { Locale } from "@/i18n/routing";
 import { isCommentStatus, type CommentStatus } from "@/lib/comment-status";
 import { slugify } from "@/lib/post-slug";
@@ -366,6 +368,113 @@ async function revalidateCommentPost(postId: string | null): Promise<void> {
     .maybeSingle();
 
   await revalidatePost(postRowsFrom(data ? [data] : []));
+}
+
+/** The two values `staff_role` allows. */
+export type StaffRole = "admin" | "editor";
+
+function isStaffRole(value: unknown): value is StaffRole {
+  return value === "admin" || value === "editor";
+}
+
+/** The guard codes `admin_set_staff` raises, in the writer's language. */
+const STAFF_GUARD_MESSAGE: Record<string, string> = {
+  self_change: "Không tự đổi quyền của chính mình được — nhờ một quản trị viên khác.",
+  not_found: "Không tìm thấy người này.",
+};
+
+/** Activates or deactivates a staff member, or moves them between roles. */
+export async function setStaffAccess(
+  targetId: string,
+  isActive: boolean,
+  role: StaffRole
+): Promise<ActionResult> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+  if (lookup.staff.role !== "admin") return fail("Chỉ quản trị viên mới đổi được quyền.");
+  if (!isUuid(targetId)) return fail("Không tìm thấy người này.");
+  if (!isStaffRole(role)) return fail("Vai trò không hợp lệ.");
+
+  const supabase = createClient();
+  const { error } = await supabase.rpc("admin_set_staff", {
+    p_target: targetId,
+    p_is_active: isActive,
+    p_role: role,
+  });
+
+  if (error) {
+    // The guards raise 23514 with a short detail code (like the publish gate).
+    if (error.code === "23514") {
+      return fail(
+        STAFF_GUARD_MESSAGE[error.details ?? ""] ?? "Không đổi được quyền của người này."
+      );
+    }
+    return dbFail("setStaffAccess", error);
+  }
+
+  revalidatePath("/admin/nguoi-dung");
+  return { ok: true };
+}
+
+/**
+ * Creates a staff account with a temporary password.
+ *
+ * Signing up is open, but an account is not staff until it is activated, and
+ * the Admin API is the only way to create one whose email is already confirmed
+ * — someone being let into the CMS should not have to walk through the public
+ * signup first.
+ */
+export async function createStaffAccount(input: {
+  email: string;
+  displayName: string;
+  role: StaffRole;
+  isActive: boolean;
+}): Promise<ActionResult & { password?: string }> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+  if (lookup.staff.role !== "admin") return fail("Chỉ quản trị viên mới tạo được tài khoản.");
+  if (!isSupabaseAdminConfigured) return fail("Chưa cấu hình khoá service role trên server.");
+
+  const email = input.email.trim().toLowerCase();
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return fail("Email không hợp lệ.");
+  if (!isStaffRole(input.role)) return fail("Vai trò không hợp lệ.");
+
+  const displayName = input.displayName.trim();
+  const password = tempPassword();
+  const admin = createAdminClient();
+
+  const { data, error } = await admin.auth.admin.createUser({
+    email,
+    password,
+    // The address is vouched for by an admin who is creating the account; a
+    // confirmation round-trip would only get in the way.
+    email_confirm: true,
+    user_metadata: { display_name: displayName || email.split("@")[0] },
+  });
+
+  if (error) {
+    if (/already|exists/i.test(error.message)) {
+      return fail("Email này đã có tài khoản.");
+    }
+    console.error("[admin:createStaffAccount]", error.message);
+    return fail("Không tạo được tài khoản. Vui lòng thử lại.");
+  }
+
+  // The signup trigger creates every profile as an inactive editor, so the
+  // role and state the admin chose have to be applied on top of it.
+  const { error: profileError } = await admin
+    .from("profiles")
+    .update({ role: input.role, is_active: input.isActive })
+    .eq("id", data.user.id);
+
+  if (profileError) {
+    console.error("[admin:createStaffAccount:profile]", profileError.code, profileError.message);
+    return fail("Đã tạo tài khoản nhưng chưa đặt được quyền. Mở danh sách và chỉnh lại.");
+  }
+
+  revalidatePath("/admin/nguoi-dung");
+  // Handed back once, to pass on to the person; never stored or logged.
+  return { ok: true, password };
 }
 
 /** Every column a snapshot keeps, read back as a row. */

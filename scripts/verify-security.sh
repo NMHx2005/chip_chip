@@ -358,6 +358,31 @@ check "anon không INSERT được bản lưu" "denied" \
     -H 'Content-Type: application/json' -d "$revision_body")"
 
 echo
+echo "C5 — quản lý nhân sự chỉ dành cho quản trị viên"
+check "anon không gọi được admin_list_staff" "401" \
+  "$(status -X POST "$API_URL/rest/v1/rpc/admin_list_staff" -H "apikey: $ANON_KEY" \
+    -H 'Content-Type: application/json' -d '{}')"
+# The throwaway account is activated staff (D2) but only an editor: staff is not
+# enough to hand out access.
+check "biên tập viên không đọc được danh sách nhân sự" "403" \
+  "$(status -X POST "$API_URL/rest/v1/rpc/admin_list_staff" "${auth[@]}" \
+    -H 'Content-Type: application/json' -d '{}')"
+demote_body=$(printf '{"p_target":"%s","p_is_active":false,"p_role":"editor"}' "$staff_id")
+check "biên tập viên không đổi được quyền" "403" \
+  "$(status -X POST "$API_URL/rest/v1/rpc/admin_set_staff" "${auth[@]}" \
+    -H 'Content-Type: application/json' -d "$demote_body")"
+
+psql "$DB_URL" -q -c "update public.profiles set role = 'admin' where id = '$staff_id';"
+check "quản trị viên đọc được danh sách nhân sự" "200" \
+  "$(status -X POST "$API_URL/rest/v1/rpc/admin_list_staff" "${auth[@]}" \
+    -H 'Content-Type: application/json' -d '{}')"
+# The guard that keeps the site from losing its last admin.
+check "quản trị viên không tự hạ quyền mình" "self_change" \
+  "$(curl -s -X POST "$API_URL/rest/v1/rpc/admin_set_staff" "${auth[@]}" \
+    -H 'Content-Type: application/json' -d "$demote_body" |
+    sed -n 's/.*"details":"\([^"]*\)".*/\1/p')"
+
+echo
 if [ "$failures" -eq 0 ]; then
   printf '\033[32mTất cả kiểm tra đều đạt.\033[0m\n'
 else

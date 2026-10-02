@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { Logo } from "@/components/layout/Logo";
@@ -47,6 +48,13 @@ export default async function AdminLayout({
               <ExternalLink className="size-3.5" strokeWidth={2} />
             </a>
 
+            <Link
+              href="/admin/doi-mat-khau"
+              className="hidden text-sm text-text-muted transition-colors hover:text-accent md:inline"
+            >
+              Đổi mật khẩu
+            </Link>
+
             <span className="hidden text-sm text-text-muted md:inline">
               {staff.displayName}
             </span>
@@ -63,7 +71,10 @@ export default async function AdminLayout({
         </div>
 
         <div className="mx-auto w-full max-w-[1400px] px-5">
-          <AdminNav badges={{ "/admin/tin-nhan": unhandledMessages ?? 0 }} />
+          <AdminNav
+            badges={{ "/admin/tin-nhan": unhandledMessages ?? 0 }}
+            isAdmin={staff.role === "admin"}
+          />
         </div>
       </header>
 

@@ -9,6 +9,9 @@ const ITEMS = [
   { href: "/admin/bai-viet", label: "Bài viết" },
   { href: "/admin/comments", label: "Bình luận" },
   { href: "/admin/tin-nhan", label: "Tin nhắn" },
+  // Only admins may hand out access, so only they get the link; the page and
+  // the action check it again.
+  { href: "/admin/nguoi-dung", label: "Nhân sự", adminOnly: true },
 ];
 
 /**
@@ -17,12 +20,18 @@ const ITEMS = [
  */
 export type NavBadges = Record<string, number>;
 
-export function AdminNav({ badges = {} }: { badges?: NavBadges }) {
+export function AdminNav({
+  badges = {},
+  isAdmin = false,
+}: {
+  badges?: NavBadges;
+  isAdmin?: boolean;
+}) {
   const pathname = usePathname();
 
   return (
     <nav className="-mb-px flex gap-1 overflow-x-auto scrollbar-none">
-      {ITEMS.map((item) => {
+      {ITEMS.filter((item) => !item.adminOnly || isAdmin).map((item) => {
         const active = item.exact
           ? pathname === item.href
           : pathname === item.href || pathname.startsWith(`${item.href}/`);

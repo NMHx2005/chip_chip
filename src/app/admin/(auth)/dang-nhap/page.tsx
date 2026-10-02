@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LoginForm } from "./LoginForm";
 
 export const metadata: Metadata = {
@@ -22,6 +23,19 @@ export default function AdminLoginPage({
             Dành cho ban điều hành Project Chíp Chíp.
           </p>
 
+          {searchParams.error === "link" && (
+            <p
+              role="alert"
+              className="mt-5 rounded-xl border border-amber-200 bg-amber-50 px-3.5 py-3 text-sm text-amber-800"
+            >
+              Liên kết đặt lại mật khẩu đã hết hạn hoặc đã được dùng rồi.{" "}
+              <Link href="/admin/quen-mat-khau" className="underline">
+                Yêu cầu liên kết mới
+              </Link>
+              .
+            </p>
+          )}
+
           {searchParams.error === "not_staff" && (
             <p
               role="alert"
@@ -38,7 +52,9 @@ export default function AdminLoginPage({
         </div>
 
         <p className="mt-5 text-center text-xs text-text-muted">
-          Quên mật khẩu? Liên hệ quản trị viên để được cấp lại.
+          <Link href="/admin/quen-mat-khau" className="underline">
+            Quên mật khẩu?
+          </Link>
         </p>
       </div>
     </div>

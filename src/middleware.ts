@@ -18,6 +18,17 @@ const intlMiddleware = createIntlMiddleware(routing);
 const LOGIN_PATH = "/admin/dang-nhap";
 
 /**
+ * Admin pages that must work without a session: signing in, asking for a reset
+ * link, and setting the password that link leads to. Everything else under
+ * /admin needs an activated staff member.
+ */
+const PUBLIC_ADMIN_PATHS = new Set([
+  "/admin/dang-nhap",
+  "/admin/quen-mat-khau",
+  "/admin/dat-lai-mat-khau",
+]);
+
+/**
  * One middleware, two jobs.
  *
  * `next-intl` owns the public routes and must not see `/admin`, `/api`, or
@@ -32,11 +43,14 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isAdmin = pathname.startsWith("/admin");
   const isApi = pathname.startsWith("/api");
+  // The auth callback lives outside the locale segment too: it is an OAuth-style
+  // redirect target, and `next-intl` would rewrite it to /vi/auth/... and 404.
+  const isAuthCallback = pathname.startsWith("/auth");
   const isGallery =
     pathname.startsWith("/motion-gallery") || pathname.startsWith("/ui-gallery");
 
   const response =
-    isAdmin || isApi || isGallery
+    isAdmin || isApi || isAuthCallback || isGallery
       ? NextResponse.next({ request })
       : intlMiddleware(request);
 
@@ -93,7 +107,7 @@ export async function middleware(request: NextRequest) {
     isStaff = Boolean(profile?.is_active);
   }
 
-  if (pathname !== LOGIN_PATH && !isStaff) {
+  if (!PUBLIC_ADMIN_PATHS.has(pathname) && !isStaff) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = LOGIN_PATH;
     loginUrl.search = "";
