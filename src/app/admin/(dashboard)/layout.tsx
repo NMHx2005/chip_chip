@@ -48,9 +48,11 @@ export default async function AdminLayout({
               <ExternalLink className="size-3.5" strokeWidth={2} />
             </a>
 
+            {/* Visible at every width: new staff are told to change the
+                password they were given, and the nav has no room for it. */}
             <Link
               href="/admin/doi-mat-khau"
-              className="hidden text-sm text-text-muted transition-colors hover:text-accent md:inline"
+              className="text-sm text-text-muted transition-colors hover:text-accent"
             >
               Đổi mật khẩu
             </Link>

@@ -1,11 +1,12 @@
 "use server";
 
-import { headers } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient, isSupabaseAdminConfigured } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 import { clientIp, hashIp } from "@/lib/rate-limit";
-import { validatePasswordChange } from "@/lib/account";
+import { allowLoginAttempt } from "@/lib/login-throttle";
+import { RECOVERY_COOKIE, validatePasswordChange } from "@/lib/account";
 import { SITE_URL } from "@/lib/site";
 
 export type ResetRequestState = { sent: boolean; error: string | null };
@@ -78,10 +79,14 @@ export async function requestPasswordReset(
 /**
  * Sets a new password for whoever is signed in.
  *
- * Two callers: the page behind the reset link (a recovery session, no current
- * password to ask for) and "Đổi mật khẩu" inside the admin, where the current
- * password is required — that is what keeps someone walking past an unlocked
- * laptop from locking the owner out.
+ * Two situations, and the server decides which — never the submitted form:
+ *
+ * - The reset link's callback left a short-lived marker cookie, so this is the
+ *   person who proved control of the mailbox; no current password to ask for.
+ * - Anything else is an ordinary session, where the current password is
+ *   required. That is what keeps someone walking past an unlocked laptop from
+ *   locking the owner out, and it is why "signed in" alone is not enough to
+ *   open the reset form (see the reset page).
  */
 export async function setNewPassword(
   _prev: PasswordState,
@@ -91,12 +96,19 @@ export async function setNewPassword(
     return { error: "config", ok: false };
   }
 
-  const requireCurrent = formData.get("mode") === "change";
+  const store = cookies();
+  const fromResetLink = store.get(RECOVERY_COOKIE)?.value === "1";
+
   const current = String(formData.get("current") ?? "");
   const password = String(formData.get("password") ?? "");
   const confirm = String(formData.get("confirm") ?? "");
 
-  const problem = validatePasswordChange({ password, confirm, current, requireCurrent });
+  const problem = validatePasswordChange({
+    password,
+    confirm,
+    current,
+    requireCurrent: !fromResetLink,
+  });
   if (problem) return { error: problem, ok: false };
 
   const supabase = createClient();
@@ -106,7 +118,13 @@ export async function setNewPassword(
 
   if (!user?.email) return { error: "no_session", ok: false };
 
-  if (requireCurrent) {
+  if (!fromResetLink) {
+    // Throttled like the login form. Without this, holding a session would turn
+    // this page into an offline speed-run of the current password.
+    const attempt = await allowLoginAttempt();
+    if (attempt === "deny") return { error: "too_many", ok: false };
+    if (attempt === "unavailable") return { error: "throttle_unavailable", ok: false };
+
     const { error: verifyError } = await supabase.auth.signInWithPassword({
       email: user.email,
       password: current,
@@ -119,6 +137,9 @@ export async function setNewPassword(
     // Anything else (a reused password, a server limit) is a failed change.
     return { error: "update_failed", ok: false };
   }
+
+  // Spent: one reset link, one change.
+  if (fromResetLink) store.set(RECOVERY_COOKIE, "", { path: "/", maxAge: 0 });
 
   return { error: null, ok: true };
 }

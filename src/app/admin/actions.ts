@@ -453,10 +453,19 @@ export async function createStaffAccount(input: {
   });
 
   if (error) {
-    if (/already|exists/i.test(error.message)) {
+    // 422 + email_exists is GoTrue's answer for a taken address; the wording of
+    // its message is not a contract, so the code is checked first.
+    const taken = error.status === 422 || error.code === "email_exists";
+    if (taken || /already|exists/i.test(error.message)) {
       return fail("Email này đã có tài khoản.");
     }
     console.error("[admin:createStaffAccount]", error.message);
+    return fail("Không tạo được tài khoản. Vui lòng thử lại.");
+  }
+
+  const userId = data?.user?.id;
+  if (!userId) {
+    console.error("[admin:createStaffAccount] the Admin API returned no user");
     return fail("Không tạo được tài khoản. Vui lòng thử lại.");
   }
 
@@ -465,11 +474,19 @@ export async function createStaffAccount(input: {
   const { error: profileError } = await admin
     .from("profiles")
     .update({ role: input.role, is_active: input.isActive })
-    .eq("id", data.user.id);
+    .eq("id", userId);
 
   if (profileError) {
+    // The account exists but is unusable, and its password was never shown —
+    // and the address is now taken, so retrying the form would only fail. Take
+    // the half-made account out and let the admin start again cleanly.
     console.error("[admin:createStaffAccount:profile]", profileError.code, profileError.message);
-    return fail("Đã tạo tài khoản nhưng chưa đặt được quyền. Mở danh sách và chỉnh lại.");
+    const { error: cleanupError } = await admin.auth.admin.deleteUser(userId);
+    if (cleanupError) {
+      console.error("[admin:createStaffAccount:cleanup]", cleanupError.message);
+      return fail("Tạo tài khoản lỗi giữa chừng. Xoá tài khoản này trong Supabase rồi thử lại.");
+    }
+    return fail("Không tạo được tài khoản. Vui lòng thử lại.");
   }
 
   revalidatePath("/admin/nguoi-dung");

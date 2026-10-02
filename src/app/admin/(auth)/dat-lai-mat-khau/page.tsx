@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cookies } from "next/headers";
 import { PasswordForm } from "@/components/admin/PasswordForm";
-import { createClient } from "@/lib/supabase/server";
+import { RECOVERY_COOKIE } from "@/lib/account";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
 
 export const metadata: Metadata = {
@@ -17,14 +18,11 @@ export const dynamic = "force-dynamic";
  * definition signed out (see PUBLIC_ADMIN_PATHS in middleware.ts).
  */
 export default async function ResetPasswordPage() {
-  let signedIn = false;
-
-  if (isSupabaseConfigured) {
-    const {
-      data: { user },
-    } = await createClient().auth.getUser();
-    signedIn = Boolean(user);
-  }
+  // The marker cookie from /auth/xac-nhan, not merely a session: an ordinary
+  // session must not be able to set a password without knowing the current one,
+  // so the form is only offered to someone who followed the emailed link.
+  const fromResetLink =
+    isSupabaseConfigured && cookies().get(RECOVERY_COOKIE)?.value === "1";
 
   return (
     <div className="flex min-h-[100dvh] items-center justify-center bg-bg px-5 py-12">
@@ -32,7 +30,7 @@ export default async function ResetPasswordPage() {
         <div className="rounded-2xl border border-border bg-surface p-7 shadow-card">
           <h1 className="text-xl font-bold tracking-[-0.01em] text-text">Đặt mật khẩu mới</h1>
 
-          {signedIn ? (
+          {fromResetLink ? (
             <>
               <p className="mt-1.5 text-sm text-text-muted">
                 Chọn mật khẩu mới cho tài khoản của bạn.

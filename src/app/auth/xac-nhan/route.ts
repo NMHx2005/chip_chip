@@ -1,6 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/config";
+import {
+  RECOVERY_COOKIE,
+  RECOVERY_MAX_AGE_SECONDS,
+  safeRedirectTarget,
+} from "@/lib/account";
 
 export const dynamic = "force-dynamic";
 
@@ -12,14 +17,16 @@ export const dynamic = "force-dynamic";
  * Component cannot write the session cookies, and without them the reset page
  * would have nothing to update.
  *
+ * On success it also sets a short-lived marker cookie. That cookie is what
+ * tells the reset page's session apart from an ordinary one — otherwise anyone
+ * signed in could go to the reset page and set a new password without knowing
+ * the current one.
+ *
  * Any failure — a used link, an expired one, no code at all — sends the person
  * back to the login page with a flag, rather than to a form that cannot work.
  */
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = request.nextUrl;
-  const next = searchParams.get("next") ?? "/admin/dat-lai-mat-khau";
-  // Only ever our own path: the parameter travels through an email.
-  const destination = new URL(next.startsWith("//") ? "/admin" : next, origin);
   const failure = new URL("/admin/dang-nhap?error=link", origin);
 
   if (!isSupabaseConfigured) return NextResponse.redirect(failure);
@@ -43,5 +50,15 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(failure);
   }
 
-  return NextResponse.redirect(destination);
+  const destination = safeRedirectTarget(searchParams.get("next"), origin);
+
+  const response = NextResponse.redirect(destination);
+  response.cookies.set(RECOVERY_COOKIE, "1", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: origin.startsWith("https://"),
+    path: "/",
+    maxAge: RECOVERY_MAX_AGE_SECONDS,
+  });
+  return response;
 }

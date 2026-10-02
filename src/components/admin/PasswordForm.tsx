@@ -6,7 +6,14 @@ import { useRouter } from "next/navigation";
 import { setNewPassword, type PasswordState } from "@/app/admin/(auth)/mat-khau-actions";
 import { MIN_PASSWORD_LENGTH, type PasswordProblem } from "@/lib/account";
 
-type Code = PasswordProblem | "current_wrong" | "update_failed" | "no_session" | "config";
+type Code =
+  | PasswordProblem
+  | "current_wrong"
+  | "too_many"
+  | "throttle_unavailable"
+  | "update_failed"
+  | "no_session"
+  | "config";
 
 const MESSAGE: Record<Code, string> = {
   current_required: "Nhập mật khẩu hiện tại.",
@@ -14,6 +21,8 @@ const MESSAGE: Record<Code, string> = {
   password_unchanged: "Mật khẩu mới trùng với mật khẩu hiện tại.",
   confirm_mismatch: "Hai lần nhập mật khẩu mới không khớp.",
   current_wrong: "Mật khẩu hiện tại không đúng.",
+  too_many: "Quá nhiều lần thử. Vui lòng đợi ít phút rồi thử lại.",
+  throttle_unavailable: "Chưa kiểm tra được giới hạn đăng nhập. Vui lòng thử lại sau.",
   update_failed: "Không đổi được mật khẩu. Vui lòng thử lại.",
   no_session: "Phiên đã hết hạn. Mở lại liên kết trong email.",
   config: "Supabase chưa được cấu hình. Xem .env.example.",
@@ -41,9 +50,9 @@ function SubmitButton({ label }: { label: string }) {
 /**
  * Sets a password, in one of two situations.
  *
- * `reset` is the page behind the emailed link: the person has a recovery
- * session and no password they could be asked for. `change` is inside the
- * admin, where the current password is required.
+ * `mode` only decides which fields are drawn. The action does not trust it: it
+ * treats the call as a reset only when the callback's marker cookie is present,
+ * and otherwise insists on the current password.
  */
 export function PasswordForm({ mode }: { mode: "reset" | "change" }) {
   const router = useRouter();
