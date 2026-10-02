@@ -1424,7 +1424,10 @@ Single middleware with matcher `/((?!_next|_vercel|.*\..*).*)`. `/admin`, `/api`
 | Staff (`profiles.is_active=true`; roles `editor` or `admin`) | Everything in the admin: dashboard counts, all posts including drafts (both locales), all comments incl. pending/hidden and commenter emails, all messages incl. emails, each article's 20 most recent snapshots | Create/edit/save/publish/unpublish/delete posts (both locales together), edit shared fields, upload images (5MB), AI translation (if key set), approve/hide/delete comments, restore an article to an earlier snapshot, mark messages handled/unhandled, delete messages, rebuild search index, sign out. Comment on the public site while signed in: auto-attributed to the profile display name with "Tac gia" badge, email not stored | RLS `is_staff()`; server-side `lookUpStaff`/`requireStaff`; storage policies |
 | `admin` vs `editor` role (**changed in admin phase 3**) | An editor sees everything except Nhân sự: the nav link is admin-only and the page explains itself | An admin additionally lists staff, activates/deactivates them, changes roles, and creates accounts (`/admin/nguoi-dung`); nobody may change their own row | `is_admin()` + the role check in each action, and `admin_set_staff` refuses a self-change |
 
-No admin screens exist yet for: user/staff management, password reset, site settings or a media library (admin phases 3 and 4). The comment approval queue (`/admin/comments`) and per-article revision history landed in phase 2 — see `docs/BAN-GIAO.md`, mục 2.
+No admin screens exist yet for: site settings or a media library (admin phase 4). Staff management and password
+reset landed in phase 3 (`/admin/nguoi-dung`, `/admin/quen-mat-khau`, `/admin/dat-lai-mat-khau`,
+`/admin/doi-mat-khau`), and the comment approval queue with per-article revision history in phase 2 — see
+`docs/BAN-GIAO.md`, mục 2.
 
 ---
 
