@@ -398,6 +398,28 @@ check "nhân sự ghi được cài đặt" "201" \
     -H 'Content-Type: application/json' -d "$settings_body")"
 
 echo
+echo "C7 — ảnh đang được dùng thì không xoá được"
+media_path="2026-10/sec-media-$$.png"
+used_body=$(printf '{"p_path":"%s"}' "2026-10/sec-self-$$.png")
+psql "$DB_URL" -q -c "insert into public.posts
+  (locale, kind, title, slug, content, cover_image_url, status, published_at) values
+  ('vi', 'forum', 'x', 'sec-media-$$', '{}',
+   'http://127.0.0.1:54321/storage/v1/object/public/post-images/$media_path', 'published', now());"
+check "ảnh có trong bài thì bị coi là đang dùng" "t" \
+  "$(psql "$DB_URL" -q -t -A -c "begin; set local role authenticated;
+     select set_config('request.jwt.claims', '{\"sub\":\"$staff_id\"}', true);
+     select public.admin_media_in_use('$media_path'); rollback;" | tail -1)"
+# Host-agnostic: the row above stores the local URL, so asking about the same
+# path is what has to answer, not the exact string.
+check "ảnh không dùng ở đâu thì không bị coi là đang dùng" "f" \
+  "$(psql "$DB_URL" -q -t -A -c "begin; set local role authenticated;
+     select set_config('request.jwt.claims', '{\"sub\":\"$staff_id\"}', true);
+     select public.admin_media_in_use('$used_body'); rollback;" | tail -1)"
+check "anon không gọi được admin_media_in_use" "401" \
+  "$(status -X POST "$API_URL/rest/v1/rpc/admin_media_in_use" -H "apikey: $ANON_KEY" \
+    -H 'Content-Type: application/json' -d "$used_body")"
+
+echo
 if [ "$failures" -eq 0 ]; then
   printf '\033[32mTất cả kiểm tra đều đạt.\033[0m\n'
 else

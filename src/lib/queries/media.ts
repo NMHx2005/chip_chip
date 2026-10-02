@@ -1,5 +1,7 @@
+import "server-only";
+
 import { createClient } from "@/lib/supabase/server";
-import { isSupabaseConfigured } from "@/lib/supabase/config";
+import { requireSupabase } from "@/lib/supabase/config";
 import {
   MEDIA_BUCKET,
   mediaPublicUrl,
@@ -11,6 +13,9 @@ import {
 const MAX_FOLDERS = 12;
 const MAX_PER_FOLDER = 60;
 
+/** The folder naming the uploader writes (see isMediaPath). */
+const MONTH = /^\d{4}-\d{2}$/;
+
 /**
  * The newest images in the bucket.
  *
@@ -21,7 +26,7 @@ const MAX_PER_FOLDER = 60;
  * shadowing the bucket, which would be one more thing to keep in step.
  */
 export async function listMedia(limit = MAX_PER_FOLDER): Promise<MediaObject[]> {
-  if (!isSupabaseConfigured) return [];
+  if (!requireSupabase("listMedia")) return [];
 
   const storage = createClient().storage.from(MEDIA_BUCKET);
 
@@ -35,14 +40,20 @@ export async function listMedia(limit = MAX_PER_FOLDER): Promise<MediaObject[]> 
     return [];
   }
 
-  // Folders have no id; their names are `YYYY-MM`, so descending is newest first.
+  // Folders have no id; their names are `YYYY-MM`, so descending is newest
+  // first. Only month folders are read: anything else could not be deleted
+  // through the library anyway (see isMediaPath).
   const folders = (root ?? [])
-    .filter((entry) => entry.id === null)
+    .filter((entry) => entry.id === null && MONTH.test(entry.name))
     .map((entry) => entry.name)
     .slice(0, MAX_FOLDERS);
 
   const listings = await Promise.all(
-    folders.map((folder) => storage.list(folder, { limit: MAX_PER_FOLDER }))
+    folders.map((folder) =>
+      // Newest first inside a folder too — storage-js sorts by name otherwise,
+      // which would hand back an arbitrary slice of a busy month.
+      storage.list(folder, { limit: MAX_PER_FOLDER, sortBy: { column: "created_at", order: "desc" } })
+    )
   );
 
   const objects: MediaObject[] = [];

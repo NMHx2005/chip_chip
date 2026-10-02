@@ -30,7 +30,8 @@ import {
   revisionChanged,
   type RevisionSnapshot,
 } from "@/lib/revisions";
-import { MEDIA_BUCKET, isMediaPath, mediaPublicUrl, postsUsingUrl } from "@/lib/media";
+import { MEDIA_BUCKET, isMediaPath } from "@/lib/media";
+import { isValidCalendarDate } from "@/lib/site-settings";
 
 export type ActionResult = {
   ok: boolean;
@@ -510,31 +511,17 @@ export async function deleteMediaObject(path: string): Promise<ActionResult> {
   if (!isMediaPath(path)) return fail("Đường dẫn ảnh không hợp lệ.");
 
   const supabase = createClient();
-  const url = mediaPublicUrl(path);
 
-  const { data: posts, error: readError } = await supabase
-    .from("posts")
-    .select("id, title, content, cover_image_url");
+  // Asked in the database: a client-side scan would stop at PostgREST's row cap
+  // and would compare whole URLs, so an image referenced under another project
+  // URL would look unused.
+  const { data: inUse, error: checkError } = await supabase.rpc("admin_media_in_use", {
+    p_path: path,
+  });
 
-  if (readError) return dbFail("deleteMediaObject:read", readError);
-
-  const used = postsUsingUrl(
-    (posts ?? []).map((post) => ({
-      id: post.id,
-      title: post.title,
-      content: post.content,
-      coverImageUrl: post.cover_image_url,
-    })),
-    url
-  );
-
-  if (used.length > 0) {
-    const names = used.slice(0, 3).map((post) => `“${post.title}”`).join(", ");
-    return fail(
-      used.length > 3
-        ? `Ảnh đang được dùng trong ${used.length} bài (${names}…). Gỡ khỏi các bài đó trước.`
-        : `Ảnh đang được dùng trong ${names}. Gỡ khỏi bài đó trước.`
-    );
+  if (checkError) return dbFail("deleteMediaObject:check", checkError);
+  if (inUse) {
+    return fail("Ảnh đang được dùng trong một bài viết. Gỡ khỏi bài đó trước rồi xoá.");
   }
 
   const { error } = await supabase.storage.from(MEDIA_BUCKET).remove([path]);
@@ -562,14 +549,16 @@ export async function saveSiteSettings(input: {
   const lookup = await lookUpStaff();
   if (lookup.status !== "ok") return SESSION_ENDED;
 
-  const contactEmail = input.contactEmail.trim();
+  // Lengths are capped here as well as in the database: these values are
+  // rendered on every public page, so a pasted novel would cost every visitor.
+  const contactEmail = input.contactEmail.trim().slice(0, 254);
   if (contactEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactEmail)) {
     return fail("Email liên hệ không hợp lệ.");
   }
 
   const socialLinks = [
-    { key: "facebook", href: input.facebook.trim() },
-    { key: "tiktok", href: input.tiktok.trim() },
+    { key: "facebook", href: input.facebook.trim().slice(0, 300) },
+    { key: "tiktok", href: input.tiktok.trim().slice(0, 300) },
   ];
   for (const link of socialLinks) {
     // `https://` only: these become anchors with target="_blank".
@@ -578,15 +567,17 @@ export async function saveSiteSettings(input: {
     }
   }
 
+  // A shape check would let `2026-13-45` through, and the privacy page formats
+  // this into `Intl.DateTimeFormat`, which throws on such a date.
   const privacyUpdated = input.privacyUpdated.trim();
-  if (privacyUpdated && !/^\d{4}-\d{2}-\d{2}$/.test(privacyUpdated)) {
-    return fail("Ngày cập nhật chính sách phải theo dạng NĂM-THÁNG-NGÀY.");
+  if (privacyUpdated && !isValidCalendarDate(privacyUpdated)) {
+    return fail("Ngày cập nhật chính sách không hợp lệ.");
   }
 
   // An empty note falls back to the message copy, so blank is not stored.
   const responseTime: Record<string, string> = {};
-  if (input.responseVi.trim()) responseTime.vi = input.responseVi.trim();
-  if (input.responseEn.trim()) responseTime.en = input.responseEn.trim();
+  if (input.responseVi.trim()) responseTime.vi = input.responseVi.trim().slice(0, 600);
+  if (input.responseEn.trim()) responseTime.en = input.responseEn.trim().slice(0, 600);
 
   const stamp = new Date().toISOString();
   const rows = [

@@ -31,6 +31,14 @@ Chín bước của đợt thiết kế lại giao diện đã xong (bước 1, 
 `2026-10-01-thiet-ke-lai-*`. Bản thiết kế gốc ở `docs/thiet-ke-giao-dien/` (đọc
 `HANDOFF.md` trước).
 
+**Admin — giai đoạn 4 (cài đặt site + thư viện ảnh) — hết bốn giai đoạn.** Bảng `site_settings`
+(`20261002000500`) giữ bốn giá trị đổi được không cần deploy: email liên hệ, liên kết mạng xã hội, câu "thời gian
+phản hồi", và ngày cập nhật chính sách. `/admin/cai-dat` sửa chúng; trang công khai đọc qua
+`getSiteSettings()` (cache theo request), **luôn có giá trị dự phòng trong `src/lib/constants.ts`** nên một giá
+trị thiếu hay hỏng không làm vỡ trang. `/admin/thu-vien` liệt kê bucket `post-images`, tải lên, copy URL và xoá —
+**từ chối xoá ảnh đang được bài viết dùng** (ảnh bìa hoặc trong nội dung), vì đó là URL trần nên xoá là trang
+vỡ ảnh. Trình soạn bài cũng chọn được ảnh có sẵn thay vì tải thêm bản sao.
+
 **Admin — giai đoạn 3 (quản lý nhân sự + mật khẩu).** Từ đây `admin` và `editor` **khác nhau**: thêm
 `is_admin()`, `admin_list_staff()` (cũng là đường lấy email, vì không role client nào đọc được `auth.users`)
 và `admin_set_staff()` trong `20261002000400_is_admin.sql`. `/admin/nguoi-dung` (chỉ admin thấy trên nav)
@@ -447,7 +455,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **55 file, 501 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **57 file, 519 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
@@ -457,7 +465,7 @@ pass**. `npm run lint` sạch, không cảnh báo.
 Diễn lại các cuộc tấn công mà migration `20260913000000_harden_access.sql` và
 các ràng buộc dữ liệu về sau chặn lại — cần một stack Supabase local đang chạy
 (`npx supabase start`), **không bao giờ chạy nhắm vào production**. Hiện có
-**52 kiểm tra**, tất cả phải xanh (52/52) trước khi lên production.
+**55 kiểm tra**, tất cả phải xanh (55/55) trước khi lên production.
 
 ---
 
@@ -476,7 +484,10 @@ bỏ `preload` trong header HSTS.
 
 Danh sách đầy đủ (khoá message, hằng số trong `src/lib/constants.ts`, biến môi
 trường, dữ liệu production) nằm ở README, mục **"Nội dung cần thay trước khi
-ra mắt"**. Tóm tắt những nhóm lớn nhất: câu chuyện/ảnh tác giả thật, duyệt lại
+ra mắt"**. Lưu ý từ giai đoạn 4: **email liên hệ, liên kết mạng xã hội, câu thời
+gian phản hồi và ngày cập nhật chính sách giờ điền ở `/admin/cai-dat`**, không
+phải sửa `constants.ts` rồi deploy — hằng số trong đó chỉ còn là giá trị mặc
+định khi chưa đặt gì. Tóm tắt những nhóm lớn nhất: câu chuyện/ảnh tác giả thật, duyệt lại
 6 câu FAQ mẫu, 6 video carousel giữ chỗ (mượn từ dự án Strike Robot, nội dung
 không liên quan bán dẫn), logo + mascot dạng vector nền trong suốt, logo
 Micron (còn thiếu), xác nhận quyền dùng các clip/ảnh đã đưa vào, và **nội dung bài học thật** — phần thiếu lớn nhất, hiện trang

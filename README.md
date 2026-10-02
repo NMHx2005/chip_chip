@@ -89,7 +89,7 @@ chính mình — nhờ một quản trị viên khác.
 
    ```bash
    npx supabase db reset          # áp toàn bộ migration từ đầu vào DB local
-   ./scripts/verify-security.sh   # phải xanh hết (52/52) trước khi đi tiếp
+   ./scripts/verify-security.sh   # phải xanh hết (55/55) trước khi đi tiếp
    ```
 
 3. **Chạy migration trên production**, trước khi merge/deploy code này — code

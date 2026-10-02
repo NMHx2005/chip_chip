@@ -1,16 +1,6 @@
 import { CONTACT_EMAIL, PRIVACY_UPDATED, SOCIAL_LINKS } from "@/lib/constants";
 import { routing, type Locale } from "@/i18n/routing";
 
-/** The keys the admin screen edits. */
-export const SETTING_KEYS = [
-  "contact_email",
-  "social_links",
-  "response_time",
-  "privacy_updated",
-] as const;
-
-export type SettingKey = (typeof SETTING_KEYS)[number];
-
 export type SocialKey = "facebook" | "tiktok";
 
 export type SocialLink = { key: SocialKey; href: string };
@@ -34,14 +24,40 @@ export const DEFAULT_SETTINGS: SiteSettings = {
 
 const SOCIAL_KEYS: readonly SocialKey[] = ["facebook", "tiktok"];
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+const HTTPS = /^https:\/\//i;
 
+/**
+ * Whether a string is a real `YYYY-MM-DD` date.
+ *
+ * The shape alone is not enough: `2026-13-45` matches the pattern, and the
+ * privacy page formats the value with `Intl.DateTimeFormat`, which throws on
+ * such a date — turning a stored value into a 500 for every visitor.
+ */
+export function isValidCalendarDate(value: string): boolean {
+  if (!ISO_DATE.test(value)) return false;
+  const parsed = new Date(`${value}T00:00:00Z`);
+  return !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === value;
+}
+
+/**
+ * A social link, if it is safe to render.
+ *
+ * The rule is enforced again on the way out (not only where it is saved): the
+ * value becomes an `<a href>` on public pages, and the table can also be
+ * written by hand.
+ */
 function socialHref(value: unknown, key: SocialKey): string {
   if (!Array.isArray(value)) return "";
   const entry = value.find(
     (item) => item && typeof item === "object" && (item as { key?: unknown }).key === key
   );
   const href = entry ? (entry as { href?: unknown }).href : null;
-  return typeof href === "string" ? href.trim() : "";
+  if (typeof href !== "string") return "";
+
+  const trimmed = href.trim().slice(0, 300);
+  // Anything that is not https — `javascript:`, `data:`, plain http — is
+  // dropped rather than rendered.
+  return HTTPS.test(trimmed) ? trimmed : "";
 }
 
 function responseTime(value: unknown): Partial<Record<Locale, string>> {
@@ -74,18 +90,21 @@ export function readSettings(
   const reply = stored.get("response_time");
   const privacy = stored.get("privacy_updated");
 
+  const storedEmail = typeof email === "string" ? email.trim().slice(0, 254) : null;
+  const storedPrivacy = typeof privacy === "string" ? privacy.trim() : "";
+
   return {
-    contactEmail:
-      typeof email === "string" && email.trim()
-        ? email.trim()
-        : DEFAULT_SETTINGS.contactEmail,
+    // A row that exists and is empty means "cleared" — the admin's way of
+    // hiding the address — so only a missing row falls back to the default.
+    contactEmail: storedEmail ?? DEFAULT_SETTINGS.contactEmail,
     // Always both known keys in the same order, so the icons keep their mapping.
     socialLinks: SOCIAL_KEYS.map((key) => ({ key, href: socialHref(socials, key) })),
     responseTime: responseTime(reply),
-    privacyUpdated:
-      typeof privacy === "string" && ISO_DATE.test(privacy.trim())
-        ? privacy.trim()
-        : DEFAULT_SETTINGS.privacyUpdated,
+    // A page cannot render an empty date, so a blank or unreadable one keeps
+    // the code default rather than blanking the privacy page.
+    privacyUpdated: isValidCalendarDate(storedPrivacy)
+      ? storedPrivacy
+      : DEFAULT_SETTINGS.privacyUpdated,
   };
 }
 

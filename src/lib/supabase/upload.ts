@@ -1,8 +1,8 @@
 "use client";
 
 import { createClient } from "@/lib/supabase/client";
+import { MEDIA_BUCKET } from "@/lib/media";
 
-const BUCKET = "post-images";
 const MAX_BYTES = 5 * 1024 * 1024;
 const ALLOWED = ["image/jpeg", "image/png", "image/webp", "image/avif", "image/gif"];
 
@@ -24,10 +24,16 @@ export async function uploadPostImage(file: File): Promise<string> {
   }
 
   const supabase = createClient();
-  const extension = file.name.split(".").pop()?.toLowerCase() || "jpg";
+  // Whatever the file was called, the path has to be one the app recognises
+  // (see isMediaPath): strip anything that is not a plain extension, and fall
+  // back to the MIME type when the name carries nothing usable.
+  const extension =
+    (file.name.split(".").pop() ?? "").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 5) ||
+    file.type.split("/").pop()?.replace(/[^a-z0-9]/g, "").slice(0, 5) ||
+    "jpg";
   const path = `${new Date().toISOString().slice(0, 7)}/${crypto.randomUUID()}.${extension}`;
 
-  const { error } = await supabase.storage.from(BUCKET).upload(path, file, {
+  const { error } = await supabase.storage.from(MEDIA_BUCKET).upload(path, file, {
     cacheControl: "31536000",
     contentType: file.type,
     upsert: false,
@@ -37,5 +43,5 @@ export async function uploadPostImage(file: File): Promise<string> {
     throw new UploadError(`Không tải được ảnh lên: ${error.message}`);
   }
 
-  return supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+  return supabase.storage.from(MEDIA_BUCKET).getPublicUrl(path).data.publicUrl;
 }

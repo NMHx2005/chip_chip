@@ -1,5 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { DEFAULT_SETTINGS, readSettings } from "@/lib/site-settings";
+import { DEFAULT_SETTINGS, isValidCalendarDate, readSettings } from "@/lib/site-settings";
+
+describe("isValidCalendarDate", () => {
+  it("accepts a real date", () => {
+    expect(isValidCalendarDate("2026-10-02")).toBe(true);
+    expect(isValidCalendarDate("2024-02-29")).toBe(true);
+  });
+
+  it("refuses a date-shaped string that is not a date", () => {
+    // `Intl.DateTimeFormat` throws on these, which would 500 the privacy page.
+    expect(isValidCalendarDate("2026-13-45")).toBe(false);
+    expect(isValidCalendarDate("2026-02-30")).toBe(false);
+    expect(isValidCalendarDate("9999-99-99")).toBe(false);
+    expect(isValidCalendarDate("02/10/2026")).toBe(false);
+    expect(isValidCalendarDate("")).toBe(false);
+  });
+});
 
 describe("readSettings", () => {
   it("falls back to the code defaults when nothing is stored", () => {
@@ -55,5 +71,29 @@ describe("readSettings", () => {
   it("ignores a blank reply note so the message copy stays in charge", () => {
     const settings = readSettings([{ key: "response_time", value: { vi: "   ", en: "Later" } }]);
     expect(settings.responseTime).toEqual({ en: "Later" });
+  });
+
+  it("reads a stored empty email as cleared, not as the default", () => {
+    // The admin's way of hiding the address is to empty the field; falling back
+    // to the default there would put it back on every page.
+    expect(readSettings([{ key: "contact_email", value: "   " }]).contactEmail).toBe("");
+  });
+
+  it("refuses a social link that is not https", () => {
+    // This value becomes an `<a href>` on public pages, and the table can be
+    // written outside the admin form.
+    const settings = readSettings([
+      {
+        key: "social_links",
+        value: [
+          { key: "facebook", href: "javascript:alert(1)" },
+          { key: "tiktok", href: "http://tiktok.com/@x" },
+        ],
+      },
+    ]);
+    expect(settings.socialLinks).toEqual([
+      { key: "facebook", href: "" },
+      { key: "tiktok", href: "" },
+    ]);
   });
 });

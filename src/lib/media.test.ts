@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 import {
   formatBytes,
   isMediaPath,
-  postsUsingUrl,
   sortMediaNewestFirst,
   type MediaObject,
 } from "@/lib/media";
@@ -75,35 +74,3 @@ describe("formatBytes", () => {
   });
 });
 
-describe("postsUsingUrl", () => {
-  const url = "https://example.test/storage/v1/object/public/post-images/2026-10/a.webp";
-
-  it("finds a cover image", () => {
-    const posts = [{ id: "1", title: "Bài A", content: null, coverImageUrl: url }];
-    expect(postsUsingUrl(posts, url)).toEqual([{ id: "1", title: "Bài A" }]);
-  });
-
-  it("finds an image inside the body", () => {
-    const posts = [
-      {
-        id: "2",
-        title: "Bài B",
-        coverImageUrl: null,
-        content: { type: "doc", content: [{ type: "image", attrs: { src: url } }] },
-      },
-    ];
-    expect(postsUsingUrl(posts, url)).toEqual([{ id: "2", title: "Bài B" }]);
-  });
-
-  it("reports nothing for an image nobody uses", () => {
-    const posts = [
-      { id: "3", title: "Bài C", content: { type: "doc", content: [] }, coverImageUrl: null },
-    ];
-    expect(postsUsingUrl(posts, url)).toEqual([]);
-  });
-
-  it("labels an untitled article rather than showing an empty name", () => {
-    const posts = [{ id: "4", title: "", content: null, coverImageUrl: url }];
-    expect(postsUsingUrl(posts, url)[0].title).toBe("(chưa có tiêu đề)");
-  });
-});

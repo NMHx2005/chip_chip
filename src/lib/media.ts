@@ -46,22 +46,7 @@ export function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-/**
- * Which articles use an image.
- *
- * An article refers to an image twice over: as its cover, and inside the body
- * document (a plain URL in the Tiptap JSON). Deleting either kind out from
- * under a published page leaves a broken image, so both are checked.
- */
-export function postsUsingUrl(
-  posts: readonly { id: string; title: string; content: unknown; coverImageUrl: string | null }[],
-  url: string
-): { id: string; title: string }[] {
-  return posts
-    .filter(
-      (post) =>
-        post.coverImageUrl === url ||
-        (post.content !== null && JSON.stringify(post.content).includes(url))
-    )
-    .map((post) => ({ id: post.id, title: post.title || "(chưa có tiêu đề)" }));
-}
+// Whether an image is still referenced by an article is asked in the database
+// (`admin_media_in_use`), not here: a client-side scan would stop at
+// PostgREST's row cap and would compare whole URLs, so the same image stored
+// under another project URL would look unused.
