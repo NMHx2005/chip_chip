@@ -6,14 +6,18 @@ Cập nhật: 01/10/2026 · Nhánh: `main` (cục bộ)
 
 ## 1. Trạng thái cây làm việc
 
-Cây làm việc **sạch**, không có gì sửa dở. `main` đang **ahead of `origin/main` 72
-commit** — **chưa có gì được push lên GitHub**, toàn bộ DA1–DA5 lẫn đợt thiết kế
-lại giao diện vẫn nằm ở máy local. Đếm chính xác bằng
-`git rev-list --count origin/main..main`.
+Cây làm việc **sạch**, không có gì sửa dở. Đếm số commit `main` đi trước
+`origin/main` bằng `git rev-list --count origin/main..main` — các đợt gần đây đã
+được push, phần đang làm dở thì chưa.
 
 Cách làm: mỗi bước dựng trên một nhánh riêng, xong thì merge `--ff-only` trở lại
 `main` rồi xoá nhánh — nên `main` đi thẳng một mạch, không có merge commit. Xem
 lịch sử bằng `git log --oneline -20`.
+
+> **Máy này đang hỏng `/usr/bin/git`**: nó đòi accept license Xcode
+> (`xcode-select -p` trỏ vào `/Applications/Xcode.app`). Chạy
+> `sudo xcodebuild -license accept` một lần, hoặc gọi thẳng
+> `/Library/Developer/CommandLineTools/usr/bin/git`.
 
 Ba thư mục rác công cụ nằm trong `.gitignore` (`.claude/`, `.commandcode/`,
 `.crossweave/`) — không phải của dự án, đừng commit.
@@ -26,6 +30,18 @@ Chín bước của đợt thiết kế lại giao diện đã xong (bước 1, 
 8, 9); mỗi bước một plan ở `docs/superpowers/plans/2026-09-30-thiet-ke-lai-*` và
 `2026-10-01-thiet-ke-lai-*`. Bản thiết kế gốc ở `docs/thiet-ke-giao-dien/` (đọc
 `HANDOFF.md` trước).
+
+**Admin — giai đoạn 1 (đang làm tiếp giai đoạn 2–4).** Kế hoạch tổng thể: bốn giai
+đoạn, mỗi giai đoạn một nhánh. Giai đoạn 1 xong: danh sách bài phân trang + tìm
+kiếm bằng RPC gộp nhóm `admin_post_groups` / `admin_post_group_count`
+(migration `20261002000000_admin_post_groups.sql`), hộp thư phân trang và đếm
+đúng theo tab, badge số tin chờ xử lý trên nav, sửa revalidate khi ẩn/xoá bình
+luận (trước chỉ làm mới `/blog`, nên bình luận ẩn vẫn hiện trên trang video), thay
+toàn bộ `window.prompt`/`window.confirm` bằng hộp thoại `<dialog>`, hỏi trước khi
+bỏ đăng, 404 riêng cho admin, toolbar hết số magic `top-[110px]`. Kế hoạch:
+`docs/superpowers/plans/2026-10-02-admin-1-polish.md`. Còn lại: duyệt bình luận +
+lịch sử phiên bản (giai đoạn 2), người dùng + mật khẩu (3), cài đặt site + thư
+viện media (4).
 
 **DA1 — Nền dữ liệu.** Migration cho loại bài Video, độ khó (3 mức, bắt buộc
 với `lesson`/`video`), tìm kiếm không dấu (`plain_text`, `search_vector`, hàm
@@ -387,7 +403,7 @@ npm test -- --maxWorkers=3
 npm run build
 ```
 
-Tại thời điểm viết tài liệu này: `npm test` → **50 file, 481 test, tất cả
+Tại thời điểm viết tài liệu này: `npm test` → **51 file, 485 test, tất cả
 pass**. `npm run lint` sạch, không cảnh báo.
 
 ```bash
@@ -397,7 +413,7 @@ pass**. `npm run lint` sạch, không cảnh báo.
 Diễn lại các cuộc tấn công mà migration `20260913000000_harden_access.sql` và
 các ràng buộc dữ liệu về sau chặn lại — cần một stack Supabase local đang chạy
 (`npx supabase start`), **không bao giờ chạy nhắm vào production**. Hiện có
-**32 kiểm tra**, tất cả phải xanh (32/32) trước khi lên production.
+**39 kiểm tra**, tất cả phải xanh (39/39) trước khi lên production.
 
 ---
 
