@@ -14,8 +14,8 @@ export default function AdminLoading() {
         <div className="h-4 w-72 animate-pulse rounded-full bg-surface-muted" />
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        {[0, 1, 2, 3, 4].map((i) => (
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-6">
+        {[0, 1, 2, 3, 4, 5].map((i) => (
           <div
             key={i}
             className="h-28 animate-pulse rounded-2xl bg-surface-muted"

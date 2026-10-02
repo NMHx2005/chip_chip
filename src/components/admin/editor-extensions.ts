@@ -3,7 +3,7 @@ import { BlockMath, InlineMath } from "@tiptap/extension-mathematics";
 import { ReactNodeViewRenderer } from "@tiptap/react";
 import { FigureNodeView } from "@/components/admin/FigureNodeView";
 import { VideoNodeView } from "@/components/admin/VideoNodeView";
-import type { MathKind } from "@/components/admin/math-prompt";
+import type { MathKind } from "@/components/admin/math-edit";
 import { KATEX_OPTIONS } from "@/lib/tiptap/math";
 import { articleExtensions } from "@/lib/tiptap/extensions";
 import { Figure } from "@/lib/tiptap/nodes/figure";

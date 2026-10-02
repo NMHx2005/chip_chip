@@ -1,19 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Warns before the writer leaves an article with unsaved changes.
  *
- * `beforeunload` covers tab close and reload. The App Router has no route
- * change event, so in-app navigation is caught by intercepting same-origin
- * link clicks during the capture phase (the admin nav, the logo, any link).
- * The native confirm is deliberately blocking: losing a half-written article
- * is worse than the interruption.
+ * `beforeunload` covers tab close and reload and stays native — the browser
+ * owns that prompt and a page cannot render during it. In-app navigation has
+ * no route-change event in the App Router, so same-origin link clicks are
+ * caught in the capture phase (the admin nav, the logo, any link) and the
+ * click is cancelled while the caller shows a dialog.
+ *
+ * The caller owns the decision: render a dialog off `blockedHref`, then either
+ * `cancelLeave()` to stay or navigate and then `cancelLeave()`.
  */
 export function useUnsavedChangesWarning(dirty: boolean) {
+  const [blockedHref, setBlockedHref] = useState<string | null>(null);
+
   useEffect(() => {
-    if (!dirty) return;
+    if (!dirty) {
+      setBlockedHref(null);
+      return;
+    }
 
     const onBeforeUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
@@ -34,14 +42,11 @@ export function useUnsavedChangesWarning(dirty: boolean) {
       const url = new URL(anchor.href, window.location.href);
       if (url.origin !== window.location.origin) return;
 
-      if (
-        !window.confirm(
-          "Bạn có thay đổi chưa lưu. Rời trang và bỏ các thay đổi đó?"
-        )
-      ) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
+      // A dialog cannot be answered synchronously, so the navigation is always
+      // held back; the dialog decides whether it happens.
+      event.preventDefault();
+      event.stopPropagation();
+      setBlockedHref(`${url.pathname}${url.search}${url.hash}`);
     };
 
     window.addEventListener("beforeunload", onBeforeUnload);
@@ -51,4 +56,11 @@ export function useUnsavedChangesWarning(dirty: boolean) {
       document.removeEventListener("click", onClick, true);
     };
   }, [dirty]);
+
+  return {
+    /** Where the writer tried to go, or null. */
+    blockedHref,
+    /** Drops the pending navigation — used both for "stay" and after leaving. */
+    cancelLeave: () => setBlockedHref(null),
+  };
 }

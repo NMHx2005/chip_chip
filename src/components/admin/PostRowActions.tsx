@@ -9,6 +9,7 @@ import {
   unpublishTranslation,
 } from "@/app/admin/actions";
 import { readActionResult, sessionExpired } from "@/components/admin/actionResult";
+import { ConfirmDialog } from "@/components/admin/Dialog";
 
 type Props = {
   translationId: string;
@@ -21,7 +22,9 @@ export function PostRowActions({ translationId, status, ready }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
-  const [confirming, setConfirming] = useState(false);
+  // Unpublishing takes live content down and deleting is irreversible, so both
+  // go through a dialog rather than firing on the click.
+  const [confirm, setConfirm] = useState<"unpublish" | "delete" | null>(null);
 
   const run = (fn: () => Promise<{ ok: boolean; error?: string }>) => {
     setError(null);
@@ -47,7 +50,7 @@ export function PostRowActions({ translationId, status, ready }: Props) {
           <button
             type="button"
             disabled={pending}
-            onClick={() => run(() => unpublishTranslation(translationId))}
+            onClick={() => setConfirm("unpublish")}
             className="cursor-pointer rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-nav transition-colors hover:border-black/20 hover:text-accent disabled:opacity-50"
           >
             Bỏ đăng
@@ -73,41 +76,44 @@ export function PostRowActions({ translationId, status, ready }: Props) {
           </button>
         )}
 
-        {confirming ? (
-          <>
-            <button
-              type="button"
-              disabled={pending}
-              onClick={() => run(() => deleteTranslation(translationId))}
-              className="cursor-pointer rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white disabled:opacity-50"
-            >
-              Xoá thật
-            </button>
-            <button
-              type="button"
-              onClick={() => setConfirming(false)}
-              className="cursor-pointer text-xs text-text-muted underline"
-            >
-              Huỷ
-            </button>
-          </>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setConfirming(true)}
-            className="cursor-pointer rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-red-300 hover:text-red-600"
-          >
-            Xoá
-          </button>
-        )}
+        <button
+          type="button"
+          disabled={pending}
+          onClick={() => setConfirm("delete")}
+          className="cursor-pointer rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-text-muted transition-colors hover:border-red-300 hover:text-red-600 disabled:opacity-50"
+        >
+          Xoá
+        </button>
       </div>
 
-      {confirming && (
-        <p className="text-[11px] text-red-600">
-          Xoá cả bản Việt và Anh, không khôi phục được.
-        </p>
-      )}
       {error && <p className="max-w-[260px] text-[11px] text-red-600">{error}</p>}
+
+      <ConfirmDialog
+        open={confirm === "unpublish"}
+        title="Bỏ đăng bài này?"
+        description="Bài sẽ ẩn khỏi trang công khai. Bản Việt và Anh vẫn còn, đăng lại được bất cứ lúc nào."
+        confirmLabel="Bỏ đăng"
+        pending={pending}
+        onConfirm={() => {
+          setConfirm(null);
+          run(() => unpublishTranslation(translationId));
+        }}
+        onCancel={() => setConfirm(null)}
+      />
+
+      <ConfirmDialog
+        open={confirm === "delete"}
+        title="Xoá bài này?"
+        description="Xoá cả bản Việt và Anh, không khôi phục được."
+        confirmLabel="Xoá thật"
+        tone="danger"
+        pending={pending}
+        onConfirm={() => {
+          setConfirm(null);
+          run(() => deleteTranslation(translationId));
+        }}
+        onCancel={() => setConfirm(null)}
+      />
     </div>
   );
 }

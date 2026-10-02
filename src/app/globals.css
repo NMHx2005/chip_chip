@@ -655,3 +655,11 @@
     animation: none;
   }
 }
+
+/* The admin header's height: the 64px top row (`h-16` in the admin layout)
+   plus the nav row. The post editor's toolbar sticks directly under it, so the
+   two numbers live together here instead of the toolbar hard-coding a pixel
+   value that silently drifts when the header changes. */
+.admin-shell {
+  --admin-header-h: 110px;
+}

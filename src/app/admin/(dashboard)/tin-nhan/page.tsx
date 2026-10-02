@@ -2,6 +2,14 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
 import { MessageActions } from "@/components/admin/MessageActions";
+import { AdminPagination } from "@/components/admin/AdminPagination";
+import {
+  ADMIN_PAGE_SIZE,
+  adminListHref,
+  adminOffset,
+  adminPageCount,
+} from "@/lib/admin-listing";
+import { parsePageParam } from "@/lib/listing-params";
 import { mailtoHref } from "@/lib/contact-message";
 import { cn } from "@/lib/utils";
 
@@ -32,18 +40,34 @@ const KIND_LABEL: Record<Row["kind"], string> = {
 export default async function AdminMessagesPage({
   searchParams,
 }: {
-  searchParams: { filter?: string };
+  searchParams: { filter?: string; page?: string };
 }) {
   await requireStaff();
   const supabase = createClient();
   const showAll = searchParams.filter === "all";
+  const page = parsePageParam(searchParams.page);
+  const from = adminOffset(page);
+
+  // Counts come from their own cheap head queries, so the tab labels are true
+  // totals rather than "however many this page happened to load".
+  const [unhandledCount, allCount] = await Promise.all([
+    supabase
+      .from("messages")
+      .select("id", { count: "exact", head: true })
+      .eq("is_handled", false),
+    supabase.from("messages").select("id", { count: "exact", head: true }),
+  ]);
+
+  const unhandled = unhandledCount.count ?? 0;
+  const all = allCount.count ?? 0;
+  const total = showAll ? all : unhandled;
 
   // RLS lets only activated staff read this table, email included.
   let query = supabase
     .from("messages")
     .select("id, kind, name, email, body, post_id, locale, is_handled, created_at")
     .order("created_at", { ascending: false })
-    .limit(200);
+    .range(from, from + ADMIN_PAGE_SIZE - 1);
   if (!showAll) query = query.eq("is_handled", false);
 
   const { data, error } = await query;
@@ -56,9 +80,18 @@ export default async function AdminMessagesPage({
     for (const post of posts ?? []) titles.set(post.id, post.title || "(chưa có tiêu đề)");
   }
 
+  const path = "/admin/tin-nhan";
   const tabs = [
-    { href: "/admin/tin-nhan", label: "Chưa xử lý", active: !showAll },
-    { href: "/admin/tin-nhan?filter=all", label: "Tất cả", active: showAll },
+    {
+      href: adminListHref(path, {}),
+      label: `Chưa xử lý (${unhandled})`,
+      active: !showAll,
+    },
+    {
+      href: adminListHref(path, { filter: "all" }),
+      label: `Tất cả (${all})`,
+      active: showAll,
+    },
   ];
 
   return (
@@ -77,7 +110,7 @@ export default async function AdminMessagesPage({
             href={tab.href}
             aria-current={tab.active ? "page" : undefined}
             className={cn(
-              "rounded-xl border px-4 py-2 text-sm font-medium transition-colors",
+              "rounded-xl border px-4 py-2 text-sm font-medium tabular-nums transition-colors",
               tab.active
                 ? "border-border bg-surface-muted text-accent"
                 : "border-border bg-surface text-text-nav hover:border-black/20"
@@ -94,7 +127,22 @@ export default async function AdminMessagesPage({
         </p>
       ) : rows.length === 0 ? (
         <p className="rounded-2xl border border-dashed border-border px-6 py-16 text-center text-sm text-text-muted">
-          {showAll ? "Chưa có tin nhắn nào." : "Không còn tin nào chờ xử lý."}
+          {page > 1 ? (
+            <>
+              Trang này không có tin nào.{" "}
+              <Link
+                href={adminListHref(path, showAll ? { filter: "all" } : {})}
+                className="underline"
+              >
+                Về trang đầu
+              </Link>
+              .
+            </>
+          ) : showAll ? (
+            "Chưa có tin nhắn nào."
+          ) : (
+            "Không còn tin nào chờ xử lý."
+          )}
         </p>
       ) : (
         <ul className="flex flex-col gap-3">
@@ -150,6 +198,12 @@ export default async function AdminMessagesPage({
           ))}
         </ul>
       )}
+
+      <AdminPagination
+        page={page}
+        totalPages={adminPageCount(total)}
+        hrefFor={(target) => adminListHref(path, { filter: showAll ? "all" : undefined, page: target })}
+      />
     </div>
   );
 }

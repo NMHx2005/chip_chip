@@ -11,7 +11,13 @@ const ITEMS = [
   { href: "/admin/tin-nhan", label: "Tin nhắn" },
 ];
 
-export function AdminNav() {
+/**
+ * Counts worth showing on a tab, e.g. waiting messages. A missing or zero entry
+ * shows nothing, so the nav stays quiet when there is nothing to do.
+ */
+export type NavBadges = Record<string, number>;
+
+export function AdminNav({ badges = {} }: { badges?: NavBadges }) {
   const pathname = usePathname();
 
   return (
@@ -20,20 +26,32 @@ export function AdminNav() {
         const active = item.exact
           ? pathname === item.href
           : pathname === item.href || pathname.startsWith(`${item.href}/`);
+        const count = badges[item.href] ?? 0;
 
         return (
           <Link
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
+            // The badge is decoration; the count is read as part of the link's
+            // name, otherwise a screen reader runs the two together.
+            aria-label={count > 0 ? `${item.label}, ${count} mục cần xử lý` : undefined}
             className={cn(
-              "whitespace-nowrap border-b-2 px-3.5 py-3 text-sm font-medium transition-colors",
+              "flex items-center gap-2 whitespace-nowrap border-b-2 px-3.5 py-3 text-sm font-medium transition-colors",
               active
                 ? "border-border text-accent"
                 : "border-transparent text-text-muted hover:text-text"
             )}
           >
             {item.label}
+            {count > 0 && (
+              <span
+                aria-hidden
+                className="rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold tabular-nums text-white"
+              >
+                {count}
+              </span>
+            )}
           </Link>
         );
       })}

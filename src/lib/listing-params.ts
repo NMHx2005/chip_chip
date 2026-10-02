@@ -45,23 +45,31 @@ function pick<T extends string>(allowed: readonly T[], value: string | undefined
 const PAGE = /^[1-9][0-9]{0,2}$/;
 
 /**
+ * Reads `?page=` for any paged list: a plain integer from 1 to MAX_PAGE.
+ * Anything else — missing, negative, text, or a stale link past the end —
+ * reads as page 1, which bounds how far `.range()` can be pushed.
+ */
+export function parsePageParam(value: string | string[] | undefined): number {
+  const raw = firstParam(value);
+  if (raw === undefined || !PAGE.test(raw)) return 1;
+  const page = Number(raw);
+  return page <= MAX_PAGE ? page : 1;
+}
+
+/**
  * Reads a listing's filters from the URL.
  *
  * Everything is matched against a whitelist, so a value the app does not know
- * is dropped instead of reaching a query; `page` must be a plain integer from
- * 1 to MAX_PAGE, which also bounds how far `.range()` can be pushed.
+ * is dropped instead of reaching a query.
  */
 export function parseListingParams(searchParams: SearchParams): ListingParams {
-  const page = firstParam(searchParams.page);
-  const pageNumber = page !== undefined && PAGE.test(page) ? Number(page) : 1;
-
   return {
     topic: pick(TOPIC_IDS, firstParam(searchParams.topic)),
     difficulty: pick(DIFFICULTIES, firstParam(searchParams.difficulty)),
     platform: pick(VIDEO_PLATFORMS, firstParam(searchParams.platform)),
     source: pick(VIDEO_SOURCES, firstParam(searchParams.source)),
     sort: pick(VIDEO_SORTS, firstParam(searchParams.sort)) ?? "newest",
-    page: pageNumber <= MAX_PAGE ? pageNumber : 1,
+    page: parsePageParam(searchParams.page),
   };
 }
 

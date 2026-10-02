@@ -1,55 +1,61 @@
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, Search } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
-import { isTranslationGroupReady } from "@/lib/shared-fields";
 import { PostRowActions } from "@/components/admin/PostRowActions";
+import { AdminPagination } from "@/components/admin/AdminPagination";
+import {
+  ADMIN_PAGE_SIZE,
+  adminListHref,
+  adminOffset,
+  adminPageCount,
+  parseAdminSearch,
+} from "@/lib/admin-listing";
+import { parsePageParam } from "@/lib/listing-params";
 
 // Admin data must never be cached or prerendered.
 export const dynamic = "force-dynamic";
 
-type Row = {
-  id: string;
+/** One row per translation group, as `admin_post_groups` returns it. */
+type GroupRow = {
   translation_id: string;
-  locale: "vi" | "en";
+  post_id: string;
   kind: "lesson" | "forum" | "video";
   topic: string | null;
   title: string;
-  slug: string;
   status: "draft" | "published";
   updated_at: string;
-  content: unknown;
+  vi_title: string | null;
+  en_title: string | null;
+  ready: boolean;
+  total: number;
 };
 
 const KIND_LABEL = { lesson: "Bài học", forum: "Blog", video: "Video" } as const;
 
-export default async function AdminPostsPage() {
+export default async function AdminPostsPage({
+  searchParams,
+}: {
+  searchParams: { q?: string; page?: string };
+}) {
   await requireStaff();
   const supabase = createClient();
 
-  const { data } = await supabase
-    .from("posts")
-    .select(
-      "id, translation_id, locale, kind, topic, title, slug, status, updated_at, content"
-    )
-    .order("updated_at", { ascending: false });
+  const q = parseAdminSearch(searchParams.q);
+  const page = parsePageParam(searchParams.page);
 
-  const rows = (data ?? []) as Row[];
-
-  // One entry per translation group, with the VI row (or EN as fallback) shown.
-  const groups = new Map<string, Row[]>();
-  for (const row of rows) {
-    const list = groups.get(row.translation_id) ?? [];
-    list.push(row);
-    groups.set(row.translation_id, list);
-  }
-
-  const items = Array.from(groups.entries()).map(([translationId, group]) => {
-    const vi = group.find((r) => r.locale === "vi");
-    const en = group.find((r) => r.locale === "en");
-    const primary = vi ?? en!;
-    return { translationId, group, primary, vi, en };
+  // Grouping and paging live in the database: an article is two rows sharing a
+  // translation_id, so paging over raw rows would split one across two pages.
+  const { data, error } = await supabase.rpc("admin_post_groups", {
+    p_search: q || null,
+    p_limit: ADMIN_PAGE_SIZE,
+    p_offset: adminOffset(page),
   });
+
+  const rows = (data ?? []) as GroupRow[];
+  const total = rows[0]?.total ?? 0;
+  const totalPages = adminPageCount(total);
+  const hrefFor = (target: number) => adminListHref("/admin/bai-viet", { q, page: target });
 
   return (
     <div className="flex flex-col gap-6">
@@ -59,7 +65,7 @@ export default async function AdminPostsPage() {
             Bài viết
           </h1>
           <p className="mt-1.5 text-sm text-text-muted">
-            {items.length} bài. Mỗi bài cần đủ bản Việt và Anh mới đăng được.
+            {total} bài. Mỗi bài cần đủ bản Việt và Anh mới đăng được.
           </p>
         </div>
 
@@ -72,29 +78,71 @@ export default async function AdminPostsPage() {
         </Link>
       </div>
 
-      {items.length === 0 ? (
+      <form method="get" action="/admin/bai-viet" role="search" className="flex flex-wrap items-center gap-2">
+        <label htmlFor="post-search" className="sr-only">
+          Tìm bài viết
+        </label>
+        <input
+          id="post-search"
+          name="q"
+          type="search"
+          defaultValue={q}
+          placeholder="Tìm theo tiêu đề hoặc slug…"
+          className="h-10 w-full min-w-0 flex-1 rounded-xl border border-border bg-surface px-3.5 text-sm text-text placeholder:text-text-muted focus:border-accent focus:outline-none sm:w-auto sm:max-w-[360px]"
+        />
+        <button
+          type="submit"
+          className="inline-flex h-10 cursor-pointer items-center gap-2 rounded-xl border border-border px-4 text-sm font-medium text-text-nav transition-colors hover:border-black/20 hover:text-accent"
+        >
+          <Search className="size-4" strokeWidth={2.2} aria-hidden />
+          Tìm
+        </button>
+        {q && (
+          <Link href="/admin/bai-viet" className="text-xs text-text-muted underline">
+            Xoá tìm kiếm
+          </Link>
+        )}
+      </form>
+
+      {error ? (
+        <p className="rounded-2xl border border-red-200 bg-red-50 px-6 py-16 text-center text-sm text-red-700">
+          Không đọc được danh sách bài. Thử tải lại trang.
+        </p>
+      ) : rows.length === 0 ? (
         <p className="rounded-2xl border border-dashed border-border px-6 py-16 text-center text-sm text-text-muted">
-          Chưa có bài viết nào. Bắt đầu bằng nút “Viết bài mới”.
+          {q
+            ? `Không có bài nào khớp “${q}”.`
+            : page > 1
+              ? "Trang này không có bài nào."
+              : "Chưa có bài viết nào. Bắt đầu bằng nút “Viết bài mới”."}
+          {page > 1 && (
+            <>
+              {" "}
+              <Link href={hrefFor(1)} className="underline">
+                Về trang đầu
+              </Link>
+              .
+            </>
+          )}
         </p>
       ) : (
         <ul className="flex flex-col gap-3">
-          {items.map(({ translationId, group, primary, vi, en }) => {
-            const ready = isTranslationGroupReady(group);
-            const published = primary.status === "published";
+          {rows.map((row) => {
+            const published = row.status === "published";
 
             return (
               <li
-                key={translationId}
+                key={row.translation_id}
                 className="flex flex-col gap-4 rounded-2xl border border-border bg-surface p-5 sm:flex-row sm:items-center sm:justify-between"
               >
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <span className="rounded-full bg-surface-muted px-2.5 py-1 text-[11px] font-semibold text-text-nav">
-                      {KIND_LABEL[primary.kind]}
+                      {KIND_LABEL[row.kind]}
                     </span>
-                    {primary.topic && (
+                    {row.topic && (
                       <span className="rounded-full bg-surface-muted px-2.5 py-1 text-[11px] font-medium text-accent">
-                        {primary.topic}
+                        {row.topic}
                       </span>
                     )}
                     <span
@@ -108,43 +156,35 @@ export default async function AdminPostsPage() {
                     </span>
 
                     <span className="flex items-center gap-1.5 text-[11px]">
-                      <span
-                        className={
-                          vi?.title
-                            ? "text-green-700"
-                            : "text-text-muted"
-                        }
-                      >
-                        VI {vi?.title ? "✓" : "—"}
+                      <span className={row.vi_title ? "text-green-700" : "text-text-muted"}>
+                        VI {row.vi_title ? "✓" : "—"}
                       </span>
-                      <span
-                        className={
-                          en?.title ? "text-green-700" : "text-amber-700"
-                        }
-                      >
-                        EN {en?.title ? "✓" : "thiếu"}
+                      <span className={row.en_title ? "text-green-700" : "text-amber-700"}>
+                        EN {row.en_title ? "✓" : "thiếu"}
                       </span>
                     </span>
                   </div>
 
                   <Link
-                    href={`/admin/bai-viet/${primary.id}`}
+                    href={`/admin/bai-viet/${row.post_id}`}
                     className="mt-2.5 block truncate text-base font-semibold text-text transition-colors hover:text-accent"
                   >
-                    {primary.title || "(chưa có tiêu đề)"}
+                    {row.title || "(chưa có tiêu đề)"}
                   </Link>
                 </div>
 
                 <PostRowActions
-                  translationId={translationId}
-                  status={primary.status}
-                  ready={ready}
+                  translationId={row.translation_id}
+                  status={row.status}
+                  ready={row.ready}
                 />
               </li>
             );
           })}
         </ul>
       )}
+
+      <AdminPagination page={page} totalPages={totalPages} hrefFor={hrefFor} />
     </div>
   );
 }

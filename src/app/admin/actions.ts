@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { lookUpStaff } from "@/lib/auth";
-import { routing, type Locale } from "@/i18n/routing";
+import type { Locale } from "@/i18n/routing";
 import { slugify } from "@/lib/post-slug";
 import { articleToPlainText } from "@/lib/tiptap/render";
 import {
@@ -311,6 +311,26 @@ export async function deleteTranslation(
   return { ok: true };
 }
 
+/**
+ * Refreshes every page a comment appears on.
+ *
+ * Comments are rendered on blog *and* video detail pages, not only in the blog
+ * listing — moderating one used to leave a hidden comment visible on a video
+ * page until that page happened to rebuild. The comment's own post is looked up
+ * so the article's URL is revalidated along with the listings.
+ */
+async function revalidateCommentPost(postId: string | null): Promise<void> {
+  if (!postId) return;
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("posts")
+    .select("locale, slug, kind, topic")
+    .eq("id", postId)
+    .maybeSingle();
+
+  await revalidatePost(postRowsFrom(data ? [data] : []));
+}
+
 export async function setCommentHidden(
   commentId: string,
   hidden: boolean
@@ -320,16 +340,16 @@ export async function setCommentHidden(
 
   const supabase = createClient();
 
-  const { error } = await supabase
+  const { data, error } = await supabase
     .from("comments")
     .update({ is_hidden: hidden })
-    .eq("id", commentId);
+    .eq("id", commentId)
+    .select("post_id")
+    .maybeSingle();
 
   if (error) return dbFail("setCommentHidden", error);
 
-  for (const locale of routing.locales) {
-    revalidatePath(`/${locale}/blog`);
-  }
+  await revalidateCommentPost(data?.post_id ?? null);
   return { ok: true };
 }
 
@@ -339,12 +359,17 @@ export async function deleteComment(commentId: string): Promise<ActionResult> {
 
   const supabase = createClient();
 
+  // Read the post first: after the delete there is nothing left to look up.
+  const { data: existing } = await supabase
+    .from("comments")
+    .select("post_id")
+    .eq("id", commentId)
+    .maybeSingle();
+
   const { error } = await supabase.from("comments").delete().eq("id", commentId);
   if (error) return dbFail("deleteComment", error);
 
-  for (const locale of routing.locales) {
-    revalidatePath(`/${locale}/blog`);
-  }
+  await revalidateCommentPost(existing?.post_id ?? null);
   return { ok: true };
 }
 

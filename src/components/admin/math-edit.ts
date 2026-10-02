@@ -2,21 +2,28 @@ import type { Editor } from "@tiptap/react";
 
 export type MathKind = "inline" | "block";
 
+/** What the prompt asks for; the kind decides the wording. */
+export const MATH_LABEL: Record<MathKind, string> = {
+  inline: "Công thức LaTeX (trong dòng)",
+  block: "Công thức LaTeX (khối riêng)",
+};
+
+/** Where a formula already in the document lives, when one was clicked. */
+export type ExistingMath = { latex: string; pos: number };
+
 /**
- * Asks for LaTeX and inserts, updates or (when emptied) removes a formula.
+ * Inserts, updates or (when emptied) removes a formula.
  *
- * `existing` is set when the writer clicked a formula already in the text.
+ * Asking for the LaTeX is the caller's job — the editor toolbar and the
+ * click-a-formula handler both put the question in a dialog — so this only
+ * touches the document.
  */
-export function promptMath(
+export function applyMath(
   editor: Editor,
   kind: MathKind,
-  existing?: { latex: string; pos: number }
+  input: string,
+  existing?: ExistingMath
 ) {
-  const input = window.prompt(
-    kind === "inline" ? "Công thức LaTeX (trong dòng):" : "Công thức LaTeX (khối riêng):",
-    existing?.latex ?? ""
-  );
-  if (input === null) return;
   const latex = input.trim();
 
   if (!existing) {

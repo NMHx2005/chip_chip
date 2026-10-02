@@ -7,7 +7,13 @@ import { Check, ImagePlus, Languages, TriangleAlert } from "lucide-react";
 import "katex/dist/katex.min.css";
 import { EditorToolbar } from "@/components/admin/EditorToolbar";
 import { buildEditorExtensions } from "@/components/admin/editor-extensions";
-import { promptMath } from "@/components/admin/math-prompt";
+import { ConfirmDialog, PromptDialog } from "@/components/admin/Dialog";
+import {
+  applyMath,
+  MATH_LABEL,
+  type ExistingMath,
+  type MathKind,
+} from "@/components/admin/math-edit";
 import {
   publishTranslation,
   savePost,
@@ -65,6 +71,12 @@ export function PostEditor({
   const [publishError, setPublishError] = useState<string | null>(null);
   const [uploadingCover, setUploadingCover] = useState(false);
   const [translating, setTranslating] = useState(false);
+  // The three questions a modal asks; each holds the state until answered.
+  const [mathPrompt, setMathPrompt] = useState<{ kind: MathKind; existing?: ExistingMath } | null>(
+    null
+  );
+  const [confirmTranslate, setConfirmTranslate] = useState(false);
+  const [confirmUnpublish, setConfirmUnpublish] = useState(false);
   const coverInputRef = useRef<HTMLInputElement>(null);
 
   // The editor instance is shared across tabs, so callbacks read the active
@@ -112,8 +124,10 @@ export function PostEditor({
   const editorRef = useRef<Editor | null>(null);
   const extensions = useMemo(
     () =>
+      // Clicking a formula opens the same dialog the toolbar button does.
+      // `setMathPrompt` is stable, so the extensions stay built once.
       buildEditorExtensions((kind, latex, pos) => {
-        if (editorRef.current) promptMath(editorRef.current, kind, { latex, pos });
+        setMathPrompt({ kind, existing: { latex, pos } });
       }),
     []
   );
@@ -293,19 +307,22 @@ export function PostEditor({
     });
   };
 
+  /** Asks first when the EN tab already has something to lose. */
   const runTranslate = () => {
     const en = draftsRef.current.en;
     const hasEnglish =
       en.title.trim().length > 0 ||
       en.excerpt.trim().length > 0 ||
       (en.content?.content?.length ?? 0) > 0;
-    if (
-      hasEnglish &&
-      !window.confirm("Bản tiếng Anh đang có nội dung. Thay toàn bộ bằng bản dịch nháp?")
-    ) {
+
+    if (hasEnglish) {
+      setConfirmTranslate(true);
       return;
     }
+    doTranslate();
+  };
 
+  const doTranslate = () => {
     setTranslating(true);
     setMessage(null);
     startTransition(async () => {
@@ -360,7 +377,7 @@ export function PostEditor({
   const hasUnsavedChanges = dirty.vi || dirty.en;
   const canPublish = bothComplete && !hasUnsavedChanges;
 
-  useUnsavedChangesWarning(hasUnsavedChanges);
+  const { blockedHref, cancelLeave } = useUnsavedChangesWarning(hasUnsavedChanges);
 
   return (
     <div className="flex flex-col gap-4">
@@ -424,7 +441,7 @@ export function PostEditor({
           {status === "published" ? (
             <button
               type="button"
-              onClick={() => runPublish(unpublishTranslation)}
+              onClick={() => setConfirmUnpublish(true)}
               disabled={pending}
               className="cursor-pointer rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-text-nav transition-colors hover:border-black/20 disabled:opacity-50"
             >
@@ -633,11 +650,66 @@ export function PostEditor({
           toolbar's stickiness. `overflow: clip` clips without creating a
           scroll container, so the toolbar can stick. */}
       <div className="overflow-clip rounded-2xl border border-border bg-surface">
-        <EditorToolbar editor={editor} />
+        <EditorToolbar editor={editor} onAskMath={(kind) => setMathPrompt({ kind })} />
         <div className="px-4 py-5 md:px-8 md:py-8">
           <EditorContent editor={editor} />
         </div>
       </div>
+
+      <PromptDialog
+        open={mathPrompt !== null}
+        title={mathPrompt ? MATH_LABEL[mathPrompt.kind] : ""}
+        label="LaTeX"
+        defaultValue={mathPrompt?.existing?.latex ?? ""}
+        placeholder="Để trống rồi Lưu để bỏ công thức"
+        onConfirm={(value) => {
+          const request = mathPrompt;
+          setMathPrompt(null);
+          if (request && editor) applyMath(editor, request.kind, value, request.existing);
+        }}
+        onCancel={() => setMathPrompt(null)}
+      />
+
+      <ConfirmDialog
+        open={confirmTranslate}
+        title="Thay bản tiếng Anh?"
+        description="Bản tiếng Anh đang có nội dung. Thay toàn bộ bằng bản dịch nháp?"
+        confirmLabel="Thay toàn bộ"
+        tone="danger"
+        pending={translating}
+        onConfirm={() => {
+          setConfirmTranslate(false);
+          doTranslate();
+        }}
+        onCancel={() => setConfirmTranslate(false)}
+      />
+
+      <ConfirmDialog
+        open={confirmUnpublish}
+        title="Bỏ đăng bài này?"
+        description="Bài sẽ ẩn khỏi trang công khai. Bản Việt và Anh vẫn còn, đăng lại được bất cứ lúc nào."
+        confirmLabel="Bỏ đăng"
+        pending={pending}
+        onConfirm={() => {
+          setConfirmUnpublish(false);
+          runPublish(unpublishTranslation);
+        }}
+        onCancel={() => setConfirmUnpublish(false)}
+      />
+
+      <ConfirmDialog
+        open={blockedHref !== null}
+        title="Rời trang và bỏ thay đổi?"
+        description="Bài này có thay đổi chưa lưu. Rời trang bây giờ thì các thay đổi đó mất."
+        confirmLabel="Rời trang"
+        tone="danger"
+        onConfirm={() => {
+          const href = blockedHref;
+          cancelLeave();
+          if (href) router.push(href);
+        }}
+        onCancel={cancelLeave}
+      />
     </div>
   );
 }

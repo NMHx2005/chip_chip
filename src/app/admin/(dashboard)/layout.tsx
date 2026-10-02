@@ -3,6 +3,7 @@ import { ExternalLink } from "lucide-react";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { Logo } from "@/components/layout/Logo";
 import { requireStaff } from "@/lib/auth";
+import { createClient } from "@/lib/supabase/server";
 import { signOutAndRedirect } from "@/app/admin/actions";
 
 export const metadata: Metadata = {
@@ -17,8 +18,15 @@ export default async function AdminLayout({
 }) {
   const staff = await requireStaff();
 
+  // The nav's badge: how much is waiting. A head count, so it costs one cheap
+  // query rather than loading the rows themselves.
+  const { count: unhandledMessages } = await createClient()
+    .from("messages")
+    .select("id", { count: "exact", head: true })
+    .eq("is_handled", false);
+
   return (
-    <div className="min-h-[100dvh] bg-bg">
+    <div className="admin-shell min-h-[100dvh] bg-bg">
       <header className="sticky top-0 z-40 border-b border-border bg-surface/85 backdrop-blur-xl">
         <div className="mx-auto flex h-16 w-full max-w-[1400px] items-center justify-between gap-4 px-5">
           <div className="flex items-center gap-4">
@@ -55,7 +63,7 @@ export default async function AdminLayout({
         </div>
 
         <div className="mx-auto w-full max-w-[1400px] px-5">
-          <AdminNav />
+          <AdminNav badges={{ "/admin/tin-nhan": unhandledMessages ?? 0 }} />
         </div>
       </header>
 

@@ -33,7 +33,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { UploadError, uploadPostImage } from "@/lib/supabase/upload";
-import { promptMath } from "@/components/admin/math-prompt";
+import { PromptDialog } from "@/components/admin/Dialog";
+import type { MathKind } from "@/components/admin/math-edit";
 import { CALLOUT_VARIANTS, calloutVariant, type CalloutVariant } from "@/lib/tiptap/nodes/callout";
 import { parseVideoUrl } from "@/lib/video";
 
@@ -96,12 +97,32 @@ function findReferences(editor: Editor): number | null {
   return found;
 }
 
-export function EditorToolbar({ editor }: { editor: Editor | null }) {
+/**
+ * One question the toolbar can ask. Link, reviewers and video are answered
+ * here; the formulas are handed to the editor (see `onAskMath`), which owns
+ * the same dialog for both the toolbar buttons and a click on a formula.
+ */
+type PromptRequest = {
+  kind: "link" | "reviewers" | "video";
+  title: string;
+  label: string;
+  defaultValue: string;
+  placeholder?: string;
+};
+
+export function EditorToolbar({
+  editor,
+  onAskMath,
+}: {
+  editor: Editor | null;
+  onAskMath: (kind: MathKind) => void;
+}) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   // Which button opened the file picker: a bare image or a captioned figure.
   const insertAsRef = useRef<"image" | "figure">("image");
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [prompt, setPrompt] = useState<PromptRequest | null>(null);
 
   if (!editor) return null;
 
@@ -135,20 +156,15 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
     }
   };
 
-  const promptLink = () => {
+  const askLink = () => {
     const previous = editor.getAttributes("link").href as string | undefined;
-    const url = window.prompt("Địa chỉ liên kết:", previous ?? "https://");
-    if (url === null) return;
-    if (url === "") {
-      editor.chain().focus().extendMarkRange("link").unsetLink().run();
-      return;
-    }
-    editor
-      .chain()
-      .focus()
-      .extendMarkRange("link")
-      .setLink({ href: url })
-      .run();
+    setPrompt({
+      kind: "link",
+      title: "Chèn liên kết",
+      label: "Địa chỉ liên kết",
+      defaultValue: previous ?? "https://",
+      placeholder: "Để trống rồi Lưu để bỏ liên kết",
+    });
   };
 
   const applyCallout = (value: string) => {
@@ -180,29 +196,59 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
       .run();
   };
 
-  const promptReviewers = () => {
-    const pos = referencesPos;
-    if (pos === null) return;
-    const current = editor.state.doc.nodeAt(pos)?.attrs.reviewers;
-    const value = window.prompt(
-      "Được góp ý bởi (để trống để bỏ dòng này):",
-      typeof current === "string" ? current : ""
-    );
-    if (value === null) return;
-    editor
-      .chain()
-      .focus()
-      .command(({ tr }) => {
-        tr.setNodeAttribute(pos, "reviewers", value.trim());
-        return true;
-      })
-      .run();
+  const askReviewers = () => {
+    if (referencesPos === null) return;
+    const current = editor.state.doc.nodeAt(referencesPos)?.attrs.reviewers;
+    setPrompt({
+      kind: "reviewers",
+      title: "Người góp ý",
+      label: "Được góp ý bởi",
+      defaultValue: typeof current === "string" ? current : "",
+      placeholder: "Để trống để bỏ dòng này",
+    });
   };
 
-  const promptVideo = () => {
-    const url = window.prompt("Dán link YouTube hoặc TikTok:", "https://");
-    if (url === null) return;
-    const ref = parseVideoUrl(url);
+  const askVideo = () => {
+    setPrompt({
+      kind: "video",
+      title: "Chèn video",
+      label: "Link YouTube hoặc TikTok",
+      defaultValue: "https://",
+    });
+  };
+
+  /** Runs the answered question against the document. */
+  const runPrompt = (value: string) => {
+    const request = prompt;
+    setPrompt(null);
+    if (!request) return;
+
+    if (request.kind === "link") {
+      if (value === "") {
+        editor.chain().focus().extendMarkRange("link").unsetLink().run();
+        return;
+      }
+      editor.chain().focus().extendMarkRange("link").setLink({ href: value }).run();
+      return;
+    }
+
+    if (request.kind === "reviewers") {
+      // Re-read the position: the dialog is not the only thing that can have
+      // changed the document since the question was asked.
+      const pos = findReferences(editor);
+      if (pos === null) return;
+      editor
+        .chain()
+        .focus()
+        .command(({ tr }) => {
+          tr.setNodeAttribute(pos, "reviewers", value.trim());
+          return true;
+        })
+        .run();
+      return;
+    }
+
+    const ref = parseVideoUrl(value);
     if (!ref) {
       setError("Không đọc được link video. Dán link YouTube hoặc TikTok.");
       return;
@@ -213,14 +259,14 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
 
   return (
     /*
-      `top-[110px]` is the height of the admin header, not a guess: the header
-      is itself `sticky top-0` and holds a 64px logo row plus the nav row
-      (app/admin/(dashboard)/layout.tsx). At the previous `top-16` the toolbar
-      stuck at 64px — directly *behind* the nav row, since the header sits at
-      `z-40` and this at `z-20` — so the tools vanished under the header the
-      moment the editor scrolled.
+      `--admin-header-h` is the admin header's height, set in globals.css: the
+      header is itself `sticky top-0` and holds a 64px logo row plus the nav
+      row (app/admin/(dashboard)/layout.tsx). At the previous `top-16` the
+      toolbar stuck at 64px — directly *behind* the nav row, since the header
+      sits at `z-40` and this at `z-20` — so the tools vanished when the editor
+      scrolled.
     */
-    <div className="sticky top-[110px] z-20 border-b border-border bg-surface/95 backdrop-blur">
+    <div className="sticky top-[var(--admin-header-h)] z-20 border-b border-border bg-surface/95 backdrop-blur">
       <div className="flex flex-wrap items-center gap-0.5 px-3 py-2 md:px-5">
         <ToolButton
           label="Tiêu đề lớn"
@@ -324,7 +370,7 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         <ToolButton
           label="Liên kết"
           active={editor.isActive("link")}
-          onClick={promptLink}
+          onClick={askLink}
         >
           <Link2 className="size-[18px]" strokeWidth={2.2} />
         </ToolButton>
@@ -359,14 +405,14 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         <ToolButton
           label="Công thức trong dòng"
           active={editor.isActive("inlineMath")}
-          onClick={() => promptMath(editor, "inline")}
+          onClick={() => onAskMath("inline")}
         >
           <Radical className="size-[18px]" strokeWidth={2.2} />
         </ToolButton>
         <ToolButton
           label="Công thức khối"
           active={editor.isActive("blockMath")}
-          onClick={() => promptMath(editor, "block")}
+          onClick={() => onAskMath("block")}
         >
           <Sigma className="size-[18px]" strokeWidth={2.2} />
         </ToolButton>
@@ -406,11 +452,11 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
         <ToolButton
           label="Người góp ý (dưới nguồn tham khảo)"
           disabled={referencesPos === null}
-          onClick={promptReviewers}
+          onClick={askReviewers}
         >
           <Users className="size-[18px]" strokeWidth={2.2} />
         </ToolButton>
-        <ToolButton label="Video" onClick={promptVideo}>
+        <ToolButton label="Video" onClick={askVideo}>
           <Clapperboard className="size-[18px]" strokeWidth={2.2} />
         </ToolButton>
 
@@ -472,6 +518,16 @@ export function EditorToolbar({ editor }: { editor: Editor | null }) {
           event.target.value = "";
           if (file) void handleImage(file);
         }}
+      />
+
+      <PromptDialog
+        open={prompt !== null}
+        title={prompt?.title ?? ""}
+        label={prompt?.label ?? ""}
+        defaultValue={prompt?.defaultValue}
+        placeholder={prompt?.placeholder}
+        onConfirm={runPrompt}
+        onCancel={() => setPrompt(null)}
       />
     </div>
   );
