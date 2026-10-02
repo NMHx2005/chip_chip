@@ -554,6 +554,7 @@
     "cancelReply": "Huỷ",
     "authorBadge": "Tác giả",
     "success": "Đã gửi bình luận. Cảm ơn bạn!",
+    "successPending": "Đã gửi bình luận. Bình luận sẽ hiện sau khi được duyệt — bạn không cần gửi lại.",
     "errors": {
       "nameRequired": "Vui lòng nhập tên.",
       "nameTooLong": "Tên quá dài.",

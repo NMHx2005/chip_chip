@@ -308,6 +308,56 @@ check "nhóm có bản thừa rỗng thì không sẵn sàng" "false" "$(ready_f
 check "và publish_translation cũng từ chối" "translation_empty" "$(publish_detail "$extra")"
 
 echo
+echo "C4 — bình luận chỉ hiện công khai sau khi được duyệt"
+# `$sp` is the translation id; comments point at one locale row's id.
+sp_id=$(psql "$DB_URL" -t -A -c \
+  "select id from public.posts where translation_id = '$sp' and locale = 'vi';")
+psql "$DB_URL" -q -c "insert into public.comments (post_id, author_name, body, status) values
+  ('$sp_id', 'sec-moderate-$$', 'chờ duyệt', 'pending'),
+  ('$sp_id', 'sec-moderate-$$', 'đã duyệt', 'approved'),
+  ('$sp_id', 'sec-moderate-$$', 'đang ẩn', 'hidden');"
+# No status given: the column default is what /api/comments relies on for the
+# ordinary reader, so it is worth pinning.
+psql "$DB_URL" -q -c "insert into public.comments (post_id, author_name, body)
+  values ('$sp_id', 'sec-moderate-$$', 'không nêu trạng thái');"
+
+check "bình luận mới mặc định là chờ duyệt" "1" \
+  "$(psql "$DB_URL" -q -t -A -c "select count(*) from public.comments
+     where body = 'không nêu trạng thái' and status = 'pending';")"
+# Three of the four rows are not approved; only one may be readable. `-q` keeps
+# the BEGIN/SET/ROLLBACK command tags out of the answer.
+check "anon chỉ đọc được bình luận đã duyệt" "1" \
+  "$(psql "$DB_URL" -q -t -A -c "begin; set local role anon;
+     select count(*) from public.comments where post_id = '$sp_id'; rollback;")"
+staff_id=$(psql "$DB_URL" -q -t -A -c "select id from auth.users where email = '$EMAIL';")
+# `set_config` prints the claim it set, so only the last row is the count.
+check "nhân sự đọc được mọi trạng thái" "4" \
+  "$(psql "$DB_URL" -q -t -A -c "begin; set local role authenticated;
+     select set_config('request.jwt.claims', '{\"sub\":\"$staff_id\"}', true);
+     select count(*) from public.comments where post_id = '$sp_id'; rollback;" | tail -1)"
+check "cột status đọc được bằng anon" "200" \
+  "$(status "$API_URL/rest/v1/comments?select=status&limit=1" -H "apikey: $ANON_KEY")"
+# The JSON goes in a variable first: written inline the shell reads the comma as
+# a brace-expansion separator and sends a broken body.
+comment_body=$(printf '{"post_id":"%s","author_name":"x","body":"y"}' "$sp_id")
+check "anon không INSERT được bình luận" "denied" \
+  "$(denied -X POST "$API_URL/rest/v1/comments" -H "apikey: $ANON_KEY" \
+    -H 'Content-Type: application/json' -d "$comment_body")"
+
+# Revisions: recorded by staff, and readable by nobody else.
+psql "$DB_URL" -q -c "insert into public.post_revisions (post_id, title, content, status)
+  values ('$sp_id', 'bản lưu kiểm thử$$', '{}', 'draft');"
+check "anon không đọc được bản lưu nào" "[]" \
+  "$(curl -s "$API_URL/rest/v1/post_revisions?select=id&limit=1" -H "apikey: $ANON_KEY")"
+check "nhân sự đọc được bản lưu" "1" \
+  "$(curl -s "$API_URL/rest/v1/post_revisions?select=id&post_id=eq.$sp_id" "${auth[@]}" |
+    grep -o '"id"' | wc -l | tr -d ' ')"
+revision_body=$(printf '{"post_id":"%s","title":"x","content":{},"status":"draft"}' "$sp_id")
+check "anon không INSERT được bản lưu" "denied" \
+  "$(denied -X POST "$API_URL/rest/v1/post_revisions" -H "apikey: $ANON_KEY" \
+    -H 'Content-Type: application/json' -d "$revision_body")"
+
+echo
 if [ "$failures" -eq 0 ]; then
   printf '\033[32mTất cả kiểm tra đều đạt.\033[0m\n'
 else

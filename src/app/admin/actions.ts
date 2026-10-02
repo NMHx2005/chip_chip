@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { lookUpStaff } from "@/lib/auth";
 import type { Locale } from "@/i18n/routing";
+import { isCommentStatus, type CommentStatus } from "@/lib/comment-status";
 import { slugify } from "@/lib/post-slug";
 import { articleToPlainText } from "@/lib/tiptap/render";
 import {
@@ -20,8 +21,13 @@ import {
   prepareTranslation,
   type DraftText,
 } from "@/lib/translate/segments";
-import type { Difficulty, PostKind } from "@/lib/types";
+import type { Difficulty, PostKind, PostStatus } from "@/lib/types";
 import type { TopicId } from "@/lib/constants";
+import {
+  REVISION_KEEP,
+  revisionChanged,
+  type RevisionSnapshot,
+} from "@/lib/revisions";
 
 export type ActionResult = {
   ok: boolean;
@@ -120,12 +126,36 @@ export async function savePost(input: SavePostInput): Promise<ActionResult> {
   const slug = slugify(input.slug || input.title);
   if (!slug) return fail("Không tạo được đường dẫn từ tiêu đề.");
 
+  const excerpt = input.excerpt.trim() || null;
+
+  // Read the row first: the snapshot has to hold what the article looked like
+  // *before* this save, and only a write that changes something is worth one.
+  const { data: before } = await supabase
+    .from("posts")
+    .select(REVISION_COLUMNS)
+    .eq("id", input.id)
+    .maybeSingle<RevisionRow>();
+
+  if (
+    before &&
+    revisionChanged(toSnapshot(before), {
+      title,
+      slug,
+      excerpt,
+      coverImageUrl: input.coverImageUrl,
+      content: input.content,
+      status: before.status as PostStatus,
+    })
+  ) {
+    await snapshotPost(supabase, before, lookup.staff.id);
+  }
+
   const { data, error } = await supabase
     .from("posts")
     .update({
       title,
       slug,
-      excerpt: input.excerpt.trim() || null,
+      excerpt,
       cover_image_url: input.coverImageUrl,
       content: input.content,
       plain_text: articleToPlainText(input.content, PLAIN_TEXT_LIMIT),
@@ -230,6 +260,13 @@ export async function publishTranslation(
 
   const supabase = createClient();
 
+  // Read before publishing: only these rows know the state to snapshot and the
+  // URLs to revalidate, and both are the readers' before the change.
+  const { data: before } = await supabase
+    .from("posts")
+    .select(`${REVISION_COLUMNS}, locale, kind, topic`)
+    .eq("translation_id", translationId);
+
   const { error } = await supabase.rpc("publish_translation", {
     p_translation_id: translationId,
   });
@@ -242,19 +279,12 @@ export async function publishTranslation(
     return dbFail("publishTranslation", error);
   }
 
-  const { data } = await supabase
-    .from("posts")
-    .select("locale, slug, kind, topic")
-    .eq("translation_id", translationId);
+  // Written after the gate accepted, so a refused publish leaves no snapshot.
+  for (const row of (before ?? []) as RevisionRow[]) {
+    await snapshotPost(supabase, row, lookup.staff.id);
+  }
 
-  await revalidatePost(
-    (data ?? []).map((row) => ({
-      locale: row.locale as Locale,
-      slug: row.slug as string,
-      kind: row.kind as PostKind,
-      topic: row.topic as TopicId | null,
-    }))
-  );
+  await revalidatePost(postRowsFrom(before));
 
   return { ok: true };
 }
@@ -272,7 +302,7 @@ export async function unpublishTranslation(
   // only the rows know their slugs and topic.
   const { data: rows } = await supabase
     .from("posts")
-    .select("locale, slug, kind, topic")
+    .select(`${REVISION_COLUMNS}, locale, kind, topic`)
     .eq("translation_id", translationId);
 
   const { error } = await supabase.rpc("unpublish_translation", {
@@ -280,6 +310,12 @@ export async function unpublishTranslation(
   });
 
   if (error) return dbFail("unpublishTranslation", error);
+
+  // Taking a live article down is exactly the kind of change someone wants to
+  // look back at, so it is snapshotted like an edit.
+  for (const row of (rows ?? []) as RevisionRow[]) {
+    await snapshotPost(supabase, row, lookup.staff.id);
+  }
 
   await revalidatePost(postRowsFrom(rows));
   return { ok: true };
@@ -331,24 +367,151 @@ async function revalidateCommentPost(postId: string | null): Promise<void> {
   await revalidatePost(postRowsFrom(data ? [data] : []));
 }
 
-export async function setCommentHidden(
+/** Every column a snapshot keeps, read back as a row. */
+const REVISION_COLUMNS = "id, title, slug, excerpt, cover_image_url, content, status";
+
+type RevisionRow = {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string | null;
+  cover_image_url: string | null;
+  content: unknown;
+  status: string;
+};
+
+function toSnapshot(row: RevisionRow): RevisionSnapshot {
+  return {
+    title: row.title,
+    slug: row.slug,
+    excerpt: row.excerpt,
+    coverImageUrl: row.cover_image_url,
+    content: row.content,
+    status: row.status as PostStatus,
+  };
+}
+
+/**
+ * Records a post's current state before a write replaces it, then trims the
+ * history to the newest `REVISION_KEEP`.
+ *
+ * History is a safety net, not part of the write: a failure here is logged and
+ * the save goes ahead, because refusing to save would be worse than losing the
+ * snapshot.
+ */
+async function snapshotPost(
+  supabase: ReturnType<typeof createClient>,
+  row: RevisionRow,
+  savedBy: string
+): Promise<void> {
+  const { error } = await supabase.from("post_revisions").insert({
+    post_id: row.id,
+    title: row.title,
+    slug: row.slug,
+    excerpt: row.excerpt,
+    cover_image_url: row.cover_image_url,
+    content: row.content,
+    status: row.status,
+    saved_by: savedBy,
+  });
+
+  if (error) {
+    console.error("[admin:snapshotPost]", error.code, error.message);
+    return;
+  }
+
+  const { error: pruneError } = await supabase.rpc("prune_post_revisions", {
+    p_post_id: row.id,
+    p_keep: REVISION_KEEP,
+  });
+  if (pruneError) {
+    console.error("[admin:prunePostRevisions]", pruneError.code, pruneError.message);
+  }
+}
+
+/**
+ * Puts an old snapshot's content back.
+ *
+ * The slug and the published state are deliberately left alone: restoring a
+ * slug would break the article's public URL (and could collide with another
+ * article), and publishing is a gated action, not a side effect of restoring.
+ */
+export async function restoreRevision(revisionId: string): Promise<ActionResult> {
+  const lookup = await lookUpStaff();
+  if (lookup.status !== "ok") return SESSION_ENDED;
+  if (!isUuid(revisionId)) return fail("Không tìm thấy bản lưu.");
+
+  const supabase = createClient();
+
+  const { data: revision } = await supabase
+    .from("post_revisions")
+    .select("id, post_id, title, excerpt, cover_image_url, content")
+    .eq("id", revisionId)
+    .maybeSingle();
+
+  if (!revision) return fail("Không tìm thấy bản lưu.");
+
+  const { data: current } = await supabase
+    .from("posts")
+    .select(REVISION_COLUMNS)
+    .eq("id", revision.post_id)
+    .maybeSingle<RevisionRow>();
+
+  if (!current) return fail("Bài viết không còn tồn tại.");
+
+  // Snapshot what is there now, so restoring is itself undoable.
+  await snapshotPost(supabase, current, lookup.staff.id);
+
+  const { data: updated, error } = await supabase
+    .from("posts")
+    .update({
+      title: revision.title,
+      excerpt: revision.excerpt,
+      cover_image_url: revision.cover_image_url,
+      content: revision.content,
+      plain_text: articleToPlainText(revision.content, PLAIN_TEXT_LIMIT),
+    })
+    .eq("id", revision.post_id)
+    .select("locale, slug, kind, topic")
+    .single();
+
+  if (error) return dbFail("restoreRevision", error);
+
+  await revalidatePost([
+    {
+      locale: updated.locale as Locale,
+      slug: updated.slug,
+      kind: updated.kind as PostKind,
+      topic: updated.topic as TopicId | null,
+    },
+  ]);
+
+  return { ok: true };
+}
+
+/**
+ * Moves a comment between moderation states: approving it publishes it, hiding
+ * it takes it down again.
+ */
+export async function setCommentStatus(
   commentId: string,
-  hidden: boolean
+  status: CommentStatus
 ): Promise<ActionResult> {
   const lookup = await lookUpStaff();
   if (lookup.status !== "ok") return SESSION_ENDED;
   if (!isUuid(commentId)) return fail("Không tìm thấy bình luận.");
+  if (!isCommentStatus(status)) return fail("Trạng thái không hợp lệ.");
 
   const supabase = createClient();
 
   const { data, error } = await supabase
     .from("comments")
-    .update({ is_hidden: hidden })
+    .update({ status })
     .eq("id", commentId)
     .select("post_id")
     .maybeSingle();
 
-  if (error) return dbFail("setCommentHidden", error);
+  if (error) return dbFail("setCommentStatus", error);
   // No row means the comment is already gone (or a policy dropped it); saying
   // "ok" would leave the list looking unchanged for no stated reason.
   if (!data) return fail("Không tìm thấy bình luận.");

@@ -554,6 +554,7 @@
     "cancelReply": "Cancel",
     "authorBadge": "Author",
     "success": "Comment posted. Thank you!",
+    "successPending": "Comment sent. It will appear once it has been reviewed — no need to send it again.",
     "errors": {
       "nameRequired": "Please enter your name.",
       "nameTooLong": "That name is too long.",

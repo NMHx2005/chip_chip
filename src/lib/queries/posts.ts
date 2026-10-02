@@ -377,7 +377,8 @@ export async function listComments(
       { count: "exact" }
     )
     .eq("post_id", postId)
-    .eq("is_hidden", false)
+    // Only approved comments are public; `pending` ones await a moderator.
+    .eq("status", "approved")
     .is("parent_id", null)
     .order("created_at", { ascending: true })
     .limit(rootLimit);
@@ -396,7 +397,7 @@ export async function listComments(
             "id, post_id, parent_id, author_name, body, is_post_author, created_at"
           )
           .eq("post_id", postId)
-          .eq("is_hidden", false)
+          .eq("status", "approved")
           .in("parent_id", rootIds)
           .order("created_at", { ascending: true })
       ).data ?? []
@@ -447,7 +448,7 @@ export async function countComments(postId: string): Promise<number> {
     .from("comments")
     .select("id", { count: "exact", head: true })
     .eq("post_id", postId)
-    .eq("is_hidden", false);
+    .eq("status", "approved");
 
   return count ?? 0;
 }

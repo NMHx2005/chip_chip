@@ -140,6 +140,10 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  // A reader's comment waits for a moderator; a staff reply goes straight up,
+  // since staff are the moderators and the badge already marks it as official.
+  const status = isPostAuthor ? "approved" : "pending";
+
   const { data: inserted, error } = await admin
     .from("comments")
     .insert({
@@ -149,6 +153,7 @@ export async function POST(request: NextRequest) {
       author_email: isPostAuthor ? null : email || null,
       body,
       is_post_author: isPostAuthor,
+      status,
     })
     .select("id, created_at")
     .single();
@@ -158,5 +163,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "insert_failed" }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true, id: inserted.id });
+  // `pending` lets the form say what happens next instead of claiming the
+  // comment is on the page.
+  return NextResponse.json({ ok: true, id: inserted.id, pending: status === "pending" });
 }

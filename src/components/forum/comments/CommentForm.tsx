@@ -55,7 +55,9 @@ export function CommentForm({
   const [submitting, setSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [failure, setFailure] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
+  // A reader's comment is held for review, a staff reply is not, so the notice
+  // has to say which happened.
+  const [outcome, setOutcome] = useState<"sent" | "pending" | null>(null);
 
   const formRef = useRef<HTMLDivElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -68,7 +70,7 @@ export function CommentForm({
   useEffect(() => {
     if (!replyRequest) return;
     // A notice belongs to the comment just sent; starting a reply moves on.
-    setSuccess(false);
+    setOutcome(null);
     setFailure(null);
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     formRef.current?.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
@@ -85,7 +87,7 @@ export function CommentForm({
     event.preventDefault();
     if (submitting) return;
     setFailure(null);
-    setSuccess(false);
+    setOutcome(null);
 
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -125,7 +127,7 @@ export function CommentForm({
           website: String(data.get("website") ?? ""),
         }),
       });
-      const result = (await response.json()) as { error?: string };
+      const result = (await response.json()) as { error?: string; pending?: boolean };
 
       if (!response.ok) {
         const key = result.error ? ERROR_KEYS[result.error] : undefined;
@@ -141,7 +143,7 @@ export function CommentForm({
       }
 
       form.reset();
-      setSuccess(true);
+      setOutcome(result.pending ? "pending" : "sent");
       onCancelReply();
       router.refresh();
     } catch {
@@ -223,7 +225,11 @@ export function CommentForm({
         </div>
 
         {failure && <FormNotice tone="error">{failure}</FormNotice>}
-        {success && <FormNotice tone="success">{t("success")}</FormNotice>}
+        {outcome && (
+          <FormNotice tone="success">
+            {outcome === "pending" ? t("successPending") : t("success")}
+          </FormNotice>
+        )}
 
         <div className="flex items-center gap-4">
           <Button type="submit" busy={submitting} className="flex-1 sm:flex-none">

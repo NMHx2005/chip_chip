@@ -20,21 +20,30 @@ async function countRows(
 export default async function AdminDashboard() {
   const staff = await requireStaff();
 
-  const [publishedVi, publishedEn, drafts, hiddenComments, pendingEn, unhandledMessages] =
-    await Promise.all([
-      countRows("posts", { status: "published", locale: "vi" }),
-      countRows("posts", { status: "published", locale: "en" }),
-      countRows("posts", { status: "draft" }),
-      countRows("comments", { is_hidden: true }),
-      countRows("posts", { status: "draft", locale: "en" }),
-      countRows("messages", { is_handled: false }),
-    ]);
+  const [
+    publishedVi,
+    publishedEn,
+    drafts,
+    pendingComments,
+    hiddenComments,
+    pendingEn,
+    unhandledMessages,
+  ] = await Promise.all([
+    countRows("posts", { status: "published", locale: "vi" }),
+    countRows("posts", { status: "published", locale: "en" }),
+    countRows("posts", { status: "draft" }),
+    countRows("comments", { status: "pending" }),
+    countRows("comments", { status: "hidden" }),
+    countRows("posts", { status: "draft", locale: "en" }),
+    countRows("messages", { is_handled: false }),
+  ]);
 
   const stats = [
     { label: "Bài đã đăng (VI)", value: publishedVi },
     { label: "Bài đã đăng (EN)", value: publishedEn },
     { label: "Bản nháp", value: drafts },
     { label: "Chờ dịch sang EN", value: pendingEn },
+    { label: "Bình luận chờ duyệt", value: pendingComments },
     { label: "Bình luận đang ẩn", value: hiddenComments },
     { label: "Tin nhắn chưa xử lý", value: unhandledMessages },
   ];

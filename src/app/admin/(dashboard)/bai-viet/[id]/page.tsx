@@ -1,11 +1,16 @@
 import { notFound } from "next/navigation";
 import type { JSONContent } from "@tiptap/react";
 import { PostEditor, type Draft } from "@/components/admin/PostEditor";
+import {
+  RevisionHistory,
+  type RevisionView,
+} from "@/components/admin/RevisionHistory";
 import { SharedFieldsPanel, type LessonOption } from "@/components/admin/SharedFieldsPanel";
 import { createClient } from "@/lib/supabase/server";
 import { requireStaff } from "@/lib/auth";
 import { routing, type Locale } from "@/i18n/routing";
 import type { TopicId } from "@/lib/constants";
+import { REVISION_KEEP } from "@/lib/revisions";
 import type { Difficulty, VideoSource } from "@/lib/types";
 import { watchUrl, type VideoPlatform } from "@/lib/video";
 
@@ -81,6 +86,43 @@ export default async function EditPostPage({
   const primary = rows.find((r) => r.id === params.id) ?? rows[0];
   const missingLocale = routing.locales.some((locale) => !drafts[locale].id);
 
+  // The article's history, across both locale rows, newest first. The body of
+  // each snapshot is left in the database: twenty documents per editor open
+  // would cost more than the list is worth.
+  const { data: revisionRows } = await supabase
+    .from("post_revisions")
+    .select("id, post_id, title, excerpt, status, saved_by, created_at")
+    .in(
+      "post_id",
+      rows.map((row) => row.id)
+    )
+    .order("created_at", { ascending: false })
+    .limit(REVISION_KEEP);
+
+  const savedByIds = Array.from(
+    new Set((revisionRows ?? []).flatMap((row) => (row.saved_by ? [row.saved_by] : [])))
+  );
+  const saverNames = new Map<string, string>();
+  if (savedByIds.length > 0) {
+    const { data: savers } = await supabase
+      .from("profiles")
+      .select("id, display_name")
+      .in("id", savedByIds);
+    for (const saver of savers ?? []) {
+      saverNames.set(saver.id, saver.display_name || "(không rõ)");
+    }
+  }
+
+  const revisions: RevisionView[] = (revisionRows ?? []).map((revision) => ({
+    id: revision.id,
+    locale: (rows.find((row) => row.id === revision.post_id)?.locale ?? "").toUpperCase(),
+    title: revision.title,
+    excerpt: revision.excerpt,
+    status: revision.status as "draft" | "published",
+    savedByName: revision.saved_by ? (saverNames.get(revision.saved_by) ?? null) : null,
+    createdAt: revision.created_at,
+  }));
+
   // Rebuilt from the stored (platform, id) pair rather than read back as a
   // URL — see src/lib/video.ts. The watch link is what staff would paste, and
   // parseVideoUrl reads it back to the same pair.
@@ -148,6 +190,8 @@ export default async function EditPostPage({
         status={primary.status}
         translateEnabled={Boolean(process.env.DEEPSEEK_API_KEY)}
       />
+
+      <RevisionHistory revisions={revisions} />
     </div>
   );
 }
