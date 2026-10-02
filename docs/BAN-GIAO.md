@@ -38,6 +38,12 @@ phản hồi", và ngày cập nhật chính sách. `/admin/cai-dat` sửa chún
 trị thiếu hay hỏng không làm vỡ trang. `/admin/thu-vien` liệt kê bucket `post-images`, tải lên, copy URL và xoá —
 **từ chối xoá ảnh đang được bài viết dùng** (ảnh bìa hoặc trong nội dung), vì đó là URL trần nên xoá là trang
 vỡ ảnh. Trình soạn bài cũng chọn được ảnh có sẵn thay vì tải thêm bản sao.
+Sau review đã sửa bốn lỗi, một trong đó làm sập trang: (1) `2026-13-45` lọt qua kiểm tra hình dạng, mà trang
+Bảo mật format ngày bằng `Intl.DateTimeFormat` (ném lỗi với ngày không hợp lệ) nên **mọi khách vào trang đó
+nhận 500** — nay kiểm tra là ngày thật; (2) kiểm tra "ảnh đang dùng" chạy ở app nên bị PostgREST cắt ở 1000
+dòng và so cả URL đầy đủ — nay là hàm `admin_media_in_use` trong DB, so theo đường dẫn; (3) link mạng xã hội
+chỉ kiểm https ở chỗ ghi, không kiểm ở chỗ đọc nên `javascript:` có thể lọt ra `<a href>` — nay chặn cả hai
+đầu; (4) các giá trị được giới hạn độ dài, email xoá trắng thì giữ trắng.
 
 **Admin — giai đoạn 3 (quản lý nhân sự + mật khẩu).** Từ đây `admin` và `editor` **khác nhau**: thêm
 `is_admin()`, `admin_list_staff()` (cũng là đường lấy email, vì không role client nào đọc được `auth.users`)
@@ -465,7 +471,7 @@ pass**. `npm run lint` sạch, không cảnh báo.
 Diễn lại các cuộc tấn công mà migration `20260913000000_harden_access.sql` và
 các ràng buộc dữ liệu về sau chặn lại — cần một stack Supabase local đang chạy
 (`npx supabase start`), **không bao giờ chạy nhắm vào production**. Hiện có
-**55 kiểm tra**, tất cả phải xanh (55/55) trước khi lên production.
+**58 kiểm tra**, tất cả phải xanh (58/58) trước khi lên production.
 
 ---
 
